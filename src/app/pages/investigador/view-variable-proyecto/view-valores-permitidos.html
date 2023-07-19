@@ -1,0 +1,38 @@
+
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line style="margin-right: 20px;">Valores permitidos</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<div mat-dialog-content style="color: black;">
+  <br>
+  <h3 style="text-align: center;"><b>Valores permitidos en la variable {{this.data.nombreVariable}}</b> </h3>
+  <br>
+  <div *ngFor = "let oC of listaDatos">
+    <div *ngIf="oC.valorMaximo!=null && oC.valorMinimo!=null">
+      <h4>
+        <b>Valor mínimo:</b> {{ oC?.valorMinimo }}
+        <span class="separator"></span>
+        -
+        <span class="separator"></span>
+        <b>Valor máximo:</b> {{ oC?.valorMaximo }}
+      </h4>
+    </div>
+    <div *ngIf="oC.valorPermitido!=null">
+      <h4><b>Valor permitido:</b> {{oC?.valorPermitido}}</h4>
+    </div>
+    <br>
+    <br>
+  </div>
+  <div class="align-right" style="padding-top: 5px;">
+  </div>
+</div>

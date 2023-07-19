@@ -1,0 +1,299 @@
+<mat-card
+    style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
+    <mat-list style="margin: 0; padding: 0; border: 0;">
+        <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+            <mat-icon mat-list-icon
+                style="padding-left: 0px; margin-left: 0; border-left: 0;">supervised_user_circle</mat-icon>
+            <div mat-line><mat-card-title
+                    style="font-size: 17px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Agregar
+                    localización
+                </mat-card-title></div>
+            <div mat-line>
+                <div aria-label="breadcrumb" style="font-size: 14px; border: 0; padding: 0; margin: 0;">
+                    <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+                        <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
+                                routerLink="/user-dashboard/">Inicio</a></li>
+                        <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha"
+                            aria-current="page">Añadir localización</li>
+                    </ol>
+                </div>
+            </div>
+        </mat-list-item>
+    </mat-list>
+</mat-card>
+
+<mat-card>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+        <mat-tab label="Nueva localización">
+
+
+            <!----------------------------------------------------------------------->
+            <div class="joinnow">
+                <div class="login col-lg-7 m-auto shadow-lg">
+                    <div class="container mt-4 mb-5">
+                        <div class="row">
+                            <div>
+                                <div class="box mt-3 mb-3">
+
+                                    <form (ngSubmit)= "enviarLocalizacionNueva1()">
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código pais:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion4.codigoPais"  type="text" name="codigoPais4" matInput
+                                          placeholder="Ingrese el código país">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre pais:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion4.nombrePais"  type="text" name="nombrePais4" matInput
+                                          placeholder="Ingrese el nombre de la país">
+                                      </mat-form-field>
+
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código provincia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion4.codigoProvincia"  type="text" name="codigoParroquia4" matInput
+                                          placeholder="Ingrese el código cantón">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre provincia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion4.nombreProvincia"  type="text" name="nombreParroquia4" matInput
+                                          placeholder="Ingrese el nombre de la cantón">
+                                      </mat-form-field>
+
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código cantón:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion4.codigoCanton"  type="text" name="codigoCanton4" matInput
+                                          placeholder="Ingrese el código cantón">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre cantón:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion4.nombreCanton"  type="text" name="nombreCanton4" matInput
+                                          placeholder="Ingrese el nombre de la cantón">
+                                      </mat-form-field>
+
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código parroquia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion4.codigoParroquia"  type="text" name="codigoParroquia4" matInput
+                                          placeholder="Ingrese el código parroquia">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre parroquia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion4.nombreParroquia"  type="text" name="nombreParroquia4" matInput
+                                          placeholder="Ingrese el nombre de la parroquia">
+                                      </mat-form-field>
+                                      <div class="container text-center mt15">
+                                        <button mat-raised-button color="primary">Guardar</button>
+                                      </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--------------------------------------------------------------------------->
+
+        </mat-tab>
+        <mat-tab label="Localización en pais">
+
+            <!----------------------------------------------------------------------->
+            <div class="joinnow">
+                <div class="login col-lg-7 m-auto shadow-lg">
+                    <div class="container mt-4 mb-5">
+                        <div class="row">
+                            <div>
+                                <div class="box mt-3 mb-3">
+
+                                    <form (ngSubmit)= "enviarLocalizacionNueva2()">
+                                    <mat-form-field appearance="fill" class="mt20 w100">
+                                        <mat-label>Pais</mat-label>
+                                        <mat-select name="pais3" [(ngModel)]="paisSeleccionado3"
+                                            (selectionChange)="listarProvincias3()">
+                                            <mat-option *ngFor="let c of listaPaises3" [value]="c">
+                                                {{ c.nombrePais }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código provincia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion3.codigoProvincia"  type="text" name="codigoProvincia3" matInput
+                                          placeholder="Ingrese el código cantón">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre provincia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion3.nombreProvincia"  type="text" name="nombreProvincia3" matInput
+                                          placeholder="Ingrese el nombre de la cantón">
+                                      </mat-form-field>
+
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código cantón:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion3.codigoCanton"  type="text" name="codigoCanton3" matInput
+                                          placeholder="Ingrese el código cantón">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre cantón:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion3.nombreCanton"  type="text" name="nombreCanton3" matInput
+                                          placeholder="Ingrese el nombre de la cantón">
+                                      </mat-form-field>
+
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código parroquia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion3.codigoParroquia"  type="text" name="codigoParroquia3" matInput
+                                          placeholder="Ingrese el código parroquia">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre parroquia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion3.nombreParroquia"  type="text" name="nombreParroquia3" matInput
+                                          placeholder="Ingrese el nombre de la parroquia">
+                                      </mat-form-field>
+                                      <div class="container text-center mt15">
+                                        <button mat-raised-button color="primary">Guardar</button>
+                                      </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--------------------------------------------------------------------------->
+
+        </mat-tab>
+        <mat-tab label="Localización en provincia">
+
+            <!----------------------------------------------------------------------->
+            <div class="joinnow">
+                <div class="login col-lg-7 m-auto shadow-lg">
+                    <div class="container mt-4 mb-5">
+                        <div class="row">
+                            <div>
+                                <div class="box mt-3 mb-3">
+
+                                    <form (ngSubmit)= "enviarLocalizacionNueva3()">
+                                    <mat-form-field appearance="fill" class="mt20 w100">
+                                        <mat-label>Pais</mat-label>
+                                        <mat-select name="pais2" [(ngModel)]="paisSeleccionado2"
+                                            (selectionChange)="listarProvincias2()">
+                                            <mat-option *ngFor="let c of listaPaises2" [value]="c">
+                                                {{ c.nombrePais }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="fill" class="mt20 w100">
+                                        <mat-label>Provincia</mat-label>
+                                        <mat-select name="Provincia2" [(ngModel)]="provinciaSeleccionado2"
+                                            (selectionChange)="listarCantones2()">
+                                            <mat-option *ngFor="let c of listaProvincias2" [value]="c">
+                                                {{ c.nombreProvincia }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código cantón:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion2.codigoCanton"  type="text" name="codigoCanton2" matInput
+                                          placeholder="Ingrese el código cantón">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre cantón:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion2.nombreCanton"  type="text" name="nombreCanton2" matInput
+                                          placeholder="Ingrese el nombre de la cantón">
+                                      </mat-form-field>
+
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código parroquia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion2.codigoParroquia"  type="text" name="codigoParroquia2" matInput
+                                          placeholder="Ingrese el código parroquia">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre parroquia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion2.nombreParroquia"  type="text" name="nombreParroquia2" matInput
+                                          placeholder="Ingrese el nombre de la parroquia">
+                                      </mat-form-field>
+                                      <div class="container text-center mt15">
+                                        <button mat-raised-button color="primary">Guardar</button>
+                                      </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--------------------------------------------------------------------------->
+
+        </mat-tab>
+        <mat-tab label="Localización en canton">
+            <!----------------------------------------------------------------------->
+            <div class="joinnow">
+                <div class="login col-lg-7 m-auto shadow-lg">
+                    <div class="container mt-4 mb-5">
+                        <div class="row">
+                            <div>
+                                <div class="box mt-3 mb-3">
+
+                                    <form (ngSubmit)= "enviarLocalizacionNueva4()">
+                                    <mat-form-field appearance="fill" class="mt20 w100">
+                                        <mat-label>Pais</mat-label>
+                                        <mat-select name="pais1" [(ngModel)]="paisSeleccionado1"
+                                            (selectionChange)="listarProvincias1()">
+                                            <mat-option *ngFor="let c of listaPaises1" [value]="c">
+                                                {{ c.nombrePais }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="fill" class="mt20 w100">
+                                        <mat-label>Provincia</mat-label>
+                                        <mat-select name="Provincia1" [(ngModel)]="provinciaSeleccionado1"
+                                            (selectionChange)="listarCantones1()">
+                                            <mat-option *ngFor="let c of listaProvincias1" [value]="c">
+                                                {{ c.nombreProvincia }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="fill" class="mt20 w100">
+                                        <mat-label>Cantón</mat-label>
+                                        <mat-select name="Canton1" [(ngModel)]="cantonSeleccionado1"
+                                            (selectionChange)="listarParroquias1()">
+                                            <mat-option *ngFor="let c of listaCantones1" [value]="c">
+                                                {{ c.nombreCanton }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Código parroquia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion1.codigoParroquia"  type="text" name="codigoParroquia1" matInput
+                                          placeholder="Ingrese el código parroquia">
+                                      </mat-form-field>
+                        
+                                      <mat-form-field class="w100" appearance="outline">
+                                        <mat-label>Nombre parroquia:</mat-label>
+                                        <input [(ngModel)]="nuevaLocalizacion1.nombreParroquia"  type="text" name="nombreParroquia1" matInput
+                                          placeholder="Ingrese el nombre de la parroquia">
+                                      </mat-form-field>
+                                      <div class="container text-center mt15">
+                                        <button mat-raised-button color="primary">Guardar</button>
+                                      </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--------------------------------------------------------------------------->
+        </mat-tab>
+    </mat-tab-group>
+</mat-card>

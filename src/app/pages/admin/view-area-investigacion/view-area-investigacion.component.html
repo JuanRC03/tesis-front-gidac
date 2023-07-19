@@ -1,0 +1,160 @@
+<mat-card
+  style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
+  <mat-list style="margin: 0; padding: 0; border: 0;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+      <mat-icon mat-list-icon style="padding-left: 0px; margin-left: 0; border-left: 0;">library_books</mat-icon>
+      <div mat-line><mat-card-title
+          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestiona tus areas de investigación
+        </mat-card-title></div>
+      <div mat-line>
+        <div aria-label="breadcrumb" style="font-size: 12px; border: 0; padding: 0; margin: 0;">
+          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+            <li type="button" style="color: var(--color-texto-fondo); text-decoration: none;"
+              class="breadcrumb-item active derecha" aria-current="page" routerLink="/admin/"><mat-card-title
+                style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Inicio </mat-card-title></li>
+            <li style="color: var(--resaltado-color); text-decoration: none;" class="breadcrumb-item active derecha"
+              aria-current="page"><mat-card-title style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Ver Investigaciones
+              </mat-card-title></li>
+          </ol>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+
+
+  
+  
+
+<mat-card style="background-color: var(--dash-sidebar-bakcolor);">
+    <mat-list>
+      <mat-list-item >
+        <div mat-line>
+          <mat-form-field >
+            <input type="text"
+            class="mb-2"
+            placeholder="Buscar.."
+            #txtSearch
+            matInput
+            (keyup)="onSearch( txtSearch.value )" 
+            />
+          </mat-form-field>
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          
+          <button routerLink="/admin/addInvestigacion" mat-raised-button color="primary">Agregar</button>             
+         </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+
+
+    
+    
+    <mat-card >
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"  >
+        <mat-tab label="Áreas de investigacion disponibles">
+
+
+<div class="bootstrap-wrapper" >
+    <div class="container-fluid">
+      <div class="row mt20" *ngIf = "areasInvestigaciones">
+        <div *ngFor = "let e of areasInvestigaciones | filtroAreaInvestigacion:search" style=" padding-top: 20px;">
+          <mat-card class="mb20" style="background-color: var(--dash-sidebar-bakcolor);">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title class="mat-card-title-right" style="padding-top: 8px;">
+                {{ e.nombreAreaInvestigacion }}
+              </mat-card-title>
+              
+            </mat-card-header>
+            <mat-card-content >
+              <p><b>Descripción:</b> {{ e.descripcionAreaInvestigacion }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              
+            
+              <button *ngIf="(e.idUsuario!=0)"  style="margin-left: 7px; padding: 0;" mat-button color="accent" (click)="openDialogDirectorAsignado(e.idUsuario, e.idAreaInvestigacion,  e.nombreAreaInvestigacion)">Director: {{ e.nombreUsuario }} {{ e.apellidoUsuario }}</button><br *ngIf="(e.idUsuario!=0)">
+              <h4 *ngIf="(e.idUsuario==0)" style="margin: 7px 0px 5px 7px; ">Director: {{ e.nombreUsuario }} {{ e.apellidoUsuario }}</h4>
+              
+              
+              
+              <button mat-button color="primary" style="margin-left: 7px; padding: 0;" (click)="openDialogProyectosInvestigacion(e.idAreaInvestigacion)">N° de proyectos de investigación: {{ e.cantidadInvestigaciones }} </button>
+              <br><br>
+              <div class="align-right">
+                <button class="padding-izquierda" *ngIf="(e.idUsuario==0)" mat-raised-button color="accent" (click)="openDialogDirector(e.idAreaInvestigacion)">Asignar</button>
+                <button class="padding-izquierda" *ngIf="(e.idUsuario!=0)" mat-raised-button color="accent" (click)="openDialogReasignarDirector(e.idUsuario,e.idAreaInvestigacion)">Reasignar</button>
+                <button class="padding-izquierda" mat-raised-button color="warn" (click)="eliminarAreaInvestigacion(e.idAreaInvestigacion)">Eliminar</button>
+                <button class="padding-izquierda" mat-raised-button color="primary">Editar</button>
+              </div>
+              <br>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div class="col-md-12" *ngIf="(areasInvestigaciones | filtroAreaInvestigacion:search).length===0" >
+          <mat-card style="background-color: var(--dash-sidebar-bakcolor);">
+            <mat-card-content>
+              <h1>No existen areas de investigación</h1>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</mat-tab>
+<mat-tab label="Áreas de investigacion eliminadas">
+
+  <div class="bootstrap-wrapper" >
+    <div class="container-fluid">
+      <div class="row mt20" *ngIf = "areasInvestigaciones">
+        <div class="col-md-6" *ngFor = "let e of areasInvestigacionesEliminadas | filtroAreaInvestigacion:search" style=" padding-top: 20px;">
+          <mat-card class="mb20" style="background-color: var(--dash-sidebar-bakcolor);">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title class="mat-card-title-right" style="padding-top: 8px;">
+                {{ e.nombreAreaInvestigacion }}
+              </mat-card-title>
+              
+            </mat-card-header>
+            <mat-card-content style="max-height: 80px; min-height: 80px; padding-top: 20px;">
+              <p><b>Descripción:</b> {{ e.descripcionAreaInvestigacion }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button *ngIf="(e.idUsuario!=0)"  style="margin-left: 7px; padding: 0;" mat-button color="accent" (click)="openDialogDirectorAsignado(e.idUsuario, e.idAreaInvestigacion,  e.nombreAreaInvestigacion)">Director: {{ e.nombreUsuario }} {{ e.apellidoUsuario }}</button><br *ngIf="(e.idUsuario!=0)">
+              <h4 *ngIf="(e.idUsuario==0)" style="margin: 7px 0px 5px 7px; ">Director: {{ e.nombreUsuario }} {{ e.apellidoUsuario }}</h4>
+              
+              <button mat-button color="primary" style="margin-left: 7px; padding: 0;" (click)="openDialogProyectosInvestigacion(e.idAreaInvestigacion)">N° de proyectos de investigación: {{ e.cantidadInvestigaciones }} </button>
+              <br><br>
+              <div class="align-right">
+                <button class="padding-izquierda" mat-raised-button color="accent" (click)="restaurarAreaInvestigacion(e.idAreaInvestigacion)">Registrar nuevamente</button>
+              </div>
+              <br>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div class="col-md-12" *ngIf="(areasInvestigacionesEliminadas | filtroAreaInvestigacion:search).length===0" >
+          <mat-card style="background-color: var(--dash-sidebar-bakcolor);">
+            <mat-card-content>
+              <h1>No existen areas de investigación eliminadas</h1>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</mat-tab>
+</mat-tab-group>
+</mat-card>
+</mat-card>
+
+
+  
+
+    
+
+
+

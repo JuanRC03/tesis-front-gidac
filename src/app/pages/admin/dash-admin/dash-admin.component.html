@@ -1,0 +1,186 @@
+<div style="background-color: rgb(239,239,239);">
+<mat-card  style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
+  <mat-list style="margin: 0; padding: 0; border: 0;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+      
+      
+      <mat-icon  mat-list-icon style="padding-left: 0px; margin-left: 0; border-left: 0;">home</mat-icon>
+      <div mat-line ><mat-card-title style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Panel de control</mat-card-title></div>
+      
+      
+      <div mat-line>
+      <div aria-label="breadcrumb" style="font-size: 12px; border: 0; padding: 0; margin: 0;">
+          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+            <li style="color: var(--resaltado-color); text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page"><mat-card-title style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Inicio </mat-card-title></li>
+          </ol>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+<br>
+<div class="bootstrap-wrapper">
+  <div class="container-fluid">
+    <div class="row mt20" *ngFor = "let c of contadores">
+      <div class="col-md-3" >
+        <mat-card class="mb20" style="border-bottom: 0; padding-bottom: 0; margin-bottom: 0;">
+          <mat-card-header >
+          
+              <div mat-card-avatar class="example-header-image1"></div>
+              <mat-card-title>
+                {{c.contAdmin}}
+              </mat-card-title>
+              <mat-card-subtitle>
+                Total Administrador
+              </mat-card-subtitle>
+              
+          </mat-card-header>
+        </mat-card>
+        <br>
+      </div>
+      <div class="col-md-3" >
+        <mat-card class="mb20" style="border-bottom: 0; padding-bottom: 0; margin-bottom: 0;">
+          <mat-card-header >
+          
+              <div mat-card-avatar class="example-header-image2"></div>
+              <mat-card-title>
+                {{c.contDirec}}
+              </mat-card-title>
+              <mat-card-subtitle>
+                Total Director
+              </mat-card-subtitle>
+              
+          </mat-card-header>
+        </mat-card>
+        <br>
+      </div>
+      <div class="col-md-3" >
+        <mat-card class="mb20" style="border-bottom: 0; padding-bottom: 0; margin-bottom: 0;">
+          <mat-card-header >
+          
+              <div mat-card-avatar class="example-header-image3"></div>
+              <mat-card-title>
+                {{c.contInves}}
+              </mat-card-title>
+              <mat-card-subtitle>
+                Total Investigador
+              </mat-card-subtitle>
+              
+          </mat-card-header>
+        </mat-card>
+        <br>
+      </div>
+      <div class="col-md-3" >
+        <mat-card class="mb20" style="border-bottom: 0; padding-bottom: 0; margin-bottom: 0;">
+          <mat-card-header >
+          
+              <div mat-card-avatar class="example-header-image4"></div>
+              <mat-card-title>
+                {{c.contVisit}}
+              </mat-card-title>
+              <mat-card-subtitle>
+                Total Accesos
+              </mat-card-subtitle>
+              
+          </mat-card-header>
+        </mat-card>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="bootstrap-wrapper">
+  <div class="container-fluid">
+    <div class="row mt20" >
+      <div class="col-md-6" >
+        <mat-card class="mb20">
+          <mat-card-header>
+            <mat-card-title style="font-size: large;">
+              Ejemplo 1
+              <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item>Expand</button>
+                <button mat-menu-item>Remove</button>
+              </mat-menu>
+            </mat-card-title>
+          </mat-card-header>
+          <div class="chart-container">
+            <canvas id="canvas"></canvas>
+          </div>
+        </mat-card>
+        <br>
+      </div>
+      <div class="col-md-6" >
+        <mat-card class="mb20">
+          <mat-card-title style="font-size: large;">
+            Ejemplo 2
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>Expand</button>
+              <button mat-menu-item>Remove</button>
+            </mat-menu>
+          </mat-card-title>
+          <div class="chart-container">
+            <canvas id="canvas2"></canvas>
+          </div>
+        </mat-card>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="bootstrap-wrapper">
+  <div class="container-fluid">
+    <div class="row mt20" >
+      <div class="col-md-4" >
+        <mat-card class="mb20">
+          
+        </mat-card>
+        <br>
+      </div>
+      <div class="col-md-4" >
+        <mat-card class="mb20">
+          
+        </mat-card>
+        <br>
+      </div>
+      <div class="col-md-4" >
+        <mat-card class="mb20">
+          
+        </mat-card>
+        <br>
+      </div>
+      <div class="col-md-4" >
+        <mat-card class="mb20">
+          
+        </mat-card>
+        <br>
+      </div>
+      <div class="col-md-4" >
+        <mat-card class="mb20">
+          
+        </mat-card>
+        <br>
+      </div>
+      <div class="col-md-4" >
+        <mat-card class="mb20">
+          
+        </mat-card>
+        <br>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+

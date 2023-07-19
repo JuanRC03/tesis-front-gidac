@@ -1,0 +1,520 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral1 class="nuevo-menu-lateral prioridad2 estilo-submenu">
+    <mat-list class="estilo-mat-list">
+      <mat-list-item class="estilo-mat-item">
+        <div mat-line>Proyectos</div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <button (click)="menuLateral1.close()" (click)="selectedMenuItem = -1" (click)="ocultarMenu1" mat-icon-button
+            matTooltip="White" color="var(--color-texto-menu-submebu)" aria-label="Example icon-button with a heart icon">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <mat-divider></mat-divider>
+    <div class="estilo-buscar">
+      <div class="personalizado1">
+        <input type="text" #txtSearch required class="personalizado2" (keyup)="onSearch( txtSearch.value)">
+        <label class="lbl-busqueda">
+          <span class="text-busqueda" >Buscar....</span>
+        </label>
+      </div>
+    </div>
+    <mat-list *ngIf="(investigaciones| filtroInvestigacion:search).length!=0">
+      <mat-list-item style="color: var(--color-texto-menu-home)">
+        <div mat-line>
+          <mat-card-title style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Todos los proyectos
+          </mat-card-title>
+        </div>
+        <div mat-line style="font-size: 13px;"> Vizualizar todas los proyectos</div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <div class="pading-radio-buton">
+            <div class="container-1">
+              <div class="form-group">
+                <input (click)="filtrarInvestigacione(0)" style="display: none;" type="radio" name="radioOpcion"
+                  [id]="0" [attr.checked]="0 == investigacionSeleccionada" />
+                <label [for]="0"><span class="radio-button-1"></span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+    <mat-list>
+      <mat-list-item
+        *ngFor="let oC of investigaciones | filtroInvestigacion:search | paginate:page_size1:page_number1; let i = index"
+        style="color: var(--color-texto-menu-home)">
+        <div mat-line><mat-card-title
+            style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.nombreProyecto }}</mat-card-title>
+        </div>
+        <div mat-line style="font-size: 13px;"> {{oC.descripcion}}</div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <button mat-icon-button matTooltip="var(--resaltado-color)" color="var(--resaltado-color)"
+            aria-label="Example icon-button with a heart icon" (click)="openDialogInformacion(oC.idProyecto)">
+            <mat-icon style="color: var(--resaltado-color);">info</mat-icon>
+          </button>
+          <div class="pading-radio-buton">
+            <div class="container-1">
+              <div class="form-group">
+                <input style="display: none;" type="radio" name="radioOpcion" [id]="oC.idProyecto"
+                  [id]="oC.idProyecto" [checked]="investigacionSeleccionada === oC.idProyecto"
+                  (change)="filtrarInvestigacione(oC.idProyecto)" />
+                <label [for]="oC.idProyecto"><span class="radio-button-1"></span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+      <mat-list *ngIf="(investigaciones| filtroInvestigacion:search).length===0"
+        style="text-align: center; padding: 20px; margin: 20px;">
+        <p style="color: var(--color-texto-menu-home);">No existen proyectos !!</p>
+        <br>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </mat-list>
+    <mat-divider></mat-divider>
+            <mat-paginator style="background-color: var(--submenu-color);"
+                           (page)="handlePage1($event)"
+                           [length]="(investigaciones | filtroInvestigacion:search).length"
+                           [pageSize]="page_size1"
+                           [pageSizeOptions]="page_size_options1"
+                           showFirstLastButtons>
+            </mat-paginator>
+  </mat-sidenav>
+
+  <!------------------------------------------------------------------------------>
+
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral2 class="nuevo-menu-lateral prioridad2 estilo-submenu">
+    <mat-list class="estilo-mat-list">
+      <mat-list-item class="estilo-mat-item">
+        <div mat-line>Datos de las muestras</div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <button (click)="menuLateral2.close()" (click)="selectedMenuItem = -1" (click)="ocultarMenu2" mat-icon-button
+            matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <mat-divider></mat-divider>
+    <div class="estilo-buscar">
+      <div class="personalizado1">
+        <input type="text" #txtSearchOrganizacion required class="personalizado2" (keyup)="onSearchOrganizacion( txtSearchOrganizacion.value)">
+        <label class="lbl-busqueda">
+          <span class="text-busqueda">Buscar....</span>
+        </label>
+      </div>
+    </div>
+    <mat-list>
+      <mat-list-item
+        *ngFor="let oC of listaCatalogoOrganizacion | filtroCatalogoOrganizacion:searchOrganizacion | paginate:page_size2:page_number2; let i = index"
+        style="color: var(--color-texto-menu-home)">
+        <div mat-line><mat-card-title
+            style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.nombreVariableOrganizacion }}</mat-card-title>
+        </div>
+        <div mat-line style="font-size: 13px;">Organización: {{oC.nombreOrganizacion}}</div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <div class="pading-radio-buton">
+            <div class="container-1">
+              <div class="form-group">
+                <input style="display: none;" type="radio" name="radioOpcionVariable" [id]="oC.nombreVariableOrganizacion"
+                  [id]="oC.nombreVariableOrganizacion" [checked]="variableSeleccionada === oC.nombreVariableOrganizacion"
+                  (change)="filtrarCatalogo(oC.idVariableOrganizacion)" />
+                <label [for]="oC.nombreVariableOrganizacion"><span class="radio-button-1"></span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+      <mat-list *ngIf="(listaCatalogoOrganizacion| filtroCatalogoOrganizacion:searchOrganizacion).length===0"
+        style="text-align: center; padding: 20px; margin: 20px;">
+        <p style="color: var(--color-texto-menu-home);">No existen variables !!  </p>
+        <br>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </mat-list>
+    <mat-divider></mat-divider>
+            <mat-paginator style="background-color: var(--submenu-color);"
+                           (page)="handlePage2($event)"
+                           [length]="(listaCatalogoOrganizacion | filtroCatalogoOrganizacion:searchOrganizacion).length"
+                           [pageSize]="page_size2"
+                           [pageSizeOptions]="page_size_options2"
+                           showFirstLastButtons>
+            </mat-paginator>
+
+  </mat-sidenav>
+
+
+  
+  <!------------------------------------------------------------------------------>
+
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral3 class="nuevo-menu-lateral prioridad2 estilo-submenu-explorar">
+    <mat-list class="estilo-mat-list" style="padding: 5px;">
+      <mat-list-item class="estilo-mat-item">
+        <div mat-line *ngIf="investigacionDat.country==''">Explorar</div>
+        <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 15px;"><b>Coordenadas:</b> {{investigacionDat.coordenadax}}, {{investigacionDat.coordenaday}}</div>
+        <div mat-line *ngIf="investigacionDat.country!=''" style="padding-top: 5px; font-size: 13px;"><b>País: </b>{{investigacionDat.country}}</div>
+        <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Provincia: </b>{{investigacionDat.state}}</div>
+        <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Cantón: </b>{{investigacionDat.county}}</div>
+        <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Parroquia: </b>{{investigacionDat.parroquia}}</div>
+        
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <button (click)="menuLateral3.close()" (click)="selectedMenuItem = -1" (click)="ocultarMenu4" mat-icon-button
+            matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+
+      <mat-divider style="padding-top: 20px;"></mat-divider>
+    </mat-list>
+
+    <mat-list  *ngIf="investigacionDat.country==''"
+      style="text-align: center; padding: 20px; margin: 20px;">
+      <p style="color: var(--color-texto-menu-home);">Seleccione un punto para explorar</p>
+      <br>
+    </mat-list>
+    
+    <div id="chartsContainer" style="width: 450px;"></div>
+  
+    <!--<div #chartContainer>
+      <div class="chart">
+        <canvas></canvas>
+      </div>
+      <div class="chart">
+        <canvas></canvas>
+      </div>
+    </div>-->
+    
+    
+    
+  </mat-sidenav>
+
+
+  <!------------------------------------------------------------------------------>
+
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral4 class="nuevo-menu-lateral prioridad2 estilo-submenu">
+    <mat-list class="estilo-mat-list">
+      <mat-list-item class="estilo-mat-item">
+        <div mat-line> Solicitud de descarga de datos</div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <button (click)="menuLateral4.close()" (click)="selectedMenuItem = -1" (click)="ocultarMenu3" mat-icon-button
+            matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <mat-divider></mat-divider>
+
+    <mat-card class="estilo-form-solicitud">
+      <form #solicitudForm="ngForm" (ngSubmit)="formSubmitSolicitudAccesoDatos()"
+        style="max-width: 400px;max-height: 520px;">
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input [(ngModel)]="solicitudData.nombre" name="nombre" matInput placeholder="Digite su nombre">
+        </mat-form-field>
+
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Apellido</mat-label>
+          <input [(ngModel)]="solicitudData.apellido" name="apellido" matInput placeholder="Digite su apellido">
+        </mat-form-field>
+
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input [(ngModel)]="solicitudData.emial" name="email" type="email" matInput placeholder="Digite su email">
+        </mat-form-field>
+
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Nombre de la institucion</mat-label>
+          <input [(ngModel)]="solicitudData.institucion" name="institucion" matInput
+            placeholder="El nombre de la institución">
+        </mat-form-field>
+
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Motivo de solicitud para el acceso a los datos</mat-label>
+          <textarea name="descripcion" matInput placeholder="Ingrese el motivo de la solicitar el acceso a los datos"
+            rows="2" [(ngModel)]="solicitudData.motivo">
+                  </textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mt20 w100">
+          <mat-label>Investigaciones disponibles</mat-label>
+          <mat-select name="investigaciones" [(ngModel)]="solicitudData.proyectoInvestigacion.idProyecto">
+            <mat-option *ngFor="let c of investigacion" [value]="c.idProyecto">
+              {{ c.nombreProyecto }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-dialog-actions class="text-end" style="padding-bottom: 20px;">
+          <button mat-button cdkFocusInitial class="text-end estilo-boton-enviar">Enviar</button>
+        </mat-dialog-actions>
+      </form>
+    </mat-card>
+  </mat-sidenav>
+
+  <!------------------------------------------------------------------------------>
+
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral5 class="nuevo-menu-lateral prioridad2 estilo-submenu">
+    <mat-list class="estilo-mat-list">
+      <mat-list-item class="estilo-mat-item">
+        <div mat-line>Información de EcoAndes </div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <button (click)="menuLateral5.close()" (click)="selectedMenuItem = -1" (click)="ocultarMenu4" mat-icon-button
+            matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+
+    
+    <div class="estilo-informacion">
+    <!--
+    <mat-divider style="background-color: darkgray; text-align: end; margin-left: 10px;margin-right: 10px;"></mat-divider>
+    
+      <div style="display: flex; justify-content: center; align-items: center; ">
+        <mat-list style="color: var(--color-texto-menu-home); text-align: left; padding: 0; border: 0; margin: 0; padding-top: 15px; padding-left: 3px;" class="font1">
+          <div style="display:flex; align-items:center;">
+            <div mat-line><mat-card-title style="font-size: 35px; padding-top: 8px;">Eco</mat-card-title></div>
+            <div mat-line style="font-size: 40px;">
+              <mat-icon style="font-size: 40px;">terrain</mat-icon>
+            </div>
+            <div style="font-size: 35px; padding-left: 15px; ">ndes</div>
+          </div>
+        </mat-list>
+      </div><br>-->
+    <mat-divider style="background-color: darkgray; text-align: end; margin-left: 10px;margin-right: 10px;"></mat-divider>
+    <br>
+      <div style=" margin-left: 10px; margin-right: 10px;">
+        <mat-card-title style="color: var(--color-texto-menu-home);font-size: 13px;"> Información</mat-card-title>
+        <p style="font-size: 12px;color: var(--color-texto-menu-home);">{{informacionEcoAndes.descripcion}}</p>
+      </div><br>
+
+    <div style=" margin-left: 10px; margin-right: 10px;">
+        <mat-card-title style="color: var(--color-texto-menu-home);font-size: 13px;"> Condiciones de uso</mat-card-title>
+        <p style="font-size: 12px;color: var(--color-texto-menu-home);">{{informacionEcoAndes.condicionesUso}}</p>
+      </div><br>
+
+      <div style=" margin-left: 10px; margin-right: 10px;">
+        <mat-card-title style="color: var(--color-texto-menu-home);font-size: 13px;">Licencia de uso</mat-card-title>
+        <p style="font-size: 12px;color: var(--color-texto-menu-home);">{{informacionEcoAndes.licenciaUso}}</p>
+      </div><br>
+
+      <div  style=" margin-left: 10px; margin-right: 10px; text-align: center;">
+        <mat-card-title style="color: var(--color-texto-menu-home);font-size: 13px;">{{informacionEcoAndes.derechoReservado}} </mat-card-title>
+      </div><br>
+    </div>
+    
+  </mat-sidenav>
+
+
+  <!------------------------------------------------------------------------------>
+
+  <mat-sidenav *ngIf="menuVisible" #drawer class="sidenav prioridad1" style="background-color: var(--third-color);"
+    fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-nav-list style="padding: 0; margin: 0;border: 0;">
+      <div class=" navbar-light bg-light"
+        style=" min-width: var(--tamanio-menu-principal); max-width: var(--tamanio-menu-principal);">
+        <ul class="navbar-nav " style="background-color: var(--third-color);">
+
+          <!------------------------------------------------------------------------------>
+
+          <div class="navbar-nav" style=" padding: 0; margin: 0; border: 0; min-width: 90px; background-color: var(--back-graund-logo);">
+            <div class="nav-link  mi-elemento personalizado" style=" padding: 0; margin: 0; border: 0;">
+              <mat-list
+                style="color: var(--color-texto-logo); text-align: left; padding: 0; border: 0; margin: 0; padding-top: 15px;padding-left: 3px;"
+                class="font1">
+                <div>
+                  <div mat-line><mat-card-title style="font-size: 28px;">Eco</mat-card-title></div>
+                  <div style="display:flex; align-items:center;">
+                    <div mat-line style="font-size: 30px;">
+                      <mat-icon style="font-size: 30px;">terrain</mat-icon>
+                    </div>
+                    <div style="font-size: 21px; padding-left: 5px; padding-top: 2px;">ndes</div>
+                  </div>
+                </div>
+              </mat-list>
+            </div>
+          </div>
+
+          <!------------------------------------------------------------------------------>
+
+          <mat-divider style="background-color: darkgray; text-align: end;"></mat-divider>
+
+          <!------------------------------------------------------------------------------>
+
+          <div class="navbar-nav mi-elemento personalizado" (click)="mostrarMenu1()" (click)="selectedMenuItem = 1"
+            [ngClass]="{'menu-selected': selectedMenuItem === 1}">
+            <div class="nav-link ">
+              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">storage</mat-icon><br>
+              <label style="font-size: 12px;">Proyectos de investigación</label>
+            </div>
+          </div>
+
+          <!------------------------------------------------------------------------------>
+          
+          <div class="navbar-nav mi-elemento personalizado" (click)="mostrarMenu2()" (click)="selectedMenuItem = 2"
+            [ngClass]="{'menu-selected': selectedMenuItem === 2}">
+            <div class="nav-link  ">
+              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">data_usage</mat-icon><br>
+              <label style="font-size: 12px;">Datos de las muestras</label>
+            </div>
+          </div>
+
+          <!------------------------------------------------------------------------------>
+
+          <div class="navbar-nav mi-elemento personalizado" (click)="mostrarMenu3()" (click)="selectedMenuItem = 3"
+            [ngClass]="{'menu-selected': selectedMenuItem === 3}">
+            <div class="nav-link">
+              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">timeline</mat-icon><br>
+              <label style="font-size: 12px;">Explorar<br>datos</label>
+            </div>
+          </div>
+
+          <!------------------------------------------------------------------------------>
+
+          <div class="navbar-nav mi-elemento personalizado" (click)="mostrarMenu4()" (click)="selectedMenuItem = 4"
+            [ngClass]="{'menu-selected': selectedMenuItem === 4}">
+            <div class="nav-link">
+              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">mail</mat-icon><br>
+              <label style="font-size: 12px;">Descargar<br>datos</label>
+            </div>
+          </div>
+
+          <!------------------------------------------------------------------------------>
+
+          
+          <div class="navbar-nav mi-elemento personalizado" (click)="mostrarMenu5()" (click)="selectedMenuItem = 5"
+            [ngClass]="{'menu-selected': selectedMenuItem === 5}">
+            <div class="nav-link">
+              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">info</mat-icon><br>
+              <label style="font-size: 12px;">Información de<br>EcoAndes</label>
+            </div>
+          </div>
+
+          <!------------------------------------------------------------------------------>
+
+          <mat-divider style="background-color: darkgray; text-align: end;"></mat-divider>
+          <div class="navbar-nav" *ngIf="isLoggedIn && user" (click)="panelContro()">
+            <div class="nav-link  mi-elemento personalizado">
+              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">personal_video</mat-icon><br>
+              <label style="font-size: 12px;">Panel de<br>control</label>
+            </div>
+          </div>
+
+          <!------------------------------------------------------------------------------>
+          
+          <mat-divider *ngIf="isLoggedIn && user" style="background-color: darkgray; text-align: end;"></mat-divider>
+          <div class="navbar-nav" *ngIf="isLoggedIn" (click)="logout()" >
+            <div class="nav-link  mi-elemento personalizado fixed-bottom-left">
+              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">exit_to_app</mat-icon><br>
+              <label style="font-size: 12px;">Cerrar<br>sesión</label>
+            </div>
+          </div>
+
+          <!------------------------------------------------------------------------------>
+          
+          <div class="navbar-nav" class="navbar-nav" *ngIf="!isLoggedIn" (click)="openDialog()">
+            <div class="nav-link  mi-elemento personalizadoLogin fixed-bottom-left">
+              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">verified_user</mat-icon><br>
+              <label style="font-size: 12px;">Login</label>
+            </div>
+          </div>
+        </ul>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div id="map" style="background-color: black;">
+      <div id="select-container">
+        <div class="select">
+          <select class="div-select" name="format" id="format" (change)="onMapChange($event)">
+            <option *ngFor="let map of maps" [value]="map.name">{{ map.label }}</option>
+          </select>
+        </div>
+      </div>
+      <div id="select-container-logo">
+        <div *ngIf="isHandset$ | async">
+          <mat-nav-list style="padding: 0; margin: 0;border: 0;">
+            <div class=" navbar-light bg-light"
+              style=" min-width: var(--tamanio-menu-principal); max-width: var(--tamanio-menu-principal);">
+              <ul class="navbar-nav " style="background-color: var(--back-graund-logo);">
+                <div class="navbar-nav" style=" padding: 0; margin: 0; border: 0; min-width: 90px;">
+                  <div class="nav-link  mi-elemento personalizado" style=" padding: 0; margin: 0; border: 0;">
+                    <mat-list
+                      style="color: var(--color-texto-logo); text-align: left; padding: 0; border: 0; margin: 0; padding-left: 3px;"
+                      class="font1">
+                      <div mat-line>
+                        <p style="display:flex;font-size: 28px; padding: 0; border: 0; margin: 0;">Eco</p>
+                      </div>
+                      <div style="display:flex; align-items:center; padding: 0; border: 0; margin: 0;">
+                        <div mat-line style="font-size: 30px;">
+                          <mat-icon style="font-size: 30px;">terrain</mat-icon>
+                        </div>
+                        <p style="font-size: 21px; padding-left: 5px; padding-top: 0px;">ndes</p>
+                      </div>
+                    </mat-list>
+                  </div>
+                </div>
+              </ul>
+            </div>
+          </mat-nav-list>
+        </div>
+      </div>
+      <div id="select-container-menu" style="width: 100%;">
+        <mat-toolbar *ngIf="isHandset$ | async" class="menu-inferios">
+          <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+            <mat-icon class="estilo-icionos">storage</mat-icon>
+            <span class="example-spacer"></span>
+          </button>
+          <span class="example-spacer"></span>
+          <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+            <mat-icon class="estilo-icionos">data_usage</mat-icon>
+            <span class="example-spacer"></span>
+          </button>
+          <span class="example-spacer"></span>
+          <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+            <mat-icon class="estilo-icionos">mail</mat-icon>
+            <span class="example-spacer"></span>
+          </button>
+          <span class="example-spacer"></span>
+          <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+            <mat-icon class="estilo-icionos">info</mat-icon>
+            <span class="example-spacer"></span>
+          </button>
+          <span class="example-spacer"></span>
+          <div *ngIf="isLoggedIn" (click)="panelContro()">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+              <mat-icon class="estilo-icionos">personal_video</mat-icon>
+              <span class="example-spacer"></span>
+            </button>
+          </div>
+          <span *ngIf="isLoggedIn" class="example-spacer"></span>
+          <div *ngIf="isLoggedIn" (click)="logout()">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+              <mat-icon class="estilo-icionos">exit_to_app</mat-icon>
+              <span class="example-spacer"></span>
+            </button>
+          </div>
+          <span *ngIf="isLoggedIn" class="example-spacer"></span>
+          <div *ngIf="!isLoggedIn" (click)="openDialog()">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+              <mat-icon class="estilo-icionos">verified_user</mat-icon>
+              <span class="example-spacer"></span>
+            </button>
+          </div>
+          <span *ngIf="!isLoggedIn" class="example-spacer"></span>
+          <span class="example-spacer"></span>
+          <span class="example-spacer"></span>
+        </mat-toolbar>
+        <div *ngIf="isHandset$ | async" class="estilo-linea-baja">
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,16 @@
+
+<form (ngSubmit)="formSubmit()">
+  <div class="row">
+    <h1 class="text-center;">Rechazo de solicitud de descarga</h1>
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label >Motivo del rechazo de la solicitud para eliminar datos</mat-label>
+    <textarea required name="descripcion" matInput placeholder="Ingrese el motivo del rechazo"
+      rows="5" [(ngModel)]="data.respuesta">
+              </textarea>
+  </mat-form-field>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button cdkFocusInitial>Enviar</button>
+  </mat-dialog-actions>
+</div>
+</form>

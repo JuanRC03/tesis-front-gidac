@@ -1,0 +1,72 @@
+
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line>Información del proyecto de investigación</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<div mat-dialog-content style="color: black;">
+  <br>
+  <h3 style="text-align: center;"><b>{{informacionProyectoInvestigacion?.nombreProyecto}}</b> </h3>
+  
+  <h4><b>Descripción:</b> {{informacionProyectoInvestigacion?.descripcion}}</h4>
+  <h4><b>Tipo de investigación:</b> {{informacionProyectoInvestigacion?.tipoInvestigacion?.nombreTipoInvestigacion}}</h4>
+  <h4><b>Tipo de proyecto:</b> {{informacionProyectoInvestigacion?.tipoProyecto?.nombreTipoProyecto}}</h4>
+  <h4><b>Fecha de inicio:</b> {{informacionProyectoInvestigacion?.fechaInicio}}</h4>
+  <h4><b>Fecha de fin:</b> {{informacionProyectoInvestigacion?.fechaFin}}</h4>
+  <br>
+  <div *ngFor = "let oC of informacionDirector">
+    <h4><b>Director:</b> {{oC?.usuario?.nombreUsuario}} {{oC?.usuario?.apellidoUsuario}}</h4>
+  </div>
+  <br>
+  <h3><b>Investigadores responsables:</b></h3>
+  <ul>
+  <div *ngFor = "let oC of grupoInvestigacion">
+    <li><h4>{{oC?.usuario?.nombreUsuario}} {{oC?.usuario?.apellidoUsuario}}</h4></li>
+  </div>
+  </ul>
+  <br>
+  <h3><b>Sector de impacto:</b></h3>
+  <ul>
+  <div *ngFor = "let oC of informacionImpacto">
+    <li><h4>{{oC?.sectorImpacto?.nombreSectorImpacto}}</h4></li>
+  </div>
+  </ul>
+  <br>
+
+  <h3><b>Lineas de investigación:</b></h3>
+  <ul>
+  <div *ngFor = "let oC of informacionLinea">
+    <li><h4>{{oC?.lineaInvestigacion?.nombreLineaInvestigacion}}</h4></li>
+  </div>
+  </ul>
+  <br>
+
+  <h3><b>Areas de investigación:</b></h3>
+  <ul>
+  <div *ngFor = "let oC of informacionAreaInvestigacion">
+    <li><h4>{{oC?.areaInvestigacion?.nombreAreaInvestigacion}}</h4></li>
+  </div>
+  </ul>
+  <br>
+
+  <h3><b>Cobertura (Ubicación):</b></h3>
+  <ul>
+  <div *ngFor = "let oC of informacionUbicacion">
+    <li><h4>{{oC?.localizacion?.nombrePais}}, {{oC?.localizacion?.nombreProvincia}}, {{oC?.localizacion?.nombreCanton}}, {{oC?.localizacion?.nombreParroquia}}</h4></li>
+  </div>
+  </ul>
+  <br>
+
+  
+  <div class="align-right" style="padding-top: 5px;">
+  </div>
+</div>

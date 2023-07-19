@@ -1,0 +1,104 @@
+<mat-card
+  style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
+  <mat-list style="margin: 0; padding: 0; border: 0;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+      <mat-icon mat-list-icon style="padding-left: 0px; margin-left: 0; border-left: 0;">menu</mat-icon>
+      <div mat-line><mat-card-title
+          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Panel de
+          control</mat-card-title></div>
+      <div mat-line>
+        <div aria-label="breadcrumb" style="font-size: 12px; border: 0; padding: 0; margin: 0;">
+          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+            <li type="button" style="color: var(--color-texto-fondo); text-decoration: none;"
+              class="breadcrumb-item active derecha" aria-current="page" routerLink="/admin/"><mat-card-title
+                style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Inicio </mat-card-title></li>
+            <li style="color: var(--resaltado-color); text-decoration: none;" class="breadcrumb-item active derecha"
+              aria-current="page"><mat-card-title style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Inicio
+              </mat-card-title></li>
+          </ol>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+<div class="joinnow">
+  <div class="login col-lg-7 m-auto shadow-lg">
+    <div class="container mt-4 mb-5">
+      <div class="row">
+        <div>
+          <form *ngIf="user" (submit)="actualizarDatos()">
+            <div class="box mt-3 mb-3">
+              <div class="image-container">
+                <img class="circle-image"
+                  style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin-top: o; padding-top: 0;border: 3px solid #2bc451;"
+                  [src]="imagenUrl">
+              </div>
+              <div class="w100" appearance="outline" style="text-align: center;">
+                <label for="photo" style="padding-right: 5px;">Foto: </label>
+                <input type="file" accept="image/jpeg" (change)="onFotoSeleccionada($event)">
+              </div>
+              <br><br>
+
+              <mat-form-field class="w100" appearance="outline">
+                <mat-label>Nombre :</mat-label>
+                <input [(ngModel)]="userFinal.nombreUsuario" required type="text" name="nombre" matInput
+                  placeholder="Digite su nombre">
+              </mat-form-field>
+
+              <mat-form-field class="w100" appearance="outline">
+                <mat-label>Apellido:</mat-label>
+                <input [(ngModel)]="userFinal.apellidoUsuario" required type="text" name="apellido" matInput
+                  placeholder="Digite su apellido">
+              </mat-form-field>
+
+              <mat-form-field class="w100" appearance="outline">
+                <mat-label>Cédula:</mat-label>
+                <input [(ngModel)]="userFinal.cedula"  type="text" name="cedula" matInput
+                  placeholder="Digite su cédula">
+              </mat-form-field>
+
+              <mat-form-field class="w100" appearance="outline">
+                <mat-label>Teléfono:</mat-label>
+                <input [(ngModel)]="userFinal.telefono"  type="text" name="telefono" matInput
+                  placeholder="Digite su teléfono">
+              </mat-form-field>
+
+              
+
+
+              <mat-form-field class="w100" appearance="outline">
+                <mat-label>Email:</mat-label>
+                <input [(ngModel)]="userFinal.email" required type="text" name="email" matInput
+                  placeholder="Digite su email">
+              </mat-form-field>
+
+              <mat-form-field class="w100" appearance="outline">
+                <mat-label>Contraseña antigua</mat-label>
+                <input [(ngModel)]="loginData.contrasenia " required [type]="hidePass1 ? 'password' : 'text'"
+                  name="pass1" matInput placeholder="Ingrese su contraseña antigua">
+                <button mat-icon-button matSuffix (click)="hidePass1 = !hidePass1" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hidePass1">
+                  <mat-icon>{{hidePass1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field class="w100" appearance="outline">
+                <mat-label>Contraseña nueva</mat-label>
+                <input [(ngModel)]="userFinal.contrasenia " required [type]="hidePass2 ? 'password' : 'text'"
+                  name="pass2" matInput placeholder="Ingrese su nueva contraseña">
+                <button mat-icon-button matSuffix (click)="hidePass2 = !hidePass2" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hidePass2">
+                  <mat-icon>{{hidePass2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+              </mat-form-field>
+              <br>
+              <div class="container text-center mt15">
+                <button mat-raised-button color="primary">Actualizar perfil</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

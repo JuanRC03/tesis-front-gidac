@@ -1,0 +1,39 @@
+<mat-card style="margin-bottom: 5px; padding-bottom: 0%; height: 65px;">
+    <mat-card-header>
+      <label mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" style="position: absolute;top: 0;left: 20px; margin-top: 20px;" >
+        <mat-icon style="font-size: 30px;"  >explore</mat-icon>
+      </label>
+      <mat-card-title style="font-size: 15px ;margin-bottom: 5px; margin-left: 30px; padding-bottom: 3px; margin-top: 0; padding-top: 0; border-top: 0;">Añadir datos de carbono</mat-card-title>
+      <mat-card-subtitle style="margin-left: 30px">Carbono</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  
+<mat-card>
+    <h1>Agregar nueva ubicacion</h1>
+    <mat-card-content>
+      <div class="bootstrap-wrapper">
+        <div class="row">
+          <div class="col-md-8 offset-md-2">
+            <form (ngSubmit)= "formSubmit()">
+                <mat-form-field appearance="fill" class="mt20 w100">
+                    <mat-label>Categorías</mat-label>
+                    <mat-select name="carbono" [(ngModel)] = "carbonoDatos.ubicacionGeografica.idUbicacion">
+                      <mat-option *ngFor = "let c of ubicaciones" [value] = "c.idUbicacion">
+                        {{ c.comunidad }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>  
+
+                
+                  <input type="file" accept=".xls" (change)="onFileChanged($event)">
+                
+  
+              <div class="container text-center mt15">
+                <button mat-raised-button color="primary">Guardar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>

@@ -1,0 +1,196 @@
+<mat-card
+  style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
+  <mat-list style="margin: 0; padding: 0; border: 0;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+      <mat-icon mat-list-icon
+        style="padding-left: 0px; margin-left: 0; border-left: 0;">supervised_user_circle</mat-icon>
+      <div mat-line><mat-card-title
+          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Historia de accesos
+        </mat-card-title></div>
+      <div mat-line>
+        <div aria-label="breadcrumb" style="font-size: 12px; border: 0; padding: 0; margin: 0;">
+          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+            <li type="button" style="color: var(--color-texto-fondo); text-decoration: none;"
+              class="breadcrumb-item active derecha" aria-current="page" routerLink="/user-dashboard"><mat-card-title
+                style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Inicio </mat-card-title></li>
+            <li style="color: var(--resaltado-color); text-decoration: none;" class="breadcrumb-item active derecha"
+              aria-current="page"><mat-card-title style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Ver accesos a la appliciación web
+              </mat-card-title></li>
+          </ol>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+<mat-card style="margin-top: 0; border-top: 0; padding-top: 5px;">
+  <br>
+  <mat-list>
+    <mat-list-item>
+      <div mat-line>
+        <mat-form-field>
+          <input type="text" class=" mb-2" placeholder="Buscar.." #txtSearch matInput
+            (keyup)="onSearch( txtSearch.value )" />
+        </mat-form-field>
+      </div>
+
+    </mat-list-item>
+  </mat-list>
+
+  <mat-card>
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"  >
+    <mat-tab label="Acceso de administradores">
+
+          <div class="mat-elevation-z8 table-container">
+            <table class="table" mat-table
+              [dataSource]="listaDatosAdministrador | filtroUsuarios:search | paginate:page_size:page_number"
+              class="full-width-table" matSort aria-label="Elements">
+
+              <ng-container matColumnDef="dato1">
+                <th mat-header-cell *matHeaderCellDef>Fecha y hora de acceso</th>
+                <td mat-cell *matCellDef="let row">{{row.fechaAcceso}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato2">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let row">{{row.usuario.nombreUsuario}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato3">
+                <th mat-header-cell *matHeaderCellDef>Apellido</th>
+                <td mat-cell *matCellDef="let row"> {{row.usuario.apellidoUsuario}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato4">
+                <th mat-header-cell *matHeaderCellDef>Cédula</th>
+                <td mat-cell *matCellDef="let row"> {{row.usuario.cedula}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato5">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let row"> {{row.usuario.email}}</td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-list *ngIf="(listaDatosAdministrador | filtroUsuarios:search).length===0"
+              style="text-align: center; padding: 20px; margin: 20px;">
+              <p>No existen accesos de administradores</p>
+              <br>
+              <mat-divider></mat-divider>
+            </mat-list>
+
+            <mat-paginator (page)="handlePage($event)" [length]="(listaDatosAdministrador | filtroUsuarios:search).length"
+              [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
+            </mat-paginator>
+          </div>
+
+
+        </mat-tab>
+        <mat-tab label="Acceso de directores">
+
+        <div class="mat-elevation-z8 table-container">
+          <table class="table" mat-table
+            [dataSource]="listaDatosDirector | filtroUsuarios:search | paginate:page_size:page_number"
+            class="full-width-table" matSort aria-label="Elements">
+
+            <ng-container matColumnDef="dato1">
+              <th mat-header-cell *matHeaderCellDef>Fecha y hora de acceso</th>
+              <td mat-cell *matCellDef="let row">{{row.fechaAcceso}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dato2">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let row">{{row.usuario.nombreUsuario}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dato3">
+              <th mat-header-cell *matHeaderCellDef>Apellido</th>
+              <td mat-cell *matCellDef="let row"> {{row.usuario.apellidoUsuario}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dato4">
+              <th mat-header-cell *matHeaderCellDef>Cédula</th>
+              <td mat-cell *matCellDef="let row"> {{row.usuario.cedula}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dato5">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let row"> {{row.usuario.email}}</td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-list *ngIf="(listaDatosDirector | filtroUsuarios:search).length===0"
+            style="text-align: center; padding: 20px; margin: 20px;">
+            <p>No existen accesos de directores</p>
+            <br>
+            <mat-divider></mat-divider>
+          </mat-list>
+
+          <mat-paginator (page)="handlePage($event)" [length]="(listaDatosDirector | filtroUsuarios:search).length"
+            [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
+          </mat-paginator>
+        </div>
+
+        </mat-tab>
+
+        <mat-tab label="Acceso de investigadores">
+
+          <div class="mat-elevation-z8 table-container">
+            <table class="table" mat-table
+              [dataSource]="listaDatosInvestigador | filtroUsuarios:search | paginate:page_size:page_number"
+              class="full-width-table" matSort aria-label="Elements">
+
+              <ng-container matColumnDef="dato1">
+                <th mat-header-cell *matHeaderCellDef>Fecha y hora de acceso</th>
+                <td mat-cell *matCellDef="let row">{{row.fechaAcceso}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato2">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let row">{{row.usuario.nombreUsuario}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato3">
+                <th mat-header-cell *matHeaderCellDef>Apellido</th>
+                <td mat-cell *matCellDef="let row"> {{row.usuario.apellidoUsuario}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato4">
+                <th mat-header-cell *matHeaderCellDef>Cédula</th>
+                <td mat-cell *matCellDef="let row"> {{row.usuario.cedula}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato5">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let row"> {{row.usuario.email}}</td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-list *ngIf="(listaDatosInvestigador | filtroUsuarios:search).length===0"
+              style="text-align: center; padding: 20px; margin: 20px;">
+              <p>No existen accesos de investigadores</p>
+              <br>
+              <mat-divider></mat-divider>
+            </mat-list>
+
+            <mat-paginator (page)="handlePage($event)" [length]="(listaDatosInvestigador | filtroUsuarios:search).length"
+              [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
+            </mat-paginator>
+          </div>
+
+        </mat-tab>
+
+      </mat-tab-group>
+  </mat-card>
+</mat-card>

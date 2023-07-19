@@ -1,0 +1,124 @@
+<mat-list class="estilo-mat-list" style="padding: 0;">
+  <mat-list-item class="estilo-mat-item">
+    
+    <div mat-line>Investigadores</div>
+    <div mat-line style="color: var(--resaltado-color);">{{nombreProyecto}}</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+<mat-dialog-content class="mat-typography">
+  <br>
+    <mat-list>
+      <mat-list-item >
+        <div mat-line>
+          <mat-form-field >
+            <input type="text"
+            class=" mb-2"
+            placeholder="Buscar.."
+            #txtSearch
+            matInput
+            (keyup)="onSearch( txtSearch.value )" 
+            />
+          </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+<mat-card>   
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"  >
+      <mat-tab label="Investigadores asignados">
+
+  <div>
+    <div *ngFor = "let oC of grupoInvestigacion | filtroGrupoInvestigacion:search | paginate:page_size:page_number">
+      
+        <mat-list>
+        <mat-list-item>
+      <mat-icon mat-list-icon>account_circle</mat-icon>
+      <div mat-line><b>Cédula: </b> {{oC.usuario.cedula}}</div>
+      <div mat-line><b>Nombre: </b> {{oC.usuario.apellidoUsuario}} {{oC.usuario.nombreUsuario}}</div>
+      <div mat-line><b>Email: </b> {{oC.usuario.email }}</div>
+      
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        
+        <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminarInvestigador(oC.usuario.idUsuario)">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+       </div>
+      </mat-list-item>
+    </mat-list>
+      
+      <mat-divider></mat-divider>
+    </div>
+    <mat-list *ngIf="(grupoInvestigacion | filtroGrupoInvestigacion:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+      <p>No existen investigadores en el proyecto de investigación</p>
+      <br>
+      
+    </mat-list>
+    <mat-divider></mat-divider>
+    <mat-paginator 
+                   (page)="handlePage($event)"
+                   [length]="(grupoInvestigacion | filtroGrupoInvestigacion:search).length"
+                   [pageSize]="page_size"
+                   [pageSizeOptions]="page_size_options"
+                   showFirstLastButtons>
+    </mat-paginator>
+      
+  </div>
+
+</mat-tab>
+<mat-tab label="Investigadores no asignados">
+
+  <div>
+    
+    <div *ngFor = "let oC of listaUsuariosDisponibles | filtroUsuarios:search | paginate:page_size:page_number">
+      
+      <mat-list>
+      <mat-list-item>
+      <mat-icon mat-list-icon>account_circle</mat-icon>
+      <div mat-line><b>Cédula: </b> {{oC.cedula}}</div>
+      <div mat-line><b>Nombre: </b> {{oC.apellidoUsuario}} {{oC.nombreUsuario}}</div>
+      <div mat-line><b>Email: </b> {{oC.email }}</div>
+      
+      
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click) = "asignarInvestigador(oC.idUsuario)">
+          <mat-icon>offline_pin</mat-icon>
+        </button>           
+       </div>
+      </mat-list-item>
+    </mat-list>
+  
+      <mat-divider></mat-divider>
+  </div>
+  
+    <mat-list *ngIf="(listaUsuariosDisponibles | filtroUsuarios:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+      <p>No existen datos</p>
+      <br>
+      <mat-divider></mat-divider>
+    </mat-list>
+  
+    <mat-paginator 
+                   (page)="handlePage($event)"
+                   [length]="(listaUsuariosDisponibles | filtroUsuarios:search).length"
+                   [pageSize]="page_size"
+                   [pageSizeOptions]="page_size_options"
+                   showFirstLastButtons>
+    </mat-paginator>
+      
+  </div>
+
+
+
+</mat-tab>
+</mat-tab-group>
+
+
+</mat-card>
+
+</mat-dialog-content>

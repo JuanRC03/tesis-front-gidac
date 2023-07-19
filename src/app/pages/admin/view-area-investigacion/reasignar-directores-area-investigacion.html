@@ -1,0 +1,61 @@
+
+
+  <mat-list class="estilo-mat-list">
+    <mat-list-item class="estilo-mat-item">
+      
+      <div mat-line>Directores disponibles</div>
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button  mat-icon-button mat-dialog-close
+          matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+  <mat-divider></mat-divider>
+  
+      <mat-card>
+        <mat-list>
+          <mat-list-item >
+            <div mat-line>
+              <mat-form-field >
+                <input type="text"
+                class=" mb-2"
+                placeholder="Buscar.."
+                #txtSearch
+                matInput
+                (keyup)="onSearch( txtSearch.value )" 
+                />
+              </mat-form-field>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+        <mat-list>
+          <mat-list-item *ngFor = "let oC of usuarios | filtroUsuarios:search | paginate:page_size:page_number">
+            
+            <div mat-line ><mat-card-title style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.nombreUsuario }} {{oC.apellidoUsuario }}</mat-card-title></div>
+            <div mat-line style="font-size: 13px;"> {{oC.email}}</div>
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                           
+             </div>
+            <mat-divider></mat-divider>
+        
+          </mat-list-item>
+          <mat-list *ngIf="(usuarios | filtroUsuarios:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+            <p>No existen directores disponibles</p>
+            <br>
+            <mat-divider></mat-divider>
+          </mat-list>
+          <mat-divider></mat-divider>
+          <mat-paginator 
+                         (page)="handlePage($event)"
+                         [length]="(usuarios | filtroUsuarios:search).length"
+                         [pageSize]="page_size"
+                         showFirstLastButtons>
+          </mat-paginator>
+            
+        </mat-list>
+      </mat-card>
+    
+  

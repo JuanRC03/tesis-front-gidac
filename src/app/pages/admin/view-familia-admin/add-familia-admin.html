@@ -1,0 +1,19 @@
+<form style="max-width: 400px;">
+    <h1 class="text-center">Guardar área de investigación</h1>
+    <mat-form-field class="w100" appearance="outline">
+      <mat-label>Nombre de la clasificación </mat-label>
+      <textarea required name="descripcion" matInput placeholder="Digite el nombre de la clasificación"
+        rows="3" [(ngModel)]="datos.nombreFamilia ">
+                </textarea>
+    </mat-form-field>
+    <mat-form-field class="w100" appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea required name="descripcion" matInput placeholder="Digite la Descripción"
+        rows="5" [(ngModel)]="datos.descripcion">
+                </textarea>
+    </mat-form-field>
+    <mat-dialog-actions style="align-items: center; text-align: right;">
+      <button mat-button mat-dialog-close>Cancelar</button>
+      <button mat-button cdkFocusInitial (click)="formSubmit()">Guardar</button>
+    </mat-dialog-actions>
+  </form>

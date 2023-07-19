@@ -1,0 +1,34 @@
+
+
+<mat-list class="estilo-mat-list" style="padding: 0;">
+  <mat-list-item class="estilo-mat-item" style="margin-left: 20px; margin-right: 20px;">
+    
+    <div mat-line >Información de los cambios</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+         aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<div mat-dialog-content style="color: black;">
+  <br>
+  <h3>Información de la aplicación:</h3>
+  <h4>{{datosInformacion.descripcion}}</h4>
+  <br>
+  <h3>Condiciones de uso:</h3>
+  <h3>{{datosInformacion.condicionesUso}}</h3>
+  <br>
+  <h3>Licencia de uso:</h3>
+  <h3>{{datosInformacion.licenciaUso}}</h3>
+  <br>
+  <h3>Derechos reservados:</h3>
+  <h3>{{datosInformacion.derechoReservado}}</h3>
+  <br>
+  
+  <div class="align-right" style="padding-top: 5px;">
+  </div>
+</div>

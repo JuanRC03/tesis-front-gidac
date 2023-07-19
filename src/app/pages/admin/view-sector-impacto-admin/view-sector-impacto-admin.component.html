@@ -1,0 +1,125 @@
+<mat-card
+  style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
+  <mat-list style="margin: 0; padding: 0; border: 0;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+      <mat-icon mat-list-icon
+        style="padding-left: 0px; margin-left: 0; border-left: 0;">supervised_user_circle</mat-icon>
+      <div mat-line><mat-card-title
+          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestión de sector de impacto
+        </mat-card-title></div>
+      <div mat-line>
+        <div aria-label="breadcrumb" style="font-size: 14px; border: 0; padding: 0; margin: 0;">
+          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
+            <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Ver sectores de impacto</li>
+          </ol>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+
+
+  
+  
+
+<mat-card style="background-color: var(--dash-sidebar-bakcolor);">
+    <mat-list>
+      <mat-list-item >
+        <div mat-line>
+          <mat-form-field >
+            <input type="text"
+            class="mb-2"
+            placeholder="Buscar.."
+            #txtSearch
+            matInput
+            (keyup)="onSearch( txtSearch.value )" 
+            />
+          </mat-form-field>
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          
+          <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar sector de impacto</button>             
+         </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+
+
+    
+    
+    <mat-card >
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"  >
+        <mat-tab label="Sectores de impacto disponibles">
+
+          <mat-list>
+            <mat-list-item *ngFor = "let oC of listaDatosVigentes| filtroInvestigacion:search | paginate:page_size:page_number">
+              <mat-icon mat-list-icon>streetview</mat-icon>
+              <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.nombreSectorImpacto }}</mat-card-subtitle></div>
+              <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              
+                
+                <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="openDialogEditar(oC.idSectorImpacto, oC.nombreSectorImpacto  )">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminar(oC.idSectorImpacto)">
+                  <mat-icon>delete</mat-icon>
+                </button>               
+               </div>
+               
+              <mat-divider></mat-divider>
+          
+            </mat-list-item>
+            <mat-list *ngIf="(listaDatosVigentes).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+              <p>No existen sectores de impacto</p>
+              <br>
+              
+            </mat-list>
+            <mat-divider></mat-divider>
+            <mat-paginator 
+                           (page)="handlePage($event)"
+                           [length]="(listaDatosVigentes| filtroInvestigacion:search).length"
+                           [pageSize]="page_size"
+                           [pageSizeOptions]="page_size_options"
+                           showFirstLastButtons>
+            </mat-paginator>
+          </mat-list>
+
+
+
+</mat-tab>
+<mat-tab label="Sectores de impacto eliminadas">
+  <mat-list>
+    <mat-list-item *ngFor = "let oC of listaDatosEliminados| filtroInvestigacion:search | paginate:page_size:page_number">
+      <mat-icon mat-list-icon>streetview</mat-icon>
+      <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.nombreSectorImpacto }}</mat-card-subtitle></div>
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      
+        
+        <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="restablecer(oC.idSectorImpacto)">
+          <mat-icon>restore_from_trash</mat-icon>
+        </button>             
+       </div>
+       
+      <mat-divider></mat-divider>
+  
+    </mat-list-item>
+    <mat-list *ngIf="(listaDatosEliminados).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+      <p>No existen sectores de impacto eliminados </p>
+      <br>
+      
+    </mat-list>
+    <mat-divider></mat-divider>
+    <mat-paginator 
+                   (page)="handlePage($event)"
+                   [length]="(listaDatosEliminados| filtroInvestigacion:search).length"
+                   [pageSize]="page_size"
+                   [pageSizeOptions]="page_size_options"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </mat-list>
+
+</mat-tab>
+</mat-tab-group>
+</mat-card>
+</mat-card>

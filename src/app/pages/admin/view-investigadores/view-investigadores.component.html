@@ -1,0 +1,78 @@
+<!--<mat-card style="margin-bottom: 5px; padding-bottom: 0%; height: 65px;">
+  <mat-card-header>
+    <label mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" style="position: absolute;top: 0;left: 20px; margin-top: 20px;" >
+      <mat-icon style="font-size: 30px;"  >person_pin</mat-icon>
+    </label>
+    <mat-card-title style="font-size: 15px ;margin-bottom: 5px; margin-left: 30px; padding-bottom: 3px; margin-top: 0; padding-top: 0; border-top: 0;">Investigadores</mat-card-title>
+    <mat-card-subtitle style="margin-left: 30px">{{ nombreInvestigacion }}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>-->
+
+
+
+<mat-card  style="margin-bottom: 1px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
+  <mat-list style="margin: 0; padding: 0; border: 0;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+      
+      <mat-icon  mat-list-icon style="padding-left: 0px; margin-left: 0; border-left: 0;">category</mat-icon>
+      <div mat-line ><mat-card-title style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Investigadores del proyecto: {{ nombreInvestigacion }}</mat-card-title></div>
+      
+      <div mat-line>
+      <div aria-label="breadcrumb" style="font-size: 12px; border: 0; padding: 0; margin: 0;">
+          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/viewInvestigacion">Investigaciones</a></li>
+            <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Investigadores</li>
+          </ol>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+
+
+<mat-card>
+    <mat-list>
+      <mat-list-item >
+        <div mat-line>
+          <mat-form-field >
+            <input type="text"
+            class="form-control mb-2"
+            placeholder="Buscar.."
+            #txtSearch
+            matInput
+            (keyup)="onSearch( txtSearch.value )" 
+            />
+          </mat-form-field>
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <button mat-raised-button color="primary" [routerLink] = "'/admin/add-investigadores-investigador/'+idInvestigacion+'/'+nombreInvestigacion">Asignar</button>             
+         </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+    
+  
+  <mat-list>
+    <mat-list-item *ngFor = "let oC of InvestigadorInvestigacion | filtroUsuarios:search | paginate:page_size:page_number">
+      <mat-icon mat-list-icon>category</mat-icon>
+      <div mat-line>{{oC.investigador.cedula }}</div>
+      <div mat-line>{{oC.investigador.apellido}} {{oC.investigador.nombre}}</div>
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        
+        <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminarInvestigador(oC.idProyInv)">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+       </div>
+      <mat-divider></mat-divider>
+  
+    </mat-list-item>
+    <mat-paginator 
+                   (page)="handlePage($event)"
+                   [length]="(InvestigadorInvestigacion | filtroUsuarios:search).length"
+                   [pageSize]="page_size"
+                   [pageSizeOptions]="page_size_options"
+                   showFirstLastButtons>
+    </mat-paginator>
+      
+  </mat-list>

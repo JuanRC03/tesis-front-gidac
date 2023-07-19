@@ -1,0 +1,36 @@
+
+
+<mat-list class="estilo-mat-list" style="padding: 0;">
+  <mat-list-item class="estilo-mat-item">
+    
+    <div mat-line>Solicitud rechazada</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<div mat-dialog-content style="color: black;">
+  <br>
+  <h3>Información del solicitante</h3>
+  <h4><b>Nombre:</b> {{datosInformacion.solicitudDescarga?.nombre}} {{datosInformacion.solicitudDescarga?.apellido}}</h4>
+  <h3><b>Email:</b> {{datosInformacion.solicitudDescarga?.emial}}</h3>
+  <h3><b>Institución:</b> {{datosInformacion.solicitudDescarga?.institucion}}</h3>
+  <br>
+  <h3>Información de la solicitud recibida</h3>
+  <h3><b>Datos de investigacion solicitada:</b> {{datosInformacion.solicitudDescarga?.proyectoInvestigacion?.nombreProyecto}}</h3>
+  <h3><b>Fecha envio solicitud:</b> {{datosInformacion.solicitudDescarga?.fechaEnvioSolicitud}}</h3>
+  <h3><b>Motivo:</b> {{datosInformacion.solicitudDescarga?.motivo}}</h3>
+  <br>
+  <h3>Respuesta de la solitud</h3>
+  <h3><b>Fecha respuesta:</b> {{datosInformacion?.fechaRespuesta}}</h3>
+  <h3><b>Respuesta:</b> {{datosInformacion?.respuesta}}</h3>
+  <br>
+  
+  <div class="align-right" style="padding-top: 5px;">
+  </div>
+</div>

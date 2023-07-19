@@ -1,0 +1,85 @@
+
+
+  <mat-card
+  style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
+  <mat-list style="margin: 0; padding: 0; border: 0;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+      <mat-icon mat-list-icon style="padding-left: 0px; margin-left: 0; border-left: 0;">supervised_user_circle</mat-icon>
+      <div mat-line><mat-card-title
+          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Asignar Investigadores a: {{ nombreProyectoInvestigacion }}
+        </mat-card-title></div>
+      <div mat-line>
+        <div aria-label="breadcrumb" style="font-size: 12px; border: 0; padding: 0; margin: 0;">
+          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+            <li type="button" style="color: var(--color-texto-fondo); text-decoration: none;"
+              class="breadcrumb-item active derecha" aria-current="page" routerLink="/admin/"><mat-card-title
+                style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Inicio </mat-card-title></li>
+            <li type="button" style="color: var(--color-texto-fondo); text-decoration: none;"
+                class="breadcrumb-item active derecha" aria-current="page" routerLink="/admin/"><mat-card-title
+                  style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Proyectos de investigación </mat-card-title></li>
+                  
+            <li type="button" style="color: var(--color-texto-fondo); text-decoration: none;"
+                class="breadcrumb-item active derecha" aria-current="page" routerLink="/admin/"><mat-card-title
+                  style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Investigadores del proyecto </mat-card-title></li>
+            <li style="color: var(--resaltado-color); text-decoration: none;" class="breadcrumb-item active derecha"
+              aria-current="page"><mat-card-title style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Asignar investigadores
+              </mat-card-title></li>
+          </ol>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+
+
+<mat-card>
+    <mat-list>
+      <mat-list-item >
+        <div mat-line>
+          <mat-form-field >
+            <input type="text"
+            class="form-control mb-2"
+            placeholder="Buscar.."
+            #txtSearch
+            matInput
+            (keyup)="onSearch( txtSearch.value )" 
+            />
+          </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+    
+  <mat-list>
+    
+    <mat-list-item *ngFor = "let oC of listaUsuariosDisponibles | filtroUsuarios:search | paginate:page_size:page_number">
+      <mat-icon mat-list-icon>category</mat-icon>
+      <div mat-line>{{oC.apellidoUsuario}} {{oC.nombreUsuario}}</div>
+      <div mat-line>{{oC.email }}</div>
+      
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click) = "asignarInvestigador(oC.idUsuario)">
+          <mat-icon>offline_pin</mat-icon>
+        </button>           
+       </div>
+       
+       
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  
+    <mat-list *ngIf="(listaUsuariosDisponibles | filtroUsuarios:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+      <p>No existen datos</p>
+      <br>
+      <mat-divider></mat-divider>
+    </mat-list>
+  
+    <mat-paginator 
+                   (page)="handlePage($event)"
+                   [length]="(listaUsuariosDisponibles | filtroUsuarios:search).length"
+                   [pageSize]="page_size"
+                   [pageSizeOptions]="page_size_options"
+                   showFirstLastButtons>
+    </mat-paginator>
+      
+  </mat-list>
+  </mat-card>

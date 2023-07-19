@@ -1,0 +1,13 @@
+<form style="max-width: 400px;">
+  <h1 class="text-center">Actualizar linea de investigación</h1>
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Nombre de la linea de investigación</mat-label>
+    <textarea required name="descripcion" matInput placeholder="Digite el nombre de la linea de investigación"
+      rows="15" [(ngModel)]="datos.nombreLineaInvestigacion">
+              </textarea>
+  </mat-form-field>
+  <mat-dialog-actions style="align-items: center; text-align: right;">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button cdkFocusInitial (click)="formSubmit()">Guardar</button>
+  </mat-dialog-actions>
+</form>

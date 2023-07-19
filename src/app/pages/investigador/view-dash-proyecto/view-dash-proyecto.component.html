@@ -1,0 +1,57 @@
+<mat-card
+  style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
+  <mat-list style="margin: 0; padding: 0; border: 0;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+      <mat-icon mat-list-icon
+        style="padding-left: 0px; margin-left: 0; border-left: 0;">supervised_user_circle</mat-icon>
+      <div mat-line><mat-card-title
+          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{datos.nombreProyecto}}
+        </mat-card-title></div>
+      <div mat-line>
+        <div aria-label="breadcrumb" style="font-size: 14px; border: 0; padding: 0; margin: 0;">
+          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/user-dashboard/">Inicio</a></li>
+            <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Proyecto</li>
+          </ol>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+
+<mat-list>
+    <mat-list-item>
+      <div mat-line>
+      </div>
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+
+        <div mat-button style="margin-right: 20px;">
+            <button mat-button mat-raised-button color="primary" [routerLink] = "'/user-dashboard/view-variables-proyecto/'+datos.idProyecto" >Variables del proyecto</button>
+            </div>
+            <div mat-button>
+            <button  mat-raised-button color="primary" [routerLink] = "'/user-dashboard/view-conglomerados/'+datos.idProyecto" >Conglomerados</button>
+            </div>
+            
+            <button  mat-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu1" aria-label="Toggle menu">
+                <button mat-raised-button color="primary">Dataset</button>
+            </button>
+            <mat-menu #menu1="matMenu" xPosition="before">
+              <button mat-menu-item [routerLink] = "'/user-dashboard/importar-xls/'+datos.idProyecto">Importar</button>
+              <button mat-menu-item [routerLink] = "'/user-dashboard/descargar-datos/'+datos.idProyecto">Descargar</button>
+            </mat-menu>
+            
+<!--
+            <button mat-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu2" aria-label="Toggle menu">
+                <button mat-raised-button color="primary">Conglomerados</button>
+              </button>
+              <mat-menu #menu2="matMenu" xPosition="before">
+                <button mat-menu-item >Conglomerados</button>
+                <button mat-menu-item >Descargar</button>
+              </mat-menu>-->
+                     
+       </div>
+
+    </mat-list-item>
+  </mat-list>
+
+

@@ -1,0 +1,23 @@
+<form style="max-width: 400px;">
+  <h1 class="text-center">Guardar organización</h1>
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Nombre de la organización</mat-label>
+    <input required [(ngModel)]="datos.nombreOrganizacion" name="nombre" matInput placeholder="Digite el nombre de la organización">
+  </mat-form-field>
+
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Siglas de la organización</mat-label>
+    <input required [(ngModel)]="datos.siglas" name="siglas" matInput placeholder="Digite las siglas de la organización">
+  </mat-form-field>
+
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Descripción de la organización</mat-label>
+    <textarea required name="descripcion" matInput placeholder="Digite la descripción de la organización"
+      rows="4" [(ngModel)]="datos.descripcion">
+              </textarea>
+  </mat-form-field>
+  <mat-dialog-actions style="align-items: center; text-align: right;">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button cdkFocusInitial (click)="formSubmit()">Guardar</button>
+  </mat-dialog-actions>
+</form>

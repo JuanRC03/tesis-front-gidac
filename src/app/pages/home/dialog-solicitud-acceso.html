@@ -1,0 +1,43 @@
+<form (ngSubmit)="formSubmit()" style="max-width: 400px;">
+  <h1 class="text-center">Enviar solicitud</h1>
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Nombre</mat-label>
+    <input required [(ngModel)]="solicitudData.nombre" name="nombre" matInput placeholder="Digite su nombre">
+  </mat-form-field>
+
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Apellido</mat-label>
+    <input required [(ngModel)]="solicitudData.apellido" name="apellido" matInput placeholder="Digite su apellido">
+  </mat-form-field>
+
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Email</mat-label>
+    <input required [(ngModel)]="solicitudData.emial" name="email" type="email" matInput placeholder="Digite su email">
+  </mat-form-field>
+
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Nombre de la institucion</mat-label>
+    <input required [(ngModel)]="solicitudData.institucion" name="institucion" matInput
+      placeholder="El nombre de la institución">
+  </mat-form-field>
+
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Motivo de solicitud para el acceso a los datos</mat-label>
+    <textarea required name="descripcion" matInput placeholder="Ingrese el motivo de la solicitar el acceso a los datos"
+      rows="3" [(ngModel)]="solicitudData.motivo">
+              </textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="mt20 w100">
+    <mat-label>Investigaciones disponibles</mat-label>
+    <mat-select required name="investigaciones" [(ngModel)]="solicitudData.proyectoInvestigacion.idProyecto">
+      <mat-option *ngFor="let c of investigacion" [value]="c.idproyecto">
+        {{ c.nombreProyecto }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button cdkFocusInitial>Enviar</button>
+  </mat-dialog-actions>
+</form>
