@@ -258,7 +258,7 @@ formSubmit() {
     return;
   }
 
-  this.service.guardar(this.datos).subscribe(
+  this.service.actualizar(this.datos).subscribe(
     (data) => {
       Swal.fire('Clasificación actualizada', 'La clasificación se ha actualizado con exito', 'success');
       this.afterClosed.emit();
@@ -271,9 +271,3 @@ formSubmit() {
   )
 }
 }
-
-
-
-
-
-  

@@ -112,17 +112,17 @@
         *ngFor="let oC of listaCatalogoOrganizacion | filtroCatalogoOrganizacion:searchOrganizacion | paginate:page_size2:page_number2; let i = index"
         style="color: var(--color-texto-menu-home)">
         <div mat-line><mat-card-title
-            style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.nombreVariableOrganizacion }}</mat-card-title>
+            style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.nombreVariable }}</mat-card-title>
         </div>
-        <div mat-line style="font-size: 13px;">Organización: {{oC.nombreOrganizacion}}</div>
+        <!--<div mat-line style="font-size: 13px;">Organización: {{oC.nombreOrganizacion}}</div>-->
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
           <div class="pading-radio-buton">
             <div class="container-1">
               <div class="form-group">
-                <input style="display: none;" type="radio" name="radioOpcionVariable" [id]="oC.nombreVariableOrganizacion"
-                  [id]="oC.nombreVariableOrganizacion" [checked]="variableSeleccionada === oC.nombreVariableOrganizacion"
-                  (change)="filtrarCatalogo(oC.idVariableOrganizacion)" />
-                <label [for]="oC.nombreVariableOrganizacion"><span class="radio-button-1"></span></label>
+                <input style="display: none;" type="radio" name="radioOpcionVariable" [id]="oC.nombreVariable"
+                  [id]="oC.nombreVariable" [checked]="variableSeleccionada === oC.nombreVariable"
+                  (change)="filtrarCatalogo(oC.idVariable)" />
+                <label [for]="oC.nombreVariable"><span class="radio-button-1"></span></label>
               </div>
             </div>
           </div>

@@ -31,6 +31,7 @@ import { AreaInvestigacionProyectoService } from 'src/app/services/area-investig
 import { HttpClient } from '@angular/common/http';
 import { Color } from 'ng2-charts';
 import { ChartsModule } from 'ng2-charts';
+import { VariableService } from 'src/app/services/variable.service';
 
 interface Marker {
   lat: number;
@@ -61,6 +62,7 @@ export class HomeComponent {
     private investigacionService: InvestigacionService,
     private solicitudAccesoService: SolicitudAccesoService,
     private catalogoOrganizacionService: CatalogoOrganizacionService,
+    private VariableService: VariableService,
     private http: HttpClient,
     private carbonoService: CarbonoService) {
   }
@@ -120,7 +122,7 @@ export class HomeComponent {
       }
     )
 
-    this.catalogoOrganizacionService.listar().subscribe(
+    this.VariableService.listar().subscribe(
       (dato: any) => {
         this.listaCatalogoOrganizacion = dato;
       }
