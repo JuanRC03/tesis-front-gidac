@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ParcelaService } from 'src/app/services/parcela.service';
 import Swal from 'sweetalert2';
 import { ViewParcelaDataSource, ViewParcelaItem } from './view-parcela-datasource';
+import { InvestigacionService } from 'src/app/services/investigacion.service';
 
 @Component({
   selector: 'app-view-parcela',
@@ -19,7 +20,8 @@ export class ViewParcelaComponent implements AfterViewInit {
   dataSource: ViewParcelaDataSource;
 
   constructor(private parcelaService:ParcelaService,
-    private route:ActivatedRoute) {
+    private route:ActivatedRoute,
+    private investigacionService:InvestigacionService) {
     this.dataSource = new ViewParcelaDataSource();
   }
 
@@ -34,7 +36,20 @@ export class ViewParcelaComponent implements AfterViewInit {
     this.idConglomerado = this.route.snapshot.params['idConglomerado'];
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.listarVigentes();
+    this.listarProyectosVigentes();
   }
+
+
+  datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
     listaDatos : any = []
 

@@ -34,15 +34,7 @@ export class ViewConglomeradosComponent implements AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-  listarProyectosVigentes()
-    {
-      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
-          res=>{
-            this.datos=res;
-          },
-          err=>console.log(err)
-        )
-    }
+  
   
   idProyecto= 0;
   ngOnInit(): void {
@@ -52,8 +44,19 @@ export class ViewConglomeradosComponent implements AfterViewInit {
     this.listarProyectosVigentes();
   }
 
-  datos : any = []
+    
     listaDatos : any = []
+    
+    datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
     listarVigentes()
     {

@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { DatoRecolectadoService } from 'src/app/services/dato-recolectado.service';
 import { EquivalenciaVariableService } from 'src/app/services/equivalencia-variable.service';
+import { InvestigacionService } from 'src/app/services/investigacion.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,7 +17,8 @@ export class AddDatoRecolectadoComponent implements OnInit {
     private equivalenciaVariableService: EquivalenciaVariableService,
     private datoRecolectadoService: DatoRecolectadoService,
     private snack: MatSnackBar,
-    private route:ActivatedRoute) { }
+    private route:ActivatedRoute,
+    private investigacionService:InvestigacionService) { }
 
   equivalenciaVariable : any = []
   public datoRecolectado = {
@@ -41,7 +43,19 @@ export class AddDatoRecolectadoComponent implements OnInit {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.datoRecolectado.dataset.idDataset=this.idPunto;
     this.listarVariables();
+    this.listarProyectosVigentes();
   }
+
+  datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
   listarVariables()
     {

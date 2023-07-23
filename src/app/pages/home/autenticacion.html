@@ -6,15 +6,14 @@
 
   <mat-form-field class="w100" appearance="outline">
     <mat-label>Email de usuario</mat-label>
-    <input [(ngModel)] = "loginData.email" name = "email" required  matInput placeholder="Digite su email">
+    <input [(ngModel)] = "loginData.email" name = "email"  matInput placeholder="Digite su email">
     <mat-hint>El email de usuario debe ser valido</mat-hint>
   </mat-form-field>
   <br><br>
   <mat-form-field class="w100" appearance="outline">
-    <mat-label>Contraseña antigua</mat-label>
+    <mat-label>Contraseña</mat-label>
     <input
       [(ngModel)] = "loginData.contrasenia "
-      required
       [type]="hidePass ? 'password' : 'text'"
       name="pass1"
       matInput
@@ -26,13 +25,14 @@
   </mat-form-field>
   <br><br>
   <div class = "container text-center">
-    <button type = "submit" mat-raised-button color="primary">Iniciar sesión</button>
-    <button type="reset" style = "margin-left: 20px;" mat-raised-button color="accent">Limpiar</button>
+    <button type = "submit" mat-raised-button color="accent" >Iniciar sesión</button>
+    <button mat-dialog-close style = "margin-left: 20px;" mat-raised-button color="primary">Cancelar</button>
+    <!--<button type="reset" style = "margin-left: 20px;" mat-raised-button color="primary">Limpiar</button>-->
   </div>
 </form>
 <div class = "container text-center" style="margin-top: 20px;">
         
-  <a (click)="openDialog()" aria-label="Example icon-button with heart icon"> Olvidaste tu contraseña</a>
+  <a (click)="openDialog()" aria-label="Example icon-button with heart icon" type="button"> Olvidaste tu contraseña</a>
   
 </div>
 </section>

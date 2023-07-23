@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { AlturaService } from 'src/app/services/altura.service';
 import { ConglomeradoService } from 'src/app/services/conglomerado.service';
+import { InvestigacionService } from 'src/app/services/investigacion.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,7 +17,8 @@ export class AddConglomeradoComponent implements OnInit {
     private conglomeradoService: ConglomeradoService,
     private alturaService:AlturaService,
     private snack: MatSnackBar,
-    private route:ActivatedRoute) { }
+    private route:ActivatedRoute,
+    private investigacionService:InvestigacionService) { }
 
   idProyecto= 0;
 
@@ -37,7 +39,19 @@ export class AddConglomeradoComponent implements OnInit {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.conglomerado.proyectoInvestigacion.idProyecto=this.idProyecto;
     this.listarAltitud();
+    this.listarProyectosVigentes();
   }
+
+  datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
   altitud : any = []
 

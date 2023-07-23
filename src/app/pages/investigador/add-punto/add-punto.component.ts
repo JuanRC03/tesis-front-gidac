@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { DatasetService } from 'src/app/services/dataset.service';
+import { InvestigacionService } from 'src/app/services/investigacion.service';
 import { ProfundidadService } from 'src/app/services/profundidad.service';
 import Swal from 'sweetalert2';
 
@@ -16,7 +17,8 @@ export class AddPuntoComponent implements OnInit {
     private profundidadService:ProfundidadService,
     private datasetService: DatasetService,
     private snack: MatSnackBar,
-    private route:ActivatedRoute) { }
+    private route:ActivatedRoute,
+    private investigacionService:InvestigacionService) { }
 
   profundidad : any = []
   
@@ -39,7 +41,19 @@ export class AddPuntoComponent implements OnInit {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.dataset.profundidadParcela.idParcela=this.idParcela;
     this.listarMedidas();
+    this.listarProyectosVigentes();
   }
+
+  datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
   listarMedidas()
     {

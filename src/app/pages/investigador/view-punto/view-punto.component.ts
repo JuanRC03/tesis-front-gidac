@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DatasetService } from 'src/app/services/dataset.service';
 import Swal from 'sweetalert2';
 import { ViewPuntoDataSource, ViewPuntoItem } from './view-punto-datasource';
+import { InvestigacionService } from 'src/app/services/investigacion.service';
 
 @Component({
   selector: 'app-view-punto',
@@ -19,7 +20,8 @@ export class ViewPuntoComponent implements AfterViewInit {
   dataSource: ViewPuntoDataSource;
 
   constructor(private datasetService:DatasetService,
-    private route:ActivatedRoute ) {
+    private route:ActivatedRoute,
+    private investigacionService:InvestigacionService ) {
     this.dataSource = new ViewPuntoDataSource();
   }
 
@@ -37,7 +39,20 @@ export class ViewPuntoComponent implements AfterViewInit {
     this.idConglomerado = this.route.snapshot.params['idConglomerado'];
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.listarVigentes();
+    this.listarProyectosVigentes();
   }
+
+
+  datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
     listaDatos : any = []
 

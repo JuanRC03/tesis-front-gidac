@@ -57,3 +57,8 @@
   background-color: var(--resaltado-color);
   color: #fff;
 }
+
+.example-header-image {
+  background-image: url('/assets/imgIconoProyecto.JPG');
+  background-size: cover;
+}

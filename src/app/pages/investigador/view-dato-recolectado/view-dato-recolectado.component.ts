@@ -10,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SolicitudAccesoService } from 'src/app/services/solicitud-acceso.service';
 import { LoginService } from 'src/app/services/login.service';
+import { InvestigacionService } from 'src/app/services/investigacion.service';
 
 @Component({
   selector: 'app-view-dato-recolectado',
@@ -26,7 +27,8 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
   constructor(private datoRecolectadoService:DatoRecolectadoService,
     private route:ActivatedRoute,
     public login:LoginService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    public investigacionService:InvestigacionService) {
     this.dataSource = new ViewDatoRecolectadoDataSource();
   }
 
@@ -49,7 +51,19 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
     this.idConglomerado = this.route.snapshot.params['idConglomerado'];
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.listarVigentes();
+    this.listarProyectosVigentes();
   }
+
+  datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
     listaDatos : any = []
 

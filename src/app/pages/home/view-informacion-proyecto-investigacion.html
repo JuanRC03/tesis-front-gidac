@@ -15,6 +15,7 @@
 
 <div mat-dialog-content style="color: black;">
   <br>
+  
   <h3 style="text-align: center;"><b>{{informacionProyectoInvestigacion?.nombreProyecto}}</b> </h3>
   
   <h4><b>Descripción:</b> {{informacionProyectoInvestigacion?.descripcion}}</h4>
@@ -23,6 +24,7 @@
   <h4><b>Fecha de inicio:</b> {{informacionProyectoInvestigacion?.fechaInicio}}</h4>
   <h4><b>Fecha de fin:</b> {{informacionProyectoInvestigacion?.fechaFin}}</h4>
   <br>
+  
   <div *ngFor = "let oC of informacionDirector">
     <h4><b>Director:</b> {{oC?.usuario?.nombreUsuario}} {{oC?.usuario?.apellidoUsuario}}</h4>
   </div>

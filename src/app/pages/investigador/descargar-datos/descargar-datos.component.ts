@@ -11,6 +11,7 @@ import { writeFile } from 'xlsx';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as L from 'leaflet';
+import { InvestigacionService } from 'src/app/services/investigacion.service';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class DescargarDatosComponent implements OnInit {
     private datoRecolectadoService: DatoRecolectadoService,
     private variableService: VariableService,
     private snack: MatSnackBar,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private investigacionService:InvestigacionService) { }
 
   ngAfterViewInit(): void {
   }
@@ -48,9 +50,19 @@ export class DescargarDatosComponent implements OnInit {
       this.listaDatosRecolectador = data;
       console.log(data);
     });
-
-
+    this.listarProyectosVigentes();
   }
+
+  datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

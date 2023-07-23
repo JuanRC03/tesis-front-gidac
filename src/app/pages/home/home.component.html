@@ -1,5 +1,5 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral1 class="nuevo-menu-lateral prioridad2 estilo-submenu">
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral1 class="nuevo-menu-lateral prioridad2 estilo-submenu" position="start" mode="side">
     <mat-list class="estilo-mat-list">
       <mat-list-item class="estilo-mat-item">
         <div mat-line>Proyectos</div>
@@ -20,7 +20,7 @@
         </label>
       </div>
     </div>
-    <mat-list *ngIf="(investigaciones| filtroInvestigacion:search).length!=0">
+    <!--<mat-list *ngIf="(investigaciones| filtroInvestigacion:search).length!=0">
       <mat-list-item style="color: var(--color-texto-menu-home)">
         <div mat-line>
           <mat-card-title style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Todos los proyectos
@@ -31,7 +31,7 @@
           <div class="pading-radio-buton">
             <div class="container-1">
               <div class="form-group">
-                <input (click)="filtrarInvestigacione(0)" style="display: none;" type="radio" name="radioOpcion"
+                <input (click)="filtrarInvestigacione(0)" style="display: none;" type="radio" name="radioOpcion" id="radioOpcionInicio"
                   [id]="0" [attr.checked]="0 == investigacionSeleccionada" />
                 <label [for]="0"><span class="radio-button-1"></span></label>
               </div>
@@ -40,7 +40,7 @@
         </div>
         <mat-divider></mat-divider>
       </mat-list-item>
-    </mat-list>
+    </mat-list>-->
     <mat-list>
       <mat-list-item
         *ngFor="let oC of investigaciones | filtroInvestigacion:search | paginate:page_size1:page_number1; let i = index"
@@ -50,9 +50,9 @@
         </div>
         <div mat-line style="font-size: 13px;"> {{oC.descripcion}}</div>
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-          <button mat-icon-button matTooltip="var(--resaltado-color)" color="var(--resaltado-color)"
+          <button *ngIf="oC.idProyecto!=0" mat-icon-button matTooltip="var(--resaltado-color)" color="var(--resaltado-color)"
             aria-label="Example icon-button with a heart icon" (click)="openDialogInformacion(oC.idProyecto)">
-            <mat-icon style="color: var(--resaltado-color);">info</mat-icon>
+            <mat-icon  style="color: var(--resaltado-color);">info</mat-icon>
           </button>
           <div class="pading-radio-buton">
             <div class="container-1">
@@ -86,7 +86,7 @@
 
   <!------------------------------------------------------------------------------>
 
-  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral2 class="nuevo-menu-lateral prioridad2 estilo-submenu">
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral2 class="nuevo-menu-lateral prioridad2 estilo-submenu" position="start" mode="side">
     <mat-list class="estilo-mat-list">
       <mat-list-item class="estilo-mat-item">
         <div mat-line>Datos de las muestras</div>
@@ -120,7 +120,7 @@
             <div class="container-1">
               <div class="form-group">
                 <input style="display: none;" type="radio" name="radioOpcionVariable" [id]="oC.nombreVariable"
-                  [id]="oC.nombreVariable" [checked]="variableSeleccionada === oC.nombreVariable"
+                  [id]="oC.nombreVariable" [checked]="variableSeleccionada === oC.idVariable"
                   (change)="filtrarCatalogo(oC.idVariable)" />
                 <label [for]="oC.nombreVariable"><span class="radio-button-1"></span></label>
               </div>
@@ -151,10 +151,11 @@
   
   <!------------------------------------------------------------------------------>
 
-  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral3 class="nuevo-menu-lateral prioridad2 estilo-submenu-explorar">
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral3 class="nuevo-menu-lateral prioridad2 estilo-submenu-explorar" position="start" mode="side">
     <mat-list class="estilo-mat-list" style="padding: 5px;">
       <mat-list-item class="estilo-mat-item">
         <div mat-line *ngIf="investigacionDat.country==''">Explorar</div>
+        <div mat-line *ngIf="investigacionDat.country==''">Seleccione un punto para explorar !!</div>
         <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 15px;"><b>Coordenadas:</b> {{investigacionDat.coordenadax}}, {{investigacionDat.coordenaday}}</div>
         <div mat-line *ngIf="investigacionDat.country!=''" style="padding-top: 5px; font-size: 13px;"><b>País: </b>{{investigacionDat.country}}</div>
         <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Provincia: </b>{{investigacionDat.state}}</div>
@@ -169,25 +170,35 @@
         </div>
       </mat-list-item>
 
-      <mat-divider style="padding-top: 20px;"></mat-divider>
+      <mat-divider style="padding-top: 0px;"></mat-divider>
     </mat-list>
 
-    <mat-list  *ngIf="investigacionDat.country==''"
-      style="text-align: center; padding: 20px; margin: 20px;">
-      <p style="color: var(--color-texto-menu-home);">Seleccione un punto para explorar</p>
-      <br>
-    </mat-list>
     
-    <div id="chartsContainer" style="width: 450px;"></div>
-  
-    <!--<div #chartContainer>
-      <div class="chart">
-        <canvas></canvas>
-      </div>
-      <div class="chart">
-        <canvas></canvas>
-      </div>
-    </div>-->
+
+    <mat-card style="padding: 0; margin-left: 10px; margin-right: 10px;">
+    <mat-expansion-panel style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
+                       (closed)="panelOpenGrafico = false">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+          Graficos
+        </mat-panel-title>
+        
+      </mat-expansion-panel-header>
+      <div id="chartsContainer" style="width: 400px;"></div>
+    </mat-expansion-panel>
+    <mat-expansion-panel style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
+                       (closed)="panelOpenGrafico = false">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+          Datos
+        </mat-panel-title>
+        
+      </mat-expansion-panel-header>
+      
+    </mat-expansion-panel>
+    </mat-card>
+    
+    
     
     
     
@@ -196,7 +207,7 @@
 
   <!------------------------------------------------------------------------------>
 
-  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral4 class="nuevo-menu-lateral prioridad2 estilo-submenu">
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral4 class="nuevo-menu-lateral prioridad2 estilo-submenu" position="start" mode="side">
     <mat-list class="estilo-mat-list">
       <mat-list-item class="estilo-mat-item">
         <div mat-line> Solicitud de descarga de datos</div>
@@ -258,7 +269,7 @@
 
   <!------------------------------------------------------------------------------>
 
-  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral5 class="nuevo-menu-lateral prioridad2 estilo-submenu">
+  <mat-sidenav *ngIf="!(isHandset$ | async)" #menuLateral5 class="nuevo-menu-lateral prioridad2 estilo-submenu" position="start" mode="side">
     <mat-list class="estilo-mat-list">
       <mat-list-item class="estilo-mat-item">
         <div mat-line>Información de EcoAndes </div>
@@ -273,20 +284,7 @@
 
     
     <div class="estilo-informacion">
-    <!--
-    <mat-divider style="background-color: darkgray; text-align: end; margin-left: 10px;margin-right: 10px;"></mat-divider>
-    
-      <div style="display: flex; justify-content: center; align-items: center; ">
-        <mat-list style="color: var(--color-texto-menu-home); text-align: left; padding: 0; border: 0; margin: 0; padding-top: 15px; padding-left: 3px;" class="font1">
-          <div style="display:flex; align-items:center;">
-            <div mat-line><mat-card-title style="font-size: 35px; padding-top: 8px;">Eco</mat-card-title></div>
-            <div mat-line style="font-size: 40px;">
-              <mat-icon style="font-size: 40px;">terrain</mat-icon>
-            </div>
-            <div style="font-size: 35px; padding-left: 15px; ">ndes</div>
-          </div>
-        </mat-list>
-      </div><br>-->
+   
     <mat-divider style="background-color: darkgray; text-align: end; margin-left: 10px;margin-right: 10px;"></mat-divider>
     <br>
       <div style=" margin-left: 10px; margin-right: 10px;">
@@ -314,7 +312,7 @@
 
   <!------------------------------------------------------------------------------>
 
-  <mat-sidenav *ngIf="menuVisible" #drawer class="sidenav prioridad1" style="background-color: var(--third-color);"
+  <mat-sidenav *ngIf="menuVisible" #drawer class="sidenav prioridad1" style="background-color: var(--third-color); "  
     fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-nav-list style="padding: 0; margin: 0;border: 0;">

@@ -12,6 +12,7 @@ import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color } from 'ng2-charts';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
+import { InvestigacionService } from 'src/app/services/investigacion.service';
 
 interface DataModel {
   cantidadDato: number;
@@ -39,7 +40,8 @@ export class ImportarXlsComponent implements OnInit {
 
   constructor(private datoRecolectadoService:DatoRecolectadoService,
               private route:ActivatedRoute,
-              private snack:MatSnackBar, ) {}
+              private snack:MatSnackBar,
+              private investigacionService:InvestigacionService ) {}
   
   displayedColumns: string[] = ['dato1', 'dato2', 'dato3', 'dato4','dato5'];
   idProyecto=0;
@@ -51,7 +53,19 @@ export class ImportarXlsComponent implements OnInit {
   ngOnInit(): void {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.proyectoInvestigacion.idProyecto=this.idProyecto;
+    this.listarProyectosVigentes();
   }
+
+  datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
   proyectoInvestigacion :any= {
     idProyecto: ''

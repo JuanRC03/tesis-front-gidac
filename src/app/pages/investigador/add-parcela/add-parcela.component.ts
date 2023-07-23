@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { InvestigacionService } from 'src/app/services/investigacion.service';
 import { ParcelaService } from 'src/app/services/parcela.service';
 import Swal from 'sweetalert2';
 
@@ -13,7 +14,8 @@ export class AddParcelaComponent implements OnInit {
 
   constructor(private parcelaService:ParcelaService,
     private snack: MatSnackBar,
-    private route:ActivatedRoute) { }
+    private route:ActivatedRoute,
+    private investigacionService:InvestigacionService) { }
 
   hidePass = true;
 
@@ -35,7 +37,19 @@ export class AddParcelaComponent implements OnInit {
     this.idConglomerado = this.route.snapshot.params['idConglomerado'];
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.parcela.conglomerado.idConglomerado=this.idConglomerado;
+    this.listarProyectosVigentes();
   }
+
+  datos : any = []
+    listarProyectosVigentes()
+    {
+      this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+          res=>{
+            this.datos=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
 
   public agregarConglomerado() {

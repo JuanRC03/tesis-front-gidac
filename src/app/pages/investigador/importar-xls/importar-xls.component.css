@@ -93,3 +93,8 @@
   
   
   
+
+  .example-header-image {
+    background-image: url('/assets/imgIconoProyecto.JPG');
+    background-size: cover;
+  }

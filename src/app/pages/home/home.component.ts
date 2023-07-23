@@ -32,6 +32,7 @@ import { HttpClient } from '@angular/common/http';
 import { Color } from 'ng2-charts';
 import { ChartsModule } from 'ng2-charts';
 import { VariableService } from 'src/app/services/variable.service';
+import { MatSidenav } from '@angular/material/sidenav';
 
 interface Marker {
   lat: number;
@@ -67,6 +68,7 @@ export class HomeComponent {
     private carbonoService: CarbonoService) {
   }
 
+  
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
@@ -89,6 +91,12 @@ export class HomeComponent {
     licenciaUso: ''
   }
 
+  proyecto0 = {
+    idProyecto: 0,
+    nombreProyecto: '',
+    descripcion: ''
+  };
+
   navbar: any;
   ngOnInit(): void {
     this.isLoggedIn = this.login.isLoggedIn();
@@ -106,6 +114,7 @@ export class HomeComponent {
       (dato: any) => {
         this.investigacion = dato;
         this.investigaciones = dato;
+        this.investigaciones.unshift({ idProyecto: 0, nombreProyecto: 'Todos los proyectos', descripcion: 'Vizualizar todas los proyectos' });
       }, (error) => {
 
         this.snack.open('Ha ocurrido un error en el sistema !!', 'Aceptar', {
@@ -130,9 +139,14 @@ export class HomeComponent {
 
 
     this.initMap();
+
+    
+
+
+  }
+
+  ngAfterViewInit() {
     this.fetchData();
-
-
   }
 
   private initMap() {
@@ -151,6 +165,8 @@ export class HomeComponent {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
     this.map.setMinZoom(2.5);
+
+    
   }
 
 
@@ -202,6 +218,8 @@ export class HomeComponent {
       window.location.reload();
     }, 3000);
   }
+
+  panelOpenGrafico = false;
 
   isMenuOpen1 = false;
   isArrowUp1 = false;
@@ -357,7 +375,7 @@ export class HomeComponent {
 
   filtrarInvestigacione(id: any) {
     this.investigacionSeleccionada = id;
-    this.variableSeleccionada = -1;
+    this.variableSeleccionada = 0;
     this.reloadMarkers(id);
   }
 
@@ -366,6 +384,9 @@ export class HomeComponent {
     this.variableSeleccionada = id;
     this.reloadMarkersCatalogo(id);
   }
+
+  @ViewChild('radioButton', { static: false }) radioButton!: ElementRef<HTMLInputElement>;
+
 
   private reloadMarkers(id: any) {
     this.openPopup = null;
@@ -379,13 +400,24 @@ export class HomeComponent {
         console.log('Error al obtener los datos:', error);
       }
     );
+    if (!this.chartsContainer) {
+      return;
+    }
+    const canvasElements = this.chartsContainer.querySelectorAll('canvas');
+    const diverElements = this.chartsContainer.querySelectorAll('hr');    
+    canvasElements.forEach((canvasElement) => {
+      canvasElement.remove();
+    });
+    diverElements.forEach((diverElement) => {
+      diverElement.remove();
+    });
   }
 
   private reloadMarkersCatalogo(id: any) {
     this.openPopup?.closePopup();
     this.openPopup = null;
     this.clearMarkers()
-    // Volver a cargar los datos y procesarlos
+    
     this.datoRecolectadoService.listarTodosLosDatosCatalogo(id).subscribe(
       (response: any) => {
         this.plotData(response);
@@ -394,6 +426,25 @@ export class HomeComponent {
         console.log('Error al obtener los datos:', error);
       }
     );
+
+    //this.radioButton.nativeElement.checked = false;
+    if (this.radioButton) {
+      this.radioButton.nativeElement.checked = false;
+    }
+
+    if (!this.chartsContainer) {
+      return;
+    }
+    const canvasElements = this.chartsContainer.querySelectorAll('canvas');
+    const diverElements = this.chartsContainer.querySelectorAll('hr');    
+    canvasElements.forEach((canvasElement) => {
+      canvasElement.remove();
+    });
+    diverElements.forEach((diverElement) => {
+      diverElement.remove();
+    });
+
+    
   }
 
 
@@ -474,7 +525,7 @@ export class HomeComponent {
           duration: 5000
         });
 
-        this.solicitudForm.reset();
+        //this.solicitudForm.reset();
       }, (error) => {
         console.log(error);
         this.snack.open('Ha ocurrido un error en el sistema !!', 'Aceptar', {
@@ -612,22 +663,14 @@ export class HomeComponent {
     investigacionGraficoList: []
   };
 
+  chartsContainer = document.getElementById('chartsContainer');
+
   private plotData(data: any[]) {
-    console.log(data);
+    
     this.clearMarkers();
-    const chartsContainer = document.getElementById('chartsContainer');
-    if (!chartsContainer) {
-      return;
-    }
-    chartsContainer.innerHTML = '';
     for (const key in data) {
       const coordinates = key.split(',');
       const latLng: L.LatLngTuple = [parseFloat(coordinates[0]), parseFloat(coordinates[1])];
-      //const latLng: L.LatLngTuple = [parseFloat(coordinates[0]), parseFloat(coordinates[1])];
-      //const utmCoordinates = proj4('EPSG:32600', 'EPSG:4326', [parseFloat(coordinates[0]), parseFloat(coordinates[1])]);
-      //const latLng: L.LatLngTuple = [utmCoordinates[1], utmCoordinates[0]];
-  
-
       const square = L.polygon([
         [latLng[0] - 0.001, latLng[1] - 0.001],
         [latLng[0] + 0.001, latLng[1] - 0.001],
@@ -693,7 +736,9 @@ export class HomeComponent {
               }
               message += "</ul>"
             }
+            
             this.modelo.investigacionGraficoList.push(investigacionGrafico);
+
           }
           
           console.log(this.modelo);
@@ -713,14 +758,14 @@ export class HomeComponent {
   
   generateCharts(): void {
     const investigacionGraficoList = this.modelo.investigacionGraficoList;
-    const chartsContainer = document.getElementById('chartsContainer');
+    this.chartsContainer = document.getElementById('chartsContainer');
   
-    if (!chartsContainer) {
+    if (!this.chartsContainer) {
       return;
     }
   
     // Limpiar gráficos anteriores
-    chartsContainer.innerHTML = '';
+    this.chartsContainer.innerHTML = '';
   
     const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
   
@@ -732,10 +777,18 @@ export class HomeComponent {
   
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
+      
   
       if (ctx) {
-        chartsContainer.appendChild(canvas);
-  
+        if (!this.chartsContainer) {
+          return;
+        }
+        const divider = document.createElement('hr');
+          this.chartsContainer.appendChild(divider);
+        
+        this.chartsContainer.appendChild(canvas);
+        
+        
         const chart = new Chart(ctx, {
           type: 'bar',
           data: {
@@ -755,14 +808,14 @@ export class HomeComponent {
                 display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: 'Profundidades' // Título del eje X
+                  labelString: 'Profundidad' // Título del eje X
                 }
               }],
               yAxes: [{
                 display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: 'Valores' // Título del eje Y
+                  labelString: 'Valor' // Título del eje Y
                 },
                 ticks: {
                   min: 0, // Valor mínimo del eje Y
@@ -774,10 +827,7 @@ export class HomeComponent {
   
         chartInstances[canvas.id] = chart;
   
-        if (index !== investigacionGraficoList.length - 1) {
-          const divider = document.createElement('hr');
-          chartsContainer.appendChild(divider);
-        }
+        
       }
     });
   
@@ -965,6 +1015,11 @@ export class ResetPassword {
   ngOnInit(): void {
   }
 
+  openDialogLogin(): void {
+    this.dialogRef.close();
+    const dialogRef = this.dialog.open(autenticacion);
+  }
+
   formSubmit() {
     if (this.datosEmail.destinatario.trim() == '' || this.datosEmail.destinatario.trim() == null) {
       this.snack.open('EL correo electronico es requerido !!', 'Aceptar', {
@@ -1147,7 +1202,7 @@ export class ViewInformacionProyectoInvestigacion {
     this.dialogRef.close();
   }
 
-  informacionProyectoInvestigacion: any = [];
+  informacionProyectoInvestigacion: any;
   grupoInvestigacion: any = [];
   informacionDirector: any = [];
   informacionImpacto: any = [];
