@@ -665,8 +665,11 @@ export class HomeComponent {
 
   chartsContainer = document.getElementById('chartsContainer');
 
+
+  listaNumericos:any=[];
+
   private plotData(data: any[]) {
-    
+    this.listaNumericos=data;
     this.clearMarkers();
     for (const key in data) {
       const coordinates = key.split(',');
