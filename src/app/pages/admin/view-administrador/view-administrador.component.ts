@@ -17,7 +17,7 @@ export class ViewAdministradorComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<ViewAdministradorItem>;
   dataSource: ViewAdministradorDataSource;
 
-  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4', 'opciones'];
+  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4', 'dato5', 'opciones'];
 
   constructor(private userServicio:UserService) {
     this.dataSource = new ViewAdministradorDataSource();

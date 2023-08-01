@@ -13,6 +13,10 @@ export class EquivalenciaVariableService {
     return this.http.post(`${baserUrl}/equivalencia-variable/guardar-equivalencia-variable`,modelo);
   }
 
+  public guardarDatosVariable(modelo:any){
+    return this.http.post(`${baserUrl}/equivalencia-variable/guardar-datos-variable`,modelo);
+  }
+
   public actualizar(modelo:any){
     return this.http.put(`${baserUrl}/equivalencia-variable/guardar-equivalencia-variable`,modelo);
   }

@@ -6,12 +6,6 @@
       rows="3" [(ngModel)]="datos.nombreFamilia ">
               </textarea>
   </mat-form-field>
-  <mat-form-field class="w100" appearance="outline">
-    <mat-label>Descripción</mat-label>
-    <textarea required name="descripcion" matInput placeholder="Digite la Descripción"
-      rows="5" [(ngModel)]="datos.descripcion">
-              </textarea>
-  </mat-form-field>
   <mat-dialog-actions style="align-items: center; text-align: right;">
     <button mat-button mat-dialog-close>Cancelar</button>
     <button mat-button cdkFocusInitial (click)="formSubmit()">Guardar</button>

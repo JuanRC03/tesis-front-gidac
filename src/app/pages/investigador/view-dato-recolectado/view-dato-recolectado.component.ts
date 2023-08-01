@@ -32,7 +32,7 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
     this.dataSource = new ViewDatoRecolectadoDataSource();
   }
 
-  displayedColumns = ['dato1', 'dato2', 'opciones'];
+  displayedColumns = ['dato1', 'dato2','dato3','dato4', 'opciones'];
   
   ngAfterViewInit(): void {
   }

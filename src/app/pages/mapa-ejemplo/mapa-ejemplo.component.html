@@ -1,2 +1,123 @@
-<div id="map">
-</div>
+<div id="map" style="background-color: black;">
+    <div id="select-container">
+      <div class="select">
+        <select class="div-select" name="format" id="format" (change)="onMapChange($event)">
+          <option *ngFor="let map of maps" [value]="map.name">{{ map.label }}</option>
+        </select>
+      </div>
+    </div>
+    <div id="select-container-logo">
+      <div *ngIf="isHandset$ | async">
+        <mat-nav-list style="padding: 0; margin: 0;border: 0;">
+          <div class=" navbar-light bg-light"
+            style=" min-width: var(--tamanio-menu-principal); max-width: var(--tamanio-menu-principal);">
+            <ul class="navbar-nav " style="background-color: var(--back-graund-logo);">
+              <div class="navbar-nav" style=" padding: 0; margin: 0; border: 0; min-width: 90px;">
+                <div class="nav-link  mi-elemento personalizado" style=" padding: 0; margin: 0; border: 0;">
+                  <mat-list
+                    style="color: var(--color-texto-logo); text-align: left; padding: 0; border: 0; margin: 0; padding-left: 3px;"
+                    class="font1">
+                    <div mat-line>
+                      <p style="display:flex;font-size: 28px; padding: 0; border: 0; margin: 0;">Eco</p>
+                    </div>
+                    <div style="display:flex; align-items:center; padding: 0; border: 0; margin: 0;">
+                      <div mat-line style="font-size: 30px;">
+                        <mat-icon style="font-size: 30px;">terrain</mat-icon>
+                      </div>
+                      <p style="font-size: 21px; padding-left: 5px; padding-top: 0px;">ndes</p>
+                    </div>
+                  </mat-list>
+                </div>
+              </div>
+            </ul>
+          </div>
+        </mat-nav-list>
+      </div>
+    </div>
+    <div id="select-container-menu" style="width: 100%;">
+      <mat-toolbar *ngIf="isHandset$ | async" class="menu-inferios">
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+          <mat-icon class="estilo-icionos">storage</mat-icon>
+          <span class="example-spacer"></span>
+        </button>
+        <span class="example-spacer"></span>
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+          <mat-icon class="estilo-icionos">data_usage</mat-icon>
+          <span class="example-spacer"></span>
+        </button>
+        <span class="example-spacer"></span>
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+          <mat-icon class="estilo-icionos">mail</mat-icon>
+          <span class="example-spacer"></span>
+        </button>
+        <span class="example-spacer"></span>
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+          <mat-icon class="estilo-icionos">info</mat-icon>
+          <span class="example-spacer"></span>
+        </button>
+        <span class="example-spacer"></span>
+        <div *ngIf="isLoggedIn" (click)="panelContro()">
+          <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+            <mat-icon class="estilo-icionos">personal_video</mat-icon>
+            <span class="example-spacer"></span>
+          </button>
+        </div>
+        <span *ngIf="isLoggedIn" class="example-spacer"></span>
+        <div *ngIf="isLoggedIn" (click)="logout()">
+          <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+            <mat-icon class="estilo-icionos">exit_to_app</mat-icon>
+            <span class="example-spacer"></span>
+          </button>
+        </div>
+        <span *ngIf="isLoggedIn" class="example-spacer"></span>
+        <div *ngIf="!isLoggedIn">
+          <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+            <mat-icon class="estilo-icionos">verified_user</mat-icon>
+            <span class="example-spacer"></span>
+          </button>
+        </div>
+        <span *ngIf="!isLoggedIn" class="example-spacer"></span>
+        <span class="example-spacer"></span>
+        <span class="example-spacer"></span>
+      </mat-toolbar>
+      <div *ngIf="isHandset$ | async" class="estilo-linea-baja">
+      </div>
+    </div>
+  </div>
+  <div id="popup-container" style="display: none; position: absolute; background-color: #fff; border: 1px solid #ccc; padding: 10px; z-index: 1000;">
+    
+  </div>
+  <div id="tipoValor-data"></div>  
+
+   
+ 
+  <div *ngFor="let modelo of modeloDatos">
+    <a (click)="toggleMenu(modelo)">
+      <div>{{modelo.name}}</div>
+    </a>
+    <div *ngIf="modelo.isMenuOpen">
+      <li>op1</li>
+      <li>op2</li>
+    </div>
+  </div>
+  
+
+  <li type="button" id="toggleMenuButton"
+     style="position: relative; display: flex; width: 20em; height: 2em; line-height: 2; background: #ECF0F1; overflow: hidden; border-radius: .25em;
+     /* Estilo normal */
+     "
+     onmouseover="this.style.background='#259441'; this.style.color='#fffff'"
+     onmouseout="this.style.background='#ECF0F1'; this.style.color='#000000'"
+  >
+  Contenido del li
+</li>
+
+<li type="button" id="toggleMenuButton"
+     style="position: relative; display: flex; width: 20em; height: 2em; line-height: 2; background: #ECF0F1; overflow: hidden; border-radius: .25em;
+     /* Estilo normal */
+     "
+     onmouseover="this.style.background='#259441'; this.style.color='#FFFFFF';"
+     onmouseout="this.style.background='#ECF0F1'; this.style.color='#000000';"
+>
+  Contenido del li
+</li>

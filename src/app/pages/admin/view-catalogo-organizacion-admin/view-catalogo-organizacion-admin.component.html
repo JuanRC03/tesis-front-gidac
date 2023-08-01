@@ -1,27 +1,25 @@
 <mat-card
   style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
   <mat-list style="margin: 0; padding: 0; border: 0;">
-    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: var(--tamanio-cuadro-idicador);">
       <mat-icon mat-list-icon
-        style="padding-left: 0px; margin-left: 0; border-left: 0;">supervised_user_circle</mat-icon>
+        style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">supervised_user_circle</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"> Visualizar catalogo organización
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Visualizar catálogo de las organizaciones
         </mat-card-title></div>
       <div mat-line>
-        <div aria-label="breadcrumb" style="font-size: 12px; border: 0; padding: 0; margin: 0;">
+        <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li type="button" style="color: var(--color-texto-fondo); text-decoration: none;"
-              class="breadcrumb-item active derecha" aria-current="page" routerLink="/admin/"><mat-card-title
-                style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Inicio </mat-card-title></li>
-            <li style="color: var(--resaltado-color); text-decoration: none;" class="breadcrumb-item active derecha"
-              aria-current="page"><mat-card-title style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Ver catálogo organización
-              </mat-card-title></li>
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/view-variable-admin">Variables</a></li>
+            <li class="breadcrumb-item active derecha" style="color: var(--resaltado-color); text-decoration: none;"  aria-current="page">Ver catálogo organización</li>
           </ol>
         </div>
       </div>
     </mat-list-item>
   </mat-list>
 </mat-card>
+
 
   <br>
   <mat-list>
@@ -34,7 +32,22 @@
       </div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
         
-        <button routerLink="/user-dashboard/add-altura" mat-raised-button color="primary">Agregar área</button>
+        <button routerLink="/admin/add-altura" mat-raised-button color="primary">Agregar variable</button>
+
+        <button  mat-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu1" aria-label="Toggle menu">
+          <button mat-raised-button color="primary">Dataset</button>
+      </button>
+      <mat-menu #menu1="matMenu" xPosition="before">
+        <button mat-menu-item (click)="openImportar()">Importar</button>
+        <button mat-menu-item [routerLink] = "'/admin/descargar-datos/'">Descargar</button>
+      </mat-menu>
+      <button style="padding-left: 0px;" mat-button matTooltip="Primary"  class="more-button" [matMenuTriggerFor]="menu2" aria-label="Toggle menu">
+        <button mat-raised-button color="primary">Catálogo</button>
+      </button>
+      <mat-menu #menu2="matMenu" xPosition="before">
+        <button mat-menu-item [routerLink] = "'/admin/view-catalogo-espoch-admin'">Espoch</button>
+        <button mat-menu-item [routerLink] = "'/admin/view-catalogo-organizacion-admin'">Organización</button>
+      </mat-menu> 
       </div>
 
     </mat-list-item>

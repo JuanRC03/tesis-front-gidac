@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import baserUrl from './helper';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -65,10 +66,36 @@ export class DatoRecolectadoService {
     return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos/${id}`);
   }
 
+  public listarTodosLosDatosUnidos(id:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-unidos/${id}`);
+  }
+
   public listarTodosLosDatosCatalogo(id:any){
     return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-catalogo/${id}`);
   }
+
+  public listarTodosLosDatosCatalogoUnidos(id:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-catalogo-unidos/${id}`);
+  }
   
+  public dashlistarTodosLosDatosProyectoVariable(idProyecto:any, idVariable:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-proyecto-variable/${idProyecto}/${idVariable}`);
+  }
+
+  public listarTodosLosDatosNominal(id:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-nominal/${id}`);
+  }
+
+  public listarTodosLosDatosCatalogoNominal(id:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-catalogo-nominal/${id}`);
+  }
   
-  
+  public dashlistarTodosLosDatosProyectoVariableNominal(idProyecto:any, idVariable:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-proyecto-variable-nominal/${idProyecto}/${idVariable}`);
+  }
+
+  public dashlistarTodosLosDatosProyectoVariableUnido(idProyecto:any, idVariable:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-proyecto-variable-unidos/${idProyecto}/${idVariable}`);
+  }
+
 }

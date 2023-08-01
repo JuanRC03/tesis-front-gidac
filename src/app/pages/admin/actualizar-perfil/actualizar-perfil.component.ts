@@ -17,9 +17,7 @@ export class ActualizarPerfilComponent implements OnInit {
   constructor(private route:ActivatedRoute,
               private userService:UserService,
               private loginService:LoginService,
-              private router:Router,
-              private snack:MatSnackBar,
-              private sanitizer:DomSanitizer) { }
+              private snack:MatSnackBar) { }
 
   idUsuario= 0;
   user:any = null;

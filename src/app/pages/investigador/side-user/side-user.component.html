@@ -243,13 +243,13 @@
           
           
 
-          <!--<li class="navbar-nav">
+          <li class="navbar-nav">
             <a class="nav-link  mi-elemento personalizado" routerLink="/user-dashboard/convertir-xls" routerLinkActive="active-link"
                mat-list-item (click)="esconderToggleMenu()">
               <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">home</mat-icon>
               convertir
             </a>
-          </li>-->
+          </li>
 
           <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
         
@@ -349,7 +349,7 @@
 
             <ul class="navbar-nav " *ngIf="isMenuOpen3" >
               <li class="nav-item" *ngFor="let oC of InvestigadorInvestigacion">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link" [routerLink] = "'/user-dashboard/view-conglomerados/'+oC.proyectoInvestigacion.idProyecto"
+                <a class="nav-link  mi-elemento " routerLinkActive="active-link" (click)="abrirProyecto(oC.proyectoInvestigacion.idProyecto)" [routerLink] = "'/user-dashboard/view-dash-proyecto/'+oC.proyectoInvestigacion.idProyecto"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
                   {{oC.proyectoInvestigacion.nombreProyecto}}
@@ -361,84 +361,7 @@
 
 
 
-          <!-------------------------------------------------------------------------->
-    
-
-          <!--------------------------------------------------------------------->
-          <!--
-          <h5 
-          style="font-size: var(--tamanio-rol-usuario); margin-left: 20px;margin-top: 8px; border-top: 5px; padding-top: var(--padint-textos-menu); color:var(--color-menu-dashboar-texto) ;">
-          Proyectos</h5>
-
-          <div style="box-shadow: 0 2px 4px var(--color-menu-dashboar-grupo)">
-            <li class="nav-item" *ngFor="let modelo of InvestigadorInvestigacion">
-              <a class="nav-link  mi-elemento personalizado" routerLinkActive="active-link" mat-list-item (click)="toggleMenuProyecto(modelo)">
-                <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">storage</mat-icon>
-                <div style="width: var(--tamanio-ancho-despelgable);">Proyecto - {{modelo.proyectoInvestigacion.idProyecto}}</div>
-                <span>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);" *ngIf="!modelo.isMenuOpen">
-                    keyboard_arrow_down
-                  </mat-icon>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);" *ngIf="modelo.isMenuOpen">
-                    keyboard_arrow_up
-                  </mat-icon>
-                </span>
-              </a>
-          
-              
-              <ul class="navbar-nav" *ngIf="modelo.isMenuOpen">
-
-                <li class="nav-item">
-                  <a class="nav-link mi-elemento" routerLinkActive="active-link" [routerLink] = "'/user-dashboard/view-variables-proyecto/'+modelo.idProyecto"
-                    style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                    type="button">
-                    Variables
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link mi-elemento" routerLinkActive="active-link" [routerLink] = "'/user-dashboard/view-conglomerados/'+modelo.idProyecto"
-                    style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                    type="button">
-                    Conglomerados
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link mi-elemento" routerLinkActive="active-link" [routerLink] = "'/user-dashboard/importar-xls/'+modelo.idProyecto"
-                    style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                    type="button">
-                    Importar XLS
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link mi-elemento" routerLinkActive="active-link" [routerLink] = "'/user-dashboard/descargar-dat/'+modelo.idProyecto"
-                    style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                    type="button">
-                    Importar CSV
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link mi-elemento" routerLinkActive="active-link" [routerLink] = "'/user-dashboard/descargar-datos/'+modelo.idProyecto"
-                    style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                    type="button">
-                    Descargar datos
-                  </a>
-                </li>
-
-              </ul>
-              <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
-            </li>
-          </div>
-        -->
-          <!--------------------------------------------------------------------->
-
-            
-    
-          <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
-
+         
       
 
 

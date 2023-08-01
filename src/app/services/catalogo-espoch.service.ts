@@ -29,4 +29,12 @@ export class CatalogoEspochService {
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/catalogo-espoch/eliminar-catalogo-espoch/${id}`); 
   }
+
+  public comprobarArchivo(modelo:any){
+    return this.http.post(`${baserUrl}/catalogo-espoch/comprobar-archivo`,modelo);
+  }
+  
+  public importarArchivo(modelo:any){
+    return this.http.post(`${baserUrl}/catalogo-espoch/importar-archivo`,modelo);
+  }
 }

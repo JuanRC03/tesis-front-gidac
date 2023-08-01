@@ -1,57 +1,196 @@
-<mat-card
-  style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
-  <mat-list style="margin: 0; padding: 0; border: 0;">
-    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
-      <mat-icon mat-list-icon
-        style="padding-left: 0px; margin-left: 0; border-left: 0;">supervised_user_circle</mat-icon>
-      <div mat-line><mat-card-title
-          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{datos.nombreProyecto}}
-        </mat-card-title></div>
-      <div mat-line>
-        <div aria-label="breadcrumb" style="font-size: 14px; border: 0; padding: 0; margin: 0;">
-          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/user-dashboard/">Inicio</a></li>
-            <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Proyecto</li>
-          </ol>
-        </div>
-      </div>
-    </mat-list-item>
-  </mat-list>
-</mat-card>
-
-<mat-list>
-    <mat-list-item>
-      <div mat-line>
-      </div>
-      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-
-        <div mat-button style="margin-right: 20px;">
-            <button mat-button mat-raised-button color="primary" [routerLink] = "'/user-dashboard/view-variables-proyecto/'+datos.idProyecto" >Variables del proyecto</button>
-            </div>
-            <div mat-button>
-            <button  mat-raised-button color="primary" [routerLink] = "'/user-dashboard/view-conglomerados/'+datos.idProyecto" >Conglomerados</button>
-            </div>
+<div class="bootstrap-wrapper" >
+  <div class="container-fluid">
+    <div class="row mt20" >
+        <mat-card class="mb20">
+          <mat-card-header>
             
-            <button  mat-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu1" aria-label="Toggle menu">
-                <button mat-raised-button color="primary">Dataset</button>
-            </button>
-            <mat-menu #menu1="matMenu" xPosition="before">
-              <button mat-menu-item [routerLink] = "'/user-dashboard/importar-xls/'+datos.idProyecto">Importar</button>
-              <button mat-menu-item [routerLink] = "'/user-dashboard/descargar-datos/'+datos.idProyecto">Descargar</button>
-            </mat-menu>
+            <div mat-card-avatar class="example-header-image" style="border-radius: 0; margin-top: 15px; height: 23px; width: 23px;"></div>
+            <mat-card-title class="mat-card-title-right" style="font-size: 16px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">
+              {{datos.nombreProyecto}}
+            </mat-card-title>
             
-<!--
-            <button mat-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu2" aria-label="Toggle menu">
-                <button mat-raised-button color="primary">Conglomerados</button>
-              </button>
-              <mat-menu #menu2="matMenu" xPosition="before">
-                <button mat-menu-item >Conglomerados</button>
-                <button mat-menu-item >Descargar</button>
-              </mat-menu>-->
-                     
-       </div>
+          </mat-card-header>
+          <mat-card-content style="padding-left: 25px;">
+            <mat-list class="custom-mat-list">
+              <mat-list-item >
+                <div mat-line>
+                  <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
+                    <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
+                      <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/user-dashboard/">Inicio</a></li>
+                      <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Proyecto</li>
+                    </ol>
+                  </div>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                  <button [routerLink] = "'/user-dashboard/view-conglomerados/'+idProyecto" mat-raised-button color="primary">Ver conglomerados</button>
+                </div>
+              </mat-list-item>
+            </mat-list>  
+          </mat-card-content>
+        </mat-card>
+    </div>
+  </div>
+</div>
 
-    </mat-list-item>
-  </mat-list>
 
 
+<div class="bootstrap-wrapper" style="background-color: var(--submenu-color); padding-top: 10px; ">
+  <div class="container-fluid">
+    <div class="row mt20" >
+      <div class="col-md-5" style="padding-right: 2px; " >
+        
+        <mat-card class="mb20 custom-card" style="padding: 2px; padding-bottom: 10px; background-color: var(--submenu-color); box-shadow: 0px 0px 3px 3px var(--color-menu-dashboar-grupo)">
+          <mat-list class="estilo-mat-list" style="padding: 5px;">
+            <mat-list-item class="estilo-mat-item">
+              <div mat-line *ngIf="investigacionDat.country==''"><strong>Explorar</strong></div>
+              <div mat-line *ngIf="investigacionDat.country==''">Seleccione un punto para explorar !!</div>
+              <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 15px;"><b>Coordenadas:</b> {{investigacionDat.coordenadax}}, {{investigacionDat.coordenaday}}</div>
+              <div mat-line *ngIf="investigacionDat.country!=''" style="padding-top: 5px; font-size: 13px;"><b>País: </b>{{investigacionDat.country}}</div>
+              <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Provincia: </b>{{investigacionDat.state}}</div>
+              <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Cantón: </b>{{investigacionDat.county}}</div>
+              <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Parroquia: </b>{{investigacionDat.parroquia}}</div>
+            </mat-list-item>
+      
+            <mat-divider style="padding-top: 0px;"></mat-divider>
+          </mat-list>
+      
+          <div style="padding: 0;">
+            <mat-card-content>
+            <mat-expansion-panel style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
+                             (closed)="panelOpenGrafico = false">
+          <mat-expansion-panel-header style="max-width: 500px;">
+              <mat-panel-title>
+                Catálogo de datos
+              </mat-panel-title>
+              
+            </mat-expansion-panel-header>
+            <div class="estilo-buscar">
+              <div class="personalizado1">
+                <input type="text" #txtSearchOrganizacion required class="personalizado2" (keyup)="onSearchOrganizacion( txtSearchOrganizacion.value)">
+                <label class="lbl-busqueda">
+                  <span class="text-busqueda">Buscar....</span>
+                </label>
+              </div>
+            </div>
+            <mat-form-field  class="mt20 w100 " style="padding: 0px;margin: 0px;padding-top: 20px; height: 100%; min-width: 360px;">
+              <mat-label>Organización</mat-label>
+              <mat-select name="organizaciones" [(ngModel)]="listaOrganizaciones.idOrganizacion" (selectionChange)="onOrganizacionChange($event)" >
+                <mat-option *ngFor="let c of listaOrganizaciones" [value]="c.idOrganizacion">
+                  {{ c.nombreOrganizacion }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        <br>
+            <mat-form-field class="mt20 w100 " style="padding: 0px;margin: 0px;padding-top: 0px; height: 100%; min-width: 360px;">
+              <mat-label>Familia</mat-label>
+              <mat-select name="familia" [(ngModel)]="familiaOrganizacionSeleccionado.idFamilia" (selectionChange)="onFamiliaChange($event)" >
+                <mat-option *ngFor="let c of listaFamiliaVariable" [value]="c.idFamilia">
+                  {{ c.descripcion }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        
+            
+            <mat-list>
+              <mat-divider></mat-divider>  
+              <mat-list-item
+                *ngFor="let oC of listaCatalogoOrganizacion | filtroVariablesDifusion:searchOrganizacion:searchOrganizacionVariable | paginate:page_size2:page_number2; let i = index"
+                style="color: var(--color-texto-menu-home)">
+                <div mat-line><mat-card-title
+                    style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.nombreVariable }}</mat-card-title>
+                </div>
+                <!--<div mat-line style="font-size: 13px;">Organización: {{oC.nombreOrganizacion}}</div>-->
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                  <div class="pading-radio-buton">
+                    <div class="container-1">
+                      <div class="form-group">
+                        <input style="display: none;" type="radio" name="radioOpcionVariable" [id]="oC.nombreVariable"
+                          [id]="oC.nombreVariable" [checked]="variableSeleccionada === oC.idVariable"
+                          (change)="filtrarCatalogo(oC.idVariable)" />
+                        <label [for]="oC.nombreVariable"><span class="radio-button-1"></span></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <mat-divider></mat-divider>
+              </mat-list-item>
+              <mat-list *ngIf="(listaCatalogoOrganizacion| filtroVariablesDifusion:searchOrganizacion:searchOrganizacionVariable ).length===0"
+                style="text-align: center; padding: 20px; margin: 20px;">
+                <p style="color: var(--color-texto-menu-home);">No existen datos !!  </p>
+                <br>
+                <mat-divider></mat-divider>
+              </mat-list>
+            </mat-list>
+            <mat-divider></mat-divider>
+                    <mat-paginator style="background-color: var(--submenu-color);"
+                                   (page)="handlePage2($event)"
+                                   [length]="(listaCatalogoOrganizacion | filtroVariablesDifusion:searchOrganizacion:searchOrganizacionVariable ).length"
+                                   [pageSize]="page_size2"
+                                   [pageSizeOptions]="page_size_options2"
+                                   showFirstLastButtons>
+                    </mat-paginator>
+        
+          
+        
+          </mat-expansion-panel>
+        </mat-card-content>
+        <mat-card-content>
+          <mat-expansion-panel *ngIf="dataNumerico && dataKeys1.length > 0" style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
+                             (closed)="panelOpenGrafico = false">
+          <mat-expansion-panel-header>
+              <mat-panel-title>
+                Variables numéricas
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div mat-line *ngIf="investigacionDat.country==''">Seleccione un punto para explorar !!</div>
+            
+            <div  id="chartsContainer" style="min-width: 170px;"></div>
+            
+          </mat-expansion-panel>
+        </mat-card-content>
+        <mat-card-content>
+          <mat-expansion-panel *ngIf="dataNominal && dataKeys2.length > 0" style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
+                             (closed)="panelOpenGrafico = false">
+          <mat-expansion-panel-header>
+              <mat-panel-title>
+                Variables nominales
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div mat-line *ngIf="investigacionDat.country==''">Seleccione un punto para explorar !!</div>
+      <mat-card *ngFor="let investigacion of modeloNominal.investigacionDatos" class="investigacion">
+        <h2 style="font-size: 15px; margin-bottom: 0px;">{{ investigacion.tipoValor }}</h2>
+        <ul class="valores-lista">
+          <li *ngFor="let valor of investigacion.valoresLista">
+            <div class="valor-item">
+              <p><strong>Profundidad:</strong> {{ valor.profundidad }}</p>
+              <p><strong>Valor:</strong> {{ valor.valor }}</p>
+            </div>
+          </li>
+        </ul>
+      </mat-card>
+          </mat-expansion-panel>
+        </mat-card-content>
+      </div>
+          </mat-card>
+          
+        
+        <br>
+      </div>
+      <div class="col-md-7" style="padding-left: 2px;">
+        <mat-card class="mb20" style="padding: 2px;">
+          <div id="map">
+            <div id="select-container">
+              <div class="select">
+                <select class="div-select" name="format" id="format" (change)="onMapChange($event)">
+                  <option *ngFor="let map of maps" [value]="map.name">{{ map.label }}</option>
+                </select>
+              </div>
+            </div>
+            </div>
+        </mat-card>
+        <br>
+      </div>
+
+    </div>
+  </div>
+</div>

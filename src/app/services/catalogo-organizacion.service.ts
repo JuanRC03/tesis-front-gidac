@@ -28,5 +28,15 @@ export class CatalogoOrganizacionService {
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/catalogo-organizacion/eliminar-catalogo-organizacion/${id}`); 
   }
+
+  public comprobarArchivo(modelo:any){
+    return this.http.post(`${baserUrl}/catalogo-organizacion/comprobar-archivo`,modelo);
+  }
+
+  public importarArchivo(modelo:any){
+    return this.http.post(`${baserUrl}/catalogo-organizacion/importar-archivo`,modelo);
+  }
+
+  
 }
   

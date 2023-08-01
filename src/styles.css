@@ -129,7 +129,15 @@
     --color-menu-dashboar-texto: rgb(0,0,0);
     --resaltado-color-dash:rgb(133, 143, 116);
     --color-menu-dashboar-resaltado:#259441;
+
+    
+
+    --tamanio-texto-indicador:17px;
+    --tamanio-texto-camino:15px;
+    --tamanio-cuadro-idicador:60px;
+    --tamanio-icono-indocador:30px;
 }
+
 body
 {
     height: 100vh;

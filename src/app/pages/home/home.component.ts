@@ -33,6 +33,7 @@ import { Color } from 'ng2-charts';
 import { ChartsModule } from 'ng2-charts';
 import { VariableService } from 'src/app/services/variable.service';
 import { MatSidenav } from '@angular/material/sidenav';
+import { OrganizacionService } from 'src/app/services/organizacion.service';
 
 interface Marker {
   lat: number;
@@ -44,6 +45,16 @@ interface Dato {
   profundidades: String;
   valor: number;
 }
+
+interface OrganizacionProyecto {
+  idOrganizacion: number;
+  nombreOrganizacion: String;
+  siglas:String;
+  descripcion:String
+}
+
+
+
 
 @Component({
   selector: 'app-home',
@@ -65,7 +76,8 @@ export class HomeComponent {
     private catalogoOrganizacionService: CatalogoOrganizacionService,
     private VariableService: VariableService,
     private http: HttpClient,
-    private carbonoService: CarbonoService) {
+    private carbonoService: CarbonoService,
+    private organizacionService:OrganizacionService) {
   }
 
   
@@ -114,7 +126,9 @@ export class HomeComponent {
       (dato: any) => {
         this.investigacion = dato;
         this.investigaciones = dato;
-        this.investigaciones.unshift({ idProyecto: 0, nombreProyecto: 'Todos los proyectos', descripcion: 'Vizualizar todas los proyectos' });
+        if (this.investigaciones.length > 0) {
+          this.investigaciones.unshift({ idProyecto: 0, nombreProyecto: 'Todos los proyectos', descripcion: 'Vizualizar todas los proyectos' });
+        }
       }, (error) => {
 
         this.snack.open('Ha ocurrido un error en el sistema !!', 'Aceptar', {
@@ -131,19 +145,79 @@ export class HomeComponent {
       }
     )
 
-    this.VariableService.listar().subscribe(
+    this.listarVariablesDifucion(0);
+    this.listarOrganizaciones();
+    this.listarFamiliasVariables();
+    this.initMap();
+  }
+
+  listarVariablesDifucion(id:any){
+    this.VariableService.listarVariablesDifusion(id).subscribe(
       (dato: any) => {
         this.listaCatalogoOrganizacion = dato;
+        if (this.listaCatalogoOrganizacion.length > 0) {
+          this.listaCatalogoOrganizacion.unshift({ idVariable: 0, nombreVariable: 'Todos los datos', siglas:'Todos', nombreOrganizacion:'Todos'});
+        }
       }
     )
-
-
-    this.initMap();
-
-    
-
-
   }
+
+  listaOrganizaciones : any = []
+
+  listarOrganizaciones()
+  {
+    this.organizacionService.listar().subscribe(
+        res=>{
+          this.listaOrganizaciones=res;
+
+          if (this.listaOrganizaciones.length > 0) {
+            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Todas las organizaciones', siglas:'Todos', descripcion:'Todos'});
+          }
+          this.listaOrganizaciones.idOrganizacion = 0;
+        },
+        err=>console.log(err)
+      )
+  }
+
+  public searchOrganizacionVariable: string = '';
+  opcionSeleccionada:any;
+  onOrganizacionChange(event: any): void {
+    this.opcionSeleccionada = this.listaOrganizaciones.find((option: OrganizacionProyecto) => option.idOrganizacion === event.value);
+    if(this.opcionSeleccionada.idOrganizacion==0){
+      this.searchOrganizacionVariable="";
+    }else{
+      this.searchOrganizacionVariable=this.opcionSeleccionada.nombreOrganizacion;
+    } 
+  }
+
+  listaFamiliaVariable : any = []
+
+  listarFamiliasVariables()
+  {
+    this.VariableService.listarFamiliasVariables().subscribe(
+        res=>{
+          this.listaFamiliaVariable=res;
+          if (this.listaFamiliaVariable.length > 0) {
+            this.listaFamiliaVariable.unshift({ idFamilia: 0, descripcion: 'Todas las familias'});
+          }
+          this.familiaOrganizacionSeleccionado.idFamilia = 0;
+        },
+        err=>console.log(err)
+      )
+  }
+
+  public searchFamiliaOrganizacion: Number = 0;
+  opcionSeleccionadaFamilia:any;
+
+  familiaOrganizacionSeleccionado= {
+    idFamilia: 0,
+  }
+  onFamiliaChange(event: any): void {
+    //this.opcionSeleccionadaFamilia = this.listaFamiliaVariable.find((option: FamiliaOrganizacion) => option.idFamilia === event.value);
+    //console.log(this.opcionSeleccionada.idFamilia)
+    this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia);
+  }
+
 
   ngAfterViewInit() {
     this.fetchData();
@@ -164,9 +238,7 @@ export class HomeComponent {
       maxZoom: 50,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
-    this.map.setMinZoom(2.5);
-
-    
+    this.map.setMinZoom(2.5);    
   }
 
 
@@ -370,12 +442,12 @@ export class HomeComponent {
   }
 
   investigacionSeleccionada = 0;
-  variableSeleccionada = 0;
+  variableSeleccionada = -1;
 
 
   filtrarInvestigacione(id: any) {
     this.investigacionSeleccionada = id;
-    this.variableSeleccionada = 0;
+    this.variableSeleccionada = -1;
     this.reloadMarkers(id);
   }
 
@@ -389,10 +461,12 @@ export class HomeComponent {
 
 
   private reloadMarkers(id: any) {
+    this.dataNominal=[];
+    this.dataNumerico=[];
     this.openPopup = null;
     this.clearMarkers()
     // Volver a cargar los datos y procesarlos
-    this.datoRecolectadoService.listarTodosLosDatos(id).subscribe(
+    this.datoRecolectadoService.listarTodosLosDatosUnidos(id).subscribe(
       (response: any) => {
         this.plotData(response);
       },
@@ -400,6 +474,13 @@ export class HomeComponent {
         console.log('Error al obtener los datos:', error);
       }
     );
+
+    this.cargarDatosVariableProyecto(id);
+
+    if (this.radioButton) {
+      this.radioButton.nativeElement.checked = false;
+    }
+      
     if (!this.chartsContainer) {
       return;
     }
@@ -413,12 +494,15 @@ export class HomeComponent {
     });
   }
 
+  
   private reloadMarkersCatalogo(id: any) {
+    this.dataNominal=[];
+    this.dataNumerico=[];
     this.openPopup?.closePopup();
     this.openPopup = null;
     this.clearMarkers()
     
-    this.datoRecolectadoService.listarTodosLosDatosCatalogo(id).subscribe(
+    this.datoRecolectadoService.listarTodosLosDatosCatalogoUnidos(id).subscribe(
       (response: any) => {
         this.plotData(response);
       },
@@ -427,6 +511,7 @@ export class HomeComponent {
       }
     );
 
+    this.cargarDatosVariableCatalogo(id);
     //this.radioButton.nativeElement.checked = false;
     if (this.radioButton) {
       this.radioButton.nativeElement.checked = false;
@@ -562,6 +647,15 @@ export class HomeComponent {
     { name: 'Mapa topográfico', label: 'Mapa topográfico' },
   ];
 
+  activarLocalizaciones(){
+    var Stamen_TonerLabels = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-labels/{z}/{x}/{y}{r}.{ext}', {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 20,
+    });
+  }
+
   onMapChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     const mapName = selectElement.value;
@@ -626,11 +720,11 @@ export class HomeComponent {
   }
 
   //cargar datos en mapa
-
   private fetchData() {
-    this.datoRecolectadoService.listarTodosLosDatos(0).subscribe(
+    this.dataNominal=[];
+    this.dataNumerico=[];
+    this.datoRecolectadoService.listarTodosLosDatosUnidos(0).subscribe(
       (response: any) => {
-        
         this.plotData(response);
 
       },
@@ -638,6 +732,7 @@ export class HomeComponent {
         console.log('Error al obtener los datos:', error);
       }
     );
+    this.cargarDatosVariableProyecto(0);
     this.openPopup = null;
   }
 
@@ -654,22 +749,22 @@ export class HomeComponent {
     coordenadax: '',
     coordenaday: '',
   }
-
   
-
   listaDatos:any=[];
 
   modelo: any = {
     investigacionGraficoList: []
   };
 
+  modeloNominal: any = {
+    investigacionDatos: []
+  };
+
   chartsContainer = document.getElementById('chartsContainer');
 
-
-  listaNumericos:any=[];
+  isNumber: boolean=true;
 
   private plotData(data: any[]) {
-    this.listaNumericos=data;
     this.clearMarkers();
     for (const key in data) {
       const coordinates = key.split(',');
@@ -679,7 +774,7 @@ export class HomeComponent {
         [latLng[0] + 0.001, latLng[1] - 0.001],
         [latLng[0] + 0.001, latLng[1] + 0.001],
         [latLng[0] - 0.001, latLng[1] + 0.001]
-      ], { color: 'green', fillOpacity: 100, weight: 1 }).addTo(this.map);
+      ], { color: 'red', fillOpacity: 100, weight: 1 }).addTo(this.map);
 
       const info = data[key];
       const locationData = {
@@ -689,16 +784,15 @@ export class HomeComponent {
         parroquia: ''
       };
 
+
       let isProcessingClick = false; 
       square.on('click', async (event) => {
 
-        if (isProcessingClick) {
-          return; // Ignorar clics mientras se procesa uno anteriormente
-        }
 
         isProcessingClick = true;
         
         this.modelo.investigacionGraficoList = [];
+        this.modeloNominal.investigacionDatos = [];
         const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latLng[0]}&lon=${latLng[1]}`;
         this.http.get(apiUrl).subscribe((response: any) => {
           locationData.country = response.address.country;
@@ -712,8 +806,8 @@ export class HomeComponent {
           this.investigacionDat.coordenadax = latLng[0];
           this.investigacionDat.coordenaday = latLng[1];
           
-          let message = `<b>Coordenadas:</b><br> <b>Latitud:</b> ${latLng[0]}, <b>Longitud:</b> ${latLng[1]}<br><br>`;
-          message += `<b>Ubicación:</b><br> <b>Pais:</b> ${locationData.country}<br><b>Provincia:</b> ${locationData.state}<br><b>Cantón:</b> ${locationData.county}<br><b>Parroquia:</b> ${locationData.parroquia}<br><br>`;
+          let message = `<div style="margin-bottom: 7px;"><b>Coordenadas:</b><br> <b>Latitud:</b> ${latLng[0]}, <b>Longitud:</b> ${latLng[1]}</div>`;
+          message += `<div style="margin-bottom: 7px;"><b>Ubicación:</b><br> <b>Pais:</b> ${locationData.country}<br><b>Provincia:</b> ${locationData.state}<br><b>Cantón:</b> ${locationData.county}<br><b>Parroquia:</b> ${locationData.parroquia}</div>`;
 
           for (const tipoValor in info) {
             const investigacionGrafico: any = {
@@ -721,9 +815,14 @@ export class HomeComponent {
               valoresLista:[]
             }
             if (info.hasOwnProperty(tipoValor)) {
+
               
               const datos: Dato[] = info[tipoValor];
-              message += `<b> ${tipoValor}</b> <br>`;
+              console.log(datos);
+              message += `<div type="button" id="toggleMenuButton_${tipoValor}" onmouseover="this.style.background='#259441'; this.style.color='#FFFFFF';" onmouseout="this.style.background='#B2C29A'; this.style.color='#000000';" style="position: relative;display: flex;min-width: 20em;height: 1.5em;line-height: 1.5;background: #B2C29A;border-radius: 5px;margin-bottom: 1px;">`;
+              message += `<p style="padding-left:10px"  >${tipoValor} </p>`;
+              message += '</div>'
+              message += `<div id="menuContent_${tipoValor}" style="display:none;">`;
               message += "<ul>"
               investigacionGrafico.tipoValor=tipoValor;
               for (let i = 0; i < datos.length; i++) {
@@ -736,19 +835,45 @@ export class HomeComponent {
                 valores.profundidad=dato.profundidades;
                 message += `<li>${dato.valor} (${dato.profundidades})</li>`;
                 investigacionGrafico.valoresLista.push(valores);
+                if(this.isNumber==true){
+                  this.isNumber = !isNaN(parseFloat(valores.valor)) && isFinite(+valores.valor);
+                }
               }
               message += "</ul>"
+              message += "</div>"
             }
-            
-            this.modelo.investigacionGraficoList.push(investigacionGrafico);
+            if(this.isNumber==true){
+              this.modelo.investigacionGraficoList.push(investigacionGrafico);
+            }else{
+              this.modeloNominal.investigacionDatos.push(investigacionGrafico);
+            }
+            this.isNumber=true;
 
           }
-          
-          console.log(this.modelo);
+          message +='</li>'
+          console.log("modelo nominal")
+          console.log(this.modeloNominal);
+          console.log("modelo nominal")
           this.openPopup = square.bindPopup(message);
           this.openPopup.openPopup();
           this.generateCharts();
           isProcessingClick = false;
+
+
+          for (const tipoValor in info) {
+            const toggleMenuButton = document.getElementById(`toggleMenuButton_${tipoValor}`);
+            const menuContent = document.getElementById(`menuContent_${tipoValor}`);
+            if (toggleMenuButton && menuContent) {
+            toggleMenuButton.addEventListener('click', (() => {
+              let isMenuOpen = false;
+              return () => {
+                isMenuOpen = !isMenuOpen;
+                menuContent.style.display = isMenuOpen ? 'block' : 'none';
+              };
+            })())};
+          }
+
+        
         });
         //square.bindPopup(message).openPopup();
       });
@@ -756,6 +881,66 @@ export class HomeComponent {
     }
   }
 
+  
+
+
+  //cargar datos en mapa
+  dataNominal: any=[];
+  dataNumerico: any=[];
+
+  private cargarDatosVariableProyecto(id:any) {
+    this.datoRecolectadoService.listarTodosLosDatos(id).subscribe(
+      (response: any) => {
+        
+        this.dataNumerico=response;
+        this.getCoordenadas1(this.dataNumerico);
+      },
+      error => {
+        console.log('Error al obtener los datos:', error);
+      }
+    );
+
+    this.datoRecolectadoService.listarTodosLosDatosNominal(id).subscribe(
+      (response: any) => {
+        this.dataNominal=response;
+        this.getCoordenadas2(this.dataNominal);
+      },
+      error => {
+        console.log('Error al obtener los datos:', error);
+      }
+    );
+  }
+
+  dataKeys1: string[] = [];
+  dataKeys2: string[] = [];
+  getCoordenadas1(data: any){
+    this.dataKeys1 = Object.keys(data); // Obtenemos las claves del objeto para usar en el template
+  }
+  getCoordenadas2(data: any){
+    this.dataKeys2 = Object.keys(data); // Obtenemos las claves del objeto para usar en el template
+  }
+
+  private cargarDatosVariableCatalogo(id:any) {
+    this.datoRecolectadoService.listarTodosLosDatosCatalogo(id).subscribe(
+      (response: any) => {
+        this.dataNumerico=response;
+        this.getCoordenadas1(this.dataNumerico);
+      },
+      error => {
+        console.log('Error al obtener los datos:', error);
+      }
+    );
+
+    this.datoRecolectadoService.listarTodosLosDatosCatalogoNominal(id).subscribe(
+      (response: any) => {
+        this.dataNominal=response;
+        this.getCoordenadas2(this.dataNominal);
+      },
+      error => {
+        console.log('Error al obtener los datos:', error);
+      }
+    );
+  }
   
 
   
@@ -799,8 +984,8 @@ export class HomeComponent {
             datasets: [{
               label: tipoValor,
               data: data,
-              backgroundColor: 'rgba(37,148,75, 0.5)',
-              borderColor: 'rgba(37,148,75, 1)',
+              backgroundColor: 'rgba(178,194,154)',
+              borderColor: 'rgba(133,143,116)',
               borderWidth: 1
             }]
           },
@@ -822,6 +1007,7 @@ export class HomeComponent {
                 },
                 ticks: {
                   min: 0, // Valor mínimo del eje Y
+                  stepSize: 50,
                 }
               }]
             }
@@ -834,7 +1020,7 @@ export class HomeComponent {
       }
     });
   
-    console.log(chartInstances);
+    
   
     const canvasId = 'myCanvasId';
     const chartInstance = chartInstances[canvasId];
@@ -1230,7 +1416,6 @@ export class ViewInformacionProyectoInvestigacion {
     )
     this.investigacionInvestigadoresService.obtenerDirectorProyecto(this.data.idProyectoInvestigacion).subscribe(
       (data: any) => {
-        console.log(data);
         this.informacionDirector = data;
       },
       (error) => {

@@ -40,7 +40,7 @@ export class DescargarDatosComponent implements OnInit {
 
   ngOnInit() {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
-    this.equivalenciaVariableService.obtenerPorProyecto(this.idProyecto).subscribe((data: any) => {
+    this.equivalenciaVariableService.listar().subscribe((data: any) => {
       this.dataSource.data = data;
       console.log(data);
       this.dataSource.paginator = this.paginator;
@@ -120,7 +120,7 @@ export class DescargarDatosComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.catalogoEspoch.idVariableEspoch}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.catalogoEspoch.codigoVariableEspoch}`;
   }
 
   isAllSelected() {
@@ -238,21 +238,23 @@ export class DescargarDatosComponent implements OnInit {
 
 export interface Variable {
   variable: {
-    idVariable: number;
+    idVariable: string;
     nombreVariable: string;
     tipoVariable: {
       nombreTipoVariable: string;
     }
   };
   catalogoEspoch: {
-    idVariableEspoch: number;
+    codigoVariableEspoch: number;
     nombreVariableEspoch: string;
   };
 
   catalogoOrganizacion: {
-    idVariableOrganizacion: number;
+    codigoVariableOrganizacion: string;
     nombreVariableOrganizacion: string;
-    nombreOrganizacion: string;
+    organizacion: {
+      nombreOrganizacion: string;
+    }
   };
   checked: boolean;
 }

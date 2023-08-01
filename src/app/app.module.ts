@@ -182,6 +182,17 @@ import { DialogActualizarAreaInvestigacionAdmin } from './pages/admin/view-area-
 import { ViewFamiliaAdminComponent } from './pages/admin/view-familia-admin/view-familia-admin.component';
 import { DialogActualizarFamiliaAdmin } from './pages/admin/view-familia-admin/view-familia-admin.component';
 import { DialogAddFamiliaAdmin } from './pages/admin/view-familia-admin/view-familia-admin.component';
+import { ImportarCatalogoOrganizacionComponent } from './pages/admin/importar-catalogo-organizacion/importar-catalogo-organizacion.component';
+import { ImportarCatalogoEspochComponent } from './pages/admin/importar-catalogo-espoch/importar-catalogo-espoch.component';
+import { AddEquivalenciaVariableComponent } from './pages/admin/add-equivalencia-variable/add-equivalencia-variable.component';
+import { ViewEquivalenciaVariableComponent } from './pages/admin/view-equivalencia-variable/view-equivalencia-variable.component';
+import { FiltroAddFamiliaPipe } from './pipes/filtro-add-familia.pipe';
+import { ViewVariablesAdminComponent } from './pages/admin/view-variables-admin/view-variables-admin.component';
+import { DialogAddEquivalencia } from './pages/admin/view-variables-admin/view-variables-admin.component';
+import { DialogCompletarDatosVariable } from './pages/admin/view-variables-admin/view-variables-admin.component';
+import { DialogImportarCatalogoOrganizacion } from './pages/admin/view-catalogo-organizacion-admin/view-catalogo-organizacion-admin.component';
+import { DialogImportarCatalogoEspoch } from './pages/admin/view-catalogo-espoch-admin/view-catalogo-espoch-admin.component';
+import { FiltroVariablesDifusionPipe } from './pipes/filtro-variables-difusion.pipe';
 
 @NgModule({
   declarations: [
@@ -318,8 +329,18 @@ import { DialogAddFamiliaAdmin } from './pages/admin/view-familia-admin/view-fam
     DialogActualizarAreaInvestigacionAdmin,
     ViewFamiliaAdminComponent,
     DialogActualizarFamiliaAdmin,
-    DialogAddFamiliaAdmin
-   
+    DialogAddFamiliaAdmin,
+    ImportarCatalogoOrganizacionComponent,
+    ImportarCatalogoEspochComponent,
+    AddEquivalenciaVariableComponent,
+    ViewEquivalenciaVariableComponent,
+    FiltroAddFamiliaPipe,
+    ViewVariablesAdminComponent,
+    DialogAddEquivalencia,
+    DialogCompletarDatosVariable,
+    DialogImportarCatalogoOrganizacion,
+    DialogImportarCatalogoEspoch,
+    FiltroVariablesDifusionPipe
 
   ],
   imports: [

@@ -122,6 +122,11 @@ export class SideUserComponent {
     
     this.isLoggedIn = this.login.isLoggedIn();
     this.usuario = this.login.getUser();
+    const storedValue = localStorage.getItem('isMenuOpen3');
+    this.isMenuOpen3 = storedValue === 'true';
+
+    const storedValue2 = localStorage.getItem('isArrowUp3');
+    this.isArrowUp3 = storedValue === 'true';
 
     //this.listarContadorDeSolicitudes();
     
@@ -248,6 +253,14 @@ export class SideUserComponent {
     this.router.navigate(['/user-dashboard/view-conglomerados/'+id]).then(() => {
       window.location.reload();
       this.isMenuOpen1=true;
+    });
+  }
+
+  abrirProyecto(id:any){
+    localStorage.setItem('isMenuOpen3', this.isMenuOpen3 ? 'true' : 'false');
+    localStorage.setItem('isArrowUp3', this.isArrowUp3 ? 'true' : 'false');
+    this.router.navigate(['/user-dashboard/view-dash-proyecto/' + id]).then(() => {
+      location.reload();
     });
   }
 

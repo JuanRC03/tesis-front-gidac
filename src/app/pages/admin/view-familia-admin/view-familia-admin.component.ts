@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, Inject, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, Inject, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -21,6 +21,7 @@ export class ViewFamiliaAdminComponent implements AfterViewInit {
 
   constructor(private familiaService:FamiliaService,public dialog: MatDialog,) {
     this.dataSource = new ViewFamiliaAdminDataSource();
+    
   }
 
   displayedColumns = ['dato1', 'dato2', 'opciones'];
@@ -29,7 +30,9 @@ export class ViewFamiliaAdminComponent implements AfterViewInit {
   }
   
   ngOnInit(): void {
-    this.listarVigentes();
+    this.cargarJerarquia();
+    this.cargarHijosRecursivos(0, null);
+    //this.listarVigentes();
   }
 
     listaDatos : any = []
@@ -123,9 +126,12 @@ export class ViewFamiliaAdminComponent implements AfterViewInit {
     })
   }
 
-  openDialogAgregar(): void {
-    const dialogRef = this.dialog.open(DialogAddFamiliaAdmin, {});
+  openDialogAgregar(idFamilia:any): void {
+    const dialogRef = this.dialog.open(DialogAddFamiliaAdmin, {
+      data: { idFamilia: idFamilia},
+    });
     dialogRef.afterClosed().subscribe(() => {
+      this.cargarHijosRecursivos(this.idAgregarEditar, this.idAnterior);
       this.listarVigentes();
     });
     
@@ -136,17 +142,95 @@ export class ViewFamiliaAdminComponent implements AfterViewInit {
       data: { idFamilia: id, nombreFamilia:nombre, descripcion:descripcion},
     });
     dialogRef.afterClosed().subscribe(() => {
+      this.cargarHijosRecursivos(this.idAgregarEditar, this.idAnterior);
       this.listarVigentes();
     });
   }
+
+  hijosFinales!: FamiliaDTO[];
+  cargarJerarquia(): void {
+    this.familiaService.getHijosFinales().subscribe((hijosFinales: FamiliaDTO[]) => {
+      setTimeout(() => {
+        this.hijosFinales = hijosFinales;
+      });
+    });
+  }
+  hijosRecursivos: any = [];
+  hijosRecursivosAux: any = [];
+  idPadre:any;
+  idAnterior:any;
+  datosPadreAnterior:any;
+
+  idAgregarEditar:any;
+
+cargarHijosRecursivos(id:any, idAnterior:any): void {
+  this.idAgregarEditar=id;
+  this.idAnterior=idAnterior;
+  this.familiaService.listarHijosRecursivos(id).subscribe(
+    (data:any) => {
+      this.hijosRecursivos=data;
+      if(this.hijosRecursivos.length>0){
+        const ultimoDato= this.hijosRecursivos[0];
+        this.idPadre = ultimoDato[3];
+      }
+
+    }
+  )
+  console.log('dato guardar :'+this.idAgregarEditar);
+}
+
+cargarAnterior(id:any): void {
+
+  if(id==null){
+    this.idPadre=null;
+    id=0;
+    this.idAgregarEditar=0;
+  }
+  this.familiaService.listarHijosRecursivos(id).subscribe(
+    (data:any) => {
+      this.hijosRecursivos=data;
+      this.idAgregarEditar=id;
+      console.log('dato guardar :'+this.idAgregarEditar);
+    }
+  )
+  if(id!=0){
+    this.familiaService.listarPadreAux(id).subscribe(
+      (data:any) => {
+        this.hijosRecursivosAux=data;
+          const ultimoDato= this.hijosRecursivosAux[0];
+          this.idAnterior = ultimoDato[3];
+      }
+    )
+  }
+  
+}
+
+}
+
+export interface FamiliaDTO {
+  idFamilia: number;
+  descripcion: string;
+  descripcionCompleta: string;
+  checked: boolean;
 }
 
 interface DatosActualizar {
 idFamilia: 0,
 nombreFamilia: '',
 descripcion: '',
-
 }
+
+interface datoFamilia {
+  idFamilia: 0,
+  }
+
+  export interface Familia {
+    idFamilia:Number;
+    codigo: string;
+    descripcion: string;
+    vigencia: boolean;
+    familia?: Familia; // Relación con el padre
+  }
 
 @Component({
 selector: 'add-familia-admin',
@@ -156,9 +240,10 @@ styleUrls: ['./view-familia-admin.component.css']
 export class DialogAddFamiliaAdmin {
 constructor(
   public dialogRef: MatDialogRef<DialogAddFamiliaAdmin>,
+  @Inject(MAT_DIALOG_DATA) public datos: datoFamilia,
   private snack: MatSnackBar,
   private service: FamiliaService,
-
+  private changeDetectorRef: ChangeDetectorRef
 ) { }
 
 onNoClick(): void {
@@ -167,20 +252,28 @@ onNoClick(): void {
 
 investigacion: any = [];
 
-datos = {
-  nombreFamilia: '',
-  descripcion: ''
-}
+familia: Familia = {
+  idFamilia:0,
+  codigo: '',
+  descripcion: '',
+  vigencia: true,
+};
 
-ngOnInit(): void {
+idPadreSeleccionado=0;
+ngOnInit(): void {; 
+ 
+  if(this.datos.idFamilia!=0){
+    this.familia.familia = { idFamilia: this.datos.idFamilia, codigo:'', descripcion:'', vigencia:true } as Familia; 
+  }
+  
   
 }
 
 public afterClosed: EventEmitter<void> = new EventEmitter<void>();
 
 formSubmit() {
-  if (this.datos.nombreFamilia == '' || this.datos.nombreFamilia == null) {
-    this.snack.open('El nombre de la clasificación es requerido !!', 'Aceptar', {
+  if (this.familia.codigo == '') {
+    this.snack.open('El código de la familia es requerido !!', 'Aceptar', {
       duration: 3000,
       verticalPosition: 'bottom',
       horizontalPosition: 'center'
@@ -188,7 +281,7 @@ formSubmit() {
     return;
   }
 
-  if (this.datos.descripcion == '' || this.datos.descripcion == null) {
+  if (this.familia.descripcion == '') {
     this.snack.open('La descripción es requerido !!', 'Aceptar', {
       duration: 3000,
       verticalPosition: 'bottom',
@@ -197,20 +290,29 @@ formSubmit() {
     return;
   }
 
-  this.service.guardar(this.datos).subscribe(
+
+  this.service.guardar(this.familia).subscribe(
     (data) => {
-      Swal.fire('Clasificación guardada', 'La clasificación se ha guardado con exito', 'success');
+      Swal.fire('Familia guardada', 'La familia se ha guardado con exito', 'success');
       this.afterClosed.emit();
       this.dialogRef.close();
 
     }, (error) => {
       console.log(error);
-      Swal.fire('Error al guardar la clasificación ', 'La clasificación no se ha guardado', 'error');
+      Swal.fire('Error al guardar la familia ', 'La familia no se ha guardado', 'error');
     }
   )
 }
+
+
 }
 
+
+export interface FamiliaDTO {
+  idFamilia: number;
+  descripcion: string;
+  descripcionCompleta: string;
+}
 
 @Component({
 selector: 'actualizar-familia-admin',

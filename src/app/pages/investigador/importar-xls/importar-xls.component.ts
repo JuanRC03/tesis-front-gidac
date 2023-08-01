@@ -23,6 +23,7 @@ interface DataModel {
   idVariable: number;
   nombreTipoVariable: string;
   nombreVariable: string;
+  nombreVariableEspoch: string;
   numeroColumna: number;
 }
 
@@ -235,8 +236,15 @@ export class ImportarXlsComponent implements OnInit {
       backgroundColor: ['rgba(7,143,174)', 'rgba(174,7,70)', 'rgba(255,189,54)'],
     },
   ];
+  
+ 
   public pieChartOptions: ChartOptions = {
     responsive: true,
+    plugins: {
+      legend: {
+        position: 'right', // Coloca las etiquetas a la derecha del gráfico
+      },
+    },
   };
   
   public pieChartLabels: Label[] = ['Cantidad de datos correctos', 'Cantidad de Nulos', 'Cantidad Fuera de Rango'];
@@ -269,4 +277,5 @@ export class ImportarXlsComponent implements OnInit {
       this.pieChartData.push([model.cantidadDatosCorrectos, model.cantidadNulos, model.cantidadFueraRanngo]);
     });
   }
+  
 }

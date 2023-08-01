@@ -28,17 +28,19 @@
           <mat-card-header>
             
             <div mat-card-avatar class="example-header-image" style="border-radius: 0; margin-top: 15px; height: 23px; width: 23px;"></div>
-            <mat-card-title class="mat-card-title-right" style="font-size: 14px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">
+            <mat-card-title class="mat-card-title-right" style="font-size: 16px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">
               {{datos.nombreProyecto}}
             </mat-card-title>
             
           </mat-card-header>
           <mat-card-content style="padding-left: 40px;">
             <div mat-line>
-              <div aria-label="breadcrumb" style="font-size: 14px; border: 0; padding: 0; margin: 0;">
+              <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino);; border: 0; padding: 0; margin: 0;">
                 <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
                   <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/user-dashboard/">Inicio</a></li>
+                  <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/user-dashboard/view-dash-proyecto/'+idProyecto">Proyecto</a></li>
                   <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/user-dashboard/view-conglomerados/'+idProyecto">Conglomerados</a></li>
+                  
                   <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/user-dashboard/view-parcelas/'+idConglomerado+'/'+idProyecto">Parcelas</a></li>
                   <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Ver puntos de muestra</li>
                 </ol>

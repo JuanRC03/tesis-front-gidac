@@ -24,7 +24,7 @@ export class FiltroVariableDescargaPipe implements PipeTransform {
         item.variable.nombreVariable.toLowerCase().includes(searchText) ||
         item.catalogoEspoch.nombreVariableEspoch.toLowerCase().includes(searchText) ||
         item.variable.tipoVariable.nombreTipoVariable.toLowerCase().includes(searchText) ||
-        item.catalogoOrganizacion.nombreOrganizacion.toLowerCase().includes(searchText)
+        item.catalogoOrganizacion.organizacion.nombreOrganizacion.toLowerCase().includes(searchText)
       );
     });
   }

@@ -319,6 +319,8 @@ input:checked + label .radio-button-1::after {
     color: #fff;
   }
 
+  
+
   #select-container-menu {
     position: fixed;
     bottom: 0;
@@ -358,6 +360,9 @@ input:checked + label .radio-button-1::after {
     font-size: 1em;
     font-family: 'Open Sans', sans-serif;
  }
+
+ 
+
  select::-ms-expand {
     display: none;
  }
@@ -371,6 +376,10 @@ input:checked + label .radio-button-1::after {
     overflow: hidden;
     border-radius: .25em;
  }
+
+ 
+ 
+
  .select::after {
     content: '\25BC';
     position: absolute;
@@ -381,6 +390,9 @@ input:checked + label .radio-button-1::after {
     cursor:pointer;
     pointer-events:none;
     transition:.25s all ease;
+    
+    
+    
  }
  .select:hover::after {
     color: var(--resaltado-color);
@@ -458,3 +470,37 @@ input:checked + label .radio-button-1::after {
 }
 
 
+
+
+.investigacion {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.tipo-valor {
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.valores-lista {
+  list-style: none;
+  padding-left: 0;
+}
+
+.valor-item {
+  border: 1px solid #ddd;
+  padding: 5px;
+  
+  margin-bottom: 5px;
+}
+
+.valor-item p {
+  margin: 0;
+}
+
+.valor-item p:first-child {
+  margin-bottom: 3px;
+}

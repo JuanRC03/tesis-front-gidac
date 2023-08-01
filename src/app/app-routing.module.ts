@@ -95,8 +95,11 @@ import { ViewCatalogoEspochAdminComponent } from './pages/admin/view-catalogo-es
 import { ViewCatalogoOrganizacionAdminComponent } from './pages/admin/view-catalogo-organizacion-admin/view-catalogo-organizacion-admin.component';
 import { ViewOrganizacionAdminComponent } from './pages/admin/view-organizacion-admin/view-organizacion-admin.component';
 import { ViewFamiliaAdminComponent } from './pages/admin/view-familia-admin/view-familia-admin.component';
-
-
+import { ImportarCatalogoOrganizacionComponent } from './pages/admin/importar-catalogo-organizacion/importar-catalogo-organizacion.component';
+import { ImportarCatalogoEspochComponent } from './pages/admin/importar-catalogo-espoch/importar-catalogo-espoch.component';
+import { AddEquivalenciaVariableComponent } from './pages/admin/add-equivalencia-variable/add-equivalencia-variable.component';
+import { ViewEquivalenciaVariableComponent } from './pages/admin/view-equivalencia-variable/view-equivalencia-variable.component';
+import { ViewVariablesAdminComponent } from './pages/admin/view-variables-admin/view-variables-admin.component';
 
 const routes: Routes = [
   {
@@ -319,6 +322,31 @@ const routes: Routes = [
         component:ViewFamiliaAdminComponent
       },
 
+      {
+        path:'importar-catalogo-organizacion',
+        component:ImportarCatalogoOrganizacionComponent
+      },
+
+      {
+        path:'importar-catalogo-espoch',
+        component:ImportarCatalogoEspochComponent
+      },
+
+      
+      {
+        path:'add-equivalencia-variable',
+        component:AddEquivalenciaVariableComponent
+      },
+
+      {
+        path:'view-equivalencia-variable',
+        component:ViewEquivalenciaVariableComponent
+      },
+
+      {
+        path:'view-variable-admin',
+        component:ViewVariablesAdminComponent
+      },
       
       
     ]
