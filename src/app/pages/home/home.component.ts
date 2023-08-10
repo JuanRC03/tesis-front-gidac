@@ -34,6 +34,7 @@ import { ChartsModule } from 'ng2-charts';
 import { VariableService } from 'src/app/services/variable.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { OrganizacionService } from 'src/app/services/organizacion.service';
+import { UserService } from 'src/app/services/user.service';
 
 interface Marker {
   lat: number;
@@ -77,10 +78,12 @@ export class HomeComponent {
     private VariableService: VariableService,
     private http: HttpClient,
     private carbonoService: CarbonoService,
-    private organizacionService:OrganizacionService) {
+    private organizacionService:OrganizacionService,
+    private userService:UserService) {
   }
 
   
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
@@ -113,8 +116,7 @@ export class HomeComponent {
   ngOnInit(): void {
     this.isLoggedIn = this.login.isLoggedIn();
     this.user = this.login.getUser();
-
-
+    this.listarTipoChart();
     this.login.loginStatusSubjec.asObservable().subscribe(
       data => {
         this.isLoggedIn = this.login.isLoggedIn();
@@ -149,7 +151,19 @@ export class HomeComponent {
     this.listarOrganizaciones();
     this.listarFamiliasVariables();
     this.initMap();
+    this.conporbarLogin();
   }
+
+  conporbarLogin(){
+    if (this.user!=null) {
+      this.userService.getImagen(this.user.idUsuario).subscribe((imagen: Blob)=>{
+      },
+      (error) => {
+        this.logout();
+      })
+    }
+  }
+
 
   listarVariablesDifucion(id:any){
     this.VariableService.listarVariablesDifusion(id).subscribe(
@@ -485,12 +499,17 @@ export class HomeComponent {
       return;
     }
     const canvasElements = this.chartsContainer.querySelectorAll('canvas');
-    const diverElements = this.chartsContainer.querySelectorAll('hr');    
+    const diverElements = this.chartsContainer.querySelectorAll('hr');
+    const tituloElements = this.chartsContainer.querySelectorAll('h4');    
     canvasElements.forEach((canvasElement) => {
       canvasElement.remove();
     });
     diverElements.forEach((diverElement) => {
       diverElement.remove();
+    });
+
+    tituloElements.forEach((tituloElements) => {
+      tituloElements.remove();
     });
   }
 
@@ -522,11 +541,16 @@ export class HomeComponent {
     }
     const canvasElements = this.chartsContainer.querySelectorAll('canvas');
     const diverElements = this.chartsContainer.querySelectorAll('hr');    
+    const tituloElements = this.chartsContainer.querySelectorAll('h4');    
     canvasElements.forEach((canvasElement) => {
       canvasElement.remove();
     });
     diverElements.forEach((diverElement) => {
       diverElement.remove();
+    });
+
+    tituloElements.forEach((tituloElements) => {
+      tituloElements.remove();
     });
 
     
@@ -942,89 +966,344 @@ export class HomeComponent {
     );
   }
   
+  tipoChart:number=0;
+
+  listaTipoChart : any = []
+
+  listarTipoChart()
+  {
+    this.listaTipoChart.push({ idTipoChart: 0, descripcion: 'Barras'});
+    this.listaTipoChart.push({ idTipoChart: 1, descripcion: 'Lineas'});
+    this.listaTipoChart.push({ idTipoChart: 2, descripcion: 'Radar'});
+    this.listaTipoChart.push({ idTipoChart: 3, descripcion: 'Pastel'});
+  }
+
+  tipoChartSeleccionado= {
+    idTipoChart: 0,
+  }
+  onTipoChart(event: any): void {
+    this.tipoChart=this.tipoChartSeleccionado.idTipoChart;
+    this.generateCharts();
+  }
+
 
   
   generateCharts(): void {
-    const investigacionGraficoList = this.modelo.investigacionGraficoList;
-    this.chartsContainer = document.getElementById('chartsContainer');
-  
-    if (!this.chartsContainer) {
-      return;
-    }
-  
-    // Limpiar gráficos anteriores
-    this.chartsContainer.innerHTML = '';
-  
-    const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
-  
-    investigacionGraficoList.forEach((grafico: any, index: number) => {
-      const valores = grafico.valoresLista;
-      const labels = valores.map((valor: any) => valor.profundidad);
-      const data = valores.map((valor: any) => valor.valor);
-      const tipoValor = grafico.tipoValor;
-  
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      
-  
-      if (ctx) {
-        if (!this.chartsContainer) {
-          return;
-        }
-        const divider = document.createElement('hr');
-          this.chartsContainer.appendChild(divider);
-        
-        this.chartsContainer.appendChild(canvas);
-        
-        
-        const chart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: tipoValor,
-              data: data,
-              backgroundColor: 'rgba(178,194,154)',
-              borderColor: 'rgba(133,143,116)',
-              borderWidth: 1
-            }]
-          },
-          options: {
-            responsive: true,
-            scales: {
-              xAxes: [{
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: 'Profundidad' // Título del eje X
-                }
-              }],
-              yAxes: [{
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: 'Valor' // Título del eje Y
-                },
-                ticks: {
-                  min: 0, // Valor mínimo del eje Y
-                  stepSize: 50,
-                }
-              }]
-            }
-          }
-        });
-  
-        chartInstances[canvas.id] = chart;
-  
-        
-      }
-    });
-  
+    if(this.tipoChart==0){  
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
     
-  
-    const canvasId = 'myCanvasId';
-    const chartInstance = chartInstances[canvasId];
-    if (chartInstance) {
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          
+          this.chartsContainer.appendChild(canvas);
+          
+          
+          const chart = new Chart(ctx, {
+            type: 'bar', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: 'rgba(178,194,154)',
+                borderColor: 'rgba(133,143,116)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Profundidad' // Título del eje X
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Valor' // Título del eje Y
+                  },
+                  ticks: {
+                    min: 0, // Valor mínimo del eje Y
+                    stepSize: 50,
+                  }
+                }]
+              }
+            }
+          });
+    
+          chartInstances[canvas.id] = chart;
+    
+          
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+    }else if(this.tipoChart==1){
+
+      // segundo chart 
+
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          
+          this.chartsContainer.appendChild(canvas);
+          
+          
+          const chart = new Chart(ctx, {
+            type: 'line', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: 'rgba(178,194,154)',
+                borderColor: 'rgba(133,143,116)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Profundidad' // Título del eje X
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Valor' // Título del eje Y
+                  },
+                  ticks: {
+                    min: 0, // Valor mínimo del eje Y
+                    stepSize: 50,
+                  }
+                }]
+              }
+            }
+          });
+    
+          chartInstances[canvas.id] = chart;
+    
+          
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+
+    }else if(this.tipoChart==2){
+
+      // segundo chart 
+
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          
+          this.chartsContainer.appendChild(canvas);
+          
+          
+          const chart = new Chart(ctx, {
+            type: 'radar', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: 'rgba(178,194,154,0.5)',
+                borderColor: 'rgba(133,143,116)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              plugins: {
+                filler: {
+                  propagate: false
+                },
+                'samples-filler-analyser': {
+                  target: 'chart-analyser'
+                }
+              }
+            }
+          });
+    
+          chartInstances[canvas.id] = chart;
+    
+          
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+
+    }else{
+      //tercer chart
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          const titulo = document.createElement('h4');
+            titulo.innerHTML = tipoValor; 
+            
+            this.chartsContainer.appendChild(titulo);
+          this.chartsContainer.appendChild(canvas);
+          
+          const randomColors = Array.from({ length: data.length }, () =>
+            `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`
+          );
+          
+          const chart = new Chart(ctx, {
+            type: 'pie', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: randomColors,
+                borderWidth: 1
+                
+              }],
+              
+              
+            },
+            options: {
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Chart Title',
+                },
+              }
+            }
+          });
+          chartInstances[canvas.id] = chart;      
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
     }
   }
   

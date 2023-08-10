@@ -13,6 +13,7 @@ import { Color } from 'ng2-charts';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { InvestigacionService } from 'src/app/services/investigacion.service';
+import * as XLSX from 'xlsx';
 
 interface DataModel {
   cantidadDato: number;
@@ -73,7 +74,7 @@ export class ImportarXlsComponent implements OnInit {
   }
 
 
-  file: File = new File([], "");
+  
 
   verBoton=false;
   verBotonImput=true;
@@ -82,18 +83,83 @@ export class ImportarXlsComponent implements OnInit {
   /*onFileChanged(event: any): void {
     this.file = event.target.files[0];
   }*/
+  file: File = new File([], "");
+  fileAux: File = new File([], "");
+
   onFileChanged(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
       this.file = event.target.files[0];
-      this.verBoton=true;
-      this.verBotonImput=false;
-      this.snack.open('Archivo seleccionado','Aceptar',{
-        duration : 3000,
+      this.fileAux = event.target.files[0];
+      this.verBoton = true;
+      this.verBotonImput = false;
+      this.convertToXLS2(this.file).then((transformedFile: File) => {
+        this.file = transformedFile;
+        this.snack.open('Archivo seleccionado correctamente', 'Aceptar', {
+          duration: 3000,
+        });
       });
     } else {
-      this.verBoton=false;
-      this.verBotonImput=true;
+      this.verBoton = false;
+      this.verBotonImput = true;
     }
+  }
+  
+  // transformar archivo
+  
+  convertToXLS2(file: File): Promise<File> {
+    return new Promise((resolve) => {
+      const fileReader = new FileReader();
+  
+      fileReader.onload = (event: any) => {
+        const workbook = XLSX.read(event.target.result, { type: 'binary' });
+        const excelBuffer: any[] = [];
+  
+        workbook.SheetNames.forEach((sheetName: string) => {
+          const worksheet = workbook.Sheets[sheetName];
+          // Check if !ref exists and fallback to a default range if not available
+          const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1:A1');
+          const sheetJson: any[] = [];
+  
+          for (let rowNum = range.s.r; rowNum <= range.e.r; rowNum++) {
+            const row: any[] = [];
+            for (let colNum = range.s.c; colNum <= range.e.c; colNum++) {
+              const cellAddress = XLSX.utils.encode_cell({ r: rowNum, c: colNum });
+              const cell = worksheet[cellAddress];
+              if (cell && cell.t === 'd') {
+                // Date cell, extract the text value
+                row.push(cell.w || '');
+              } else if (cell && cell.t === 'n' && cell.w) {
+                // Numeric cell with a formatted value (e.g., date)
+                row.push(cell.w);
+              } else if (cell && cell.t === 's') {
+                // String cell
+                row.push(cell.v);
+              } else {
+                // Empty cell or other types, insert empty string
+                row.push('');
+              }
+            }
+            sheetJson.push(row);
+          }
+  
+          excelBuffer.push(sheetJson);
+        });
+  
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(excelBuffer[0]);
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  
+        const wbout = XLSX.write(wb, { bookType: 'xls', type: 'array' });
+  
+        // Create the Blob and File objects
+        const blob = new Blob([wbout], { type: 'application/vnd.ms-excel' });
+        const newFile = new File([blob], 'archivo.xls', { type: 'application/vnd.ms-excel' });
+  
+        resolve(newFile);
+      };
+  
+      fileReader.readAsBinaryString(file);
+    });
   }
 
   listaDatos:any=[];

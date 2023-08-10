@@ -100,6 +100,10 @@ import { ImportarCatalogoEspochComponent } from './pages/admin/importar-catalogo
 import { AddEquivalenciaVariableComponent } from './pages/admin/add-equivalencia-variable/add-equivalencia-variable.component';
 import { ViewEquivalenciaVariableComponent } from './pages/admin/view-equivalencia-variable/view-equivalencia-variable.component';
 import { ViewVariablesAdminComponent } from './pages/admin/view-variables-admin/view-variables-admin.component';
+import { ViewAreasComponent } from './pages/investigador/view-areas/view-areas.component';
+import { ViewCatalogoEspochInvestigadorComponent } from './pages/investigador/view-catalogo-espoch-investigador/view-catalogo-espoch-investigador.component';
+import { ViewCatalogoOrganizacionInvestigadorComponent } from './pages/investigador/view-catalogo-organizacion-investigador/view-catalogo-organizacion-investigador.component';
+import { ViewSolicitudActualizarInvestigadorComponent } from './pages/investigador/view-solicitud-actualizar-investigador/view-solicitud-actualizar-investigador.component';
 
 const routes: Routes = [
   {
@@ -416,7 +420,7 @@ const routes: Routes = [
     canActivate:[NormalGuard],
     children : [
       {
-        path:'dashUser',
+        path:'',
         component:DashUserComponent
       },
       {
@@ -560,8 +564,32 @@ const routes: Routes = [
         component:ViewDashProyectoComponent       
       }, 
       
+      {
+        path:'view-areas-medida',
+        component:ViewAreasComponent       
+      }, 
+
+      {
+        path:'view-catalogo-espoch-investigador',
+        component:ViewCatalogoEspochInvestigadorComponent       
+      }, 
+
+      {
+        path:'view-catalogo-organizacion-investigador',
+        component:ViewCatalogoOrganizacionInvestigadorComponent       
+      }, 
+
+      {
+        path:'view-solicitud-actualizar-investigador/:idUsuario',
+        component:ViewSolicitudActualizarInvestigadorComponent       
+      }, 
+  
+
       
       
+  
+      
+
 
     ]
   }

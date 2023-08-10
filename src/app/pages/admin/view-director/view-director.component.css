@@ -14,8 +14,3 @@
   
   width: 100%; /* ancho de la tabla al 100% */
 }
-
-.breadcrumb-item + .breadcrumb-item::before{
-  
-  content: ">";
-}

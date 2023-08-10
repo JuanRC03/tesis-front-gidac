@@ -71,6 +71,7 @@ export class ImportarCatalogoOrganizacionComponent implements OnInit {
   
         const wbout = XLSX.write(wb, { bookType: 'xls', type: 'array' });
   
+        
         // Create a new Blob object with the transformed data
         const transformedBlob = new Blob([wbout], { type: 'application/vnd.ms-excel' });
   

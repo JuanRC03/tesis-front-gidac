@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, ViewChild,EventEmitter } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -10,7 +10,8 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { DatoRecolectadoService } from 'src/app/services/dato-recolectado.service';
 import { InvestigacionService } from 'src/app/services/investigacion.service';
 import { Chart } from 'chart.js';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlturaService } from 'src/app/services/altura.service';
 @Component({
   selector: 'app-view-conglomerados',
   templateUrl: './view-conglomerados.component.html',
@@ -275,7 +276,13 @@ export class ViewConglomeradosComponent implements AfterViewInit {
       diverElement.remove();
     });
   }
+
+
 }
+
+
+
+
 
 
 interface Dato {

@@ -1,0 +1,57 @@
+
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line style="padding-right: 20px;">Editar unidad de medida</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<form (ngSubmit)= "agregar()">
+  <div class="box mt-3 mb-3">
+
+    
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Abreviatura de la medida</mat-label>
+    <input
+    type="text"
+    name="abreviatura"
+    matInput
+    placeholder="Ingresa la abreviatura de la medida"
+    [(ngModel)] = "medida.abreviatura"
+    >
+  </mat-form-field>
+
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Unidad de la medida</mat-label>
+    <input
+    type="text"
+    name="unidad"
+    matInput
+    placeholder="Ingrese la unidad de la medida"
+    [(ngModel)] = "medida.unidadMedida"
+    >
+  </mat-form-field>
+
+  <mat-form-field class="w100" appearance="outline">
+    <mat-label>Magnitud de la medida</mat-label>
+    <input
+    type="text"
+    name="magnirud"
+    matInput
+    placeholder="Ingrese la magnitud de la medida"
+    [(ngModel)] = "medida.magnitud"
+    >
+  </mat-form-field>
+<br>
+  <div class="container text-center mt15">
+    <button mat-raised-button color="primary">Actualizar</button>
+  </div>
+  </div>
+</form>

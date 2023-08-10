@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, Inject } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, Inject, EventEmitter } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SolicitudAccesoService } from 'src/app/services/solicitud-acceso.service';
 import { LoginService } from 'src/app/services/login.service';
 import { InvestigacionService } from 'src/app/services/investigacion.service';
+import { VariableUnidadMedidaService } from 'src/app/services/variable-unidad-medida.service';
 
 @Component({
   selector: 'app-view-dato-recolectado',
@@ -133,7 +134,230 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
       }
     });
   }
+
+  
+  //agregar
+  agregar(): void {
+    const dialogRef = this.dialog.open(AgregarDatoRecolectado, {
+      data: { idDataset:this.idPunto},
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarVigentes();
+    });
+    
+  }
+
+  //editar
+  editar(id:any, dato1:any, dato2:any, dato3:any): void {
+    const dialogRef = this.dialog.open(EditarDatoRecolectado, {
+      data: { idValorRecolectado: id, valor:dato1,idVariableUnidadMedida:dato2,idDataset:dato3},
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarVigentes();
+    });
+  }
 }
+
+
+
+
+
+export interface dataEditar {
+  idValorRecolectado:0,
+  valor: '',
+  idDataset:0,
+  idVariableUnidadMedida:0
+}
+
+
+@Component({
+selector: 'editar-dato-recolectado',
+templateUrl: 'editar-dato-recolectado.html',
+styleUrls: ['./view-dato-recolectado.component.css']
+})
+
+export class EditarDatoRecolectado {
+constructor(
+  public dialogRef: MatDialogRef<EditarDatoRecolectado>,
+  @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
+  private datoRecolectadoService:DatoRecolectadoService,
+  private snack: MatSnackBar,
+  private variableUnidadMedidaService:VariableUnidadMedidaService
+
+) { }
+
+onNoClick(): void {
+  this.dialogRef.close();
+}
+
+ngOnInit(): void {
+  this.listarVariableUnidadMedida();
+  this.data.idValorRecolectado=this.data1.idValorRecolectado;
+  this.data.valor=this.data1.valor;
+  this.data.dataset.idDataset=this.data1.idDataset;
+  this.data.variableUnidadMedida.idVariableUnidadMedida=this.data1.idVariableUnidadMedida;
+}
+
+
+public data = {
+  idValorRecolectado:0,
+  valor: '',
+  vigencia: 1,
+  dataset:{
+    idDataset:0
+  },
+  variableUnidadMedida:{
+    idVariableUnidadMedida:0
+  }
+}
+
+formatDate(date: string): string {
+  const parts = date.split('/');
+  if (parts.length === 3) {
+    const [day, month, year] = parts;
+    return `${year}-${month}-${day}`;
+  }
+  return '';
+}
+
+
+
+variableUnidadMedida : any = []
+listarVariableUnidadMedida()
+    {
+      this.variableUnidadMedidaService.listar().subscribe(
+          res=>{
+            this.variableUnidadMedida=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+
+public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+public editar() {
+  if (this.data.valor== '') {
+    this.snack.open('EL valor del dato recolectado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  if (this.data.variableUnidadMedida.idVariableUnidadMedida== 0) {
+    this.snack.open('La variable es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+
+  this.datoRecolectadoService.guardar(this.data).subscribe(
+    (data) => {
+      Swal.fire('Dato recolectado añadido', 'El dato recolectado se añadio con éxito', 'success').then(
+        (e) => {
+          this.dialogRef.close();
+        })
+    }, (error) => {
+      Swal.fire('Error al anadir el dato recolectado', 'No se registro el dato recolectado', 'error');
+      console.log(error);
+    }
+  );
+    
+    
+  }
+
+}
+
+
+
+@Component({
+selector: 'agregar-dato-recolectado',
+templateUrl: 'agregar-dato-recolectado.html',
+styleUrls: ['./view-dato-recolectado.component.css']
+})
+
+export class AgregarDatoRecolectado {
+constructor(
+  public dialogRef: MatDialogRef<AgregarDatoRecolectado>,
+  @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
+  private variableUnidadMedidaService:VariableUnidadMedidaService,
+  private snack: MatSnackBar,
+  private datoRecolectadoService:DatoRecolectadoService
+) { }
+
+onNoClick(): void {
+  this.dialogRef.close();
+}
+
+
+
+public data = {
+  valor: '',
+  vigencia: 1,
+  dataset:{
+    idDataset:0
+  },
+  variableUnidadMedida:{
+    idVariableUnidadMedida:0
+  }
+}
+
+
+
+ngOnInit(): void {
+  this.listarVariableUnidadMedida();
+  this.data.dataset.idDataset=this.data1.idDataset;
+}
+
+variableUnidadMedida : any = []
+listarVariableUnidadMedida()
+    {
+      this.variableUnidadMedidaService.listar().subscribe(
+          res=>{
+            this.variableUnidadMedida=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+
+public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+public agregar() {
+  
+  if (this.data.valor== '') {
+    this.snack.open('EL valor del dato recolectado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  if (this.data.variableUnidadMedida.idVariableUnidadMedida== 0) {
+    this.snack.open('La variable es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+
+  this.datoRecolectadoService.guardar(this.data).subscribe(
+    (data) => {
+      Swal.fire('Dato recolectado añadido', 'El dato recolectado se añadio con éxito', 'success').then(
+        (e) => {
+          this.dialogRef.close();
+        })
+    }, (error) => {
+      Swal.fire('Error al anadir el dato recolectado', 'No se registro el dato recolectado', 'error');
+      console.log(error);
+    }
+  );
+    
+  }
+
+}
+
+
+  
+
+
+
   
 
   export interface DialogData {

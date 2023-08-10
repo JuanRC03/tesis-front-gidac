@@ -89,21 +89,46 @@
   }
   
   .example-header-image1{
-      background-image: url('../../../../assets/imgAdminCount.jpg');
+      background-image: url('../../../../assets/poryectoVigente.png');
       background-size: cover;
     }
   
     .example-header-image2{
-      background-image: url('../../../../assets/user.png');
+      background-image: url('../../../../assets/proyectoEliminado.jpg');
       background-size: cover;
     }
   
     .example-header-image3{
-      background-image: url('../../../../assets/imgInvestigadorCount.jpg');
+      background-image: url('../../../../assets/proyectoPublico.jpg');
       background-size: cover;
     }
   
     .example-header-image4{
-      background-image: url('../../../../assets/supplier.png');
+      background-image: url('../../../../assets/proyectoPrivado1.jpg');
       background-size: cover;
     }
+
+
+    
+table {
+  width: 100%;
+  min-width: 300px;
+}
+
+
+#mat {
+  min-height: 200px;
+  overflow: hidden;
+}
+
+/* Adjust the max-height for the table-container to limit its height */
+.table-container {
+  max-height: 340px; /* Adjust this value as needed */
+  overflow: auto;
+}
+
+/* Set a fixed width for the table to prevent it from expanding beyond the card */
+.table {
+  width: 100%;
+  min-width: 400px;
+}

@@ -60,7 +60,7 @@
         </mat-form-field>
       </div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-        <button style="margin-left: 5px;" [routerLink]="'/user-dashboard/add-conglomerado/'+idProyecto" mat-raised-button color="primary">Agregar conglomerado </button>
+        <button style="margin-left: 5px;" mat-raised-button color="primary">Agregar conglomerado </button>
       </div>
       <button  mat-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu1" aria-label="Toggle menu">
         <button mat-raised-button color="primary">Dataset</button>
@@ -104,12 +104,7 @@
                   
                   
                   
-                  <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" [routerLink]="'/user-dashboard/view-parcelas/'+row.idConglomerado">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click)="eliminar(row.idConglomerado)">
-                    <mat-icon>delete</mat-icon>
-                  </button>
+                  
 
                   <button mat-raised-button color="accent" [routerLink]="'/user-dashboard/view-parcelas/'+row.idConglomerado+'/'+idProyecto">Parcelas</button>
                 </div>

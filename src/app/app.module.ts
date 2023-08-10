@@ -28,7 +28,7 @@ import { SidebarComponent } from './pages/admin/sidebar/sidebar.component';
 import { NgxUiLoaderModule , NgxUiLoaderHttpModule } from "ngx-ui-loader";
 
 //paginador y busqueda
-
+import {MatChipsModule} from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -152,7 +152,6 @@ import { ViewTipoProyectoAdminComponent } from './pages/admin/view-tipo-proyecto
 import { ViewLineaInvestigacionAdminComponent } from './pages/admin/view-linea-investigacion-admin/view-linea-investigacion-admin.component';
 import { AddInstitucionComponent } from './pages/admin/add-institucion/add-institucion.component';
 import { AddInstitucionAdminComponent } from './pages/admin/add-institucion-admin/add-institucion-admin.component';
-import { ViewAreasInvestigacionAdminComponent } from './pages/admin/view-areas-investigacion-admin/view-areas-investigacion-admin.component';
 import { ViewAreaInvestigacionesAdminComponent } from './pages/admin/view-area-investigaciones-admin/view-area-investigaciones-admin.component';
 import { ConvertirXlsComponent } from './pages/investigador/convertir-xls/convertir-xls.component';
 import { ViewLocalizacionAdminComponent } from './pages/admin/view-localizacion-admin/view-localizacion-admin.component';
@@ -193,6 +192,27 @@ import { DialogCompletarDatosVariable } from './pages/admin/view-variables-admin
 import { DialogImportarCatalogoOrganizacion } from './pages/admin/view-catalogo-organizacion-admin/view-catalogo-organizacion-admin.component';
 import { DialogImportarCatalogoEspoch } from './pages/admin/view-catalogo-espoch-admin/view-catalogo-espoch-admin.component';
 import { FiltroVariablesDifusionPipe } from './pipes/filtro-variables-difusion.pipe';
+import { ViewCatalogoEspochInvestigadorComponent } from './pages/investigador/view-catalogo-espoch-investigador/view-catalogo-espoch-investigador.component';
+import { ViewCatalogoOrganizacionInvestigadorComponent } from './pages/investigador/view-catalogo-organizacion-investigador/view-catalogo-organizacion-investigador.component';
+import { ViewSolicitudActualizarInvestigadorComponent } from './pages/investigador/view-solicitud-actualizar-investigador/view-solicitud-actualizar-investigador.component';
+import { ViewSolicitudActualizarAprobadoInvestigador } from './pages/investigador/view-solicitud-actualizar-investigador/view-solicitud-actualizar-investigador.component';
+import { ViewSolicitudActualizarRechazadoInvestigador } from './pages/investigador/view-solicitud-actualizar-investigador/view-solicitud-actualizar-investigador.component';
+import { EditarUnidadMedida } from './pages/investigador/view-medida/view-medida.component';
+import { AgregarUnidadMedida } from './pages/investigador/view-medida/view-medida.component';
+import { AgregarAltura } from './pages/investigador/view-altura/view-altura.component';
+import { EditarAltura } from './pages/investigador/view-altura/view-altura.component';
+import { AgregarArea } from './pages/investigador/view-areas/view-areas.component';
+import { EditarArea } from './pages/investigador/view-areas/view-areas.component';
+import { AgregarProfundidad } from './pages/investigador/view-profundidades/view-profundidades.component';
+import { EditarProfundidad } from './pages/investigador/view-profundidades/view-profundidades.component';
+import { AgregarConglomerado1 } from './pages/investigador/view-dash-proyecto/view-dash-proyecto.component'; 
+import { EditarConglomerado1 } from './pages/investigador/view-dash-proyecto/view-dash-proyecto.component'; 
+import { AgregarParcela } from './pages/investigador/view-parcela/view-parcela.component';
+import { EditarParcela } from './pages/investigador/view-parcela/view-parcela.component';
+import { AgregarPunto } from './pages/investigador/view-punto/view-punto.component';
+import { EditarPunto } from './pages/investigador/view-punto/view-punto.component';
+import { AgregarDatoRecolectado } from './pages/investigador/view-dato-recolectado/view-dato-recolectado.component';
+import { EditarDatoRecolectado } from './pages/investigador/view-dato-recolectado/view-dato-recolectado.component';
 
 @NgModule({
   declarations: [
@@ -303,7 +323,6 @@ import { FiltroVariablesDifusionPipe } from './pipes/filtro-variables-difusion.p
     ViewLineaInvestigacionAdminComponent,
     AddInstitucionComponent,
     AddInstitucionAdminComponent,
-    ViewAreasInvestigacionAdminComponent,
     ViewAreaInvestigacionesAdminComponent,
     ConvertirXlsComponent,
     ViewLocalizacionAdminComponent,
@@ -340,7 +359,28 @@ import { FiltroVariablesDifusionPipe } from './pipes/filtro-variables-difusion.p
     DialogCompletarDatosVariable,
     DialogImportarCatalogoOrganizacion,
     DialogImportarCatalogoEspoch,
-    FiltroVariablesDifusionPipe
+    FiltroVariablesDifusionPipe,
+    ViewCatalogoEspochInvestigadorComponent,
+    ViewCatalogoOrganizacionInvestigadorComponent,
+    ViewSolicitudActualizarInvestigadorComponent,
+    ViewSolicitudActualizarAprobadoInvestigador,
+    ViewSolicitudActualizarRechazadoInvestigador,
+    EditarUnidadMedida,
+    AgregarUnidadMedida,
+    AgregarAltura,
+    EditarAltura,
+    AgregarArea,
+    EditarArea,
+    AgregarProfundidad,
+    EditarProfundidad,
+    AgregarConglomerado1,
+    EditarConglomerado1,
+    AgregarParcela,
+    EditarParcela,
+    AgregarPunto,
+    EditarPunto,
+    AgregarDatoRecolectado,
+    EditarDatoRecolectado
 
   ],
   imports: [
@@ -380,7 +420,8 @@ import { FiltroVariablesDifusionPipe } from './pipes/filtro-variables-difusion.p
     MatStepperModule,
     ChartsModule,
     MatCheckboxModule,
-    SpinnerModule
+    SpinnerModule,
+    MatChipsModule
   ],
   providers: [{provide:HTTP_INTERCEPTORS, useClass:SpinnerInterceptor, multi:true},authInterceptorProviders],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, Inject,EventEmitter } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -7,6 +7,11 @@ import { DatasetService } from 'src/app/services/dataset.service';
 import Swal from 'sweetalert2';
 import { ViewPuntoDataSource, ViewPuntoItem } from './view-punto-datasource';
 import { InvestigacionService } from 'src/app/services/investigacion.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ProfundidadService } from 'src/app/services/profundidad.service';
+
+
 
 @Component({
   selector: 'app-view-punto',
@@ -21,7 +26,8 @@ export class ViewPuntoComponent implements AfterViewInit {
 
   constructor(private datasetService:DatasetService,
     private route:ActivatedRoute,
-    private investigacionService:InvestigacionService ) {
+    private investigacionService:InvestigacionService,
+    public matDialog: MatDialog ) {
     this.dataSource = new ViewPuntoDataSource();
   }
 
@@ -129,7 +135,245 @@ export class ViewPuntoComponent implements AfterViewInit {
     onSearch( search: string ) {
       this.search = search;
     }
+  
+
+    
+  //agregar
+  agregar(): void {
+    const dialogRef = this.matDialog.open(AgregarPunto, {
+      data: { idParcela:this.idParcela},
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarVigentes();
+    });
+    
   }
+
+  //editar
+  editar(id:any, dato1:any, dato2:any, dato3:any): void {
+    const dialogRef = this.matDialog.open(EditarPunto, {
+      data: { idDataset: id, fechaInicio:dato1,fechaFin:dato2,idProfundidad:dato3, idParcela:this.idParcela},
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarVigentes();
+    });
+  }
+}
+
+
+
+
+
+export interface dataEditar {
+  idDataset:0,
+  fechaInicio: any,
+  fechaFin: any,
+  idProfundidad:0,
+  idParcela:0
+}
+
+
+
+
+
+@Component({
+selector: 'editar-punto',
+templateUrl: 'editar-punto.html',
+styleUrls: ['./view-punto.component.css']
+})
+
+export class EditarPunto {
+constructor(
+  public dialogRef: MatDialogRef<EditarPunto>,
+  @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
+  private datasetService:DatasetService,
+  private snack: MatSnackBar,
+  private profundidadService:ProfundidadService
+
+) { }
+
+onNoClick(): void {
+  this.dialogRef.close();
+}
+
+ngOnInit(): void {
+  this.listarProfundidad();
+  this.data.idDataset=this.data1.idDataset;
+  this.data.fechaInicio=this.data1.fechaInicio;
+  this.data.fechaFin=this.data1.fechaFin;
+  console.log(this.data.fechaFin)
+  this.data.profundidadParcela.idParcela=this.data1.idParcela;
+  this.data.profundidadParcela.idProfundidad=this.data1.idProfundidad;
+}
+
+
+
+public data = {
+  idDataset:0,
+  fechaInicio: '',
+  fechaFin: '',
+  profundidadParcela:{
+    idProfundidad:0,
+    idParcela:0
+  }
+}
+
+formatDate(date: string): string {
+  const parts = date.split('/');
+  if (parts.length === 3) {
+    const [day, month, year] = parts;
+    return `${year}-${month}-${day}`;
+  }
+  return '';
+}
+
+
+
+profundidad : any = []
+listarProfundidad()
+    {
+      this.profundidadService.listar().subscribe(
+          res=>{
+            this.profundidad=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+
+public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+public editar() {
+  if(this.data.fechaInicio == null){
+    this.snack.open("La dehca de inico es requerida !!",'',{
+      duration:3000
+    })
+    return ;
+  }
+  if(this.data.fechaFin == null){
+    this.snack.open("La fecha de fin es requerida !!",'',{
+      duration:3000
+    })
+    return ;
+  }
+  
+  if (this.data.profundidadParcela.idProfundidad == 0) {
+    this.snack.open('La profundidad es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  
+
+  this.datasetService.guardar(this.data).subscribe(
+    (data) => {
+      Swal.fire('Punto añadido', 'El punto se añadio con éxito', 'success').then(
+        (e) => {
+          this.afterClosed.emit();
+          this.dialogRef.close();
+        })
+    }, (error) => {
+      Swal.fire('Error al anadir el punto', 'No se registro el nuevo punto', 'error');
+      console.log(error);
+    }
+  );
+    
+  }
+
+}
+
+
+
+@Component({
+selector: 'agregar-punto',
+templateUrl: 'agregar-punto.html',
+styleUrls: ['./view-punto.component.css']
+})
+
+export class AgregarPunto {
+constructor(
+  public dialogRef: MatDialogRef<AgregarPunto>,
+  @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
+  private datasetService:DatasetService,
+  private snack: MatSnackBar,
+  private profundidadService:ProfundidadService
+) { }
+
+onNoClick(): void {
+  this.dialogRef.close();
+}
+
+public data = {
+  fechaInicio: new Date(0),
+  fechaFin: new Date(0),
+  profundidadParcela:{
+    idProfundidad:0,
+    idParcela:0
+  }
+}
+
+
+
+ngOnInit(): void {
+  this.listarProfundidad();
+  this.data.profundidadParcela.idParcela=this.data1.idParcela;
+}
+
+profundidad : any = []
+listarProfundidad()
+    {
+      this.profundidadService.listar().subscribe(
+          res=>{
+            this.profundidad=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+
+public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+public agregar() {
+  
+  if(this.data.fechaInicio == null){
+    this.snack.open("La dehca de inico es requerida !!",'',{
+      duration:3000
+    })
+    return ;
+  }
+  if(this.data.fechaFin == null){
+    this.snack.open("La fecha de fin es requerida !!",'',{
+      duration:3000
+    })
+    return ;
+  }
+  
+  if (this.data.profundidadParcela.idProfundidad == 0) {
+    this.snack.open('La profundidad es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  
+
+  this.datasetService.guardar(this.data).subscribe(
+    (data) => {
+      Swal.fire('Punto añadido', 'El punto se añadio con éxito', 'success').then(
+        (e) => {
+          this.afterClosed.emit();
+          this.dialogRef.close();
+        })
+    }, (error) => {
+      Swal.fire('Error al anadir el punto', 'No se registro el nuevo punto', 'error');
+      console.log(error);
+    }
+  );
+    
+  }
+
+}
+
+
   
 
 

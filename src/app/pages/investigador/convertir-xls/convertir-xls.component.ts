@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -13,16 +13,56 @@ export class ConvertirXlsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  fileToConvert!: File;
+  
   convertedData: any[] = [];
-
+  
   constructor() {}
+  
+
+  fileToConvert!: File;
 
   onFileChange(event: any) {
     this.fileToConvert = event.target.files[0];
-    this.convertToXLS2(this.fileToConvert);
-    //this.convertFile();
+    this.convertToXLS3(this.fileToConvert)
+    //this.convertToCSV(this.fileToConvert);
   }
+
+  convertToCSV(file: File) {
+    const reader: FileReader = new FileReader();
+  
+    reader.onload = (e: any) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, { type: 'binary' });
+      const firstSheetName = workbook.SheetNames[0];
+      
+      // Set the desired separator as an option for the sheet_to_csv function
+      const csvData = XLSX.utils.sheet_to_csv(workbook.Sheets[firstSheetName], { FS: '₪' });
+  
+      // Convert the CSV back to XLS format and download it
+      this.convertToXLSFinal(csvData, file.name.replace(/\.(xls|xlsx)$/, '.xls'));
+    };
+  
+    reader.readAsBinaryString(file);
+  }
+
+  convertToXLSFinal(csvData: string, fileName: string) {
+    const lines = csvData.split('\n');
+    const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(lines.map((line) => line.split('₪')));
+    const newWorkbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+
+    const excelBuffer: any = XLSX.write(newWorkbook, { bookType: 'xls', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.ms-excel' });
+    const url = window.URL.createObjectURL(blob);
+
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    anchor.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+ 
+  
 
   convertFile() {
     const fileReader = new FileReader();
@@ -115,6 +155,82 @@ export class ConvertirXlsComponent implements OnInit {
     fileReader.readAsBinaryString(file);
   }
 
+
+
+
+  
+
+  
+  
+
+
+
+  
+  convertToXLS3(file: File) {
+    const fileReader = new FileReader();
+  
+    fileReader.onload = (event: any) => {
+      const workbook = XLSX.read(event.target.result, { type: 'binary' });
+      const excelBuffer: any[] = [];
+  
+      workbook.SheetNames.forEach((sheetName: string) => {
+        const worksheet = workbook.Sheets[sheetName];
+        // Check if !ref exists and fallback to a default range if not available
+        const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1:A1');
+        const sheetJson: any[] = [];
+  
+        for (let rowNum = range.s.r; rowNum <= range.e.r; rowNum++) {
+          const row: any[] = [];
+          for (let colNum = range.s.c; colNum <= range.e.c; colNum++) {
+            const cellAddress = XLSX.utils.encode_cell({ r: rowNum, c: colNum });
+            const cell = worksheet[cellAddress];
+            if (cell && cell.t === 'd') {
+              // Date cell, extract the text value
+              row.push(cell.w || '');
+            } else if (cell && cell.t === 'n' && cell.w) {
+              // Numeric cell with a formatted value (e.g., date)
+              row.push(cell.w);
+            } else if (cell && cell.t === 's') {
+              // String cell
+              row.push(cell.v);
+            } else {
+              // Empty cell or other types, insert empty string
+              row.push('');
+            }
+          }
+          sheetJson.push(row);
+        }
+  
+        excelBuffer.push(sheetJson);
+      });
+  
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(excelBuffer[0]);
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  
+      const wbout = XLSX.write(wb, { bookType: 'xls', type: 'array' });
+  
+      // Crear el enlace de descarga
+      const blob = new Blob([wbout], { type: 'application/vnd.ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.href = url;
+      a.download = 'archivo.xls';
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    };
+  
+    fileReader.readAsBinaryString(file);
+  }
+  
+
+  
+
+
+
+
   convertToXLS2(file: File) {
     const fileReader = new FileReader();
   
@@ -148,4 +264,6 @@ export class ConvertirXlsComponent implements OnInit {
   
     fileReader.readAsBinaryString(file);
   }
+
+  
 }

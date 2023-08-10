@@ -39,8 +39,7 @@
                 <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
                   <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/user-dashboard/">Inicio</a></li>
                   <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/user-dashboard/view-dash-proyecto/'+idProyecto">Proyecto</a></li>
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/user-dashboard/view-conglomerados/'+idProyecto">Conglomerados</a></li>
-            <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Descargar datos</li>
+            <li style="color: var(--color-migajas-de-pan); text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Descargar datos</li>
                 </ol>
               </div>
             </div>
@@ -96,26 +95,24 @@
         </mat-checkbox>
       </td>
     </ng-container>
-  
-     
-     <ng-container matColumnDef="nombreVariableProyecto">
-      <th mat-header-cell *matHeaderCellDef> Nombre variable del proyecto </th>
-      <td mat-cell *matCellDef="let element"> {{ element.catalogoEspoch.nombreVariableEspoch }} </td>
-    </ng-container>
 
     <ng-container matColumnDef="nombreVariable">
-        <th mat-header-cell *matHeaderCellDef> Nombre variable de la organización</th>
-        <td mat-cell *matCellDef="let element"> {{ element.variable.nombreVariable }} </td>
-      </ng-container>
-
+      <th mat-header-cell *matHeaderCellDef> Nombre variable de la organización</th>
+      <td mat-cell *matCellDef="let element"> {{ element.nombreVariable }} </td>
+    </ng-container>
+     
+     <ng-container matColumnDef="unidadMedida">
+      <th mat-header-cell *matHeaderCellDef> Nombre variable del proyecto </th>
+      <td mat-cell *matCellDef="let element"> {{ element.unidadMedida }} </td>
+    </ng-container>
       <ng-container matColumnDef="tipoValor">
         <th mat-header-cell *matHeaderCellDef> Tipo de valor</th>
-        <td mat-cell *matCellDef="let element"> {{ element.variable.tipoVariable.nombreTipoVariable }} </td>
+        <td mat-cell *matCellDef="let element"> {{ element.nombreTipoVariable }} </td>
       </ng-container>
 
     <ng-container matColumnDef="organization">
       <th mat-header-cell *matHeaderCellDef> Organization </th>
-      <td mat-cell *matCellDef="let element"> {{ element.catalogoOrganizacion.organizacion.siglas }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.nombreOrganizacion }} </td>
     </ng-container>
   
   
@@ -124,6 +121,12 @@
         (click)="toggleRow(row)">
     </tr>
   </table>
+  <mat-list *ngIf="(dataSource.filteredData | filtroVariableDescarga: search).length===0"
+              style="text-align: center; padding: 20px; margin: 20px;">
+              <p>No existen variables para descargar</p>
+              <br>
+              <mat-divider></mat-divider>
+  </mat-list>
 
   <mat-paginator (page)="handlePage($event)" [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons></mat-paginator>
 

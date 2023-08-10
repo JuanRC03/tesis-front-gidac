@@ -28,6 +28,11 @@ export class SideUserComponent {
   isMenuOpen3 = false;
   isArrowUp3 = false;
 
+  isMenuOpen4 = false;
+  isArrowUp4 = false;
+
+
+
   toggleMenu1() {
     this.isMenuOpen1 = !this.isMenuOpen1;
     this.isArrowUp1 = !this.isArrowUp1;
@@ -35,6 +40,8 @@ export class SideUserComponent {
     this.isArrowUp2 = false;
     this.isMenuOpen3 = false;
     this.isArrowUp3 = false;
+    this.isMenuOpen4 = false;
+    this.isArrowUp4 = false;
   }
 
   toggleMenu2() {
@@ -44,6 +51,8 @@ export class SideUserComponent {
     this.isArrowUp1 = false;
     this.isMenuOpen3 = false;
     this.isArrowUp3 = false;
+    this.isMenuOpen4 = false;
+    this.isArrowUp4 = false;
   }
 
   toggleMenu3() {
@@ -53,6 +62,19 @@ export class SideUserComponent {
     this.isArrowUp1 = false;
     this.isMenuOpen2 = false;
     this.isArrowUp2 = false;
+    this.isMenuOpen4 = false;
+    this.isArrowUp4 = false;
+  }
+
+  toggleMenu4() {
+    this.isMenuOpen4 = !this.isMenuOpen4;
+    this.isArrowUp4 = !this.isArrowUp4;
+    this.isMenuOpen1 = false;
+    this.isArrowUp1 = false;
+    this.isMenuOpen2 = false;
+    this.isArrowUp2 = false;
+    this.isMenuOpen3 = false;
+    this.isArrowUp3 = false;
   }
 
   esconderToggleMenu() {
@@ -62,6 +84,8 @@ export class SideUserComponent {
     this.isArrowUp2 = false;
     this.isMenuOpen3 = false;
     this.isArrowUp3 = false;
+    this.isMenuOpen4 = false;
+    this.isArrowUp4 = false;
     
   }
 
@@ -122,11 +146,6 @@ export class SideUserComponent {
     
     this.isLoggedIn = this.login.isLoggedIn();
     this.usuario = this.login.getUser();
-    const storedValue = localStorage.getItem('isMenuOpen3');
-    this.isMenuOpen3 = storedValue === 'true';
-
-    const storedValue2 = localStorage.getItem('isArrowUp3');
-    this.isArrowUp3 = storedValue === 'true';
 
     //this.listarContadorDeSolicitudes();
     
@@ -144,14 +163,12 @@ export class SideUserComponent {
         },
         (error) => {
           this.logout();
-          
         })
         
     this.login.loginStatusSubjec.asObservable().subscribe(
       data => {
         this.isLoggedIn = this.login.isLoggedIn();
         this.usuario = this.login.getUser();
-        console.log(this.usuario);
         
       }
     )
@@ -159,23 +176,12 @@ export class SideUserComponent {
     this.listarInvestigaciones();
 
     
-
-    
-/*
-    this.appWebService.getNavbar().subscribe(
-      res=>{
-        this.navbar=res;
-        console.log(res);
-      },
-      err=>console.log(err)
-      )*/
   }
 
   listarInvestigaciones(){
     this.investigacionInvestigadoresService.listarInvestigacionInvestigador(this.idUsuario).subscribe(
       (data:any) => {
         this.InvestigadorInvestigacion = data;
-        console.log(data);
       },
       (error) => {
         console.log(error);

@@ -128,8 +128,10 @@
     --color-linea-divisora:rgb(186, 206, 151);
     --color-menu-dashboar-texto: rgb(0,0,0);
     --resaltado-color-dash:rgb(133, 143, 116);
+    --backgraud-valor:rgb(58,149,228);
+    --backgraud-valor:#2bc451;
     --color-menu-dashboar-resaltado:#259441;
-
+    --color-migajas-de-pan:#3FC060;
     
 
     --tamanio-texto-indicador:17px;

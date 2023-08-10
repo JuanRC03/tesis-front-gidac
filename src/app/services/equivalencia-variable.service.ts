@@ -36,4 +36,8 @@ export class EquivalenciaVariableService {
   public obtenerPorProyecto(id:any){
     return this.http.get(`${baserUrl}/equivalencia-variable/listar-equivalencia-variable/por-poyecto/${id}`);
   }
+
+  public obtenerVariablesDescargarProyecto(id:any){
+    return this.http.get(`${baserUrl}/equivalencia-variable/listar-variable-descargar-proyecto/${id}`);
+  }
 }

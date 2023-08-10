@@ -40,15 +40,14 @@ export class DescargarDatosComponent implements OnInit {
 
   ngOnInit() {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
-    this.equivalenciaVariableService.listar().subscribe((data: any) => {
+    this.equivalenciaVariableService.obtenerVariablesDescargarProyecto(this.idProyecto).subscribe((data: any) => {
       this.dataSource.data = data;
-      console.log(data);
       this.dataSource.paginator = this.paginator;
       this.listaDatos = data.map((variable: any) => ({ ...variable, checked: false }));
     });
     this.datoRecolectadoService.listarPorProyecto(this.idProyecto).subscribe((data: any) => {
       this.listaDatosRecolectador = data;
-      console.log(data);
+      //console.log(data);
     });
     this.listarProyectosVigentes();
   }
@@ -70,7 +69,7 @@ export class DescargarDatosComponent implements OnInit {
   }
 
 
-  displayedColumns: string[] = ['select', 'nombreVariable', 'nombreVariableProyecto', 'tipoValor', 'organization'];
+  displayedColumns: string[] = ['select', 'nombreVariable', 'unidadMedida', 'tipoValor', 'organization'];
   dataSource = new MatTableDataSource<Variable>();
   selection = new SelectionModel<Variable>(true, []);
   listaDatos: Variable[] = [];
@@ -82,6 +81,7 @@ export class DescargarDatosComponent implements OnInit {
   downloadSelectedDataXLS() {
     const selectedData = this.selection.selected;
     this.listaDatosSeleccionados = this.selection.selected;
+    console.log(this.listaDatosSeleccionados);
     if (this.listaDatosSeleccionados.length === 0) {
       this.snack.open('No ha seleccionado alguna variable para descargar !!', 'Aceptar', {
         duration: 3000
@@ -90,6 +90,7 @@ export class DescargarDatosComponent implements OnInit {
       const formData = new FormData();
       formData.append('equivalenciasVariables', JSON.stringify(selectedData));
       this.datoRecolectadoService.unirDatos(formData).subscribe((data: any) => {
+        console.log(data)
         this.downloadExcel(data, this.listaDatosSeleccionados)
       });
     }
@@ -120,7 +121,7 @@ export class DescargarDatosComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.catalogoEspoch.codigoVariableEspoch}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.idVariableUnidadMedida}`;
   }
 
   isAllSelected() {
@@ -164,12 +165,18 @@ export class DescargarDatosComponent implements OnInit {
         'Unidad de medidad profundidad': subarreglo[n++],
       };
 
-      for (let j = n; j < subarreglo.length; j += 2) {
+      for (let j = n; j < subarreglo.length; j += 3) {
         const etiqueta = subarreglo[j];
-        const valor = subarreglo[j + 1];
-        nuevoElemento[etiqueta] = valor;
-      }
+        const variableUnidadMedida = subarreglo[j+1];
+        const valor = subarreglo[j + 2];
 
+        
+        if(variableUnidadMedida=='NA'){
+          nuevoElemento[etiqueta] = valor;
+        }else{
+          nuevoElemento[etiqueta+' - '+variableUnidadMedida] = valor;
+        } 
+      }
       n = 0;
       this.dataDescarga.push(nuevoElemento);
     }
@@ -237,24 +244,14 @@ export class DescargarDatosComponent implements OnInit {
 
 
 export interface Variable {
-  variable: {
-    idVariable: string;
-    nombreVariable: string;
-    tipoVariable: {
-      nombreTipoVariable: string;
-    }
-  };
-  catalogoEspoch: {
-    codigoVariableEspoch: number;
-    nombreVariableEspoch: string;
-  };
-
-  catalogoOrganizacion: {
-    codigoVariableOrganizacion: string;
-    nombreVariableOrganizacion: string;
-    organizacion: {
-      nombreOrganizacion: string;
-    }
-  };
+  idVariableUnidadMedida: Number;
+  idVariable:String ;
+  numeroColumna:number;
+  cantidadDatos:number;
+  nombreVariable:String;
+  nombreOrganizacion:String;
+  nombreVariableEspoch:String;
+  nombreTipoVariable:String;
+  unidadMedida: String ;
   checked: boolean;
 }

@@ -368,9 +368,6 @@ export interface PeriodicElement {
     }
   }
   motivo: string;
-
-  
-
 }
 
 

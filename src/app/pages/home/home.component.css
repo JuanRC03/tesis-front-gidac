@@ -414,8 +414,8 @@ input:checked + label .radio-button-1::after {
 .estilo-submenu-explorar{
   border-left: var(--tamanio-menu-principal); 
   margin-left: var(--tamanio-menu-principal); 
-  min-width:500px;
-  max-width:500px;
+  min-width:550px;
+  max-width:550px;
   background-color: var(--submenu-color);
 }
 

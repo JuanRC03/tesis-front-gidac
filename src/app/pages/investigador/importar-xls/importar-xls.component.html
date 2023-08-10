@@ -38,8 +38,7 @@
                 <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
                   <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/user-dashboard/">Inicio</a></li>
                   <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/user-dashboard/view-dash-proyecto/'+idProyecto">Proyecto</a></li>
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/user-dashboard/view-conglomerados/'+idProyecto">Conglomerados</a></li>
-            <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Importar archivo XLS</li>
+            <li style="color:var(--color-migajas-de-pan); text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Importar archivo XLS</li>
                 </ol>
               </div>
             </div>
@@ -87,7 +86,7 @@
               <i class="fas fa-file"></i>
                Seleccionar archivo 
               <label for="btn-file">   </label>
-              <input type="file" accept=".xls" (change)="onFileChanged($event)" id="btn-file">
+              <input type="file" (change)="onFileChanged($event)" id="btn-file">
             </button>
             </div>
             <form (ngSubmit)= "comprobarEstado()">

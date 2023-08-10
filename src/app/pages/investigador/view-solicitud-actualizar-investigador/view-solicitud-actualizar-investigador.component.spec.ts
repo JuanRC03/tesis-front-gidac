@@ -4,15 +4,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
-import { ViewAreasInvestigacionAdminComponent } from './view-areas-investigacion-admin.component';
+import { ViewSolicitudActualizarInvestigadorComponent } from './view-solicitud-actualizar-investigador.component';
 
-describe('ViewAreasInvestigacionAdminComponent', () => {
-  let component: ViewAreasInvestigacionAdminComponent;
-  let fixture: ComponentFixture<ViewAreasInvestigacionAdminComponent>;
+describe('ViewSolicitudActualizarInvestigadorComponent', () => {
+  let component: ViewSolicitudActualizarInvestigadorComponent;
+  let fixture: ComponentFixture<ViewSolicitudActualizarInvestigadorComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewAreasInvestigacionAdminComponent ],
+      declarations: [ ViewSolicitudActualizarInvestigadorComponent ],
       imports: [
         NoopAnimationsModule,
         MatPaginatorModule,
@@ -23,7 +23,7 @@ describe('ViewAreasInvestigacionAdminComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewAreasInvestigacionAdminComponent);
+    fixture = TestBed.createComponent(ViewSolicitudActualizarInvestigadorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

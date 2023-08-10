@@ -107,3 +107,28 @@
     background-image: url('../../../../assets/supplier.png');
     background-size: cover;
   }
+
+  /*Tabla*/
+
+  table {
+    width: 100%;
+    min-width: 300px;
+  }
+  
+  
+  #mat {
+    min-height: 200px;
+    overflow: hidden;
+  }
+  
+  /* Adjust the max-height for the table-container to limit its height */
+  .table-container {
+    max-height: 340px; /* Adjust this value as needed */
+    overflow: auto;
+  }
+  
+  /* Set a fixed width for the table to prevent it from expanding beyond the card */
+  .table {
+    width: 100%;
+    min-width: 400px;
+  }

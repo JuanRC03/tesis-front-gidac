@@ -1,0 +1,64 @@
+
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line style="padding-right: 20px;">Editar profundidad</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<form (ngSubmit)= "agregar()">
+    <div class="box mt-3 mb-3">
+      
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Código del conglomerado</mat-label>
+        <input
+        type="text"
+        name="codigo"
+        matInput
+        placeholder="Ingresa el código del conglomerado"
+        [(ngModel)] = "data.codigoConglomerado"
+        >
+      </mat-form-field>
+
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Nombre del conglomerado</mat-label>
+        <input
+        type="text"
+        name="nombre"
+        matInput
+        placeholder="Ingresa el nombre del conglomerado"
+        [(ngModel)] = "data.nombreConglomerado"
+        >
+      </mat-form-field>
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Sector conglomerado</mat-label>
+        <input
+        type="text"
+        name="sector"
+        matInput
+        placeholder="Ingrese el sector del conglomerado"
+        [(ngModel)] = "data.sector"
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="mt20 w100">
+        <mat-label>Altitud</mat-label>
+        <mat-select name="tipoVariable" [(ngModel)] = "data.altura.idAltura">
+          <mat-option *ngFor = "let c of altitud" [value] = "c.idAltura">
+            {{ c.alturaMinima }} - {{ c.alturaMaxima }} ({{ c.unidadMedida.abreviatura }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="center" style="text-align: center;">
+      <button mat-raised-button color="primary">Guardar</button>
+    </div>
+  </div>
+  </form>

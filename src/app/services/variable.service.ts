@@ -38,6 +38,11 @@ export class VariableService {
   public listarCompletas(){
     return this.http.get(`${baserUrl}/variable/listar-variable-completas`);
   }
+
+  public listarCompletasInvestigador(){
+    return this.http.get(`${baserUrl}/variable/listar-variable-completas-investigador`);
+  }
+
   public listarIncompletas(){
     return this.http.get(`${baserUrl}/variable/listar-variable-incompletas`);
   }

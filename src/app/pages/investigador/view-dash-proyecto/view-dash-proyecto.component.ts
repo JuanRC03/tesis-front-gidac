@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { AfterViewInit, Component, OnInit, ViewChild,Inject, ElementRef,OnChanges,EventEmitter  } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { InvestigacionService } from 'src/app/services/investigacion.service';
 import * as L from 'leaflet';
@@ -11,6 +10,14 @@ import { PageEvent } from '@angular/material/paginator';
 import { VariableService } from 'src/app/services/variable.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import { OrganizacionService } from 'src/app/services/organizacion.service';
+import { switchMap } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import { ConglomeradoService } from 'src/app/services/conglomerado.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AlturaService } from 'src/app/services/altura.service';
+
 
 interface Marker {
   lat: number;
@@ -35,7 +42,7 @@ interface OrganizacionProyecto {
   templateUrl: './view-dash-proyecto.component.html',
   styleUrls: ['./view-dash-proyecto.component.css']
 })
-export class ViewDashProyectoComponent implements OnInit {
+export class ViewDashProyectoComponent implements OnInit   {
 
   constructor(private investigacionService:InvestigacionService,
     public dialog: MatDialog,
@@ -43,24 +50,109 @@ export class ViewDashProyectoComponent implements OnInit {
     private datoRecolectadoService:DatoRecolectadoService,
     private http: HttpClient,
     private variableService:VariableService,
-    private organizacionService:OrganizacionService) { }
+    private organizacionService:OrganizacionService,
+    private conglomeradoService:ConglomeradoService,
+    public matDialog: MatDialog) { 
+      
+    }
 
   panelOpenGrafico = false;
   idProyecto= 0;
   nmbrePoryecto= 0;
-  ngOnInit(): void {
-    this.idProyecto = this.route.snapshot.params['idProyecto'];
-    this.listarProyectosVigentes();
-    this.initMap();
-    this.listarVariablesDifucion(0);
-    this.listarOrganizaciones();
-    this.listarFamiliasVariables();
-    this.fetchData();
-  }
   listaDatos: any = []
   datos: any = []
-  listarProyectosVigentes() {
-    this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(
+  listaOrganizaciones : any = []
+  private ngUnsubscribe = new Subject();
+  private routeSubscription!: Subscription;
+
+  displayedColumns = ['dato1', 'dato2', 'dato3', 'opciones'];
+
+  //paginacion y busqueda
+  page_size: number = 5
+  page_number: number = 1
+  page_size_options = [5, 10, 20, 50, 100]
+
+  handlePage(e: PageEvent) {
+    this.page_size = e.pageSize
+    this.page_number = e.pageIndex + 1
+  }
+
+  public search: string = '';
+
+  onSearch(search: string) {
+    this.search = search;
+  }
+
+  onTabChange(event: any) {
+    
+    if(event.index === 1 || !this.map) {
+      console.log('llega')
+      this.initMap();
+      this.fetchData(this.idProyecto);
+      this.listarTipoChart();
+    }
+  }
+
+  listaDatosConglomerado: any = []
+
+
+  listarConglomeradosVigentes() {
+    this.conglomeradoService.obtenerPorProyecto(this.idProyecto).subscribe(
+      res => {
+        this.listaDatosConglomerado = res;
+      },
+      err => console.log(err)
+    )
+  }
+
+  eliminar(idConglomerado: any) {
+    Swal.fire({
+      title: 'Eliminar conglomerado',
+      text: '¿Estás seguro de eliminar al conglomerado?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.conglomeradoService.eliminar(idConglomerado).subscribe(
+          (data) => {
+            this.listaDatos = this.listaDatos.filter((datos: any) => datos.idConglomerado != idConglomerado);
+            Swal.fire('Conglomerado eliminado', 'El conglomerado ha sido eliminado', 'success');
+          },
+          (error) => {
+            Swal.fire('Error', 'Error al eliminar el conglomerado, el conglomerado debe estar vacio', 'error');
+          }
+        )
+      }
+    })
+  }
+  
+  ngAfterViewInit(): void {
+    this.initMap();
+  }
+  ngOnInit(): void {
+    
+    this.routeSubscription = this.route.paramMap.subscribe(params => {
+      this.idProyecto = this.route.snapshot.params['idProyecto'];
+      this.listarConglomeradosVigentes();
+      this.listarProyectosVigentes(this.idProyecto);
+      this.listarVariablesDifucion(0);
+      this.listarOrganizaciones();
+      this.listarFamiliasVariables();
+      this.fetchData(this.idProyecto);
+      this.listarTipoChart();
+    })
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
+  }
+
+  listarProyectosVigentes(id:any) {
+    this.investigacionService.obtenerProyectoInvestigacion(id).subscribe(
       res => {
         this.datos = res;
       },
@@ -68,7 +160,16 @@ export class ViewDashProyectoComponent implements OnInit {
     )
   }
 
-  listaOrganizaciones : any = []
+  listarVariablesDifucion(id:any){
+    this.variableService.listarFamiliasVariablesInvestigador(id, this.idProyecto).subscribe(
+      (dato: any) => {
+        this.listaCatalogoOrganizacion = dato;
+        if (this.listaCatalogoOrganizacion.length > 0) {
+          this.listaCatalogoOrganizacion.unshift({ idVariable: 0, nombreVariable: 'Todos los datos', siglas:'Todos', nombreOrganizacion:'Todos'});
+        }
+      }
+    )
+  }
 
   listarOrganizaciones()
   {
@@ -85,19 +186,6 @@ export class ViewDashProyectoComponent implements OnInit {
       )
   }
 
-  public searchOrganizacionVariable: string = '';
-  opcionSeleccionada:any;
-  onOrganizacionChange(event: any): void {
-    this.opcionSeleccionada = this.listaOrganizaciones.find((option: OrganizacionProyecto) => option.idOrganizacion === event.value);
-    if(this.opcionSeleccionada.idOrganizacion==0){
-      this.searchOrganizacionVariable="";
-    }else{
-      this.searchOrganizacionVariable=this.opcionSeleccionada.nombreOrganizacion;
-    } 
-  }
-
-  listaFamiliaVariable : any = []
-
   listarFamiliasVariables()
   {
     this.variableService.listarFamiliasVariables().subscribe(
@@ -112,6 +200,41 @@ export class ViewDashProyectoComponent implements OnInit {
       )
   }
 
+  private fetchData(id:any) {
+    this.dataNominal=[];
+    this.dataNumerico=[];
+    this.datoRecolectadoService.dashlistarTodosLosDatosProyectoVariableUnido(id,0).subscribe(
+      (response: any) => {
+        this.plotData(response);
+
+      },
+      error => {
+        console.log('Error al obtener los datos:', error);
+      }
+    );
+    this.cargarDatosVariableProyecto(0);
+    this.openPopup = null;
+  }
+
+  
+
+  
+
+  public searchOrganizacionVariable: string = '';
+  opcionSeleccionada:any;
+  onOrganizacionChange(event: any): void {
+    this.opcionSeleccionada = this.listaOrganizaciones.find((option: OrganizacionProyecto) => option.idOrganizacion === event.value);
+    if(this.opcionSeleccionada.idOrganizacion==0){
+      this.searchOrganizacionVariable="";
+    }else{
+      this.searchOrganizacionVariable=this.opcionSeleccionada.nombreOrganizacion;
+    } 
+  }
+
+  listaFamiliaVariable : any = []
+
+  
+
   public searchFamiliaOrganizacion: Number = 0;
   opcionSeleccionadaFamilia:any;
 
@@ -124,16 +247,7 @@ export class ViewDashProyectoComponent implements OnInit {
     this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia);
   }
 
-  listarVariablesDifucion(id:any){
-    this.variableService.listarFamiliasVariablesInvestigador(id, this.idProyecto).subscribe(
-      (dato: any) => {
-        this.listaCatalogoOrganizacion = dato;
-        if (this.listaCatalogoOrganizacion.length > 0) {
-          this.listaCatalogoOrganizacion.unshift({ idVariable: 0, nombreVariable: 'Todos los datos', siglas:'Todos', nombreOrganizacion:'Todos'});
-        }
-      }
-    )
-  }
+  
 
   // mapa de datos
   map!: L.Map;
@@ -141,7 +255,7 @@ export class ViewDashProyectoComponent implements OnInit {
   private openPopup: L.Layer | null = null;
   private currentMapName: string = 'Mapa de provincias';
 
-  private initMap() {
+  initMap() {
     const southWest = L.latLng(-84.399864, -170.253768);
     const northEast = L.latLng(84.922810, 178.346924);
     const bounds = L.latLngBounds(southWest, northEast);
@@ -160,23 +274,7 @@ export class ViewDashProyectoComponent implements OnInit {
   }
 
   //cargar datos en mapa
-  private fetchData() {
-    this.dataNominal=[];
-    this.dataNumerico=[];
-    this.datoRecolectadoService.dashlistarTodosLosDatosProyectoVariableUnido(this.idProyecto,0).subscribe(
-      (response: any) => {
-        console.log(response)
-        console.log('datos')
-        this.plotData(response);
-
-      },
-      error => {
-        console.log('Error al obtener los datos:', error);
-      }
-    );
-    this.cargarDatosVariableProyecto(0);
-    this.openPopup = null;
-  }
+  
 
   //cargar datos en mapa
   dataNominal: any=[];
@@ -285,7 +383,6 @@ export class ViewDashProyectoComponent implements OnInit {
 
               
               const datos: Dato[] = info[tipoValor];
-              console.log(datos);
               message += `<div type="button" id="toggleMenuButton_${tipoValor}" onmouseover="this.style.background='#259441'; this.style.color='#FFFFFF';" onmouseout="this.style.background='#B2C29A'; this.style.color='#000000';" style="position: relative;display: flex;min-width: 20em;height: 1.5em;line-height: 1.5;background: #B2C29A;border-radius: 5px;margin-bottom: 1px;">`;
               message += `<p style="padding-left:10px"  >${tipoValor}</p>`;
               message += '</div>'
@@ -318,9 +415,6 @@ export class ViewDashProyectoComponent implements OnInit {
 
           }
           message +='</li>'
-          console.log("modelo nominal")
-          console.log(this.modeloNominal);
-          console.log("modelo nominal")
           this.openPopup = square.bindPopup(message);
           this.openPopup.openPopup();
           this.generateCharts();
@@ -351,87 +445,345 @@ export class ViewDashProyectoComponent implements OnInit {
   
 
   
+  
+  tipoChart:number=0;
+
+  listaTipoChart : any = []
+
+  listarTipoChart()
+  {
+    this.listaTipoChart.push({ idTipoChart: 0, descripcion: 'Barras'});
+    this.listaTipoChart.push({ idTipoChart: 1, descripcion: 'Lineas'});
+    this.listaTipoChart.push({ idTipoChart: 2, descripcion: 'Radar'});
+    this.listaTipoChart.push({ idTipoChart: 3, descripcion: 'Pastel'});
+  }
+
+  tipoChartSeleccionado= {
+    idTipoChart: 0,
+  }
+  onTipoChart(event: any): void {
+    this.tipoChart=this.tipoChartSeleccionado.idTipoChart;
+    this.generateCharts();
+  }
+
+
+  
   generateCharts(): void {
-    const investigacionGraficoList = this.modelo.investigacionGraficoList;
-    this.chartsContainer = document.getElementById('chartsContainer');
-  
-    if (!this.chartsContainer) {
-      return;
-    }
-  
-    // Limpiar gráficos anteriores
-    this.chartsContainer.innerHTML = '';
-  
-    const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
-  
-    investigacionGraficoList.forEach((grafico: any, index: number) => {
-      const valores = grafico.valoresLista;
-      const labels = valores.map((valor: any) => valor.profundidad);
-      const data = valores.map((valor: any) => valor.valor);
-      const tipoValor = grafico.tipoValor;
-  
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      
-  
-      if (ctx) {
-        if (!this.chartsContainer) {
-          return;
-        }
-        const divider = document.createElement('hr');
-          this.chartsContainer.appendChild(divider);
-        
-        this.chartsContainer.appendChild(canvas);
-        
-        
-        const chart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: tipoValor,
-              data: data,
-              backgroundColor: 'rgba(37,148,75, 0.5)',
-              borderColor: 'rgba(37,148,75, 1)',
-              borderWidth: 1
-            }]
-          },
-          options: {
-            responsive: true,
-            scales: {
-              xAxes: [{
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: 'Profundidad' // Título del eje X
-                }
-              }],
-              yAxes: [{
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: 'Valor' // Título del eje Y
-                },
-                ticks: {
-                  min: 0, // Valor mínimo del eje Y
-                  stepSize: 50,
-                }
-              }]
-            }
-          }
-        });
-  
-        chartInstances[canvas.id] = chart;
-  
-        
+    if(this.tipoChart==0){  
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
       }
-    });
-  
-    console.log(chartInstances);
-  
-    const canvasId = 'myCanvasId';
-    const chartInstance = chartInstances[canvasId];
-    if (chartInstance) {
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          
+          this.chartsContainer.appendChild(canvas);
+          
+          
+          const chart = new Chart(ctx, {
+            type: 'bar', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: 'rgba(178,194,154)',
+                borderColor: 'rgba(133,143,116)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Profundidad' // Título del eje X
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Valor' // Título del eje Y
+                  },
+                  ticks: {
+                    min: 0, // Valor mínimo del eje Y
+                    stepSize: 50,
+                  }
+                }]
+              }
+            }
+          });
+    
+          chartInstances[canvas.id] = chart;
+    
+          
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+    }else if(this.tipoChart==1){
+
+      // segundo chart 
+
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          
+          this.chartsContainer.appendChild(canvas);
+          
+          
+          const chart = new Chart(ctx, {
+            type: 'line', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: 'rgba(178,194,154)',
+                borderColor: 'rgba(133,143,116)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Profundidad' // Título del eje X
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Valor' // Título del eje Y
+                  },
+                  ticks: {
+                    min: 0, // Valor mínimo del eje Y
+                    stepSize: 50,
+                  }
+                }]
+              }
+            }
+          });
+    
+          chartInstances[canvas.id] = chart;
+    
+          
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+
+    }else if(this.tipoChart==2){
+
+      // segundo chart 
+
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          
+          this.chartsContainer.appendChild(canvas);
+          
+          
+          const chart = new Chart(ctx, {
+            type: 'radar', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: 'rgba(178,194,154,0.5)',
+                borderColor: 'rgba(133,143,116)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              plugins: {
+                filler: {
+                  propagate: false
+                },
+                'samples-filler-analyser': {
+                  target: 'chart-analyser'
+                }
+              }
+            }
+          });
+    
+          chartInstances[canvas.id] = chart;
+    
+          
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+
+    }else{
+      //tercer chart
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          const titulo = document.createElement('h4');
+            titulo.innerHTML = tipoValor; 
+            
+            this.chartsContainer.appendChild(titulo);
+          this.chartsContainer.appendChild(canvas);
+          
+          const randomColors = Array.from({ length: data.length }, () =>
+            `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`
+          );
+          
+          const chart = new Chart(ctx, {
+            type: 'pie', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: randomColors,
+                borderWidth: 1
+                
+              }],
+              
+              
+            },
+            options: {
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Chart Title',
+                },
+              }
+            }
+          });
+          chartInstances[canvas.id] = chart;      
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
     }
   }
   
@@ -573,13 +925,19 @@ export class ViewDashProyectoComponent implements OnInit {
     if (!this.chartsContainer) {
       return;
     }
+    
     const canvasElements = this.chartsContainer.querySelectorAll('canvas');
-    const diverElements = this.chartsContainer.querySelectorAll('hr');    
+    const diverElements = this.chartsContainer.querySelectorAll('hr');
+    const tituloElements = this.chartsContainer.querySelectorAll('h4');    
     canvasElements.forEach((canvasElement) => {
       canvasElement.remove();
     });
     diverElements.forEach((diverElement) => {
       diverElement.remove();
+    });
+
+    tituloElements.forEach((tituloElements) => {
+      tituloElements.remove();
     });
 
     
@@ -600,6 +958,258 @@ export class ViewDashProyectoComponent implements OnInit {
   onSearchOrganizacion(search: string) {
     this.searchOrganizacion = search;
   }
+
+  
+  //agregar
+  agregar(id:any): void {
+    const dialogRef = this.dialog.open(AgregarConglomerado1, {
+      data: { idProyecto: id},
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarConglomeradosVigentes();
+    });
+    
+  }
+
+  //editar
+  editar(id:any, dato1:any, dato2:any, dato3:any, dato4:any, dato5:any): void {
+    const dialogRef = this.dialog.open(EditarConglomerado1, {
+      data: { idConglomerado: id, codigoConglomerado:dato1,nombreConglomerado:dato2,sector:dato3,idProyecto:dato4,idAltura:dato5},
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarConglomeradosVigentes();
+    });
+  }
 }
+
+
+
+
+
+export interface dataEditar {
+  idConglomerado:0,
+  codigoConglomerado: '',
+  nombreConglomerado: '',
+  sector: '',
+  idProyecto:0,
+  idAltura:0,
+}
+
+
+@Component({
+selector: 'editar-conglomerado1',
+templateUrl: 'editar-conglomerado1.html',
+styleUrls: ['./view-dash-proyecto.component.css']
+})
+
+export class EditarConglomerado1 {
+constructor(
+  public dialogRef: MatDialogRef<EditarConglomerado1>,
+  @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
+  private conglomeradoService:ConglomeradoService,
+  private snack: MatSnackBar,
+  private alturaService:AlturaService
+) { }
+
+onNoClick(): void {
+  this.dialogRef.close();
+}
+
+ngOnInit(): void {
+  this.listarAltitud();
+  this.data.idConglomerado=this.data1.idConglomerado;
+  this.data.codigoConglomerado=this.data1.codigoConglomerado;
+  this.data.nombreConglomerado=this.data1.nombreConglomerado;
+  this.data.sector=this.data1.sector;
+  this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
+  this.data.altura.idAltura=this.data1.idAltura;
+}
+
+public data = {
+  idConglomerado:0,
+  codigoConglomerado: '',
+  nombreConglomerado: '',
+  sector: '',
+  proyectoInvestigacion:{
+    idProyecto:0
+  },
+  altura:{
+    idAltura:0
+  }
+}
+
+
+
+altitud : any = []
+
+  listarAltitud()
+    {
+      this.alturaService.listar().subscribe(
+          res=>{
+            this.altitud=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+
+public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+public editar() {
+  if (this.data.codigoConglomerado.trim() == '' || this.data.codigoConglomerado.trim() == null) {
+    this.snack.open('El codigo del conglomerado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  if (this.data.nombreConglomerado.trim() == '' || this.data.nombreConglomerado.trim() == null) {
+    this.snack.open('El nombre del conglomerado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  if (this.data.sector.trim() == '' || this.data.sector.trim() == null) {
+    this.snack.open('El sector del conglomerado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+
+  if (this.data.altura.idAltura==0) {
+    this.snack.open('La altura del conglomerado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  
+
+  this.conglomeradoService.guardar(this.data).subscribe(
+    (data) => {
+      Swal.fire('Conglomerado editado', 'El conglomerado se edito con éxito', 'success').then(
+        (e) => {
+          this.afterClosed.emit();
+          this.dialogRef.close();
+        })
+    }, (error) => {
+      Swal.fire('Error al editar el conglomerado', 'No se edito el conglomerado', 'error');
+      console.log(error);
+    }
+  );
+    
+  }
+
+}
+
+
+
+@Component({
+selector: 'agregar-conglomerado1',
+templateUrl: 'agregar-conglomerado1.html',
+styleUrls: ['./view-dash-proyecto.component.css']
+})
+
+export class AgregarConglomerado1 {
+constructor(
+  public dialogRef: MatDialogRef<AgregarConglomerado1>,
+  @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
+  private conglomeradoService:ConglomeradoService,
+  private snack: MatSnackBar,
+  private alturaService:AlturaService
+) { }
+
+onNoClick(): void {
+  this.dialogRef.close();
+}
+
+public data = {
+  codigoConglomerado: '',
+  nombreConglomerado: '',
+  sector: '',
+  proyectoInvestigacion:{
+    idProyecto:0
+  },
+  altura:{
+    idAltura:0
+  }
+}
+
+ngOnInit(): void {
+  this.listarAltitud();
+  this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
+}
+
+altitud : any = []
+
+  listarAltitud()
+    {
+      this.alturaService.listar().subscribe(
+          res=>{
+            this.altitud=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+
+public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+public agregar() {
+  if (this.data.codigoConglomerado.trim() == '' || this.data.codigoConglomerado.trim() == null) {
+    this.snack.open('El codigo del conglomerado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  if (this.data.nombreConglomerado.trim() == '' || this.data.nombreConglomerado.trim() == null) {
+    this.snack.open('El nombre del conglomerado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  if (this.data.sector.trim() == '' || this.data.sector.trim() == null) {
+    this.snack.open('El sector del conglomerado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+
+  if (this.data.altura.idAltura==0) {
+    this.snack.open('La altura del conglomerado es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  
+
+  this.conglomeradoService.guardar(this.data).subscribe(
+    (data) => {
+      Swal.fire('Conglomerado añadido', 'El conglomerado se añadio con éxito', 'success').then(
+        (e) => {
+          this.afterClosed.emit();
+          this.dialogRef.close();
+        })
+    }, (error) => {
+      Swal.fire('Error al anadir el conglomerado', 'No se registro el nuevo conglomerado', 'error');
+      console.log(error);
+    }
+  );
+    
+  }
+
+}
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
 
 

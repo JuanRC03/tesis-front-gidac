@@ -21,10 +21,10 @@ export class FiltroVariableDescargaPipe implements PipeTransform {
     return items.filter((item: Variable) => {
       // Modifica las propiedades según las columnas en las que deseas filtrar
       return (
-        item.variable.nombreVariable.toLowerCase().includes(searchText) ||
-        item.catalogoEspoch.nombreVariableEspoch.toLowerCase().includes(searchText) ||
-        item.variable.tipoVariable.nombreTipoVariable.toLowerCase().includes(searchText) ||
-        item.catalogoOrganizacion.organizacion.nombreOrganizacion.toLowerCase().includes(searchText)
+        item.nombreVariable.toLowerCase().includes(searchText) ||
+        item.unidadMedida.toLowerCase().includes(searchText) ||
+        item.nombreTipoVariable.toLowerCase().includes(searchText) ||
+        item.nombreOrganizacion.toLowerCase().includes(searchText)
       );
     });
   }

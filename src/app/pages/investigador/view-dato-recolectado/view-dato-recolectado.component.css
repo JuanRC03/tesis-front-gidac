@@ -6,3 +6,8 @@
   background-image: url('/assets/imgIconoProyecto.JPG');
   background-size: cover;
 }
+
+
+.w100{
+  width: 100%;
+}

@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { ViewCatalogoOrganizacionDataSource, ViewCatalogoOrganizacionItem } from './view-catalogo-organizacion-datasource';
 import { CatalogoOrganizacionService } from 'src/app/services/catalogo-organizacion.service';
+import { VariableService } from 'src/app/services/variable.service';
 
 @Component({
   selector: 'app-view-catalogo-organizacion',
@@ -17,11 +18,12 @@ export class ViewCatalogoOrganizacionComponent implements AfterViewInit {
   dataSource: ViewCatalogoOrganizacionDataSource;
 
 
-  constructor(private catalogoOrganizacionService:CatalogoOrganizacionService) {
+  constructor(private catalogoOrganizacionService:CatalogoOrganizacionService,
+    private variableService:VariableService) {
     this.dataSource = new ViewCatalogoOrganizacionDataSource();
   }
 
-  displayedColumns = ['dato1', 'dato2', 'dato3', 'opciones'];
+  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4', 'dato5'];
   
   ngAfterViewInit(): void {
   }
@@ -34,7 +36,7 @@ export class ViewCatalogoOrganizacionComponent implements AfterViewInit {
 
     listarVigentes()
     {
-      this.catalogoOrganizacionService.listar().subscribe(
+      this.variableService.listarCompletasInvestigador().subscribe(
           res=>{
             this.listaDatos=res;
           },

@@ -206,6 +206,17 @@
       </mat-expansion-panel-header>
       <div mat-line *ngIf="investigacionDat.country==''">Seleccione un punto para explorar !!</div>
       
+      
+      <mat-form-field  *ngIf="investigacionDat.country!=''" class="mt20 w100" style="padding: 0px;margin: 0px;padding-top: 0px; padding-right: 25px;">
+        <mat-label>Graficas</mat-label>
+        <mat-select name="chart" [(ngModel)]="tipoChartSeleccionado.idTipoChart" (selectionChange)="onTipoChart($event)" >
+          <mat-option *ngFor="let c of listaTipoChart" [value]="c.idTipoChart">
+            {{ c.descripcion }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+
       <div  id="chartsContainer" style="min-width: 170px;"></div>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="dataNominal && dataKeys2.length > 0" style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
