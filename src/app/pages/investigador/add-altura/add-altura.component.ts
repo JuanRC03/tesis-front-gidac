@@ -28,6 +28,7 @@ export class AddAlturaComponent implements OnInit {
     }
   }
 
+  
   ngOnInit(): void {
     this.listarMedidas();
   }

@@ -23,7 +23,7 @@ export class ViewCatalogoOrganizacionComponent implements AfterViewInit {
     this.dataSource = new ViewCatalogoOrganizacionDataSource();
   }
 
-  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4', 'dato5'];
+  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4'];
   
   ngAfterViewInit(): void {
   }

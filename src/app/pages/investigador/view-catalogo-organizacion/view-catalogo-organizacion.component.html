@@ -43,18 +43,18 @@
               class="full-width-table" matSort aria-label="Elements">
 
               <ng-container matColumnDef="dato1">
-                <th mat-header-cell *matHeaderCellDef>Nombre variable organización</th>
-                <td mat-cell *matCellDef="let row">{{row.nombreOrganizacion}}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="dato2">
-                <th mat-header-cell *matHeaderCellDef>Nombre variable organización</th>
+                <th mat-header-cell *matHeaderCellDef>Nombre variable</th>
                 <td mat-cell *matCellDef="let row">{{row.nombreVariable}}</td>
               </ng-container>
 
+              <ng-container matColumnDef="dato2">
+                <th mat-header-cell *matHeaderCellDef>Variable equivalente organización</th>
+                <td mat-cell *matCellDef="let row">{{row.nombreVariableOrganizacion}}</td>
+              </ng-container>
+
               <ng-container matColumnDef="dato3">
-                <th mat-header-cell *matHeaderCellDef>Nombre variable ESPOCh</th>
-                <td mat-cell *matCellDef="let row">{{row.nombreVariableEspoch}}</td>
+                <th mat-header-cell *matHeaderCellDef>Organización</th>
+                <td mat-cell *matCellDef="let row">{{row.nombreOrganizacion}}</td>
               </ng-container>
 
               <ng-container matColumnDef="dato4">
@@ -62,10 +62,6 @@
                 <td mat-cell *matCellDef="let row">{{row.nombreTipoVariable}}</td>
               </ng-container>
 
-              <ng-container matColumnDef="dato5">
-                <th mat-header-cell *matHeaderCellDef>Unidad de medida</th>
-                <td mat-cell *matCellDef="let row">{{row.unidadMedida}}</td>
-              </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

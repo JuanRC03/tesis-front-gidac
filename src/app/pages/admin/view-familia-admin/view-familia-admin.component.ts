@@ -137,9 +137,9 @@ export class ViewFamiliaAdminComponent implements AfterViewInit {
     
   }
 
-  openDialogEditar(id:any, nombre:any, descripcion:any): void {
+  openDialogEditar(id:any, codigo:any, descripcion:any): void {
     const dialogRef = this.dialog.open(DialogActualizarFamiliaAdmin, {
-      data: { idFamilia: id, nombreFamilia:nombre, descripcion:descripcion},
+      data: { idFamilia: id, codigo:codigo, descripcion:descripcion},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.cargarHijosRecursivos(this.idAgregarEditar, this.idAnterior);
@@ -171,12 +171,12 @@ cargarHijosRecursivos(id:any, idAnterior:any): void {
       this.hijosRecursivos=data;
       if(this.hijosRecursivos.length>0){
         const ultimoDato= this.hijosRecursivos[0];
-        this.idPadre = ultimoDato[3];
+        this.idPadre = ultimoDato.idPadre;
       }
 
     }
   )
-  console.log('dato guardar :'+this.idAgregarEditar);
+  
 }
 
 cargarAnterior(id:any): void {
@@ -190,7 +190,6 @@ cargarAnterior(id:any): void {
     (data:any) => {
       this.hijosRecursivos=data;
       this.idAgregarEditar=id;
-      console.log('dato guardar :'+this.idAgregarEditar);
     }
   )
   if(id!=0){
@@ -216,7 +215,7 @@ export interface FamiliaDTO {
 
 interface DatosActualizar {
 idFamilia: 0,
-nombreFamilia: '',
+codigo: '',
 descripcion: '',
 }
 
@@ -342,8 +341,8 @@ ngOnInit(): void {
 }
 
 formSubmit() {
-  if (this.datos.nombreFamilia == '' || this.datos.nombreFamilia == null) {
-    this.snack.open('El nombre de la clasificación es requerido !!', 'Aceptar', {
+  if (this.datos.codigo == '' || this.datos.codigo == null) {
+    this.snack.open('El código de la clasificación es requerido !!', 'Aceptar', {
       duration: 3000,
       verticalPosition: 'bottom',
       horizontalPosition: 'center'

@@ -24,10 +24,11 @@ interface DataModel {
   idVariable: number;
   nombreTipoVariable: string;
   nombreVariable: string;
-  nombreVariableEspoch: string;
+  nombreVariableOrganizacion: string;
   numeroColumna: number;
+  unidadMedida:string;
+  nombreOrganizacion:string;
 }
-
 @Component({
   selector: 'app-importar-xls',
   templateUrl: './importar-xls.component.html',

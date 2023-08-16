@@ -116,24 +116,24 @@
                 <!--- Note that these columns can be defined in any order.
                       The actual rendered columns are set as a property on the row definition" -->
               
-                <!-- Position Column -->
-                <ng-container matColumnDef="dato1">
-                  <th mat-header-cell *matHeaderCellDef> Variable del proyecto </th>
-                  <td mat-cell *matCellDef="let element"> {{element.nombreVariable}} </td>
-                </ng-container>
-              
-                <!-- Name Column -->
-                <ng-container matColumnDef="dato2">
-                  <th mat-header-cell *matHeaderCellDef> variable Espoch </th>
-                  <td mat-cell *matCellDef="let element"> {{element.nombreVariableEspoch}} </td>
-                </ng-container>
-              
                 <!-- Weight Column -->
-                <ng-container matColumnDef="dato3">
+                <ng-container matColumnDef="dato1">
                   <th mat-header-cell *matHeaderCellDef> Organización </th>
                   <td mat-cell *matCellDef="let element"> {{element.nombreOrganizacion}} </td>
                 </ng-container>
+               
+                <!-- Name Column -->
+                <ng-container matColumnDef="dato2">
+                  <th mat-header-cell *matHeaderCellDef> Nombre variable organizacion </th>
+                  <td mat-cell *matCellDef="let element"> {{element.nombreVariableOrganizacion}} </td>
+                </ng-container>
               
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="dato3">
+                  <th mat-header-cell *matHeaderCellDef> Unidad de medida </th>
+                  <td mat-cell *matCellDef="let element"> {{element.unidadMedida}} </td>
+                </ng-container>
+
                 <!-- Symbol Column -->
                 <ng-container matColumnDef="dato4">
                   <th mat-header-cell *matHeaderCellDef> Tipo de variable </th>
@@ -220,14 +220,16 @@
               <mat-divider></mat-divider>
               <mat-divider></mat-divider>
               <br>
-              <h3 style="text-align: center;">{{ model.nombreVariable }} - {{ model.nombreVariableEspoch }}</h3>
+              <h3 style="text-align: center;">{{ model.nombreVariableOrganizacion }} {{ model.unidadMedida }}</h3>
           <div class="bootstrap-wrapper">
             <div class="container-fluid">
               <div class="row mt20" >
 
                 <div class="col-md-4" >
                   <mat-card class="mb20">
-                    
+                    <div class="info-item">
+                      <p><b>Organización:</b> {{ model.nombreOrganizacion }}</p>
+                    </div>
                     <div class="info-item">
                       <p><b>Tipo de variable:</b> {{ model.nombreTipoVariable }}</p>
                     </div>

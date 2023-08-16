@@ -14,11 +14,11 @@ export class VariableService {
   public guardar(modelo:any){
     return this.http.post(`${baserUrl}/variable/guardar-variable`,modelo);
   }
-  
-  
 
+  public guardarDatosVariable(modelo:any){
+    return this.http.post(`${baserUrl}/variable/guardar-datos-variable`,modelo);
+  }
   
-
   public actualizar(modelo:any){
     return this.http.put(`${baserUrl}/variable/guardar-variable`,modelo);
   }
@@ -31,8 +31,8 @@ export class VariableService {
     return this.http.get(`${baserUrl}/variable/listar-variable`);
   }
 
-  public listarVariablesDifusion(id:any){
-    return this.http.get(`${baserUrl}/variable/listar-variable-difucion/${id}`);
+  public listarVariablesDifusion(id:any, idOrganizacion:any){
+    return this.http.get(`${baserUrl}/variable/listar-variable-difucion/${id}/${idOrganizacion}`);
   }
 
   public listarCompletas(){
@@ -57,6 +57,11 @@ export class VariableService {
 
   public listarFamiliasVariablesInvestigador(idFamilia:any, idProyecto:any){
     return this.http.get(`${baserUrl}/variable/listar-variable-investigador/${idFamilia}/${idProyecto}`);
+  }
+
+
+  public obtenerVariablesDescargarProyecto(id:any, idOrganizacion:any){
+    return this.http.get(`${baserUrl}/variable/listar-variable-descargar-proyecto/${id}/${idOrganizacion}`);
   }
 
   

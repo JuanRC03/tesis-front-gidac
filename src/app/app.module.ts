@@ -213,6 +213,14 @@ import { AgregarPunto } from './pages/investigador/view-punto/view-punto.compone
 import { EditarPunto } from './pages/investigador/view-punto/view-punto.component';
 import { AgregarDatoRecolectado } from './pages/investigador/view-dato-recolectado/view-dato-recolectado.component';
 import { EditarDatoRecolectado } from './pages/investigador/view-dato-recolectado/view-dato-recolectado.component';
+import { DialogAgregarVariableOrganizacion } from './pages/admin/view-catalogo-organizacion-admin/view-catalogo-organizacion-admin.component';
+import { EditarAdministrador } from './pages/admin/view-administrador/view-administrador.component';
+import { EditarDirector } from './pages/admin/view-director/view-director.component';
+import { EditarLocalizacion } from './pages/admin/view-localizacion-admin/view-localizacion-admin.component';
+import { DialogEditarVariableOrganizacion } from './pages/admin/view-catalogo-organizacion-admin/view-catalogo-organizacion-admin.component';
+import { EditarInvestigador } from './pages/director/view-investigador/view-investigador.component';
+import { ViewOrganizacionInvestigadorComponent } from './pages/investigador/view-organizacion-investigador/view-organizacion-investigador.component';
+
 
 @NgModule({
   declarations: [
@@ -380,7 +388,14 @@ import { EditarDatoRecolectado } from './pages/investigador/view-dato-recolectad
     AgregarPunto,
     EditarPunto,
     AgregarDatoRecolectado,
-    EditarDatoRecolectado
+    EditarDatoRecolectado,
+    DialogAgregarVariableOrganizacion,
+    EditarAdministrador,
+    EditarDirector,
+    EditarLocalizacion,
+    DialogEditarVariableOrganizacion,
+    EditarInvestigador,
+    ViewOrganizacionInvestigadorComponent
 
   ],
   imports: [

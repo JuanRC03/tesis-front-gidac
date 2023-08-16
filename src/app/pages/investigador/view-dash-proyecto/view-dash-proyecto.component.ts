@@ -61,7 +61,7 @@ export class ViewDashProyectoComponent implements OnInit   {
   nmbrePoryecto= 0;
   listaDatos: any = []
   datos: any = []
-  listaOrganizaciones : any = []
+  
   private ngUnsubscribe = new Subject();
   private routeSubscription!: Subscription;
 
@@ -139,7 +139,7 @@ export class ViewDashProyectoComponent implements OnInit   {
       this.idProyecto = this.route.snapshot.params['idProyecto'];
       this.listarConglomeradosVigentes();
       this.listarProyectosVigentes(this.idProyecto);
-      this.listarVariablesDifucion(0);
+      this.listarVariablesDifucion(0,0);
       this.listarOrganizaciones();
       this.listarFamiliasVariables();
       this.fetchData(this.idProyecto);
@@ -160,17 +160,9 @@ export class ViewDashProyectoComponent implements OnInit   {
     )
   }
 
-  listarVariablesDifucion(id:any){
-    this.variableService.listarFamiliasVariablesInvestigador(id, this.idProyecto).subscribe(
-      (dato: any) => {
-        this.listaCatalogoOrganizacion = dato;
-        if (this.listaCatalogoOrganizacion.length > 0) {
-          this.listaCatalogoOrganizacion.unshift({ idVariable: 0, nombreVariable: 'Todos los datos', siglas:'Todos', nombreOrganizacion:'Todos'});
-        }
-      }
-    )
-  }
-
+ 
+  listaOrganizaciones : any = []
+  
   listarOrganizaciones()
   {
     this.organizacionService.listar().subscribe(
@@ -178,9 +170,10 @@ export class ViewDashProyectoComponent implements OnInit   {
           this.listaOrganizaciones=res;
 
           if (this.listaOrganizaciones.length > 0) {
-            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Todas las organizaciones', siglas:'Todos', descripcion:'Todos'});
+            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Por defecto'});
           }
-          this.listaOrganizaciones.idOrganizacion = 0;
+          this.organizacionSeleccionado.idOrganizacion = 0;
+          
         },
         err=>console.log(err)
       )
@@ -216,19 +209,29 @@ export class ViewDashProyectoComponent implements OnInit   {
     this.openPopup = null;
   }
 
+  listarVariablesDifucion(id:any, idOrganizacion:any){
+    this.variableService.listarVariablesDifusion(id, idOrganizacion).subscribe(
+      (dato: any) => {
+        this.listaCatalogoOrganizacion = dato;
+        console.log(dato);
+        if (this.listaCatalogoOrganizacion.length > 0) {
+          this.listaCatalogoOrganizacion.unshift({ idVariable: 0, nombreVariable: 'Todos los datos', siglas:'Todos', nombreOrganizacion:'Todos'});
+        }
+      }
+    )
+  }
   
 
   
 
   public searchOrganizacionVariable: string = '';
   opcionSeleccionada:any;
+  organizacionSeleccionado= {
+    idOrganizacion: 0,
+  }
+
   onOrganizacionChange(event: any): void {
-    this.opcionSeleccionada = this.listaOrganizaciones.find((option: OrganizacionProyecto) => option.idOrganizacion === event.value);
-    if(this.opcionSeleccionada.idOrganizacion==0){
-      this.searchOrganizacionVariable="";
-    }else{
-      this.searchOrganizacionVariable=this.opcionSeleccionada.nombreOrganizacion;
-    } 
+    this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia, this.organizacionSeleccionado.idOrganizacion);
   }
 
   listaFamiliaVariable : any = []
@@ -244,9 +247,8 @@ export class ViewDashProyectoComponent implements OnInit   {
   onFamiliaChange(event: any): void {
     //this.opcionSeleccionadaFamilia = this.listaFamiliaVariable.find((option: FamiliaOrganizacion) => option.idFamilia === event.value);
     //console.log(this.opcionSeleccionada.idFamilia)
-    this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia);
+    this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia, this.organizacionSeleccionado.idOrganizacion);
   }
-
   
 
   // mapa de datos
@@ -358,8 +360,11 @@ export class ViewDashProyectoComponent implements OnInit   {
         
         this.modelo.investigacionGraficoList = [];
         this.modeloNominal.investigacionDatos = [];
+        //const apiUrl = `/api/reverse?format=jsonv2&lat=${latLng[0]}&lon=${latLng[0]}`;
+  
         const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latLng[0]}&lon=${latLng[1]}`;
         this.http.get(apiUrl).subscribe((response: any) => {
+          console.log(response)
           locationData.country = response.address.country;
           locationData.state = response.address.state;
           locationData.county = response.address.county;
@@ -383,8 +388,9 @@ export class ViewDashProyectoComponent implements OnInit   {
 
               
               const datos: Dato[] = info[tipoValor];
+              console.log(datos);
               message += `<div type="button" id="toggleMenuButton_${tipoValor}" onmouseover="this.style.background='#259441'; this.style.color='#FFFFFF';" onmouseout="this.style.background='#B2C29A'; this.style.color='#000000';" style="position: relative;display: flex;min-width: 20em;height: 1.5em;line-height: 1.5;background: #B2C29A;border-radius: 5px;margin-bottom: 1px;">`;
-              message += `<p style="padding-left:10px"  >${tipoValor}</p>`;
+              message += `<p style="padding-left:10px"  >${tipoValor} </p>`;
               message += '</div>'
               message += `<div id="menuContent_${tipoValor}" style="display:none;">`;
               message += "<ul>"
@@ -415,6 +421,9 @@ export class ViewDashProyectoComponent implements OnInit   {
 
           }
           message +='</li>'
+          console.log("modelo nominal")
+          console.log(this.modeloNominal);
+          console.log("modelo nominal")
           this.openPopup = square.bindPopup(message);
           this.openPopup.openPopup();
           this.generateCharts();

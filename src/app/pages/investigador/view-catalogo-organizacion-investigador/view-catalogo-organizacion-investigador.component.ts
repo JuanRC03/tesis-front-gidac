@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { ViewCatalogoOrganizacionInvestigadorDataSource, ViewCatalogoOrganizacionInvestigadorItem } from './view-catalogo-organizacion-investigador-datasource';
 import { CatalogoOrganizacionService } from 'src/app/services/catalogo-organizacion.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-view-catalogo-organizacion-investigador',
@@ -17,7 +18,8 @@ export class ViewCatalogoOrganizacionInvestigadorComponent implements AfterViewI
   dataSource: ViewCatalogoOrganizacionInvestigadorDataSource;
 
 
-  constructor(private catalogoOrganizacionService:CatalogoOrganizacionService) {
+  constructor(private catalogoOrganizacionService:CatalogoOrganizacionService,
+    private route:ActivatedRoute) {
     this.dataSource = new ViewCatalogoOrganizacionInvestigadorDataSource();
   }
 
@@ -26,7 +28,12 @@ export class ViewCatalogoOrganizacionInvestigadorComponent implements AfterViewI
   ngAfterViewInit(): void {
   }
   
+  idOrganizacion=0;
+  siglasOrganizacion='';
+
   ngOnInit(): void {
+    this.idOrganizacion = this.route.snapshot.params['idOrganizacion'];
+    this.siglasOrganizacion = this.route.snapshot.params['siglas'];
     this.listar();
   }
 
@@ -34,7 +41,7 @@ export class ViewCatalogoOrganizacionInvestigadorComponent implements AfterViewI
 
     listar()
     {
-      this.catalogoOrganizacionService.listar().subscribe(
+      this.catalogoOrganizacionService.obtenerCatalogoPorOrganizacion(this.idOrganizacion).subscribe(
           res=>{
             this.listaDatos=res;
           },

@@ -66,18 +66,18 @@ export class DatoRecolectadoService {
     return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos/${id}`);
   }
 
-  public listarTodosLosDatosUnidos(id:any){
-    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-unidos/${id}`);
+  public listarTodosLosDatosUnidos(id:any, idVariable:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-unidos/${id}/${idVariable}`);
+  }
+
+  public listarTodosLosDatosCatalogoUnidos(id:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-catalogo-unidos/${id}`);
   }
 
   public listarTodosLosDatosCatalogo(id:any){
     return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-catalogo/${id}`);
   }
 
-  public listarTodosLosDatosCatalogoUnidos(id:any){
-    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-catalogo-unidos/${id}`);
-  }
-  
   public dashlistarTodosLosDatosProyectoVariable(idProyecto:any, idVariable:any){
     return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-proyecto-variable/${idProyecto}/${idVariable}`);
   }

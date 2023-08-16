@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CatalogoOrganizacionService } from 'src/app/services/catalogo-organizacion.service';
+import { VariableService } from 'src/app/services/variable.service';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 
@@ -12,7 +15,8 @@ import * as XLSX from 'xlsx';
 export class ImportarCatalogoOrganizacionComponent implements OnInit {
 
   constructor(private snack:MatSnackBar,
-    private catalogoOrganizacionService:CatalogoOrganizacionService) { }
+    private catalogoOrganizacionService:CatalogoOrganizacionService
+    , public dialog: MatDialog) { }
 
   
   
@@ -133,6 +137,7 @@ export class ImportarCatalogoOrganizacionComponent implements OnInit {
     location.reload();
   }
 
-
   
 }
+
+

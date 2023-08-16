@@ -20,7 +20,7 @@ export class AddPuntoComponent implements OnInit {
     private route:ActivatedRoute,
     private investigacionService:InvestigacionService) { }
 
-  profundidad : any = []
+  
   
   public dataset = {
     descripcion: '',
@@ -45,6 +45,7 @@ export class AddPuntoComponent implements OnInit {
   }
 
   datos : any = []
+  profundidad : any = []
     listarProyectosVigentes()
     {
       this.investigacionService.obtenerProyectoInvestigacion(this.idProyecto).subscribe(

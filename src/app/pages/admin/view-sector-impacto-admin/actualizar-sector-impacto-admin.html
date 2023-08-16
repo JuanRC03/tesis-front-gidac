@@ -1,13 +1,32 @@
-<form style="max-width: 400px;">
-  <h1 class="text-center">Actualizar sector de impacto</h1>
-  <mat-form-field class="w100" appearance="outline">
-    <mat-label>Nombre del sector de impacto</mat-label>
-    <textarea required name="descripcion" matInput placeholder="Digite el nombre del sector de impacto"
-      rows="15" [(ngModel)]="datos.nombreSectorImpacto">
-              </textarea>
-  </mat-form-field>
-  <mat-dialog-actions style="align-items: center; text-align: right;">
-    <button mat-button mat-dialog-close>Cancelar</button>
-    <button mat-button cdkFocusInitial (click)="formSubmit()">Guardar</button>
-  </mat-dialog-actions>
-</form>
+
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line style="padding-right: 30px;">Actualizar sector de impacto</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<form (ngSubmit)= "formSubmit()" style="max-width: 400px;">
+    <div class="box mt-3 mb-3">
+      
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Nombre del sector de impacto</mat-label>
+        <textarea required name="descripcion" matInput placeholder="Digite el nombre del sector de impacto"
+          rows="15" [(ngModel)]="datos.nombreSectorImpacto">
+                  </textarea>
+      </mat-form-field>
+
+    <div class="container text-center mt15">
+      <button mat-raised-button color="primary">Actualizar</button>
+    </div>
+  </div>
+  </form>
+
+

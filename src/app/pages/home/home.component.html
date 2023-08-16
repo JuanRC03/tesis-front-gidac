@@ -109,7 +109,7 @@
     </div>
     <mat-form-field class="mt20 w100" style="padding: 0px;margin: 0px;padding-top: 20px; padding-left: 18px; padding-right: 25px; ">
       <mat-label>Organización</mat-label>
-      <mat-select name="organizaciones" [(ngModel)]="listaOrganizaciones.idOrganizacion" (selectionChange)="onOrganizacionChange($event)" >
+      <mat-select name="organizaciones" [(ngModel)]="organizacionSeleccionado.idOrganizacion" (selectionChange)="onOrganizacionChange($event)" >
         <mat-option *ngFor="let c of listaOrganizaciones" [value]="c.idOrganizacion">
           {{ c.nombreOrganizacion }}
         </mat-option>
@@ -299,7 +299,7 @@
 
         <mat-form-field appearance="outline" class="mt20 w100">
           <mat-label>Investigaciones disponibles</mat-label>
-          <mat-select name="investigaciones" [(ngModel)]="solicitudData.proyectoInvestigacion.idProyecto">
+          <mat-select name="investigacionesSolicitud" [(ngModel)]="solicitudData.proyectoInvestigacion.idProyecto">
             <mat-option *ngFor="let c of investigacion" [value]="c.idProyecto">
               {{ c.nombreProyecto }}
             </mat-option>

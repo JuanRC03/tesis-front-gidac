@@ -21,6 +21,11 @@ export class CatalogoOrganizacionService {
     return this.http.get(`${baserUrl}/catalogo-organizacion/obtener-catalogo-organizacion/${id}`);
   }
 
+  public obtenerCatalogoPorOrganizacion(id:any){
+    return this.http.get(`${baserUrl}/catalogo-organizacion/listar-por-organizacion/${id}`);
+  }
+
+
   public listar(){
     return this.http.get(`${baserUrl}/catalogo-organizacion/listar-catalogo-organizacion`);
   }

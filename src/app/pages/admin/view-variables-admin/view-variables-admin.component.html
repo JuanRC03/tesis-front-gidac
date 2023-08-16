@@ -37,15 +37,15 @@
     </div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
       
-      <button style="height: 36px; margin-top: 2px;" mat-button mat-raised-button color="primary" (click)="openDialogAgregarEquivalencia()">Agregar equivalencia</button>  
+      <button style="height: 36px; margin-top: 2px;" mat-button mat-raised-button color="primary" (click)="openDialogAgregarEquivalencia()">Agregar variable</button>  
 
-      <button mat-button matTooltip="Primary"  class="more-button" [matMenuTriggerFor]="menu1" aria-label="Toggle menu">
+      <!--<button mat-button matTooltip="Primary"  class="more-button" [matMenuTriggerFor]="menu1" aria-label="Toggle menu">
         <button mat-raised-button color="primary">Catálogo</button>
       </button>
       <mat-menu #menu1="matMenu" xPosition="before">
         <button mat-menu-item [routerLink] = "'/admin/view-catalogo-espoch-admin'">Espoch</button>
         <button mat-menu-item [routerLink] = "'/admin/view-catalogo-organizacion-admin'">Organización</button>
-      </mat-menu>           
+      </mat-menu>-->
      </div>
 
    
@@ -64,7 +64,7 @@
     
     <ng-container matColumnDef="dato1">
       <th mat-header-cell *matHeaderCellDef>Código variable</th>
-      <td mat-cell *matCellDef="let row">{{row.idVariable}}</td>
+      <td mat-cell *matCellDef="let row">{{row.codigoVariable}}</td>
     </ng-container>
     
     <ng-container matColumnDef="dato2">
@@ -117,62 +117,6 @@
   </mat-paginator>
 </div>
 
-</mat-tab>
-
-  <mat-tab label="Variables incompletas" [disabled]="false">
-    <ng-template mat-tab-label>
-      <span>Variables incompletas</span>
-      <button mat-icon-button aria-label="Example icon-button with a menu">
-        <mat-icon matBadge="{{ cantidadIncompletos }}" [matBadgeHidden]="hiddenIncompletos" matBadgeColor="primary"></mat-icon>
-      </button>
-    </ng-template>
-
-
-<div class="mat-elevation-z8 table-container">
-  <table class="table" mat-table [dataSource]="listaIncompletos | filtroUsuarios:search | paginate:page_size:page_number" class="full-width-table" matSort aria-label="Elements">
-    
-    <ng-container matColumnDef="dato1">
-      <th mat-header-cell *matHeaderCellDef>Código variable</th>
-      <td mat-cell *matCellDef="let row">{{row.idVariable}}</td>
-    </ng-container>
-    
-    <ng-container matColumnDef="dato2">
-      <th mat-header-cell *matHeaderCellDef>Nombre variable</th>
-      <td mat-cell *matCellDef="let row">{{row.nombreVariable}}</td>
-    </ng-container>
-
-
-    <ng-container matColumnDef="dato3">
-      <th mat-header-cell *matHeaderCellDef>Organizacion</th>
-      <td mat-cell *matCellDef="let row">{{row.nombreOrganizacion }}</td>
-    </ng-container>
-   
-
-    <ng-container matColumnDef="opciones">
-      <th mat-header-cell *matHeaderCellDef>Opciones</th>
-      <td mat-cell *matCellDef="let row">
-        <button class="padding-izquierda" mat-raised-button color="accent" (click) = "openDialogCompletarDatos(row.idVariable, row.nombreVariable)">Completar datos</button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumnsEliminados"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumnsEliminados;"></tr>
-  </table>
-  
-  <mat-list *ngIf="(listaIncompletos | filtroUsuarios:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-    <p>No existen variables incompletas</p>
-    <br>
-    <mat-divider></mat-divider>
-  </mat-list>
-
-  <mat-paginator 
-                 (page)="handlePage($event)"
-                 [length]="(listaIncompletos | filtroUsuarios:search).length"
-                 [pageSize]="page_size"
-                 [pageSizeOptions]="page_size_options"
-                 showFirstLastButtons>
-  </mat-paginator>
-</div>
 </mat-tab>
 
 <mat-tab label="Variables eliminadas" >

@@ -150,7 +150,7 @@ export class MapaEjemploComponent implements OnInit {
   }
 
   listarVariablesDifucion(id:any){
-    this.VariableService.listarVariablesDifusion(id).subscribe(
+    this.VariableService.listarVariablesDifusion(id,0).subscribe(
       (dato: any) => {
         this.listaCatalogoOrganizacion = dato;
         if (this.listaCatalogoOrganizacion.length > 0) {
@@ -337,7 +337,7 @@ export class MapaEjemploComponent implements OnInit {
     this.openPopup = null;
     this.clearMarkers()
     // Volver a cargar los datos y procesarlos
-    this.datoRecolectadoService.listarTodosLosDatosUnidos(id).subscribe(
+    this.datoRecolectadoService.listarTodosLosDatosUnidos(id,0).subscribe(
       (response: any) => {
         this.plotData(response);
       },
@@ -586,7 +586,7 @@ export class MapaEjemploComponent implements OnInit {
   private fetchData() {
     this.dataNominal=[];
     this.dataNumerico=[];
-    this.datoRecolectadoService.listarTodosLosDatosUnidos(0).subscribe(
+    this.datoRecolectadoService.listarTodosLosDatosUnidos(0,0).subscribe(
       (response: any) => {
         this.plotData(response);
 

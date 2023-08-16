@@ -7,13 +7,13 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">vertical_split</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar catálogo de las organizaciones
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar catálogo de la organización {{siglasOrganizacion}}
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
             <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/view-variable-admin">Variables</a></li>
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink="/admin/view-organizacion-admin">Organización</a></li>
             <li class="breadcrumb-item active derecha" style="color:var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver catálogo organización</li>
           </ol>
         </div>
@@ -33,8 +33,9 @@
       </div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
         
-        <button routerLink="/admin/add-altura" mat-raised-button color="primary">Agregar variable</button>
+        <button  (click)="agregar()" mat-raised-button color="primary">Agregar variable</button>
 
+        <!--
         <button  mat-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu1" aria-label="Toggle menu">
           <button mat-raised-button color="primary">Dataset</button>
       </button>
@@ -48,7 +49,7 @@
       <mat-menu #menu2="matMenu" xPosition="before">
         <button mat-menu-item [routerLink] = "'/admin/view-catalogo-espoch-admin'">Espoch</button>
         <button mat-menu-item [routerLink] = "'/admin/view-catalogo-organizacion-admin'">Organización</button>
-      </mat-menu> 
+      </mat-menu> -->
       </div>
 
     </mat-list-item>
@@ -61,18 +62,34 @@
               class="full-width-table" matSort aria-label="Elements">
 
               <ng-container matColumnDef="dato1">
-                <th mat-header-cell *matHeaderCellDef>Nombre variable</th>
-                <td mat-cell *matCellDef="let row">{{row.nombreVariableOrganizacion}}</td>
+                <th mat-header-cell *matHeaderCellDef>Código variable</th>
+                <td mat-cell *matCellDef="let row">{{row.codigoVariableOrganizacion}}</td>
               </ng-container>
 
               <ng-container matColumnDef="dato2">
-                <th mat-header-cell *matHeaderCellDef>Nombre organización</th>
-                <td mat-cell *matCellDef="let row">{{row.organizacion.siglas }}</td>
+                <th mat-header-cell *matHeaderCellDef>Nombre variable</th>
+                <td mat-cell *matCellDef="let row">{{row.nombreVariableOrganizacion}}</td>
               </ng-container>
 
               <ng-container matColumnDef="dato3">
                 <th mat-header-cell *matHeaderCellDef>Descripción </th>
                 <td mat-cell *matCellDef="let row">{{row.descripcion }}</td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef>Opciones</th>
+                <td mat-cell *matCellDef="let row">
+                  <div class="example-button-row">
+                    <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" 
+                    (click)="editar(row.idVariableOrganizacion, row.codigoVariableOrganizacion,row.nombreVariableOrganizacion , row.nombreVariableOrganizacion, row.variable.idVariable)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminar(row.idVariableOrganizacion)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

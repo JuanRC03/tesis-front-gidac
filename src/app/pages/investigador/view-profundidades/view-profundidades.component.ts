@@ -10,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MedidaService } from 'src/app/services/medida.service';
 
 
+
 @Component({
   selector: 'app-view-profundidades',
   templateUrl: './view-profundidades.component.html',
@@ -298,12 +299,6 @@ export class AgregarProfundidad {
       );
   }
 
+
+  
 }
-
-
-
-  
-  
-
-
-

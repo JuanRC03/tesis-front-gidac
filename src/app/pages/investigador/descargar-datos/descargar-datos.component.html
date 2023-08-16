@@ -58,6 +58,16 @@
           <input type="text" class=" mb-2" placeholder="Buscar.." #txtSearch matInput
             (keyup)="onSearch( txtSearch.value )" />
         </mat-form-field>
+
+        <mat-form-field class="mt20 w100" style="padding: 0px;margin: 0px;padding-top: 20px; padding-left: 18px; padding-right: 25px; ">
+          <mat-label>Organización</mat-label>
+          <mat-select name="organizaciones" [(ngModel)]="listaOrganizaciones.idOrganizacion" (selectionChange)="onOrganizacionChange($event)" >
+            <mat-option *ngFor="let c of listaOrganizaciones" [value]="c.idOrganizacion">
+              {{ c.nombreOrganizacion }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
       </div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
             <button mat-icon-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">

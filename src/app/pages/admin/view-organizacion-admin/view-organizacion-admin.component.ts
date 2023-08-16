@@ -24,7 +24,7 @@ export class ViewOrganizacionAdminComponent implements AfterViewInit {
     this.dataSource = new ViewOrganizacionAdminDataSource();
   }
 
-  displayedColumns = ['dato1', 'dato2', 'dato3', 'opciones'];
+  displayedColumns = ['dato1', 'dato2', 'opciones'];
   
   ngAfterViewInit(): void {
   }

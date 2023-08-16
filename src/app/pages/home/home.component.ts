@@ -126,11 +126,24 @@ export class HomeComponent {
 
     this.investigacionService.listarInvestigacionesPublicas().subscribe(
       (dato: any) => {
-        this.investigacion = dato;
+        
+        
+        
         this.investigaciones = dato;
         if (this.investigaciones.length > 0) {
           this.investigaciones.unshift({ idProyecto: 0, nombreProyecto: 'Todos los proyectos', descripcion: 'Vizualizar todas los proyectos' });
         }
+      }, (error) => {
+
+        this.snack.open('Ha ocurrido un error en el sistema !!', 'Aceptar', {
+          duration: 3000
+        });
+      }
+    )
+
+    this.investigacionService.listarInvestigacionesPublicas().subscribe(
+      (dato: any) => {
+        this.investigacion = dato;
       }, (error) => {
 
         this.snack.open('Ha ocurrido un error en el sistema !!', 'Aceptar', {
@@ -147,7 +160,7 @@ export class HomeComponent {
       }
     )
 
-    this.listarVariablesDifucion(0);
+    this.listarVariablesDifucion(0,0);
     this.listarOrganizaciones();
     this.listarFamiliasVariables();
     this.initMap();
@@ -165,10 +178,11 @@ export class HomeComponent {
   }
 
 
-  listarVariablesDifucion(id:any){
-    this.VariableService.listarVariablesDifusion(id).subscribe(
+  listarVariablesDifucion(id:any, idOrganizacion:any){
+    this.VariableService.listarVariablesDifusion(id, idOrganizacion).subscribe(
       (dato: any) => {
         this.listaCatalogoOrganizacion = dato;
+        console.log(dato);
         if (this.listaCatalogoOrganizacion.length > 0) {
           this.listaCatalogoOrganizacion.unshift({ idVariable: 0, nombreVariable: 'Todos los datos', siglas:'Todos', nombreOrganizacion:'Todos'});
         }
@@ -177,7 +191,7 @@ export class HomeComponent {
   }
 
   listaOrganizaciones : any = []
-
+  
   listarOrganizaciones()
   {
     this.organizacionService.listar().subscribe(
@@ -185,9 +199,10 @@ export class HomeComponent {
           this.listaOrganizaciones=res;
 
           if (this.listaOrganizaciones.length > 0) {
-            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Todas las organizaciones', siglas:'Todos', descripcion:'Todos'});
+            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Por defecto'});
           }
-          this.listaOrganizaciones.idOrganizacion = 0;
+          this.organizacionSeleccionado.idOrganizacion = 0;
+          
         },
         err=>console.log(err)
       )
@@ -195,13 +210,12 @@ export class HomeComponent {
 
   public searchOrganizacionVariable: string = '';
   opcionSeleccionada:any;
+  organizacionSeleccionado= {
+    idOrganizacion: 0,
+  }
+
   onOrganizacionChange(event: any): void {
-    this.opcionSeleccionada = this.listaOrganizaciones.find((option: OrganizacionProyecto) => option.idOrganizacion === event.value);
-    if(this.opcionSeleccionada.idOrganizacion==0){
-      this.searchOrganizacionVariable="";
-    }else{
-      this.searchOrganizacionVariable=this.opcionSeleccionada.nombreOrganizacion;
-    } 
+    this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia, this.organizacionSeleccionado.idOrganizacion);
   }
 
   listaFamiliaVariable : any = []
@@ -223,13 +237,15 @@ export class HomeComponent {
   public searchFamiliaOrganizacion: Number = 0;
   opcionSeleccionadaFamilia:any;
 
+  
+
   familiaOrganizacionSeleccionado= {
     idFamilia: 0,
   }
   onFamiliaChange(event: any): void {
     //this.opcionSeleccionadaFamilia = this.listaFamiliaVariable.find((option: FamiliaOrganizacion) => option.idFamilia === event.value);
     //console.log(this.opcionSeleccionada.idFamilia)
-    this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia);
+    this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia, this.organizacionSeleccionado.idOrganizacion);
   }
 
 
@@ -456,17 +472,17 @@ export class HomeComponent {
   }
 
   investigacionSeleccionada = 0;
-  variableSeleccionada = -1;
+  variableSeleccionada = 0;
 
 
   filtrarInvestigacione(id: any) {
     this.investigacionSeleccionada = id;
-    this.variableSeleccionada = -1;
+    //this.variableSeleccionada = -1;
     this.reloadMarkers(id);
   }
 
   filtrarCatalogo(id: any) {
-    this.investigacionSeleccionada = -1;
+    //this.investigacionSeleccionada = -1;
     this.variableSeleccionada = id;
     this.reloadMarkersCatalogo(id);
   }
@@ -480,7 +496,7 @@ export class HomeComponent {
     this.openPopup = null;
     this.clearMarkers()
     // Volver a cargar los datos y procesarlos
-    this.datoRecolectadoService.listarTodosLosDatosUnidos(id).subscribe(
+    this.datoRecolectadoService.listarTodosLosDatosUnidos(id,this.variableSeleccionada).subscribe(
       (response: any) => {
         this.plotData(response);
       },
@@ -521,7 +537,7 @@ export class HomeComponent {
     this.openPopup = null;
     this.clearMarkers()
     
-    this.datoRecolectadoService.listarTodosLosDatosCatalogoUnidos(id).subscribe(
+    this.datoRecolectadoService.listarTodosLosDatosUnidos(this.investigacionSeleccionada,id).subscribe(
       (response: any) => {
         this.plotData(response);
       },
@@ -558,6 +574,8 @@ export class HomeComponent {
 
 
   investigacion: any = [];
+
+  
 
   solicitudData = {
     nombre: '',
@@ -747,7 +765,7 @@ export class HomeComponent {
   private fetchData() {
     this.dataNominal=[];
     this.dataNumerico=[];
-    this.datoRecolectadoService.listarTodosLosDatosUnidos(0).subscribe(
+    this.datoRecolectadoService.listarTodosLosDatosUnidos(0,0).subscribe(
       (response: any) => {
         this.plotData(response);
 
@@ -1559,6 +1577,7 @@ export class DialogSolicitudAcceso {
   public listarProyectosInvestigacion() {
     this.investigacionService.listarInvestigaciones().subscribe(
       (dato: any) => {
+        
         this.investigacion = dato;
       }, (error) => {
         console.log(error);

@@ -104,6 +104,8 @@ import { ViewAreasComponent } from './pages/investigador/view-areas/view-areas.c
 import { ViewCatalogoEspochInvestigadorComponent } from './pages/investigador/view-catalogo-espoch-investigador/view-catalogo-espoch-investigador.component';
 import { ViewCatalogoOrganizacionInvestigadorComponent } from './pages/investigador/view-catalogo-organizacion-investigador/view-catalogo-organizacion-investigador.component';
 import { ViewSolicitudActualizarInvestigadorComponent } from './pages/investigador/view-solicitud-actualizar-investigador/view-solicitud-actualizar-investigador.component';
+import { ViewOrganizacionInvestigadorComponent } from './pages/investigador/view-organizacion-investigador/view-organizacion-investigador.component';
+
 
 const routes: Routes = [
   {
@@ -312,7 +314,7 @@ const routes: Routes = [
       },
 
       {
-        path:'view-catalogo-organizacion-admin',
+        path:'view-catalogo-organizacion-admin/:idOrganizacion/:siglas',
         component:ViewCatalogoOrganizacionAdminComponent
       },
 
@@ -574,16 +576,23 @@ const routes: Routes = [
         component:ViewCatalogoEspochInvestigadorComponent       
       }, 
 
-      {
-        path:'view-catalogo-organizacion-investigador',
-        component:ViewCatalogoOrganizacionInvestigadorComponent       
-      }, 
+       
 
       {
         path:'view-solicitud-actualizar-investigador/:idUsuario',
         component:ViewSolicitudActualizarInvestigadorComponent       
       }, 
+
+      {
+        path:'view-organizacion-investigador',
+        component:ViewOrganizacionInvestigadorComponent       
+      }, 
   
+
+      {
+        path:'view-catalogo-organizacion-investigador/:idOrganizacion/:siglas',
+        component:ViewCatalogoOrganizacionInvestigadorComponent       
+      },
 
       
       

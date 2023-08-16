@@ -47,14 +47,17 @@
 <mat-list>
   <mat-list-item *ngFor = "let oC of hijosRecursivos| filtroInvestigacion:search | paginate:page_size:page_number">
     <mat-icon mat-list-icon>streetview</mat-icon>
-    <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC[2]}}</mat-card-subtitle></div>
+    <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.codigo}}</mat-card-subtitle></div>
+    <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.descripcion}}</mat-card-subtitle></div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
     
-      <button mat-raised-button color="primary" (click)="cargarHijosRecursivos(oC[0], oC[3])">Sub familia</button>
-      <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" >
+      <button mat-raised-button color="primary" (click)="cargarHijosRecursivos(oC.idFamilia, oC.idPadre)">Sub familia</button>
+      <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" 
+      (click)="openDialogEditar(oC.idFamilia, oC.codigo, oC.descripcion)"
+      >
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminar(oC[0])">
+      <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminar(oC.idFamilia)">
         <mat-icon>delete</mat-icon>
       </button>               
      </div>

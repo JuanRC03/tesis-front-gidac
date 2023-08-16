@@ -75,13 +75,16 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "sistema-examenes-frontend:build:production"
+              "browserTarget": "sistema-examenes-frontend:build:production",
+              "proxyConfig": "proxy.conf.json"
             },
             "development": {
-              "browserTarget": "sistema-examenes-frontend:build:development"
+              "browserTarget": "sistema-examenes-frontend:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
+          
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

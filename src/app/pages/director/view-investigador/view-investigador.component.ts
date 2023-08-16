@@ -1,10 +1,12 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, Inject, EventEmitter } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { ViewInvestigadorDataSource, ViewInvestigadorItem } from './view-investigador-datasource';
 import Swal from 'sweetalert2';
 import { UserService } from 'src/app/services/user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-view-investigador',
@@ -20,7 +22,8 @@ export class ViewInvestigadorComponent implements AfterViewInit {
   
   
 
-  constructor(private userServicio:UserService) {
+  constructor(private userServicio:UserService,
+    public dialog: MatDialog) {
     this.dataSource = new ViewInvestigadorDataSource();
   }
 
@@ -127,6 +130,133 @@ export class ViewInvestigadorComponent implements AfterViewInit {
     onSearch( search: string ) {
       this.search = search;
     }
+  
+
+    
+    editar(id:any, dato1:any, dato2:any, dato3:any, dato4:any, dato5:any): void {
+      const dialogRef = this.dialog.open(EditarInvestigador, {
+        data: { idUsuario: id, nombreUsuario:dato1,apellidoUsuario:dato2,cedula:dato3,telefono:dato4,email:dato5},
+      });
+      dialogRef.afterClosed().subscribe(() => {
+        this.listarVigentes();
+      });
+    }
+
   }
+  
+
+  
+export interface dataEditar {
+  idUsuario:0,
+  nombreUsuario: '',
+  apellidoUsuario: '',
+  cedula:'',
+  telefono:'',
+  email: '',
+  vigencia: 1,
+  idRol: 1
+}
+
+
+
+
+
+@Component({
+selector: 'editar-investigador',
+templateUrl: 'editar-investigador.html',
+styleUrls: ['./view-investigador.component.css']
+})
+
+export class EditarInvestigador {
+constructor(
+  public dialogRef: MatDialogRef<EditarInvestigador>,
+  @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
+  private userService:UserService,
+  private snack: MatSnackBar,
+) { }
+
+onNoClick(): void {
+  this.dialogRef.close();
+}
+
+ngOnInit(): void {
+  this.data.idUsuario=this.data1.idUsuario;
+  this.data.nombreUsuario=this.data1.nombreUsuario;
+  this.data.apellidoUsuario=this.data1.apellidoUsuario;
+  this.data.cedula=this.data1.cedula;
+  this.data.telefono=this.data1.telefono;
+  this.data.email=this.data1.email;
+  this.data.rol.idRol=this.data1.idRol;
+}
+
+public data = {
+  idUsuario:0,
+  nombreUsuario: '',
+  apellidoUsuario: '',
+  cedula:'',
+  telefono:'',
+  email: '',
+  vigencia: 1,
+  rol: {
+    idRol: 1
+  }
+}
+
+
+
+
+
+public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+public editar() {
+  if (this.data.nombreUsuario.trim() == '' || this.data.nombreUsuario.trim() == null) {
+    this.snack.open('El nombre del administrador es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  if (this.data.apellidoUsuario.trim() == '' || this.data.apellidoUsuario.trim() == null) {
+    this.snack.open('El apellido del administrador es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  if (this.data.cedula.trim() == '' || this.data.cedula.trim() == null) {
+    this.snack.open('La cédula del administrador es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+
+  if (this.data.telefono.trim() == '' || this.data.telefono.trim() == null) {
+    this.snack.open('El teléfono del administrador es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  if (this.data.email.trim() == '' || this.data.email.trim() == null) {
+    this.snack.open('El email del administrador es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  
+
+  this.userService.editarPerfil(this.data).subscribe(
+    (data) => {
+      Swal.fire('Administrador actualizado', 'El administrador se actualizado con éxito', 'success').then(
+        (e) => {
+          this.afterClosed.emit();
+          this.dialogRef.close();
+        })
+    }, (error) => {
+      Swal.fire('Error al actualizadar al administrador', 'No se actualizado al administrador', 'error');
+      console.log(error);
+    }
+  );
+    
+  }
+
+}
   
 

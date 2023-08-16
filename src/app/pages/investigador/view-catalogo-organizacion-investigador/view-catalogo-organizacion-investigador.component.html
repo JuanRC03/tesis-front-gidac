@@ -1,3 +1,5 @@
+
+
 <mat-card
   style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
   <mat-list style="margin: 0; padding: 0; border: 0;">
@@ -5,20 +7,20 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">dashboard</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Catálogo de las organizaciones
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar catálogo de la organización {{siglasOrganizacion}}
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--resaltado-color); text-decoration: none;"  aria-current="page">Ver catálogo organización</li>
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink="/user-dashboard">Inicio</a></li>
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink="/user-dashboard/view-organizacion-investigador">Organización</a></li>
+            <li class="breadcrumb-item active derecha" style="color:var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver catálogo organización</li>
           </ol>
         </div>
       </div>
     </mat-list-item>
   </mat-list>
 </mat-card>
-
 
   <br>
   <mat-list>
@@ -32,6 +34,22 @@
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
         
         
+
+        <!--
+        <button  mat-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu1" aria-label="Toggle menu">
+          <button mat-raised-button color="primary">Dataset</button>
+      </button>
+      <mat-menu #menu1="matMenu" xPosition="before">
+        <button mat-menu-item (click)="openImportar()">Importar</button>
+        <button mat-menu-item [routerLink] = "'/admin/descargar-datos/'">Descargar</button>
+      </mat-menu>
+      <button style="padding-left: 0px;" mat-button matTooltip="Primary"  class="more-button" [matMenuTriggerFor]="menu2" aria-label="Toggle menu">
+        <button mat-raised-button color="primary">Catálogo</button>
+      </button>
+      <mat-menu #menu2="matMenu" xPosition="before">
+        <button mat-menu-item [routerLink] = "'/admin/view-catalogo-espoch-admin'">Espoch</button>
+        <button mat-menu-item [routerLink] = "'/admin/view-catalogo-organizacion-admin'">Organización</button>
+      </mat-menu> -->
       </div>
 
     </mat-list-item>
@@ -44,19 +62,20 @@
               class="full-width-table" matSort aria-label="Elements">
 
               <ng-container matColumnDef="dato1">
-                <th mat-header-cell *matHeaderCellDef>Nombre variable</th>
-                <td mat-cell *matCellDef="let row">{{row.nombreVariableOrganizacion}}</td>
+                <th mat-header-cell *matHeaderCellDef>Código variable</th>
+                <td mat-cell *matCellDef="let row">{{row.codigoVariableOrganizacion}}</td>
               </ng-container>
 
               <ng-container matColumnDef="dato2">
-                <th mat-header-cell *matHeaderCellDef>Nombre organización</th>
-                <td mat-cell *matCellDef="let row">{{row.organizacion.siglas }}</td>
+                <th mat-header-cell *matHeaderCellDef>Nombre variable</th>
+                <td mat-cell *matCellDef="let row">{{row.nombreVariableOrganizacion}}</td>
               </ng-container>
 
               <ng-container matColumnDef="dato3">
                 <th mat-header-cell *matHeaderCellDef>Descripción </th>
                 <td mat-cell *matCellDef="let row">{{row.descripcion }}</td>
               </ng-container>
+
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
