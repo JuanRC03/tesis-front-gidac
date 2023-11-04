@@ -12,6 +12,9 @@ export class AreasInvestigacionService {
     public aniadirAreaInvestigacion(AreaInvestigacion:any){
       return this.httpClient.post(`${baserUrl}/area-investigacion/guardar-area-investigacion`,AreaInvestigacion);
     }
+    public actualizarAreaInvestigacion(AreaInvestigacion:any){
+      return this.httpClient.put(`${baserUrl}/area-investigacion/actualizar-area-investigacion`,AreaInvestigacion);
+    }
 
     public obtenerAreaInvestigacion(idAreaInvestigacion:any){
       return this.httpClient.get(`${baserUrl}/area-investigacion/obtener-area-investigacion/${idAreaInvestigacion}`);

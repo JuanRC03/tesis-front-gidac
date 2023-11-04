@@ -147,14 +147,7 @@
           <mat-card id="mat"  class="mb20" style="min-height: 165px; max-height: 365px;">
             <mat-card-title style="font-size: 15px;">
               Cantidad de solicitudes de descarga por estado
-              <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu" xPosition="before">
-                <button mat-menu-item (click)="crearChartSolicitudDescargaPorAnio()">Por años</button>
-                <button mat-menu-item (click)="crearChartSolicitudDescargaPorMes()">Por meses</button>
-                <button mat-menu-item (click)="crearChartSolicitudDescargaPorMes()">Por meses</button>
-              </mat-menu>
+              
             </mat-card-title>
             <div class="mat-elevation-z8 table-container">
               <table class="table full-width-table" mat-table [dataSource]="listaSolicitudesDescarga" class="mat-elevation-z8">
@@ -182,13 +175,7 @@
           <mat-card id="mat"  class="mb20" style="min-height: 165px; max-height: 365px;">
             <mat-card-title style="font-size: 15px;">
               Cantidad de solicitudes de actulizar datos por estado
-              <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu" xPosition="before">
-                <button mat-menu-item>Expand</button>
-                <button mat-menu-item>Remove</button>
-              </mat-menu>
+              
             </mat-card-title>
             <div class="mat-elevation-z8 table-container">
               <table class="table full-width-table" mat-table [dataSource]="listaSolicitudesActualizar" class="mat-elevation-z8">

@@ -13,6 +13,14 @@ export class InvestigacionService {
     return this.httpClient.post(`${baserUrl}/api/investigacion`,investigacion);
   }
 
+  public actualizarInvestigacion(investigacion:any){
+    return this.httpClient.put(`${baserUrl}/api/actualizar`,investigacion);
+  }
+
+  public actualizarInformacionAdicional(investigacion:any){
+    return this.httpClient.put(`${baserUrl}/api/actializar-adicional`,investigacion);
+  }
+
   public listarInvestigaciones(){
     return this.httpClient.get(`${baserUrl}/api/investigacion`);
   }

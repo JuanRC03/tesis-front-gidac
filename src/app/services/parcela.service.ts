@@ -14,7 +14,7 @@ export class ParcelaService {
   }
 
   public actualizar(modelo:any){
-    return this.http.put(`${baserUrl}/parcela/guardar-parcela`,modelo);
+    return this.http.put(`${baserUrl}/parcela/actualizar-parcela`,modelo);
   }
 
   public obtener(id:any){

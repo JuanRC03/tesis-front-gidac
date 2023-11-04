@@ -37,21 +37,22 @@
         </div>
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
           
-          <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar tipo proyecto</button>             
+          <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar tipo de proyecto</button>             
          </div>
         <mat-divider></mat-divider>
       </mat-list-item>
     </mat-list>
 
 
+
     
     
     <mat-card >
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"  >
-        <mat-tab label="Tipo de proyecto disponibles">
+        <mat-tab label="Tipo de proyectos disponibles">
 
           <mat-list>
-            <mat-list-item *ngFor = "let oC of listaDatosVigentes| filtroInvestigacion:search | paginate:page_size:page_number">
+            <mat-list-item *ngFor = "let oC of listaDatosVigentes| filtroTipoProyecto:search | paginate:page_size:page_number">
               <mat-icon mat-list-icon>streetview</mat-icon>
               <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.nombreTipoProyecto }}</mat-card-subtitle></div>
               <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -68,7 +69,7 @@
               <mat-divider></mat-divider>
           
             </mat-list-item>
-            <mat-list *ngIf="(listaDatosVigentes).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+            <mat-list *ngIf="(listaDatosVigentes| filtroTipoProyecto:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
               <p>No existen tipos de proyectos</p>
               <br>
               
@@ -76,7 +77,7 @@
             <mat-divider></mat-divider>
             <mat-paginator 
                            (page)="handlePage($event)"
-                           [length]="(listaDatosVigentes| filtroInvestigacion:search).length"
+                           [length]="(listaDatosVigentes| filtroTipoProyecto:search).length"
                            [pageSize]="page_size"
                            [pageSizeOptions]="page_size_options"
                            showFirstLastButtons>
@@ -86,9 +87,9 @@
 
 
 </mat-tab>
-<mat-tab label="Tipo de proyecto eliminadas">
+<mat-tab label="Tipo de proyecto eliminados">
   <mat-list>
-    <mat-list-item *ngFor = "let oC of listaDatosEliminados| filtroInvestigacion:search | paginate:page_size:page_number">
+    <mat-list-item *ngFor = "let oC of listaDatosEliminados| filtroTipoProyecto:search | paginate:page_size:page_number">
       <mat-icon mat-list-icon>streetview</mat-icon>
       <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.nombreTipoProyecto }}</mat-card-subtitle></div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -102,7 +103,7 @@
       <mat-divider></mat-divider>
   
     </mat-list-item>
-    <mat-list *ngIf="(listaDatosEliminados).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+    <mat-list *ngIf="(listaDatosEliminados| filtroTipoProyecto:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
       <p>No existen tipos de proyectos eliminados</p>
       <br>
       
@@ -110,7 +111,7 @@
     <mat-divider></mat-divider>
     <mat-paginator 
                    (page)="handlePage($event)"
-                   [length]="(listaDatosEliminados| filtroInvestigacion:search).length"
+                   [length]="(listaDatosEliminados| filtroTipoProyecto:search).length"
                    [pageSize]="page_size"
                    [pageSizeOptions]="page_size_options"
                    showFirstLastButtons>

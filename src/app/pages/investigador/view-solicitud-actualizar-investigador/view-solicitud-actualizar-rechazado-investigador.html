@@ -3,7 +3,7 @@
 <mat-list class="estilo-mat-list" style="padding: 0;">
     <mat-list-item class="estilo-mat-item">
       
-      <div mat-line>Solicitud de eliminar aprobada</div>
+      <div mat-line>Solicitud de eliminar rechazada</div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
         <button  mat-icon-button mat-dialog-close
           matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
@@ -23,16 +23,16 @@
     <h3><b>Email:</b> {{datosInformacion.solicitudActualizarDato?.grupoInvestigacion?.usuario.email}}</h3>
     
     <br>
-    <h3>Información de la solicitud recibida</h3>
+    <h3>Información de la solicitud enviada</h3>
     <h3><b>Datos a eliminar:</b> {{datosInformacion.solicitudActualizarDato?.datoRecolectado?.valor}} ({{datosInformacion.solicitudActualizarDato?.datoRecolectado?.variable?.nombreVariable}})</h3>
     <h3><b>Proyecto:</b> {{datosInformacion.solicitudActualizarDato?.grupoInvestigacion?.proyectoInvestigacion?.nombreProyecto}}</h3>
     <h3><b>Motivo:</b> {{datosInformacion.solicitudActualizarDato?.motivo}}</h3>
-    <h3><b>Fecha de resivido:</b> {{datosInformacion.solicitudActualizarDato?.fechaEnvioSolicitud}}</h3>
+    <h3><b>Fecha de envio:</b> {{datosInformacion.solicitudActualizarDato?.fechaEnvioSolicitud}}</h3>
 
     <br>
     <h3>Respuesta</h3>
     <h3><b>Respuesta:</b> {{datosInformacion.respuesta}}</h3>
-    <h3><b>Fecha de la respuesta:</b> {{datosInformacion.fechaRespuesta}}</h3>
+    <h3><b>Fecha de respuesta:</b> {{datosInformacion.fechaRespuesta}}</h3>
     
     <div class="align-right" style="padding-top: 5px;">
     </div>

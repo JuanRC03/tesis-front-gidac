@@ -214,6 +214,7 @@ export class DescargarDatosComponent implements OnInit {
         'Profundidad minima': subarreglo[n++],
         'Profundidad maxima': subarreglo[n++],
         'Unidad de medidad profundidad': subarreglo[n++],
+        'Fecha salida campo': subarreglo[n++],
       };
 
       for (let j = n; j < subarreglo.length; j += 3) {

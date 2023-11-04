@@ -43,7 +43,7 @@ export class ViewSectorImpactoAdminComponent implements OnInit {
 
     eliminar(id:any){
       Swal.fire({
-        title:'Eliminar sector impacto',
+        title:'Eliminar información ',
         text:'¿Estás seguro de eliminar el sector de impacto?',
         icon:'warning',
         showCancelButton:true,
@@ -56,7 +56,7 @@ export class ViewSectorImpactoAdminComponent implements OnInit {
           this.sectorImpactoService.eliminar(id).subscribe(
             (data) => {
               this.listaDatosVigentes = this.listaDatosVigentes.filter((datos:any) => datos.idSectorImpacto!= id);
-              Swal.fire('Sector impacto eliminado','El sector de impacto ha sido eliminado','success');
+              Swal.fire('Información eliminada','El sector de impacto ha sido eliminado','success');
               this.listarEliminados();
             },
             (error) => {
@@ -69,24 +69,24 @@ export class ViewSectorImpactoAdminComponent implements OnInit {
 
     restablecer(id:any){
       Swal.fire({
-        title:'Restablecer sector impacto',
-        text:'¿Estás seguro de restablecer el sector de impacto?',
+        title:'Restaurar información ',
+        text:'¿Estás seguro de restaurar el sector de impacto?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
         cancelButtonColor:'#d33',
-        confirmButtonText:'Restablecer',
+        confirmButtonText:'Restaurar',
         cancelButtonText:'Cancelar'
       }).then((result) => {
         if(result.isConfirmed){
           this.sectorImpactoService.restablecer(id).subscribe(
             (data) => {
               this.listaDatosEliminados = this.listaDatosEliminados.filter((datos:any) => datos.idSectorImpacto!= id);
-              Swal.fire('Sector impacto restablecido','El sector de impacto ha restablecido','success');
+              Swal.fire('Información restaurada ','El sector de impacto ha sido restaurado ','success');
               this.listarVigentes();
             },
             (error) => {
-              Swal.fire('Error','Error al restablecer el sector de impacto','error');
+              Swal.fire('Error','Error al restaurar el sector de impacto','error');
             }
           )
         }
@@ -114,7 +114,6 @@ export class ViewSectorImpactoAdminComponent implements OnInit {
       dialogRef.afterClosed().subscribe(() => {
         this.listarVigentes();
       });
-      
     }
 
     openDialogEditar(id:any, nombre:any): void {
@@ -173,13 +172,13 @@ export class DialogAddSectorImpactoAdmin {
 
     this.service.guardar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Sector de impacto guardado', 'El sector de impacto se ha guardado con exito', 'success');
+        Swal.fire('Información guardada ', 'El sector de impacto se ha guardado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al guardar el sector de impacto', 'El sector de impacto no se ha guardado', 'error');
+        Swal.fire('Error en el sistema', 'El sector de impacto no se ha guardado', 'error');
       }
     )
   }
@@ -223,15 +222,15 @@ export class DialogActualizarSectorImpactoAdmin {
       return;
     }
 
-    this.service.guardar(this.datos).subscribe(
+    this.service.actualizar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Sector de impacto actualizado', 'EL sector de impacto se ha actualizado con exito', 'success');
+        Swal.fire('Información actualizada', 'EL sector de impacto se ha actualizado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al actualizar el sector de impacto', 'EL sector de impacto no se ha actualizado', 'error');
+        Swal.fire('Error en el sistema', 'EL sector de impacto no se ha actualizado', 'error');
       }
     )
   }

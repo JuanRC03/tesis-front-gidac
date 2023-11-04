@@ -35,6 +35,8 @@ import { VariableService } from 'src/app/services/variable.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { OrganizacionService } from 'src/app/services/organizacion.service';
 import { UserService } from 'src/app/services/user.service';
+import { MedidaService } from 'src/app/services/medida.service';
+import { throws } from 'assert';
 
 interface Marker {
   lat: number;
@@ -54,7 +56,14 @@ interface OrganizacionProyecto {
   descripcion:String
 }
 
-
+interface OpenCageResponse {
+  results: {
+    geometry: {
+      lat: number;
+      lng: number;
+    };
+  }[];
+}
 
 
 @Component({
@@ -79,10 +88,14 @@ export class HomeComponent {
     private http: HttpClient,
     private carbonoService: CarbonoService,
     private organizacionService:OrganizacionService,
-    private userService:UserService) {
+    private userService:UserService,) {
   }
 
-  
+  //--------------------------------------------------------
+  //coordenas
+
+
+  //--------------------------------------------------------
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -126,9 +139,6 @@ export class HomeComponent {
 
     this.investigacionService.listarInvestigacionesPublicas().subscribe(
       (dato: any) => {
-        
-        
-        
         this.investigaciones = dato;
         if (this.investigaciones.length > 0) {
           this.investigaciones.unshift({ idProyecto: 0, nombreProyecto: 'Todos los proyectos', descripcion: 'Vizualizar todas los proyectos' });
@@ -465,8 +475,6 @@ export class HomeComponent {
     this.search = search;
   }
 
-
-
   onSearchOrganizacion(search: string) {
     this.searchOrganizacion = search;
   }
@@ -632,7 +640,7 @@ export class HomeComponent {
       return;
     }
     if (this.solicitudData.proyectoInvestigacion.idProyecto == '' || this.solicitudData.proyectoInvestigacion.idProyecto == null) {
-      this.snack.open('Debe escojer una investigación!!', 'Aceptar', {
+      this.snack.open('Debe escojer un proyecto!!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center'
@@ -758,7 +766,30 @@ export class HomeComponent {
     const dialogRef = this.dialog.open(ViewInformacionProyectoInvestigacion, {
       data: { idProyectoInvestigacion: idProyecto},
     });
+  }
 
+  //abrir el dialogo informacion proyectos
+  openDialogProyectos(): void {
+    const dialogRef = this.dialog.open(ViewProyectosHome, {
+    });
+  }
+  
+  //abrir el dialogo informacion catalogo
+  openDialogCatalogo(): void {
+    const dialogRef = this.dialog.open(ViewCatalogoHome, {
+    });
+  }
+
+  //abrir el dialogo informacion proyectos
+  openDialogInformacionEcoAndes(): void {
+    const dialogRef = this.dialog.open(ViewInformacionHome, {
+    });
+  }
+
+  //abrir el dialogo informacion wxplorar
+  openDialogExplorar(): void {
+    const dialogRef = this.dialog.open(ViewExplorarHome, {
+    });
   }
 
   //cargar datos en mapa
@@ -1378,7 +1409,9 @@ export class autenticacion {
     private router: Router,
     private snack: MatSnackBar,
     public dialog: MatDialog,
-    public accesoService: AccesoService
+    public medidaService:MedidaService,
+    public accesoService: AccesoService,
+    
   ) { }
 
   hidePass = true;
@@ -1401,7 +1434,7 @@ export class autenticacion {
 
   formSubmit() {
     if (this.loginData.email.trim() == '' || this.loginData.email.trim() == null) {
-      this.snack.open('El nombre de usuario es requerido !!', 'Aceptar', {
+      this.snack.open('El email es requerido !!', 'Aceptar', {
         duration: 3000
       })
       return;
@@ -1437,14 +1470,30 @@ export class autenticacion {
             })
           }
           else if (this.loginService.getUserRole() == 'INVESTIGADOR') {
-
-            this.datoRecolectadoService.actualizarEditable().subscribe((data: any) => { })
             this.router.navigate(['user-dashboard']);
             this.loginService.loginStatusSubjec.next(true);
+            
+            Swal.fire({
+              position: 'top-end',
+              icon: 'info',
+              title: 'Bienvenido investigador',
+              showConfirmButton: false,
+              timer: 3000
+            })
+            this.datoRecolectadoService.actualizarEditable().subscribe((data: any) => {
+            });
 
           } else if (this.loginService.getUserRole() == 'DIRECTOR') {
             this.router.navigate(['director-dashboard']);
             this.loginService.loginStatusSubjec.next(true);
+
+            Swal.fire({
+              position: 'top-end',
+              icon: 'info',
+              title: 'Bienvenido director',
+              showConfirmButton: false,
+              timer: 3000
+            })
           }
           else {
             this.loginService.logout();
@@ -1637,7 +1686,7 @@ export class DialogSolicitudAcceso {
       return;
     }
     if (this.solicitudData.nombre == '' || this.solicitudData.nombre == null) {
-      this.snack.open('Debe escojer una investigación!!', 'Aceptar', {
+      this.snack.open('Debe escojer un proyecto!!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center'
@@ -1675,10 +1724,8 @@ export class ViewInformacionProyectoInvestigacion {
   constructor(
     public dialogRef: MatDialogRef<ViewInformacionProyectoInvestigacion>,
     @Inject(MAT_DIALOG_DATA) public data: DialogDataInformacionproyectoInvestigacion,
-    private appWebService: AppWebService,
     private investigacionInvestigadoresService: InvestigacionInvestigadoresService,
     private investigacionService: InvestigacionService,
-    private directorAreaInvestigacionService: DirectorAreaInvestigacionService,
     private sectorImpactoProyectoService: SectorImpactoProyectoService,
     private localizacionProyectoService: LocalizacionProyectoService,
     private lineaInvestigacionProyectoService: LineaInvestigacionProyectoService,
@@ -1776,6 +1823,674 @@ export class ViewInformacionProyectoInvestigacion {
 
     return `${dia}/${mes}/${anio}`;
   }
+
+}
+
+
+@Component({
+  selector: 'view-proyectos-home',
+  templateUrl: 'view-proyectos-home.html',
+  styleUrls: ['./home.component.css']
+})
+
+export class ViewProyectosHome {
+  constructor(
+    public dialogRef: MatDialogRef<ViewProyectosHome>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogDataInformacionproyectoInvestigacion,
+    private snack: MatSnackBar,
+    public dialog: MatDialog,
+    private investigacionService: InvestigacionService,
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
+  investigaciones: any = []
+  investigacionSeleccionada = 0;
+
+  ngOnInit(): void {
+    this.investigacionService.listarInvestigacionesPublicas().subscribe(
+      (dato: any) => {
+        this.investigaciones = dato;
+        if (this.investigaciones.length > 0) {
+          this.investigaciones.unshift({ idProyecto: 0, nombreProyecto: 'Todos los proyectos', descripcion: 'Vizualizar todas los proyectos' });
+        }
+      }, (error) => {
+
+        this.snack.open('Ha ocurrido un error en el sistema !!', 'Aceptar', {
+          duration: 3000
+        });
+      }
+    )
+  }
+
+  openDialogInformacion(idProyecto: any): void {
+    const dialogRef = this.dialog.open(ViewInformacionProyectoInvestigacion, {
+      data: { idProyectoInvestigacion: idProyecto},
+    });
+  }
+
+   //paginador de proyectos
+   page_size1:number=5
+   page_number1:number=1
+   page_size_options1=[5,10,20,50,100]
+ 
+   handlePage1(e: PageEvent){
+     this.page_size1=e.pageSize
+     this.page_number1=e.pageIndex + 1
+   }
+
+   public search: string = '';
+
+  onSearch(search: string) {
+    this.search = search;
+  }
+
+  filtrarInvestigacione(id: any) {
+    this.investigacionSeleccionada = id;
+  }
+
+}
+
+
+
+@Component({
+  selector: 'view-catalogo-home',
+  templateUrl: 'view-catalogo-home.html',
+  styleUrls: ['./home.component.css']
+})
+
+export class ViewCatalogoHome {
+  constructor(
+    public dialogRef: MatDialogRef<ViewCatalogoHome>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogDataInformacionproyectoInvestigacion,
+    public dialog: MatDialog,
+    public VariableService:VariableService,
+    private organizacionService: OrganizacionService,
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  ngOnInit(): void {
+    this.listarVariablesDifucion(0,0);
+    this.listarOrganizaciones();
+    this.listarFamiliasVariables();
+  }
+
+  listaCatalogoOrganizacion: any = [];
+
+  listarVariablesDifucion(id:any, idOrganizacion:any){
+    this.VariableService.listarVariablesDifusion(id, idOrganizacion).subscribe(
+      (dato: any) => {
+        this.listaCatalogoOrganizacion = dato;
+        console.log(dato);
+        if (this.listaCatalogoOrganizacion.length > 0) {
+          this.listaCatalogoOrganizacion.unshift({ idVariable: 0, nombreVariable: 'Todos los datos', siglas:'Todos', nombreOrganizacion:'Todos'});
+        }
+      }
+    )
+  }
+
+  listarOrganizaciones()
+  {
+    this.organizacionService.listar().subscribe(
+        res=>{
+          this.listaOrganizaciones=res;
+
+          if (this.listaOrganizaciones.length > 0) {
+            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Por defecto'});
+          }
+          this.organizacionSeleccionado.idOrganizacion = 0;
+          
+        },
+        err=>console.log(err)
+      )
+  }
+
+  listarFamiliasVariables()
+  {
+    this.VariableService.listarFamiliasVariables().subscribe(
+        res=>{
+          this.listaFamiliaVariable=res;
+          if (this.listaFamiliaVariable.length > 0) {
+            this.listaFamiliaVariable.unshift({ idFamilia: 0, descripcion: 'Todas las familias'});
+          }
+          this.familiaOrganizacionSeleccionado.idFamilia = 0;
+        },
+        err=>console.log(err)
+      )
+  }
+
+  variableSeleccionada = 0;
+
+  familiaOrganizacionSeleccionado= {
+    idFamilia: 0,
+  }
+
+  filtrarCatalogo(id: any) {
+    //this.investigacionSeleccionada = -1;
+    this.variableSeleccionada = id;
+  }
+
+  //paginador de catalogo
+  page_size2:number=5
+  page_number2:number=1
+  page_size_options2=[5,10,20,50,100]
+  public searchOrganizacion: string = '';
+  public searchOrganizacionVariable: string = '';
+  listaFamiliaVariable : any = []
+  listaOrganizaciones : any = []
+
+  handlePage2(e: PageEvent){
+    this.page_size2=e.pageSize
+    this.page_number2=e.pageIndex + 1
+  }
+  
+  onFamiliaChange(event: any): void {
+    //this.opcionSeleccionadaFamilia = this.listaFamiliaVariable.find((option: FamiliaOrganizacion) => option.idFamilia === event.value);
+    //console.log(this.opcionSeleccionada.idFamilia)
+    this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia, this.organizacionSeleccionado.idOrganizacion);
+  }
+
+  organizacionSeleccionado= {
+    idOrganizacion: 0,
+  }
+
+  onOrganizacionChange(event: any): void {
+    this.listarVariablesDifucion(this.familiaOrganizacionSeleccionado.idFamilia, this.organizacionSeleccionado.idOrganizacion);
+  }
+
+  onSearchOrganizacion(search: string) {
+    this.searchOrganizacion = search;
+  }
+
+}
+
+
+
+
+
+@Component({
+  selector: 'view-informacion-home',
+  templateUrl: 'view-informacion-home.html',
+  styleUrls: ['./home.component.css']
+})
+
+export class ViewInformacionHome {
+  constructor(
+    public dialogRef: MatDialogRef<ViewInformacionHome>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogDataInformacionproyectoInvestigacion,
+    public dialog: MatDialog,
+    public VariableService:VariableService,
+    private appWebService: AppWebService,
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  ngOnInit(): void {
+    this.mostrarInformacionVigente();
+  }
+
+  informacionEcoAndes = {
+    condicionesUso: '',
+    derechoReservado: '',
+    descripcion: '',
+    licenciaUso: ''
+  }
+
+
+  datosIformacionAppWeb: any = [];
+
+  public mostrarInformacionVigente() {
+    this.appWebService.mostrarInformacionAppWebVigente().subscribe(
+      (data: any) => {
+
+        if (data != null) {
+          this.datosIformacionAppWeb = data;
+          this.informacionEcoAndes.condicionesUso = this.datosIformacionAppWeb.condicionesUso;
+          this.informacionEcoAndes.derechoReservado = this.datosIformacionAppWeb.derechoReservado;
+          this.informacionEcoAndes.descripcion = this.datosIformacionAppWeb.descripcion;
+          this.informacionEcoAndes.licenciaUso = this.datosIformacionAppWeb.licenciaUso;
+        }
+      },
+      (error) => {
+        console.log(error);
+        this.datosIformacionAppWeb = [];
+      }
+    )
+  }
+
+}
+
+
+
+
+@Component({
+  selector: 'view-explorar-home',
+  templateUrl: 'view-explorar-home.html',
+  styleUrls: ['./home.component.css']
+})
+
+export class ViewExplorarHome {
+  constructor(
+    public dialogRef: MatDialogRef<ViewExplorarHome>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogDataInformacionproyectoInvestigacion,
+    public dialog: MatDialog,
+    public VariableService:VariableService,
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  ngOnInit(): void {
+    
+  }
+
+  investigacionDat: any = {
+    country: '',
+    state: '',
+    county: '',
+    parroquia: '',
+    coordenadax: '',
+    coordenaday: '',
+  }
+
+  private markers: L.Polygon[] = [];
+  //cargar datos en mapa
+  dataNominal: any=[];
+  dataNumerico: any=[];
+
+  private clearMarkers() {
+    this.markers.forEach(marker => marker.removeFrom(this.map));
+    this.markers = [];
+    this.investigacionDat.country = '';
+    this.investigacionDat.state = '';
+    this.investigacionDat.county = '';
+    this.investigacionDat.parroquia = '';
+    this.investigacionDat.coordenadax = '';
+    this.investigacionDat.coordenaday = '';
+  }
+
+  dataKeys1: string[] = [];
+  dataKeys2: string[] = [];
+  getCoordenadas1(data: any){
+    this.dataKeys1 = Object.keys(data); // Obtenemos las claves del objeto para usar en el template
+  }
+  getCoordenadas2(data: any){
+    this.dataKeys2 = Object.keys(data); // Obtenemos las claves del objeto para usar en el template
+  }
+
+  tipoChartSeleccionado= {
+    idTipoChart: 0,
+  }
+  onTipoChart(event: any): void {
+    this.tipoChart=this.tipoChartSeleccionado.idTipoChart;
+    this.generateCharts();
+  }
+
+  tipoChart:number=0;
+
+  chartsContainer = document.getElementById('chartsContainer');
+
+  map!: L.Map;
+
+  selectedMenuItem: number = -1;
+
+  @ViewChild('menuLateral3') menuLateral3!: MatDrawer;
+
+  modelo: any = {
+    investigacionGraficoList: []
+  };
+    
+  ocultarMenu4() {
+    this.menuLateral4.close();
+  }
+
+  @ViewChild('menuLateral4') menuLateral4!: MatDrawer;
+
+  panelOpenGrafico = false;
+
+  modeloNominal: any = {
+    investigacionDatos: []
+  };
+
+  listaTipoChart : any = []
+
+  listarTipoChart()
+  {
+    this.listaTipoChart.push({ idTipoChart: 0, descripcion: 'Barras'});
+    this.listaTipoChart.push({ idTipoChart: 1, descripcion: 'Lineas'});
+    this.listaTipoChart.push({ idTipoChart: 2, descripcion: 'Radar'});
+    this.listaTipoChart.push({ idTipoChart: 3, descripcion: 'Pastel'});
+  }
+
+
+  generateCharts(): void {
+    if(this.tipoChart==0){  
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          
+          this.chartsContainer.appendChild(canvas);
+          
+          
+          const chart = new Chart(ctx, {
+            type: 'bar', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: 'rgba(178,194,154)',
+                borderColor: 'rgba(133,143,116)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Profundidad' // Título del eje X
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Valor' // Título del eje Y
+                  },
+                  ticks: {
+                    min: 0, // Valor mínimo del eje Y
+                    stepSize: 50,
+                  }
+                }]
+              }
+            }
+          });
+    
+          chartInstances[canvas.id] = chart;
+    
+          
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+    }else if(this.tipoChart==1){
+
+      // segundo chart 
+
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          
+          this.chartsContainer.appendChild(canvas);
+          
+          
+          const chart = new Chart(ctx, {
+            type: 'line', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: 'rgba(178,194,154)',
+                borderColor: 'rgba(133,143,116)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Profundidad' // Título del eje X
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Valor' // Título del eje Y
+                  },
+                  ticks: {
+                    min: 0, // Valor mínimo del eje Y
+                    stepSize: 50,
+                  }
+                }]
+              }
+            }
+          });
+    
+          chartInstances[canvas.id] = chart;
+    
+          
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+
+    }else if(this.tipoChart==2){
+
+      // segundo chart 
+
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          
+          this.chartsContainer.appendChild(canvas);
+          
+          
+          const chart = new Chart(ctx, {
+            type: 'radar', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: 'rgba(178,194,154,0.5)',
+                borderColor: 'rgba(133,143,116)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              plugins: {
+                filler: {
+                  propagate: false
+                },
+                'samples-filler-analyser': {
+                  target: 'chart-analyser'
+                }
+              }
+            }
+          });
+    
+          chartInstances[canvas.id] = chart;
+    
+          
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+
+    }else{
+      //tercer chart
+      const investigacionGraficoList = this.modelo.investigacionGraficoList;
+      this.chartsContainer = document.getElementById('chartsContainer');
+    
+      if (!this.chartsContainer) {
+        return;
+      }
+    
+      // Limpiar gráficos anteriores
+      this.chartsContainer.innerHTML = '';
+    
+      const chartInstances: { [canvasId: string]: Chart } = {}; // Diccionario para almacenar las instancias de Chart
+    
+      investigacionGraficoList.forEach((grafico: any, index: number) => {
+        const valores = grafico.valoresLista;
+        const labels = valores.map((valor: any) => valor.profundidad);
+        const data = valores.map((valor: any) => valor.valor);
+        const tipoValor = grafico.tipoValor;
+    
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+    
+        if (ctx) {
+          if (!this.chartsContainer) {
+            return;
+          }
+          const divider = document.createElement('hr');
+            this.chartsContainer.appendChild(divider);
+          const titulo = document.createElement('h4');
+            titulo.innerHTML = tipoValor; 
+            
+            this.chartsContainer.appendChild(titulo);
+          this.chartsContainer.appendChild(canvas);
+          
+          const randomColors = Array.from({ length: data.length }, () =>
+            `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`
+          );
+          
+          const chart = new Chart(ctx, {
+            type: 'pie', //line //bar//pie//doughnut
+            data: {
+              labels: labels,
+              
+              datasets: [{
+                label: tipoValor,
+                data: data,
+                backgroundColor: randomColors,
+                borderWidth: 1
+                
+              }],
+              
+              
+            },
+            options: {
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Chart Title',
+                },
+              }
+            }
+          });
+          chartInstances[canvas.id] = chart;      
+        }
+      });
+    
+      
+    
+      const canvasId = 'myCanvasId';
+      const chartInstance = chartInstances[canvasId];
+      if (chartInstance) {
+      }
+    }
+  }
+
 
 }
 

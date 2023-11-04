@@ -15,7 +15,7 @@ export class DatoRecolectadoService {
   }
 
   public actualizar(modelo:any){
-    return this.http.put(`${baserUrl}/dato-recolectado/guardar-dato-recolectado`,modelo);
+    return this.http.put(`${baserUrl}/dato-recolectado/actualizar-dato-recolectado`,modelo);
   }
 
   public obtener(id:any){

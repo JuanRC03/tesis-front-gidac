@@ -1,20 +1,20 @@
 <mat-card
   style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
   <mat-list style="margin: 0; padding: 0; border: 0;">
-    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
+    <mat-list-item style="margin: 0; padding: 0; border: 0; height: var(--tamanio-cuadro-idicador);">
       <mat-icon mat-list-icon
-        style="padding-left: 0px; margin-left: 0; border-left: 0;">supervised_user_circle</mat-icon>
+        style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">collections_bookmark</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestión de parroquias
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar parroquias
         </mat-card-title></div>
       <div mat-line>
-        <div aria-label="breadcrumb" style="font-size: 14px; border: 0; padding: 0; margin: 0;">
+        <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
             <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/admin/view-pais-admin'">Paises</a></li>
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/admin/view-pais-admin'">Países</a></li>
             <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/admin/view-provincia-admin/'+idPais">Provincias</a></li>
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/admin/view-canton-admin/'+idProvincia+'/'+idPais">Canton</a></li>
-            <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Ver parroquias</li>
+            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/admin/view-canton-admin/'+idProvincia+'/'+idPais">Cantones</a></li>
+            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver parroquias</li>
           </ol>
         </div>
       </div>
@@ -33,7 +33,7 @@
       </div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
         
-        <button [routerLink] = "'/user-dashboard/add-parroquia-admin/'+idCanton+'/'+idProvincia+'/'+idPais" mat-raised-button color="primary">Agregar parroquia</button>
+        <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar parroquia</button>
       </div>
 
     </mat-list-item>
@@ -42,7 +42,7 @@
   <mat-card style="margin-top: 0; border-top: 0; padding-top: 5px;">
           <div class="mat-elevation-z8 table-container">
             <table class="table" mat-table
-              [dataSource]="listaDatos | filtroUsuarios:search | paginate:page_size:page_number"
+              [dataSource]="listaDatos | filtroParroquia:search | paginate:page_size:page_number"
               class="full-width-table" matSort aria-label="Elements">
 
               
@@ -63,7 +63,7 @@
 
 
                   <div class="example-button-row">
-                    <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" [routerLink]="'/user-dashboard/view-parcelas/'+row.idConglomerado">
+                    <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="openDialogEditar(row.codigoParroquia, row.nombreParroquia)">
                       <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click)="eliminar(row.codigoParroquia)">
@@ -78,14 +78,14 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
 
-            <mat-list *ngIf="(listaDatos | filtroUsuarios:search).length===0"
+            <mat-list *ngIf="(listaDatos | filtroParroquia:search).length===0"
               style="text-align: center; padding: 20px; margin: 20px;">
               <p>No existen parroquias disponibles</p>
               <br>
               <mat-divider></mat-divider>
             </mat-list>
 
-            <mat-paginator (page)="handlePage($event)" [length]="(listaDatos | filtroUsuarios:search).length"
+            <mat-paginator (page)="handlePage($event)" [length]="(listaDatos | filtroParroquia:search).length"
               [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
             </mat-paginator>
           </div>

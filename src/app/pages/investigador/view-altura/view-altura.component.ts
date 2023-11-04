@@ -11,6 +11,7 @@ import { MedidaService } from 'src/app/services/medida.service';
 
 
 
+
 @Component({
   selector: 'app-view-altura',
   templateUrl: './view-altura.component.html',
@@ -25,7 +26,9 @@ export class ViewAlturaComponent implements AfterViewInit {
   constructor(
     private alturaService:AlturaService,
     public matDialog: MatDialog,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private changeDetectorRef: ChangeDetectorRef,
+    private medidaService:MedidaService
   ) {
     this.dataSource = new ViewAlturaDataSource();
   }
@@ -37,18 +40,33 @@ export class ViewAlturaComponent implements AfterViewInit {
   
   ngOnInit(): void {
     this.listar();
+    this.listarMedidas();
   }
+
+  medida : any = []
+  listarMedidas()
+    {
+      this.medidaService.listar().subscribe(
+          res=>{
+            this.medida=res;
+            console.log(this.medida);
+          },
+          err=>console.log(err)
+        )
+    }
 
     listaDatos : any = []
 
     listar()
     {
+      this.alturaService.actualizarEditable().subscribe((data: any) => { 
       this.alturaService.listar().subscribe(
           res=>{
             this.listaDatos=res;
           },
           err=>console.log(err)
         )
+      })
     }
   
     //paginacion y busqueda
@@ -71,8 +89,8 @@ export class ViewAlturaComponent implements AfterViewInit {
 
     eliminar(id:any){
       Swal.fire({
-        title:'Eliminar altura',
-        text:'¿Estás seguro de eliminar al altura?',
+        title:'Eliminar información',
+        text:'¿Estás seguro de eliminar la altura?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
@@ -84,7 +102,7 @@ export class ViewAlturaComponent implements AfterViewInit {
           this.alturaService.eliminar(id).subscribe(
             (data) => {
               this.listaDatos = this.listaDatos.filter((lista:any) => lista.idAltura != id);
-              Swal.fire('Altura eliminado','La altura ha sido eliminado','success');
+              Swal.fire('Información eliminada','La altura ha sido eliminada','success');
               this.listar();
             },
             (error) => {
@@ -97,21 +115,24 @@ export class ViewAlturaComponent implements AfterViewInit {
 
     //agregar
     agregar(): void {
-      const dialogRef = this.matDialog.open(AgregarAltura, {});
+      const dialogRef = this.matDialog.open(AgregarAltura, {
+        data: { medida: this.medida},
+      });
       dialogRef.afterClosed().subscribe(() => {
           this.listar();
       });
     }
 
     //editar
+
+  
+
     editar(id:any, dato1:any, dato2:any, dato3:any): void {
       const dialogRef = this.matDialog.open(EditarAltura, {
-        data: { idAltura: id, alturaMinima:dato1,alturaMaxima:dato2,idUnidadMedida:dato3},
+        data: { idAltura: id, alturaMinima:dato1,alturaMaxima:dato2,idUnidadMedida:dato3,medida: this.medida},
       });
       dialogRef.afterClosed().subscribe(() => {
-        setTimeout(() => {
-          this.listar();
-        });
+        this.listar();
       });
     }
   }
@@ -122,9 +143,10 @@ export class ViewAlturaComponent implements AfterViewInit {
   
 export interface dataEditar {
   idAltura: 0,
-  alturaMinima: '',
-  alturaMaxima: '',
-  idUnidadMedida:0
+  alturaMinima: null,
+  alturaMaxima: null,
+  idUnidadMedida:0,
+  medida:[]
 }
 
 @Component({
@@ -139,7 +161,8 @@ export class EditarAltura {
     @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
     private alturaService:AlturaService,
     private snack: MatSnackBar,
-    private medidaService:MedidaService
+    private medidaService:MedidaService,
+    private cdRef: ChangeDetectorRef
   ) { }
 
   onNoClick(): void {
@@ -147,12 +170,15 @@ export class EditarAltura {
   }
 
   ngOnInit(): void {
-    this.listarMedidas();
+    this.medida = this.data1.medida;
     this.data.idAltura=this.data1.idAltura;
     this.data.alturaMinima=this.data1.alturaMinima;
     this.data.alturaMaxima=this.data1.alturaMaxima;
     this.data.unidadMedida.idUnidadMedida=this.data1.idUnidadMedida;
+    this.cdRef.detectChanges(); 
   }
+
+  
 
   medida : any = []
   listarMedidas()
@@ -168,8 +194,8 @@ export class EditarAltura {
 
   public data = {
     idAltura: 0,
-    alturaMinima: '',
-    alturaMaxima: '',
+    alturaMinima: null,
+    alturaMaxima: null,
     unidadMedida:{
       idUnidadMedida:-1
     }
@@ -179,21 +205,21 @@ export class EditarAltura {
 
   public editar() {
 
-    if (this.data.alturaMinima.trim() == '' || this.data.alturaMinima.trim() == null) {
-      this.snack.open('La altura minima es requerido !!', 'Aceptar', {
+    if (this.data.alturaMinima == null) {
+      this.snack.open('La altura mínima es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
     }
-    if (this.data.alturaMaxima.trim() == '' || this.data.alturaMaxima.trim() == null) {
-      this.snack.open('La altura maxima es requerido !!', 'Aceptar', {
+    if (this.data.alturaMaxima == null) {
+      this.snack.open('La altura máxima es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
     }
     
     if (this.data.unidadMedida.idUnidadMedida == 0) {
-      this.snack.open('La medida es requerido !!', 'Aceptar', {
+      this.snack.open('La unidad de medida es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
@@ -202,13 +228,13 @@ export class EditarAltura {
 
     this.alturaService.actualizar(this.data).subscribe(
       (data) => {
-        Swal.fire('Altura editada', 'La altura se ha editado con éxito', 'success').then(
+        Swal.fire('Información actualizada', 'La altura se ha acutalizado con éxito', 'success').then(
           (e) => {
-            
+            this.cdRef.detectChanges(); 
             this.dialogRef.close();
           })
       }, (error) => {
-        Swal.fire('Error al editar la altura', 'No se ha acutalizado la altura', 'error');
+        Swal.fire('Error en el sistema', 'No se ha acutalizado la altura', 'error');
         console.log(error);
       }
     );
@@ -227,6 +253,7 @@ export class EditarAltura {
 export class AgregarAltura {
   constructor(
     public dialogRef: MatDialogRef<AgregarAltura>,
+    @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
     private alturaService:AlturaService,
     private snack: MatSnackBar,
     private medidaService:MedidaService
@@ -245,7 +272,7 @@ export class AgregarAltura {
   }
 
   ngOnInit(): void {
-    this.listarMedidas();
+    this.medida = this.data1.medida;
   }
 
   medida : any = []
@@ -265,20 +292,20 @@ export class AgregarAltura {
   public agregar() {
 
     if (this.data.alturaMinima.trim() == '' || this.data.alturaMinima.trim() == null) {
-      this.snack.open('La altura minima es requerido !!', 'Aceptar', {
+      this.snack.open('La altura mínima es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
     }
     if (this.data.alturaMaxima.trim() == '' || this.data.alturaMaxima.trim() == null) {
-      this.snack.open('La altura maxima es requerido !!', 'Aceptar', {
+      this.snack.open('La altura máxima es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
     }
     
     if (this.data.unidadMedida.idUnidadMedida == 0) {
-      this.snack.open('La medida es requerido !!', 'Aceptar', {
+      this.snack.open('La unidad de medida es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
@@ -287,13 +314,13 @@ export class AgregarAltura {
 
     this.alturaService.guardar(this.data).subscribe(
       (data) => {
-        Swal.fire('Altura añadida', 'La altura se añadio con éxito', 'success').then(
+        Swal.fire('Información guardada', 'La altura se agrego con éxito', 'success').then(
           (e) => {
             
             this.dialogRef.close();
           })
       }, (error) => {
-        Swal.fire('Error al anadir la altura', 'No se registro la altura', 'error');
+        Swal.fire('Error en el sistema', 'No se registro la altura', 'error');
         console.log(error);
       }
     );

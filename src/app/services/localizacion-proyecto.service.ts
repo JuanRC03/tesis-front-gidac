@@ -24,4 +24,8 @@ export class LocalizacionProyectoService {
   public listarPorProyecto(id:any){
     return this.http.get(`${baserUrl}/localizacion-proyecto/listar-por-proyecto/${id}`);
   }
+
+  public eliminar(idPoryecto:any,idLocalizacion:any){
+    return this.http.delete(`${baserUrl}/localizacion-proyecto/eliminar/${idPoryecto}/${idLocalizacion}`);
+  }
 }

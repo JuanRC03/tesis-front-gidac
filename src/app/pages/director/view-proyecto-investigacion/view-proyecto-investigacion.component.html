@@ -5,13 +5,16 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">storage</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar proyectos
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar
+          proyectos
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/director-dashboard">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver proyectos</li>
+            <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
+                routerLink="/director-dashboard">Inicio</a></li>
+            <li class="breadcrumb-item active derecha"
+              style="color: var(--color-migajas-de-pan); text-decoration: none;" aria-current="page">Ver proyectos</li>
           </ol>
         </div>
       </div>
@@ -20,134 +23,149 @@
 </mat-card>
 
 <mat-card>
-    <mat-list>
-      <mat-list-item >
-        <div mat-line>
-          <mat-form-field style="margin-right: 20px;">
-            <input type="text"
-            class="mb-2"
-            placeholder="Buscar.."
-            #txtSearch
-            matInput
-            (keyup)="onSearch( txtSearch.value )" 
-            />
-          </mat-form-field>
-          
-          <mat-form-field>
-            <mat-label>Estado del proyecto</mat-label>
-            <mat-select name="estadoProyectoInvestigacion"  [(ngModel)]="estadoProyectoInvestigacion.idEstadoProyecto" (selectionChange)="onEstadoProyectoChange($event)">
-              <mat-option *ngFor = "let c of estadoProyectoInvestigacion" [value] = "c.idEstadoProyecto">
-                {{ c.nombreEstadoProyecto }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+  <mat-list>
+    <mat-list-item>
+      <div mat-line>
+        <mat-form-field style="margin-right: 20px;">
+          <input type="text" class="mb-2" placeholder="Buscar.." #txtSearch matInput
+            (keyup)="onSearch( txtSearch.value )" />
+        </mat-form-field>
 
-        </div>
-        
-        
-      
-        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-          <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
-            <mat-icon>download</mat-icon>
-          </button>
-          <button routerLink="/director-dashboard/addInvestigacion" mat-raised-button color="primary">Agregar</button>             
-         </div>
-        <mat-divider></mat-divider>
-      </mat-list-item>
+        <mat-form-field>
+          <mat-label>Estado del proyecto</mat-label>
+          <mat-select name="estadoProyectoInvestigacion" [(ngModel)]="estadoProyectoInvestigacion.idEstadoProyecto"
+            (selectionChange)="onEstadoProyectoChange($event)">
+            <mat-option *ngFor="let c of estadoProyectoInvestigacion" [value]="c.idEstadoProyecto">
+              {{ c.nombreEstadoProyecto }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
 
 
 
-    </mat-list>
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button [routerLink] = "'/director-dashboard/add-proyecto-investigacion/'+idUsuario" mat-raised-button color="primary">Agregar
+          proyecto</button>
+      </div>
+      <mat-divider></mat-divider>
+    </mat-list-item>
 
-        <mat-card>
-
-          <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"  >
-            <mat-tab label="Proyectos disponibles">
 
 
-          <mat-list>
-            <mat-list-item *ngFor = "let oC of proyectoInvestigacio | filtroProyectoEstado:search:searchEstado | paginate:page_size:page_number">
-              <mat-icon mat-list-icon>streetview</mat-icon>
-              <div mat-line ><mat-card-title style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.proyectoInvestigacion.nombreProyecto }}</mat-card-title></div>
-              <div mat-line style="font-size: 13px;"> Fecha inicio: {{oC.proyectoInvestigacion.fechaInicio | date:'dd/MM/yyyy'}} - Fecha fin: {{oC.proyectoInvestigacion.fechaFin  | date:'dd/MM/yyyy'}}</div>
-              <div mat-line style="font-size: 13px;"> {{oC.proyectoInvestigacion.descripcion}}</div>
-              <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-              
-                <button mat-icon-button matTooltip="Basic" color="Basic" aria-label="Example icon-button with a heart icon" (click)="openDialogInvestigadores(oC.proyectoInvestigacion.idProyecto,oC.proyectoInvestigacion.nombreProyecto)">
-                  <mat-icon>assignment_ind</mat-icon>
-                </button>  
-                <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" [routerLink] = "'/director-dashboard/actualizarUsuario/'+oC.proyectoInvestigacion.idProyecto" >
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminarProyectoInvestigacion(oC.proyectoInvestigacion.idProyecto)">
-                  <mat-icon>delete</mat-icon>
-                </button>               
-               </div>
-               <button *ngIf="(oC.proyectoInvestigacion.estadoProyectoInvestigacion.idEstadoProyecto==1)" class="padding-izquierda" mat-raised-button color="primary" style="margin-left: 7px; padding: 0;" (click)="cambiarPublico(oC.proyectoInvestigacion.idProyecto)">Privado</button>
-               <button *ngIf="(oC.proyectoInvestigacion.estadoProyectoInvestigacion.idEstadoProyecto==2)" class="padding-izquierda" mat-raised-button color="accent" style="margin-left: 7px; padding: 0;" (click)="cambiarPrivado(oC.proyectoInvestigacion.idProyecto)">Público</button>
-              <mat-divider></mat-divider>
-          
-            </mat-list-item>
-            <mat-list *ngIf="(proyectoInvestigacio | filtroProyectoEstado:search:searchEstado).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-              <p>No existen proyectos de investigación</p>
-              <br>
-              
-            </mat-list>
+  </mat-list>
+
+  <mat-card>
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+      <mat-tab label="Proyectos disponibles">
+
+
+        <mat-list>
+          <mat-list-item
+            *ngFor="let oC of proyectoInvestigacio | filtroProyectoEstado:search:searchEstado | paginate:page_size:page_number">
+            <mat-icon mat-list-icon>streetview</mat-icon>
+            <div mat-line><mat-card-title
+                style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.proyectoInvestigacion.nombreProyecto }}</mat-card-title>
+            </div>
+            <div mat-line style="font-size: 13px;"> Fecha inicio:
+              {{oC.proyectoInvestigacion.fechaInicio | date:'dd/MM/yyyy'}} - Fecha fin:
+              {{oC.proyectoInvestigacion.fechaFin  | date:'dd/MM/yyyy'}}</div>
+            <div mat-line style="font-size: 13px;"> {{oC.proyectoInvestigacion.descripcion}}</div>
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+
+              <button mat-icon-button matTooltip="Basic" color="Basic"
+                aria-label="Example icon-button with a heart icon"
+                (click)="openDialogInvestigadores(oC.proyectoInvestigacion.idProyecto,oC.proyectoInvestigacion.nombreProyecto)">
+                <mat-icon>assignment_ind</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Primary" color="primary"
+                aria-label="Example icon-button with a heart icon" (click)="openDialogEditarProyecto(oC.proyectoInvestigacion.idProyecto,oC.proyectoInvestigacion.nombreProyecto,oC.proyectoInvestigacion.descripcion,
+                oC.proyectoInvestigacion.fechaInicio,
+                oC.proyectoInvestigacion.fechaFin,
+                oC.proyectoInvestigacion.estadoProyectoInvestigacion.idEstadoProyecto,
+                oC.proyectoInvestigacion.estadoProyectoInvestigacion.nombreEstadoProyecto,
+                oC.proyectoInvestigacion.tipoInvestigacion.idTipoInvestigacion,
+                oC.proyectoInvestigacion.tipoInvestigacion.nombreTipoInvestigacion,
+                oC.proyectoInvestigacion.tipoProyecto.idTipoProyecto,
+                oC.proyectoInvestigacion.tipoProyecto.nombreTipoProyecto)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon"
+                (click)="eliminarProyectoInvestigacion(oC.proyectoInvestigacion.idProyecto)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <button *ngIf="(oC.proyectoInvestigacion.estadoProyectoInvestigacion.idEstadoProyecto==1)"
+              class="padding-izquierda" mat-raised-button color="primary" style="margin-left: 7px; padding: 0;"
+              (click)="cambiarPublico(oC.proyectoInvestigacion.idProyecto)">Privado</button>
+            <button *ngIf="(oC.proyectoInvestigacion.estadoProyectoInvestigacion.idEstadoProyecto==2)"
+              class="padding-izquierda" mat-raised-button color="accent" style="margin-left: 7px; padding: 0;"
+              (click)="cambiarPrivado(oC.proyectoInvestigacion.idProyecto)">Público</button>
             <mat-divider></mat-divider>
-            <mat-paginator 
-                           (page)="handlePage($event)"
-                           [length]="(proyectoInvestigacio | filtroProyectoEstado:search:searchEstado).length"
-                           [pageSize]="page_size"
-                           [pageSizeOptions]="page_size_options"
-                           showFirstLastButtons>
-            </mat-paginator>
-              
+
+          </mat-list-item>
+          <mat-list *ngIf="(proyectoInvestigacio | filtroProyectoEstado:search:searchEstado).length===0"
+            style="text-align: center; padding: 20px; margin: 20px;">
+            <p>No existen proyectos</p>
+            <br>
+
           </mat-list>
+          <mat-divider></mat-divider>
+          <mat-paginator (page)="handlePage($event)"
+            [length]="(proyectoInvestigacio | filtroProyectoEstado:search:searchEstado).length" [pageSize]="page_size"
+            [pageSizeOptions]="page_size_options" showFirstLastButtons>
+          </mat-paginator>
+
+        </mat-list>
 
 
-        </mat-tab>
-        <mat-tab label="Proyectos eliminados">
+      </mat-tab>
+      <mat-tab label="Proyectos eliminados">
 
 
-          <mat-list>
-            <mat-list-item *ngFor = "let oC of proyectoInvestigacioEliminados | filtroInvestigacion:search | paginate:page_size:page_number">
-              <mat-icon mat-list-icon>streetview</mat-icon>
-              <div mat-line ><mat-card-title style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.proyectoInvestigacion.nombreProyecto }}</mat-card-title></div>
-              <div mat-line style="font-size: 13px;"> Fecha inicio: {{oC.proyectoInvestigacion.fechaInicio | date:'dd/MM/yyyy'}} - Fecha fin: {{oC.proyectoInvestigacion.fechaFin| date:'dd/MM/yyyy'}}</div>
-              <div mat-line style="font-size: 13px;"> {{oC.proyectoInvestigacion.descripcion}}</div>
-              
-              <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                
-                <button mat-icon-button matTooltip="Basic" color="Basic" aria-label="Example icon-button with a heart icon" (click)="openDialogInvestigadoresProyectoEliminado(oC.proyectoInvestigacion.idProyecto,oC.proyectoInvestigacion.nombreProyecto)">
-                  <mat-icon>assignment_ind</mat-icon>
-                </button> 
-                <button class="padding-izquierda" mat-raised-button color="accent" (click) = "restaurarProyectoInvestigacion(oC.proyectoInvestigacion.idProyecto)">Restaurar</button> 
-                           
-               </div>
-               
-              <mat-divider></mat-divider>
-          
-            </mat-list-item>
-            <mat-list *ngIf="(proyectoInvestigacioEliminados | filtroInvestigacion:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-              <p>No existen proyectos de investigación</p>
-              <br>
-              
-            </mat-list>
+        <mat-list>
+          <mat-list-item
+            *ngFor="let oC of proyectoInvestigacioEliminados | filtroInvestigacion:search | paginate:page_size:page_number">
+            <mat-icon mat-list-icon>streetview</mat-icon>
+            <div mat-line><mat-card-title
+                style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.proyectoInvestigacion.nombreProyecto }}</mat-card-title>
+            </div>
+            <div mat-line style="font-size: 13px;"> Fecha inicio:
+              {{oC.proyectoInvestigacion.fechaInicio | date:'dd/MM/yyyy'}} - Fecha fin:
+              {{oC.proyectoInvestigacion.fechaFin| date:'dd/MM/yyyy'}}</div>
+            <div mat-line style="font-size: 13px;"> {{oC.proyectoInvestigacion.descripcion}}</div>
+
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+
+              <button mat-icon-button matTooltip="Basic" color="Basic"
+                aria-label="Example icon-button with a heart icon"
+                (click)="openDialogInvestigadoresProyectoEliminado(oC.proyectoInvestigacion.idProyecto,oC.proyectoInvestigacion.nombreProyecto)">
+                <mat-icon>assignment_ind</mat-icon>
+              </button>
+              <button class="padding-izquierda" mat-raised-button color="accent"
+                (click)="restaurarProyectoInvestigacion(oC.proyectoInvestigacion.idProyecto)">Restaurar</button>
+
+            </div>
+
             <mat-divider></mat-divider>
-            <mat-paginator 
-                           (page)="handlePage($event)"
-                           [length]="(proyectoInvestigacioEliminados | filtroInvestigacion:search).length"
-                           [pageSize]="page_size"
-                           [pageSizeOptions]="page_size_options"
-                           showFirstLastButtons>
-            </mat-paginator>
-              
+
+          </mat-list-item>
+          <mat-list *ngIf="(proyectoInvestigacioEliminados | filtroInvestigacion:search).length===0"
+            style="text-align: center; padding: 20px; margin: 20px;">
+            <p>No existen proyectos</p>
+            <br>
+
           </mat-list>
+          <mat-divider></mat-divider>
+          <mat-paginator (page)="handlePage($event)"
+            [length]="(proyectoInvestigacioEliminados | filtroInvestigacion:search).length" [pageSize]="page_size"
+            [pageSizeOptions]="page_size_options" showFirstLastButtons>
+          </mat-paginator>
 
-
-
-        </mat-tab>
-      </mat-tab-group>
-        </mat-card>
-      </mat-card>
-    
+        </mat-list>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
+</mat-card>

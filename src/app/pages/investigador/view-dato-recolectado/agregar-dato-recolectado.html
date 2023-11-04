@@ -28,18 +28,17 @@
         >
       </mat-form-field>
 
-
       <mat-form-field appearance="fill" class="mt20 w100">
-        <mat-label>Tipo de variable</mat-label>
-        <mat-select name="medida" [(ngModel)] = "data.variableUnidadMedida.idVariableUnidadMedida">
-          <mat-option *ngFor = "let c of variableUnidadMedida" [value] = "c.variable.idVariable">
-            {{ c.variable.nombreVariable }} - {{ c.unidadMedida.abreviatura }}
+        <mat-label>Variable del sistema</mat-label>
+        <mat-select name="medida" [(ngModel)] = "data.variableUnidadMedida.idVariableUnidadMedida" >
+          <mat-option *ngFor = "let c of variableUnidadMedida" [value] = "c.variable.idVariable" (click)="seleccionarVariable(c.variable.tipoVariable.idTipoVariable)">
+            {{ c.variable.nombreVariable }} - {{ c.unidadMedida.abreviatura }} 
           </mat-option>
         </mat-select>
       </mat-form-field>
         
       <div class="center" style="text-align: center;">
-        <button mat-raised-button color="primary">Actualizar</button>
+        <button mat-raised-button color="primary">Agregar</button>
       </div>
     </div>
 </form>

@@ -29,7 +29,8 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
     private route:ActivatedRoute,
     public login:LoginService,
     public dialog: MatDialog,
-    public investigacionService:InvestigacionService) {
+    public investigacionService:InvestigacionService,
+    public variableUnidadMedidaService:VariableUnidadMedidaService) {
     this.dataSource = new ViewDatoRecolectadoDataSource();
   }
 
@@ -53,7 +54,20 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.listarVigentes();
     this.listarProyectosVigentes();
+    this.listarVariableUnidadMedida();
   }
+
+  variableUnidadMedida : any = []
+  listarVariableUnidadMedida()
+    {
+      this.variableUnidadMedidaService.listar().subscribe(
+          res=>{
+            this.variableUnidadMedida=res;
+            
+          },
+          err=>console.log(err)
+        )
+    }
 
   datos : any = []
     listarProyectosVigentes()
@@ -73,6 +87,7 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
       this.datoRecolectadoService.obtenerPorDataset(this.idPunto).subscribe(
           res=>{
             this.listaDatos=res;
+            console.log(res)
           },
           err=>console.log(err)
         )
@@ -80,8 +95,8 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
 
     eliminar(idDatoRecolectado:any){
       Swal.fire({
-        title:'Eliminar parcela',
-        text:'¿Estás seguro de eliminar la parcela?',
+        title:'Eliminar información',
+        text:'¿Estás seguro de eliminar el dato recolectado?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
@@ -93,10 +108,10 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
           this.datoRecolectadoService.eliminar(idDatoRecolectado).subscribe(
             (data) => {
               this.listaDatos = this.listaDatos.filter((datos:any) => datos.idDatoRecolectado != idDatoRecolectado);
-              Swal.fire('Parcela eliminado','La parcela ha sido eliminado','success');
+              Swal.fire('Información eliminada','El dato recolectado ha sido eliminado','success');
             },
             (error) => {
-              Swal.fire('Error','Error al eliminar la parcela, la parcela debe estar vacio','error');
+              Swal.fire('Error','Error al eliminar el dato recolectado','error');
             }
           )
         }
@@ -127,8 +142,7 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       
-      this.datoresult=result;
-      if(this.datoresult!=''){
+      if(result=='Solicitado'){
         this.listaDatos = this.listaDatos.filter((dato:any) => dato.idDatoRecolectado != idDatoRecolectado);
         console.log(this.datoresult);
       }
@@ -139,7 +153,7 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
   //agregar
   agregar(): void {
     const dialogRef = this.dialog.open(AgregarDatoRecolectado, {
-      data: { idDataset:this.idPunto},
+      data: { idDataset:this.idPunto, variableUnidadMedida:this.variableUnidadMedida},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarVigentes();
@@ -150,7 +164,7 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
   //editar
   editar(id:any, dato1:any, dato2:any, dato3:any): void {
     const dialogRef = this.dialog.open(EditarDatoRecolectado, {
-      data: { idValorRecolectado: id, valor:dato1,idVariableUnidadMedida:dato2,idDataset:dato3},
+      data: { idDatoRecolectado: id, valor:dato1,idVariableUnidadMedida:dato2,idDataset:dato3, variableUnidadMedida:this.variableUnidadMedida},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarVigentes();
@@ -163,10 +177,11 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
 
 
 export interface dataEditar {
-  idValorRecolectado:0,
+  idDatoRecolectado:0,
   valor: '',
   idDataset:0,
-  idVariableUnidadMedida:0
+  idVariableUnidadMedida:0,
+  variableUnidadMedida:[]
 }
 
 
@@ -191,8 +206,8 @@ onNoClick(): void {
 }
 
 ngOnInit(): void {
-  this.listarVariableUnidadMedida();
-  this.data.idValorRecolectado=this.data1.idValorRecolectado;
+  this.variableUnidadMedida=this.data1.variableUnidadMedida;
+  this.data.idDatoRecolectado=this.data1.idDatoRecolectado;
   this.data.valor=this.data1.valor;
   this.data.dataset.idDataset=this.data1.idDataset;
   this.data.variableUnidadMedida.idVariableUnidadMedida=this.data1.idVariableUnidadMedida;
@@ -200,7 +215,7 @@ ngOnInit(): void {
 
 
 public data = {
-  idValorRecolectado:0,
+  idDatoRecolectado:0,
   valor: '',
   vigencia: 1,
   dataset:{
@@ -244,27 +259,39 @@ public editar() {
     return;
   }
   if (this.data.variableUnidadMedida.idVariableUnidadMedida== 0) {
-    this.snack.open('La variable es requerido !!', 'Aceptar', {
+    this.snack.open('La variable del sistema es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
 
-  this.datoRecolectadoService.guardar(this.data).subscribe(
+  if(this.idTipoVariable==1){
+    if (isNaN(Number(this.data.valor))) {
+      this.snack.open('No se puede guardar un dato textual en una variable numérica !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+  }
+
+  this.datoRecolectadoService.actualizar(this.data).subscribe(
     (data) => {
-      Swal.fire('Dato recolectado añadido', 'El dato recolectado se añadio con éxito', 'success').then(
+      Swal.fire('Información actualizada', 'El dato recolectado se actualizo con éxito', 'success').then(
         (e) => {
           this.dialogRef.close();
         })
     }, (error) => {
-      Swal.fire('Error al anadir el dato recolectado', 'No se registro el dato recolectado', 'error');
+      Swal.fire('Error en el sistema', 'No se actualizo el dato recolectado', 'error');
       console.log(error);
     }
   );
-    
-    
   }
 
+  idTipoVariable=0;
+  seleccionarVariable(id:any){
+    this.idTipoVariable=id;
+    console.log(id)
+  }
 }
 
 
@@ -304,7 +331,8 @@ public data = {
 
 
 ngOnInit(): void {
-  this.listarVariableUnidadMedida();
+  this.variableUnidadMedida=this.data1.variableUnidadMedida;
+  console.log(this.variableUnidadMedida);
   this.data.dataset.idDataset=this.data1.idDataset;
 }
 
@@ -314,6 +342,7 @@ listarVariableUnidadMedida()
       this.variableUnidadMedidaService.listar().subscribe(
           res=>{
             this.variableUnidadMedida=res;
+            console.log(res);
           },
           err=>console.log(err)
         )
@@ -331,34 +360,44 @@ public agregar() {
     return;
   }
   if (this.data.variableUnidadMedida.idVariableUnidadMedida== 0) {
-    this.snack.open('La variable es requerido !!', 'Aceptar', {
+    this.snack.open('La variable del sistema es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
 
+  if(this.idTipoVariable==1){
+    if (isNaN(Number(this.data.valor))) {
+      this.snack.open('No se puede guardar un dato textual en una variable numérica !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+  }
+
   this.datoRecolectadoService.guardar(this.data).subscribe(
     (data) => {
-      Swal.fire('Dato recolectado añadido', 'El dato recolectado se añadio con éxito', 'success').then(
+      Swal.fire('Información guardada', 'El dato recolectado se agrego con éxito', 'success').then(
         (e) => {
           this.dialogRef.close();
         })
     }, (error) => {
-      Swal.fire('Error al anadir el dato recolectado', 'No se registro el dato recolectado', 'error');
+      Swal.fire('Error en el sistema', 'No se agrego el dato recolectado', 'error');
       console.log(error);
     }
   );
     
   }
 
+  idTipoVariable=0;
+  seleccionarVariable(id:any){
+    this.idTipoVariable=id;
+    console.log(id)
+  }
+
 }
 
 
-  
-
-
-
-  
 
   export interface DialogData {
     id: '';
@@ -407,13 +446,10 @@ formSubmit(){
     (data) => {
       console.log(data);
       Swal.fire('Solicitud enviada','El director aprovara o rechazara la eliminación del dato','success');
-      this.dialogRef.close();
+      this.dialogRef.close('Solicitado');
       
     },(error) => {
-      console.log(error);
-      this.snack.open('Ha ocurrido un error en el sistema !!','Aceptar',{
-        duration : 3000
-      });
+      Swal.fire('Error en el sistema', 'No se envio la solicitud', 'error');
     }
   )
   

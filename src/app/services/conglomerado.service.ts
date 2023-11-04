@@ -14,7 +14,7 @@ export class ConglomeradoService {
   }
 
   public actualizar(modelo:any){
-    return this.http.put(`${baserUrl}/conglomerado/guardar-conglomerado`,modelo);
+    return this.http.put(`${baserUrl}/conglomerado/actualizar-conglomerado`,modelo);
   }
 
   public obtener(id:any){

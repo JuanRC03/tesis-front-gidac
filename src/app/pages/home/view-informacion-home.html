@@ -1,0 +1,39 @@
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+
+    <div mat-line>Información de EcoAndes</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button mat-icon-button mat-dialog-close matTooltip="White" color="White"
+        aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+<mat-dialog-content class="mat-typography">
+
+    <mat-divider
+      style="background-color: darkgray; text-align: end; margin-left: 10px;margin-right: 10px;"></mat-divider>
+    <br>
+    <div style=" margin-left: 10px; margin-right: 10px;">
+      <mat-card-title style="color: var(--color-texto-menu-home);font-size: 13px;"> Información</mat-card-title>
+      <p style="font-size: 12px;color: var(--color-texto-menu-home);">{{informacionEcoAndes.descripcion}}</p>
+    </div><br>
+
+    <div style=" margin-left: 10px; margin-right: 10px;">
+      <mat-card-title style="color: var(--color-texto-menu-home);font-size: 13px;"> Condiciones de uso</mat-card-title>
+      <p style="font-size: 12px;color: var(--color-texto-menu-home);">{{informacionEcoAndes.condicionesUso}}</p>
+    </div><br>
+
+    <div style=" margin-left: 10px; margin-right: 10px;">
+      <mat-card-title style="color: var(--color-texto-menu-home);font-size: 13px;">Licencia de uso</mat-card-title>
+      <p style="font-size: 12px;color: var(--color-texto-menu-home);">{{informacionEcoAndes.licenciaUso}}</p>
+    </div><br>
+
+    <div style=" margin-left: 10px; margin-right: 10px; text-align: center;">
+      <mat-card-title
+        style="color: var(--color-texto-menu-home);font-size: 13px;">{{informacionEcoAndes.derechoReservado}}
+      </mat-card-title>
+    </div>
+</mat-dialog-content>

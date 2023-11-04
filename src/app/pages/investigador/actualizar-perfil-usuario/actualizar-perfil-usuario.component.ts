@@ -32,8 +32,8 @@ export class ActualizarPerfilUsuarioComponent implements OnInit {
     email : '',
     contrasenia : '',
     vigencia: 0,
+    imagenPerfil:null as any,
     fechaCreacion:Date,
-    imagenPerfil : null,
     rol:{
       idRol:3
     }
@@ -129,14 +129,16 @@ export class ActualizarPerfilUsuarioComponent implements OnInit {
       })
       return;
     }
-    if(this.userFinal.contrasenia.trim() == '' || this.userFinal.contrasenia.trim() == null){
-      this.snack.open('La contraseña nueva es requerida  !!','Aceptar',{
+
+    if(this.loginData.contrasenia.trim() == '' || this.loginData.contrasenia.trim() == null){
+      this.snack.open('La contraseña antigua es requerida !!','Aceptar',{
         duration:3000
       })
       return;
     }
-    if(this.loginData.contrasenia.trim() == '' || this.loginData.contrasenia.trim() == null){
-      this.snack.open('La contraseña antigua es requerida !!','Aceptar',{
+
+    if(this.userFinal.contrasenia.trim() == '' || this.userFinal.contrasenia.trim() == null){
+      this.snack.open('La contraseña nueva es requerida  !!','Aceptar',{
         duration:3000
       })
       return;
@@ -151,7 +153,7 @@ export class ActualizarPerfilUsuarioComponent implements OnInit {
         
         this.userService.editarPerfil(formData).subscribe(
           (data) => {
-            Swal.fire('Perfil actualizado','El perfil ha sido actualizado con éxito','success').then(
+            Swal.fire('Información actualizada','El perfil ha sido actualizado con éxito','success').then(
               (e) => {
                   this.loginData.contrasenia=this.userFinal.contrasenia;
                   this.loginData.email=this.userFinal.email;
@@ -166,24 +168,24 @@ export class ActualizarPerfilUsuarioComponent implements OnInit {
                     })
                     
                     },(error) => {
-                        Swal.fire('Error al actualizar el perfil','Perfil no encontrado','error');
+                        Swal.fire('Error en el sistema','Perfil no encontrado','error');
                         console.log(error);
                       }
                  )
                 },(error) => {
-                  Swal.fire('Error al actualizar el perfil','Login fallido, cierre sesión y vuelva a ingresar','error');
+                  Swal.fire('Error en el sistema','Login fallido, cierre sesión y vuelva a ingresar','error');
                   console.log(error);
                 }
             );
           },
           (error) => {
-            Swal.fire('Error al actualizar el perfil','Los datos ingresados no son validos','error');
+            Swal.fire('Error en el sistema','Los datos ingresados no son validos','error');
             console.log(error);
             
           }
         )
       },(error) => {
-        Swal.fire('Error al actualizar el perfil','La contraseña antigua ingresada no es valida','error');
+        Swal.fire('Error en el sistema','La contraseña antigua ingresada no es valida','error');
         console.log(error);
       }
     )
@@ -193,12 +195,9 @@ export class ActualizarPerfilUsuarioComponent implements OnInit {
   hidePass2 = true;
 
   onFotoSeleccionada(event: any)  {
-    
-    
     if(event.target.files && event.target.files.length > 0){
       this.imagen = event.target.files[0];
       console.log(this.imagen );
-      
       const selectedFile = event.target.files[0];
       const reader = new FileReader();
       reader.onload = (event: any) => {

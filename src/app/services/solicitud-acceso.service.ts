@@ -13,8 +13,6 @@ export class SolicitudAccesoService {
     return this.http.get(`${baserUrl}/solicitud/contador-solicitudes/${id}`);
   }
 
-
-  //Proximo eliminar
   public getCantidadSolicitude(){
     return this.http.get(`${baserUrl}/solicitud/contador-solicitudes`);
   }

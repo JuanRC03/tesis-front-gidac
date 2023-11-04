@@ -1,25 +1,21 @@
-
 <mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
   <mat-list-item class="estilo-mat-item" style="color: black;">
-    
+
     <div mat-line style="padding-right: 30px;">Importar catálogo de la organización</div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-      <button  mat-icon-button mat-dialog-close
-        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+      <button mat-icon-button mat-dialog-close matTooltip="White" color="White"
+        aria-label="Example icon-button with a heart icon">
         <mat-icon>close</mat-icon>
       </button>
     </div>
   </mat-list-item>
 </mat-list>
 <br>
-<div  style="text-align: center;">
+<div style="text-align: center;">
   <button class="contenedor-btn-file bordeado" style="padding-right: 20px;">
-      <i class="fas fa-file"></i>Descargar formato
+    <i class="fas fa-file"></i>Descargar formato
   </button>
 </div>
-
-
-
 
 <br>
 <br>
@@ -34,24 +30,24 @@
 <div *ngIf="verBotonImput===true" style="text-align: center;">
 
   <button class="contenedor-btn-file bordeado">
-      <i class="fas fa-file"></i>
-      Seleccionar archivo
-      <label for="btn-file"> </label>
-      <input type="file" (change)="onFileChanged($event)" id="btn-file">
+    <i class="fas fa-file"></i>
+    Seleccionar archivo
+    <label for="btn-file"> </label>
+    <input type="file" (change)="onFileChanged($event)" id="btn-file">
   </button>
 </div>
 <form (ngSubmit)="comprobarEstado()">
   <div *ngIf="verBoton===true" style="text-align: center;">
-      <button class="contenedor-btn-file bordeado" style="padding-right: 20px;">
-          <i class="fas fa-file"></i>Comprobar archivo
-      </button>
+    <button class="contenedor-btn-file bordeado" style="padding-right: 20px;">
+      <i class="fas fa-file"></i>Comprobar archivo
+    </button>
   </div>
 </form>
 
 <form (ngSubmit)="guardarDatos()">
   <div *ngIf="verBotonSiguintePaso===true" style="text-align: center;">
-      <button class="contenedor-btn-file bordeado" style="padding-right: 20px;">
-          <i class="fas fa-file"></i>Importar datos
-      </button>
+    <button class="contenedor-btn-file bordeado" style="padding-right: 20px;">
+      <i class="fas fa-file"></i>Importar datos
+    </button>
   </div>
 </form>

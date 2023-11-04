@@ -11,7 +11,7 @@
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
             <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/director-dashboard">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Añadir unidad de medida</li>
+            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Agregar unidad de medida</li>
           </ol>
         </div>
       </div>
@@ -31,12 +31,12 @@
           
                 
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Abreviatura de la medida</mat-label>
+                <mat-label>Abreviatura de la unidad de medida</mat-label>
                 <input
                 type="text"
                 name="abreviatura"
                 matInput
-                placeholder="Ingresa la abreviatura de la medida"
+                placeholder="Ingresa la abreviatura de la unidad medida"
                 [(ngModel)] = "medida.abreviatura"
                 >
               </mat-form-field>
@@ -53,18 +53,18 @@
               </mat-form-field>
 
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Magnitud de la medida</mat-label>
+                <mat-label>Magnitud de la unidad de medida</mat-label>
                 <input
                 type="text"
                 name="magnirud"
                 matInput
-                placeholder="Ingrese la magnitud de la medida"
+                placeholder="Ingrese la magnitud de la unidad de medida"
                 [(ngModel)] = "medida.magnitud"
                 >
               </mat-form-field>
 
               <div class="container text-center mt15">
-                <button mat-raised-button color="primary">Guardar</button>
+                <button mat-raised-button color="primary">Agregar</button>
               </div>
               </div>
             </form>

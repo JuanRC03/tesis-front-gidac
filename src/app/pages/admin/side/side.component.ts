@@ -309,118 +309,117 @@ export class SideComponent {
   @ViewChild('drawer') drawer!: MatDrawer;
 
   isLoggedIn = false;
-  usuario:any = null;
-  idUsuario= 0;
-  
+  usuario: any = null;
+  idUsuario = 0;
+
   menuVisible = true;
 
-  botonMenuVisible=true;
+  botonMenuVisible = true;
 
-  imagenUrl: string=''; 
+  imagenUrl: string = '';
 
   toggleMenu() {
     this.menuVisible = !this.menuVisible;
   }
 
   toggleBoton() {
-    this.botonMenuVisible=false;
-    this.menuVisible=true;
+    this.botonMenuVisible = false;
+    this.menuVisible = true;
   }
-  public cambiarMenu(){
-    this.isHandset$=this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
+  public cambiarMenu() {
+    this.isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset)
+      .pipe(
+        map(result => result.matches),
+        shareReplay()
+      );
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay(),
-      
+
     );
 
-  
-
-  constructor(private breakpointObserver: BreakpointObserver, 
-              public login:LoginService,
-              private userService:UserService,
-              private appWebService:AppWebService,
-              private solicitudAccesoService:SolicitudAccesoService,
-              private mediaMatcher: MediaMatcher,
-              private router:Router) {
 
 
-              }
+  constructor(private breakpointObserver: BreakpointObserver,
+    public login: LoginService,
+    private userService: UserService,
+    private appWebService: AppWebService,
+    private solicitudAccesoService: SolicitudAccesoService,
+    private mediaMatcher: MediaMatcher,
+    private router: Router) {
 
-  navbar:any;
+
+  }
+
+  navbar: any;
   ngOnInit(): void {
-    
+
     this.isLoggedIn = this.login.isLoggedIn();
     this.usuario = this.login.getUser();
-    this.idUsuario=this.usuario.idUsuario;
-        this.userService.getImagen(this.idUsuario).subscribe((imagen: Blob)=>{
-          if (imagen.size > 0) {
-            const reader = new FileReader();
-            reader.onload = () => {
-              this.imagenUrl = reader.result as string;
-            };
-            reader.readAsDataURL(imagen);
-          }else{
-            this.imagenUrl= '../../../../assets/img/auxPerfil.jpg'; 
-          }
-        })
+    this.idUsuario = this.usuario.idUsuario;
+    this.userService.getImagen(this.idUsuario).subscribe((imagen: Blob) => {
+      if (imagen.size > 0) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagenUrl = reader.result as string;
+        };
+        reader.readAsDataURL(imagen);
+      } else {
+        this.imagenUrl = '../../../../assets/img/auxPerfil.jpg';
+      }
+    })
     this.login.loginStatusSubjec.asObservable().subscribe(
       data => {
         this.isLoggedIn = this.login.isLoggedIn();
         this.usuario = this.login.getUser();
         console.log(this.usuario);
-        
+
       }
     )
 
-    
-/*
-    this.appWebService.getNavbar().subscribe(
-      res=>{
-        this.navbar=res;
-        console.log(res);
-      },
-      err=>console.log(err)
-      )*/
+
+    /*
+        this.appWebService.getNavbar().subscribe(
+          res=>{
+            this.navbar=res;
+            console.log(res);
+          },
+          err=>console.log(err)
+          )*/
   }
 
-  contAux:any;
-  contadorDeSolicitudes={
-    contSolAcceso:0,
-    contSolEliminar:0
+  contAux: any;
+  contadorDeSolicitudes = {
+    contSolAcceso: 0,
+    contSolEliminar: 0
   }
-  
-  listarContadorDeSolicitudes()
-  {
+
+  listarContadorDeSolicitudes() {
     this.solicitudAccesoService.getCantidadSolicitude().subscribe(
-        res=>{
-          this.contAux=res;
-          this.contadorDeSolicitudes.contSolAcceso=this.contAux.contSolAcceso;
-          this.contadorDeSolicitudes.contSolEliminar=this.contAux.contSolEliminar;
-          if(this.contadorDeSolicitudes.contSolAcceso==0){
-            this.hiddenSolicitud=true;
-          }else{
-            this.hiddenSolicitud=false;
-          }
-          if(this.contadorDeSolicitudes.contSolEliminar==0){
-            this.hiddenEliminar = true;
-          }else{
-            this.hiddenEliminar = false;
-          }
-        },
-        err=>console.log(err)
-      )
+      res => {
+        this.contAux = res;
+        this.contadorDeSolicitudes.contSolAcceso = this.contAux.contSolAcceso;
+        this.contadorDeSolicitudes.contSolEliminar = this.contAux.contSolEliminar;
+        if (this.contadorDeSolicitudes.contSolAcceso == 0) {
+          this.hiddenSolicitud = true;
+        } else {
+          this.hiddenSolicitud = false;
+        }
+        if (this.contadorDeSolicitudes.contSolEliminar == 0) {
+          this.hiddenEliminar = true;
+        } else {
+          this.hiddenEliminar = false;
+        }
+      },
+      err => console.log(err)
+    )
 
   }
 
-  public logout(){
+  public logout() {
     this.login.logout();
     Swal.fire({
       position: 'top-end',
@@ -446,16 +445,16 @@ export class SideComponent {
   hiddenEliminar = false;
 
   toggleBadgeVisibilityEliminar() {
-    this.hiddenEliminar= true;
+    this.hiddenEliminar = true;
   }
- 
-  recargarPagina(){
+
+  recargarPagina() {
     location.reload();
   }
-  navegarPagina(){
+  navegarPagina() {
     this.router.navigate(['/']).then(() => {
       window.location.reload();
     });
   }
-  
+
 }

@@ -10,7 +10,7 @@ import { InvestigacionService } from 'src/app/services/investigacion.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ProfundidadService } from 'src/app/services/profundidad.service';
-
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -27,11 +27,12 @@ export class ViewPuntoComponent implements AfterViewInit {
   constructor(private datasetService:DatasetService,
     private route:ActivatedRoute,
     private investigacionService:InvestigacionService,
+    public profundidadService:ProfundidadService,
     public matDialog: MatDialog ) {
     this.dataSource = new ViewPuntoDataSource();
   }
 
-  displayedColumns = ['dato1', 'dato2', 'dato3', 'opciones'];
+  displayedColumns = ['dato1', 'dato2', 'opciones'];
   
   ngAfterViewInit(): void {
   }
@@ -46,8 +47,19 @@ export class ViewPuntoComponent implements AfterViewInit {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.listarVigentes();
     this.listarProyectosVigentes();
+    this.listarProfundidad();
   }
 
+  profundidad : any = []
+  listarProfundidad()
+    {
+      this.profundidadService.listar().subscribe(
+          res=>{
+            this.profundidad=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
   datos : any = []
     listarProyectosVigentes()
@@ -74,15 +86,12 @@ export class ViewPuntoComponent implements AfterViewInit {
 
     transformarFechas(data: any[]): any[] {
       return data.map(item => {
-        const fechaInicioCompleta = item.fechaInicio;
-        const fechaFinCompleta = item.fechaFin;
+        const fechaInicioCompleta = item.fechaSalidaCampo;
         const fechaInicioObj = new Date(fechaInicioCompleta);
-        const fechaFinObj = new Date(fechaFinCompleta);
         const fechaInicioFormateada = this.formatoFecha(fechaInicioObj);
-        const fechaFinFormateada = this.formatoFecha(fechaFinObj);
   
         // Devolver un nuevo objeto con las fechas formateadas y el resto de la estructura de datos sin cambios
-        return { ...item, fechaInicio: fechaInicioFormateada, fechaFin: fechaFinFormateada };
+        return { ...item, fechaSalidaCampo: fechaInicioFormateada };
       });
     }
   
@@ -141,7 +150,7 @@ export class ViewPuntoComponent implements AfterViewInit {
   //agregar
   agregar(): void {
     const dialogRef = this.matDialog.open(AgregarPunto, {
-      data: { idParcela:this.idParcela},
+      data: { idParcela:this.idParcela, profundidad:this.profundidad, idProyecto:this.idProyecto},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarVigentes();
@@ -150,9 +159,9 @@ export class ViewPuntoComponent implements AfterViewInit {
   }
 
   //editar
-  editar(id:any, dato1:any, dato2:any, dato3:any): void {
+  editar(id:any, dato1:any, dato2:any): void {
     const dialogRef = this.matDialog.open(EditarPunto, {
-      data: { idDataset: id, fechaInicio:dato1,fechaFin:dato2,idProfundidad:dato3, idParcela:this.idParcela},
+      data: { idDataset: id, fechaSalidaCampo:dato1,idProfundidad:dato2, idParcela:this.idParcela, profundidad:this.profundidad, idProyecto:this.idProyecto},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarVigentes();
@@ -166,10 +175,11 @@ export class ViewPuntoComponent implements AfterViewInit {
 
 export interface dataEditar {
   idDataset:0,
-  fechaInicio: any,
-  fechaFin: any,
+  fechaSalidaCampo: any,
   idProfundidad:0,
-  idParcela:0
+  idParcela:0,
+  idProyecto:0,
+  profundidad:[]
 }
 
 
@@ -197,26 +207,32 @@ onNoClick(): void {
 }
 
 ngOnInit(): void {
-  this.listarProfundidad();
+  this.profundidad=this.data1.profundidad;
   this.data.idDataset=this.data1.idDataset;
-  this.data.fechaInicio=this.data1.fechaInicio;
-  this.data.fechaFin=this.data1.fechaFin;
-  console.log(this.data.fechaFin)
+  this.data.fechaSalidaCampo=this.data1.fechaSalidaCampo;
+  this.dataAux.fechaSalidaCampo=this.data1.fechaSalidaCampo;
   this.data.profundidadParcela.idParcela=this.data1.idParcela;
   this.data.profundidadParcela.idProfundidad=this.data1.idProfundidad;
+  this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
+  
 }
 
-
+public dataAux = {
+  fechaSalidaCampo: '',
+}
 
 public data = {
   idDataset:0,
-  fechaInicio: '',
-  fechaFin: '',
+  fechaSalidaCampo: new Date(0),
   profundidadParcela:{
     idProfundidad:0,
     idParcela:0
+  },
+  proyectoInvestigacion:{
+    idProyecto:0
   }
 }
+
 
 formatDate(date: string): string {
   const parts = date.split('/');
@@ -227,7 +243,17 @@ formatDate(date: string): string {
   return '';
 }
 
+guardarFechaSalidaCampo(event: any) {
+  const fechaSeleccionada = event.target.value;
+  this.data.fechaSalidaCampo=fechaSeleccionada;
+  console.log(this.data.fechaSalidaCampo);
+}
 
+aumentarUnDia() {
+  const fechaOriginal = new Date(this.data.fechaSalidaCampo);
+  fechaOriginal.setDate(fechaOriginal.getDate() + 1);
+  this.data.fechaSalidaCampo = fechaOriginal;
+}
 
 profundidad : any = []
 listarProfundidad()
@@ -244,14 +270,8 @@ listarProfundidad()
 public afterClosed: EventEmitter<void> = new EventEmitter<void>();
 
 public editar() {
-  if(this.data.fechaInicio == null){
-    this.snack.open("La dehca de inico es requerida !!",'',{
-      duration:3000
-    })
-    return ;
-  }
-  if(this.data.fechaFin == null){
-    this.snack.open("La fecha de fin es requerida !!",'',{
+  if(this.dataAux.fechaSalidaCampo == null){
+    this.snack.open("La fecha de salida de campo es requerida !!",'',{
       duration:3000
     })
     return ;
@@ -263,17 +283,16 @@ public editar() {
     })
     return;
   }
-  
-
-  this.datasetService.guardar(this.data).subscribe(
+  this.aumentarUnDia();
+  this.datasetService.actualizar(this.data).subscribe(
     (data) => {
-      Swal.fire('Punto añadido', 'El punto se añadio con éxito', 'success').then(
+      Swal.fire('Punto actualizado', 'El punto se actualizo con éxito', 'success').then(
         (e) => {
           this.afterClosed.emit();
           this.dialogRef.close();
         })
     }, (error) => {
-      Swal.fire('Error al anadir el punto', 'No se registro el nuevo punto', 'error');
+      Swal.fire('Error en el sistema', 'No se actualizo el punto', 'error');
       console.log(error);
     }
   );
@@ -304,19 +323,22 @@ onNoClick(): void {
 }
 
 public data = {
-  fechaInicio: new Date(0),
-  fechaFin: new Date(0),
+  fechaSalidaCampo: new Date(0),
   profundidadParcela:{
     idProfundidad:0,
     idParcela:0
+  },
+  proyectoInvestigacion:{
+    idProyecto:0
   }
 }
 
 
 
 ngOnInit(): void {
-  this.listarProfundidad();
+  this.profundidad=this.data1.profundidad;
   this.data.profundidadParcela.idParcela=this.data1.idParcela;
+  this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
 }
 
 profundidad : any = []
@@ -335,19 +357,13 @@ public afterClosed: EventEmitter<void> = new EventEmitter<void>();
 
 public agregar() {
   
-  if(this.data.fechaInicio == null){
-    this.snack.open("La dehca de inico es requerida !!",'',{
+  if(this.data.fechaSalidaCampo == null){
+    this.snack.open("La fecha de salida de campo es requerida !!",'',{
       duration:3000
     })
     return ;
   }
-  if(this.data.fechaFin == null){
-    this.snack.open("La fecha de fin es requerida !!",'',{
-      duration:3000
-    })
-    return ;
-  }
-  
+
   if (this.data.profundidadParcela.idProfundidad == 0) {
     this.snack.open('La profundidad es requerido !!', 'Aceptar', {
       duration: 3000
@@ -358,13 +374,13 @@ public agregar() {
 
   this.datasetService.guardar(this.data).subscribe(
     (data) => {
-      Swal.fire('Punto añadido', 'El punto se añadio con éxito', 'success').then(
+      Swal.fire('Información guardada', 'El punto se agrego con éxito', 'success').then(
         (e) => {
           this.afterClosed.emit();
           this.dialogRef.close();
         })
     }, (error) => {
-      Swal.fire('Error al anadir el punto', 'No se registro el nuevo punto', 'error');
+      Swal.fire('Error en el sistema', 'No se agrego el punto', 'error');
       console.log(error);
     }
   );

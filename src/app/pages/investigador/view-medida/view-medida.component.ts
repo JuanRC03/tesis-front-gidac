@@ -31,6 +31,7 @@ export class ViewMedidaComponent implements AfterViewInit {
   }
   
   ngOnInit(): void {
+    
     this.listarVigentes();
   }
 
@@ -38,12 +39,18 @@ export class ViewMedidaComponent implements AfterViewInit {
 
     listarVigentes()
     {
-      this.medidaService.listar().subscribe(
+      this.medidaService.actualizarEditable().subscribe((data: any) => { 
+
+        this.medidaService.listar().subscribe(
           res=>{
+            console.log(res)
             this.listaDatos=res;
           },
           err=>console.log(err)
         )
+        
+      })
+      
     }
 
     
@@ -69,8 +76,8 @@ export class ViewMedidaComponent implements AfterViewInit {
 
     eliminar(id:any){
       Swal.fire({
-        title:'Eliminar unidad de medida',
-        text:'¿Estás seguro de eliminar al unidad de medida?',
+        title:'Eliminar información',
+        text:'¿Estás seguro de eliminar la unidad de medida?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
@@ -82,7 +89,7 @@ export class ViewMedidaComponent implements AfterViewInit {
           this.medidaService.eliminar(id).subscribe(
             (data) => {
               this.listaDatos = this.listaDatos.filter((lista:any) => lista.idUnidadMedida != id);
-              Swal.fire('Unidad de medida eliminado','La unidad de medida ha sido eliminado','success');
+              Swal.fire('Información eliminada','La unidad de medida ha sido eliminada','success');
               this.listarVigentes();
             },
             (error) => {
@@ -158,7 +165,7 @@ export class EditarUnidadMedida {
     }
 
     if (this.data.unidadMedida.trim() == '' || this.data.unidadMedida.trim() == null) {
-      this.snack.open('La unidad de medida  es requerido !!', 'Aceptar', {
+      this.snack.open('La unidad de medida es requerido !!', 'Aceptar', {
         duration: 3000
       })
       return;
@@ -174,13 +181,13 @@ export class EditarUnidadMedida {
 
     this.medidaService.actualizar(this.data).subscribe(
       (data) => {
-        Swal.fire('La unidad medida editado', 'La unidad de medida se ha editado con éxito', 'success').then(
+        Swal.fire('Información actualizada', 'La unidad de medida se actualizo con éxito', 'success').then(
           (e) => {
             this.afterClosed.emit();
             this.dialogRef.close();
           })
       }, (error) => {
-        Swal.fire('Error al editar la unidad medida', 'No se ha acutalizado la unidad medida', 'error');
+        Swal.fire('Error en el sistema', 'No se actualizo la unidad de medida', 'error');
         console.log(error);
       }
     );
@@ -222,7 +229,7 @@ export class AgregarUnidadMedida {
   public agregar() {
 
     if (this.medida.abreviatura.trim() == '' || this.medida.abreviatura.trim() == null) {
-      this.snack.open('La abreviatura es requerido !!', 'Aceptar', {
+      this.snack.open('La abreviatura es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
@@ -245,13 +252,13 @@ export class AgregarUnidadMedida {
 
     this.medidaService.actualizar(this.medida).subscribe(
       (data) => {
-        Swal.fire('La unidad medida agregado', 'La unidad de medida se ha agregado con éxito', 'success').then(
+        Swal.fire('Información guardada', 'La unidad de medida se agrego con éxito', 'success').then(
           (e) => {
             this.afterClosed.emit();
             this.dialogRef.close();
           })
       }, (error) => {
-        Swal.fire('Error al agregar la unidad medida', 'No se ha agregado la unidad medida', 'error');
+        Swal.fire('Error en el sistema', 'No se agrego la unidad de medida', 'error');
         console.log(error);
       }
     );

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FamiliaDTO } from '../pages/admin/add-equivalencia-variable/add-equivalencia-variable.component';
+import { FamiliaDTO } from '../services/familia.service';
 
 @Pipe({
   name: 'filtroAddFamilia'

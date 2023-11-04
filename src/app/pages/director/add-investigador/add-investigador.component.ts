@@ -72,7 +72,7 @@ export class AddInvestigadorComponent implements OnInit {
 
     this.userService.aniadirUsuario(this.usuario).subscribe(
       (data) => {
-        Swal.fire('Investigador añadido', 'El investigador se añadio con éxito', 'success').then(
+        Swal.fire('Información guardada', 'El investigador se agrego con éxito', 'success').then(
           (e) => {
             this.usuario.nombreUsuario='';
             this.usuario.apellidoUsuario='';
@@ -81,7 +81,7 @@ export class AddInvestigadorComponent implements OnInit {
             this.usuario.telefono='';
           })
       }, (error) => {
-        Swal.fire('Error al añadir investigador', 'No se registro el nuevo investigador', 'error');
+        Swal.fire('Error en el sistema', 'No se agrego el nuevo investigador', 'error');
         console.log(error);
       }
     );

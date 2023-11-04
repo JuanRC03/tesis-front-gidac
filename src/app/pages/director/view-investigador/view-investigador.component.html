@@ -5,13 +5,17 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">person_pin</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestión de investigadores
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar
+          investigadores
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/director-dashboard">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver investigadores</li>
+            <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
+                routerLink="/director-dashboard">Inicio</a></li>
+            <li class="breadcrumb-item active derecha"
+              style="color: var(--color-migajas-de-pan); text-decoration: none;" aria-current="page">Ver investigadores
+            </li>
           </ol>
         </div>
       </div>
@@ -21,161 +25,154 @@
 
 <mat-card style="margin-top: 0; border-top: 0; padding-top: 5px;">
   <br>
-<mat-list>
-  <mat-list-item >
-    <div mat-line>
-      <mat-form-field >
-        <input type="text"
-        class=" mb-2"
-        placeholder="Buscar.."
-        #txtSearch
-        matInput
-        (keyup)="onSearch( txtSearch.value )" 
-        />
-      </mat-form-field>
-    </div>
-    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-      <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
-        <mat-icon>download</mat-icon>
-      </button>
-      <button routerLink="/admin/addUsuario" mat-raised-button color="primary">Agregar</button>             
-     </div>
-    
-  </mat-list-item>
-</mat-list>
+  <mat-list>
+    <mat-list-item>
+      <div mat-line>
+        <mat-form-field>
+          <input type="text" class=" mb-2" placeholder="Buscar.." #txtSearch matInput
+            (keyup)="onSearch( txtSearch.value )" />
+        </mat-form-field>
+      </div>
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button routerLink="/admin/addUsuario" mat-raised-button color="primary">Agregar investigador</button>
+      </div>
 
-
-<mat-card>
-
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"  >
-    <mat-tab label="Investigadores disponibles">
-
-<mat-card>
-<div class="mat-elevation-z8 table-container">
-  <table class="table" mat-table [dataSource]="listaUsuarios | filtroUsuarios:search | paginate:page_size:page_number" class="full-width-table" matSort aria-label="Elements">
-    
-    <ng-container matColumnDef="dato1">
-      <th mat-header-cell *matHeaderCellDef>Cédula</th>
-      <td mat-cell *matCellDef="let row">{{row.cedula}}</td>
-    </ng-container>
-    
-    <ng-container matColumnDef="dato2">
-      <th mat-header-cell *matHeaderCellDef>Nombre</th>
-      <td mat-cell *matCellDef="let row">{{row.nombreUsuario}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="dato3">
-      <th mat-header-cell *matHeaderCellDef>Apellido</th>
-      <td mat-cell *matCellDef="let row">{{row.apellidoUsuario}}</td>
-    </ng-container>
-    
-    <ng-container matColumnDef="dato4">
-      <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let row">{{row.email}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="dato5">
-      <th mat-header-cell *matHeaderCellDef>Télefono</th>
-      <td mat-cell *matCellDef="let row">{{row.telefono}}</td>
-    </ng-container>
-
-    
-    <ng-container matColumnDef="opciones">
-      <th mat-header-cell *matHeaderCellDef>Opciones</th>
-      <td mat-cell *matCellDef="let row">
-        <div class="example-button-row">
-          <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" 
-          (click)="editar(row.idUsuario, row.nombreUsuario,row.apellidoUsuario , row.cedula, row.telefono , row.email)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminarUsuario(row.idUsuario)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  
-  <mat-list *ngIf="(listaUsuarios | filtroUsuarios:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-    <p>No existen investigadores disponibles</p>
-    <br>
-    <mat-divider></mat-divider>
+    </mat-list-item>
   </mat-list>
 
-  <mat-paginator 
-                 (page)="handlePage($event)"
-                 [length]="(listaUsuarios | filtroUsuarios:search).length"
-                 [pageSize]="page_size"
-                 [pageSizeOptions]="page_size_options"
-                 showFirstLastButtons>
-  </mat-paginator>
-</div>
+
+  <mat-card>
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+      <mat-tab label="Investigadores disponibles">
+
+        <mat-card>
+          <div class="mat-elevation-z8 table-container">
+            <table class="table" mat-table
+              [dataSource]="listaUsuarios | filtroUsuarios:search | paginate:page_size:page_number"
+              class="full-width-table" matSort aria-label="Elements">
+
+              <ng-container matColumnDef="dato1">
+                <th mat-header-cell *matHeaderCellDef>Cédula</th>
+                <td mat-cell *matCellDef="let row">{{row.cedula}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato2">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let row">{{row.nombreUsuario}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato3">
+                <th mat-header-cell *matHeaderCellDef>Apellido</th>
+                <td mat-cell *matCellDef="let row">{{row.apellidoUsuario}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato4">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let row">{{row.email}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato5">
+                <th mat-header-cell *matHeaderCellDef>Télefono</th>
+                <td mat-cell *matCellDef="let row">{{row.telefono}}</td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef>Opciones</th>
+                <td mat-cell *matCellDef="let row">
+                  <div class="example-button-row">
+                    <button mat-icon-button matTooltip="Primary" color="primary"
+                      aria-label="Example icon-button with a heart icon"
+                      (click)="editar(row.idUsuario, row.nombreUsuario,row.apellidoUsuario , row.cedula, row.telefono , row.email)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Warn" color="warn"
+                      aria-label="Example icon-button with a heart icon" (click)="eliminarUsuario(row.idUsuario)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-list *ngIf="(listaUsuarios | filtroUsuarios:search).length===0"
+              style="text-align: center; padding: 20px; margin: 20px;">
+              <p>No existen investigadores disponibles</p>
+              <br>
+              <mat-divider></mat-divider>
+            </mat-list>
+
+            <mat-paginator (page)="handlePage($event)" [length]="(listaUsuarios | filtroUsuarios:search).length"
+              [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
+            </mat-paginator>
+          </div>
+        </mat-card>
+
+      </mat-tab>
+      <mat-tab label="Investigadores eliminados">
+
+        <mat-card>
+          <div class="mat-elevation-z8 table-container">
+            <table class="table" mat-table
+              [dataSource]="listaUsuariosEliminados | filtroUsuarios:search | paginate:page_size:page_number"
+              class="full-width-table" matSort aria-label="Elements">
+
+              <ng-container matColumnDef="dato1">
+                <th mat-header-cell *matHeaderCellDef>Cédula</th>
+                <td mat-cell *matCellDef="let row">{{row.cedula}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato2">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let row">{{row.nombreUsuario}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato3">
+                <th mat-header-cell *matHeaderCellDef>Apellido</th>
+                <td mat-cell *matCellDef="let row">{{row.apellidoUsuario}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato4">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let row">{{row.email}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato5">
+                <th mat-header-cell *matHeaderCellDef>Télefono</th>
+                <td mat-cell *matCellDef="let row">{{row.telefono}}</td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef>Opciones</th>
+                <td mat-cell *matCellDef="let row">
+                  <button class="padding-izquierda" mat-raised-button color="accent"
+                    (click)="restaurarUsuario(row.idUsuario)">Restaurar</button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <mat-list *ngIf="(listaUsuariosEliminados | filtroUsuarios:search).length===0"
+              style="text-align: center; padding: 20px; margin: 20px;">
+              <p>No existen investigadores eliminados</p>
+              <br>
+              <mat-divider></mat-divider>
+            </mat-list>
+
+            <mat-paginator (page)="handlePage($event)"
+              [length]="(listaUsuariosEliminados | filtroUsuarios:search).length" [pageSize]="page_size"
+              [pageSizeOptions]="page_size_options" showFirstLastButtons>
+            </mat-paginator>
+          </div>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
 </mat-card>
-
-</mat-tab>
-<mat-tab label="Investigadores eliminados">
-
-<mat-card>
-<div class="mat-elevation-z8 table-container">
-  <table class="table" mat-table [dataSource]="listaUsuariosEliminados | filtroUsuarios:search | paginate:page_size:page_number" class="full-width-table" matSort aria-label="Elements">
-    
-    <ng-container matColumnDef="dato1">
-      <th mat-header-cell *matHeaderCellDef>Cédula</th>
-      <td mat-cell *matCellDef="let row">{{row.cedula}}</td>
-    </ng-container>
-    
-    <ng-container matColumnDef="dato2">
-      <th mat-header-cell *matHeaderCellDef>Nombre</th>
-      <td mat-cell *matCellDef="let row">{{row.nombreUsuario}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="dato3">
-      <th mat-header-cell *matHeaderCellDef>Apellido</th>
-      <td mat-cell *matCellDef="let row">{{row.apellidoUsuario}}</td>
-    </ng-container>
-    
-    <ng-container matColumnDef="dato4">
-      <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let row">{{row.email}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="dato5">
-      <th mat-header-cell *matHeaderCellDef>Télefono</th>
-      <td mat-cell *matCellDef="let row">{{row.telefono}}</td>
-    </ng-container>
-
-    
-    <ng-container matColumnDef="opciones">
-      <th mat-header-cell *matHeaderCellDef>Opciones</th>
-      <td mat-cell *matCellDef="let row">
-        <button class="padding-izquierda" mat-raised-button color="accent" (click) = "restaurarUsuario(row.idUsuario)">Restaurar</button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-  
-  <mat-list *ngIf="(listaUsuariosEliminados | filtroUsuarios:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-    <p>No existen investigadores eliminados</p>
-    <br>
-    <mat-divider></mat-divider>
-  </mat-list>
-
-  <mat-paginator 
-                 (page)="handlePage($event)"
-                 [length]="(listaUsuariosEliminados | filtroUsuarios:search).length"
-                 [pageSize]="page_size"
-                 [pageSizeOptions]="page_size_options"
-                 showFirstLastButtons>
-  </mat-paginator>
-</div>
-</mat-card>
-</mat-tab>
-</mat-tab-group>
-</mat-card>
-</mat-card>
-

@@ -11,15 +11,18 @@ export class UserService {
 
     constructor(private httpClient: HttpClient) { }
 
-    public editarPerfil(formData: any){
-    
-      return this.httpClient.post(`${baserUrl}/editar-perfil`,formData);
-    } 
-
     public aniadirUsuario(user:any){
       return this.httpClient.post(`${baserUrl}/usuarios/`,user);
     }
 
+    public actualizarUsuario(user:any){
+      return this.httpClient.put(`${baserUrl}/usuarios/actualizar-usuario`,user);
+    }
+
+    public editarPerfil(formData: any){
+    
+      return this.httpClient.post(`${baserUrl}/editar-perfil`,formData);
+    } 
     public obtenerUsuario(id:any){
       return this.httpClient.get(`${baserUrl}/usuarios/${id}`);
     }
@@ -70,6 +73,14 @@ export class UserService {
 
     public eliminarUsuario(idUsuario:any){
       return this.httpClient.delete(`${baserUrl}/usuarios/${idUsuario}`); 
+    }
+
+    public eliminarDirector(idUsuario:any){
+      return this.httpClient.delete(`${baserUrl}/usuarios/detelete-director/${idUsuario}`); 
+    }
+
+    public eliminarInvestigador(idUsuario:any){
+      return this.httpClient.delete(`${baserUrl}/usuarios/detelete-investigador/${idUsuario}`); 
     }
 
     public eliminarUsuarioInvestigador(idUsuario:any, idProyectoInvestigacion:any){

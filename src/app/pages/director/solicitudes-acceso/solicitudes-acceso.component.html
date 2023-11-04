@@ -5,13 +5,17 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">library_books</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar solicitudes de descarga
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar
+          solicitudes de descarga
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/director-dashboard">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver solicitudes de descarga</li>
+            <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
+                routerLink="/director-dashboard">Inicio</a></li>
+            <li class="breadcrumb-item active derecha"
+              style="color: var(--color-migajas-de-pan); text-decoration: none;" aria-current="page">Ver solicitudes de
+              descarga</li>
           </ol>
         </div>
       </div>
@@ -19,110 +23,89 @@
   </mat-list>
 </mat-card>
 
-
-
-
-<mat-card >
-
+<mat-card>
   <mat-list>
-    <mat-list-item >
+    <mat-list-item>
       <div mat-line>
-        <mat-form-field >
-          <input type="text"
-          class=" mb-2"
-          placeholder="Buscar.."
-          #txtSearch
-          matInput
-          (keyup)="onSearch( txtSearch.value )" 
-          />
+        <mat-form-field>
+          <input type="text" class=" mb-2" placeholder="Buscar.." #txtSearch matInput
+            (keyup)="onSearch( txtSearch.value )" />
         </mat-form-field>
       </div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-        <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="listarSolicitados()">
+        <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon"
+          (click)="listarSolicitados()">
           <mat-icon>cached</mat-icon>
-        </button>  
-            <button mat-icon-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-              <mat-icon>download</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item (click)="downloadTodosCSV()">Todos CSV</button>
-              <button mat-menu-item (click)="downloadTodosExcel()">Todos XLSX</button>
-              <button mat-menu-item (click)="downloadCSV(dataSource)">Solicitados CSV</button>
-              <button mat-menu-item (click)="downloadExcel(dataSource)">Solicitados XLSX</button>
-              <button mat-menu-item (click)="downloadCSV(dataSourceAceptado)">Aprobados CSV</button>
-              <button mat-menu-item (click)="downloadExcel(dataSourceAceptado)">Aprobados XLSX</button>
-              <button mat-menu-item (click)="downloadCSV(dataSourceRechazado)">Rechazados CSV</button>
-              <button mat-menu-item (click)="downloadExcel(dataSourceRechazado)">Aprobados XLSX</button>
-            </mat-menu>
-                     
-       </div>
-       
+        </button>
+
+      </div>
+
     </mat-list-item>
   </mat-list>
 
-<mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
-    <mat-tab label="Solicidado"> 
+  <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
+    <mat-tab label="Solicitado">
 
-    <table mat-table style="min-width: 500px;"
+      <table mat-table style="min-width: 500px;"
         [dataSource]="dataSource  | filtroSolicitudes:search | paginate:page_size:page_number1" multiTemplateDataRows
         class="mat-elevation-z8">
-        <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay" >
-            <th mat-header-cell *matHeaderCellDef> {{getColumnLabel(column)}} </th>
-            <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-          </ng-container>
-      <ng-container matColumnDef="expand">
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-        <td mat-cell *matCellDef="let element">
-          <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-            <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-            <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-    
-      
-      <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-          <div class="example-element-detail"
-               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-               <div style="padding-right: 50px; padding-top: 20px;padding-bottom: 20px;">
-                <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Fecha envio la solicitud: </b> {{element.fechaEnvioSolicitud}}</p>
-                  <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Investigacion solicitada: </b> {{element.proyectoInvestigacion.nombreProyecto}}</p>
-                  <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Motivo:</b> {{element.motivo}}</p>
-                </div>  
-                  <mat-card-content>
-                    <mat-card-actions>
+        <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+          <th mat-header-cell *matHeaderCellDef> {{getColumnLabel(column)}} </th>
+          <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+        </ng-container>
+        <ng-container matColumnDef="expand">
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button aria-label="expand row"
+              (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+              <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+              <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+              <div style="padding-right: 50px; padding-top: 20px;padding-bottom: 20px;">
+                <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Fecha envio la
+                    solicitud: </b> {{element.fechaEnvioSolicitud}}</p>
+                <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Proyecto
+                    listarSolicitados: </b> {{element.proyectoInvestigacion.nombreProyecto}}</p>
+                <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Motivo:</b>
+                  {{element.motivo}}</p>
+              </div>
+              <mat-card-content>
+                <mat-card-actions>
                   <div class="container text-center mt20" style="padding-bottom: 20px;">
-                    <button  mat-raised-button color="primary" (click) = "aceptarSolicitud(element.idSolicitudDescarga)">Aprobar</button>
-                    <button  mat-raised-button color="warn" (click)="openDialog(element.idSolicitudDescarga )">Rechazar</button>
+                    <button mat-raised-button color="primary"
+                      (click)="aceptarSolicitud(element.idSolicitudDescarga)">Aprobar</button>
+                    <button mat-raised-button color="warn"
+                      (click)="openDialog(element.idSolicitudDescarga )">Rechazar</button>
                   </div>
                 </mat-card-actions>
-                </mat-card-content>
-            
-          </div>
-        </td>
-      </ng-container>
-    
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-      <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-          class="example-element-row"
+              </mat-card-content>
+
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
           [class.example-expanded-row]="expandedElement === element"
           (click)="expandedElement = expandedElement === element ? null : element">
-      </tr>
-      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-    </table>
-    <mat-list *ngIf="(dataSource | filtroSolicitudes:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-      <p>No existen solicitudes de descarga</p>
-      <br>
-      <mat-divider></mat-divider>
-    </mat-list>
-    <mat-paginator 
-      (page)="handlePage1($event)"
-      [length]="(dataSource | filtroSolicitudes:search).length"
-      [pageSize]="page_size"
-      [pageSizeOptions]="page_size_options"
-      showFirstLastButtons>
-    </mat-paginator>
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      </table>
+      <mat-list *ngIf="(dataSource | filtroSolicitudes:search).length===0"
+        style="text-align: center; padding: 20px; margin: 20px;">
+        <p>No existen solicitudes de descarga</p>
+        <br>
+        <mat-divider></mat-divider>
+      </mat-list>
+      <mat-paginator (page)="handlePage1($event)" [length]="(dataSource | filtroSolicitudes:search).length"
+        [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
+      </mat-paginator>
 
     </mat-tab>
 
@@ -130,133 +113,120 @@
 
     <mat-tab label="Aceptado">
 
-      
-        <div class="mat-elevation-z8 table-container">
-          <table class="table" mat-table [dataSource]="dataSourceAceptado | filtroUsuarios:search | paginate:page_size:page_number" class="full-width-table" matSort aria-label="Elements">
-            
-            <ng-container matColumnDef="dato1">
-              <th mat-header-cell *matHeaderCellDef>Nombre</th>
-              <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.nombre}}</td>
-            </ng-container>
-            
-            <ng-container matColumnDef="dato2">
-              <th mat-header-cell *matHeaderCellDef>Apellido</th>
-              <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.apellido}}</td>
-            </ng-container>
-        
-            <ng-container matColumnDef="dato3">
-              <th mat-header-cell *matHeaderCellDef>Email</th>
-              <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.emial}}</td>
-            </ng-container>
-            
-            <ng-container matColumnDef="dato4">
-              <th mat-header-cell *matHeaderCellDef>Fecha envio solicitud</th>
-              <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.fechaEnvioSolicitud}}</td>
-            </ng-container>
-        
-            <ng-container matColumnDef="dato5">
-              <th mat-header-cell *matHeaderCellDef>Fecha respuesta</th>
-              <td mat-cell *matCellDef="let row">{{row.fechaRespuesta}}</td>
-            </ng-container>
-        
-            
-            <ng-container matColumnDef="opciones">
-              <th mat-header-cell *matHeaderCellDef>Información</th>
-              <td mat-cell *matCellDef="let row">
-                <div class="example-button-row">
-                  <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="openDialogInformacionAprobado(row.idRespuestaDescarga)">
-                    <mat-icon>info</mat-icon>
-                  </button>
-                </div>
-              </td>
-            </ng-container>
-        
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-          
-          <mat-list *ngIf="(dataSourceAceptado | filtroUsuarios:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-            <p>No existen solicitudes de descarga aprobadas</p>
-            <br>
-            <mat-divider></mat-divider>
-          </mat-list>
-        
-          <mat-paginator 
-                         (page)="handlePage($event)"
-                         [length]="(dataSourceAceptado | filtroUsuarios:search).length"
-                         [pageSize]="page_size"
-                         [pageSizeOptions]="page_size_options"
-                         showFirstLastButtons>
-          </mat-paginator>
-        </div>
-    </mat-tab>
-    <!------------------------------------------------------------>
-
-    <mat-tab label="Rechazado"> 
 
       <div class="mat-elevation-z8 table-container">
-        <table class="table" mat-table [dataSource]="dataSourceRechazado | filtroUsuarios:search | paginate:page_size:page_number" class="full-width-table" matSort aria-label="Elements">
-          
+        <table class="table" mat-table
+          [dataSource]="dataSourceAceptado | filtroSolicitudDescargaRespuesta:search | paginate:page_size:page_number"
+          class="full-width-table" matSort aria-label="Elements">
+
           <ng-container matColumnDef="dato1">
             <th mat-header-cell *matHeaderCellDef>Nombre</th>
             <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.nombre}}</td>
           </ng-container>
-          
+
           <ng-container matColumnDef="dato2">
             <th mat-header-cell *matHeaderCellDef>Apellido</th>
             <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.apellido}}</td>
           </ng-container>
-      
+
           <ng-container matColumnDef="dato3">
             <th mat-header-cell *matHeaderCellDef>Email</th>
             <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.emial}}</td>
           </ng-container>
-          
+
           <ng-container matColumnDef="dato4">
-            <th mat-header-cell *matHeaderCellDef>Fecha envio solicitud</th>
-            <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.fechaEnvioSolicitud}}</td>
+            <th mat-header-cell *matHeaderCellDef>Institución</th>
+            <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.institucion}}</td>
           </ng-container>
-      
-          <ng-container matColumnDef="dato5">
-            <th mat-header-cell *matHeaderCellDef>Fecha respuesta</th>
-            <td mat-cell *matCellDef="let row">{{row.fechaRespuesta}}</td>
-          </ng-container>
-      
-          
+
           <ng-container matColumnDef="opciones">
             <th mat-header-cell *matHeaderCellDef>Información</th>
             <td mat-cell *matCellDef="let row">
               <div class="example-button-row">
-                <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="openDialogInformacionRechazado(row.idRespuestaDescarga)">
+                <button mat-icon-button matTooltip="Primary" color="primary"
+                  aria-label="Example icon-button with a heart icon"
+                  (click)="openDialogInformacionAprobado(row.idRespuestaDescarga)">
                   <mat-icon>info</mat-icon>
                 </button>
               </div>
             </td>
           </ng-container>
-      
+
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        
-        <mat-list *ngIf="(dataSourceRechazado | filtroUsuarios:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+
+        <mat-list *ngIf="(dataSourceAceptado | filtroSolicitudDescargaRespuesta:search).length===0"
+          style="text-align: center; padding: 20px; margin: 20px;">
           <p>No existen solicitudes de descarga aprobadas</p>
           <br>
           <mat-divider></mat-divider>
         </mat-list>
-      
-        <mat-paginator 
-                       (page)="handlePage($event)"
-                       [length]="(dataSourceRechazado | filtroUsuarios:search).length"
-                       [pageSize]="page_size"
-                       [pageSizeOptions]="page_size_options"
-                       showFirstLastButtons>
+
+        <mat-paginator (page)="handlePage($event)"
+          [length]="(dataSourceAceptado | filtroSolicitudDescargaRespuesta:search).length" [pageSize]="page_size"
+          [pageSizeOptions]="page_size_options" showFirstLastButtons>
         </mat-paginator>
       </div>
-      
-
-
     </mat-tab>
-    
-</mat-tab-group>
-</mat-card>
+    <!------------------------------------------------------------>
 
+    <mat-tab label="Rechazado">
+
+      <div class="mat-elevation-z8 table-container">
+        <table class="table" mat-table
+          [dataSource]="dataSourceRechazado | filtroSolicitudDescargaRespuesta:search | paginate:page_size:page_number"
+          class="full-width-table" matSort aria-label="Elements">
+
+          <ng-container matColumnDef="dato1">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.nombre}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="dato2">
+            <th mat-header-cell *matHeaderCellDef>Apellido</th>
+            <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.apellido}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="dato3">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.emial}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="dato4">
+            <th mat-header-cell *matHeaderCellDef>Institución</th>
+            <td mat-cell *matCellDef="let row">{{row.solicitudDescarga.institucion}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="opciones">
+            <th mat-header-cell *matHeaderCellDef>Información</th>
+            <td mat-cell *matCellDef="let row">
+              <div class="example-button-row">
+                <button mat-icon-button matTooltip="Primary" color="primary"
+                  aria-label="Example icon-button with a heart icon"
+                  (click)="openDialogInformacionRechazado(row.idRespuestaDescarga)">
+                  <mat-icon>info</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-list *ngIf="(dataSourceRechazado | filtroSolicitudDescargaRespuesta:search).length===0"
+          style="text-align: center; padding: 20px; margin: 20px;">
+          <p>No existen solicitudes de descarga rechazadas</p>
+          <br>
+          <mat-divider></mat-divider>
+        </mat-list>
+
+        <mat-paginator (page)="handlePage($event)"
+          [length]="(dataSourceRechazado | filtroSolicitudDescargaRespuesta:search).length" [pageSize]="page_size"
+          [pageSizeOptions]="page_size_options" showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>

@@ -27,7 +27,8 @@ export class ViewParcelaComponent implements AfterViewInit {
   constructor(private parcelaService:ParcelaService,
     private route:ActivatedRoute,
     private investigacionService:InvestigacionService,
-    public matDialog: MatDialog) {
+    public matDialog: MatDialog,
+    public areaService:AreaService) {
     this.dataSource = new ViewParcelaDataSource();
   }
 
@@ -43,7 +44,20 @@ export class ViewParcelaComponent implements AfterViewInit {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.listarVigentes();
     this.listarProyectosVigentes();
+    this.listarArea();
   }
+
+  area : any = []
+
+  listarArea()
+    {
+      this.areaService.listar().subscribe(
+          res=>{
+            this.area=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
 
   datos : any = []
@@ -71,7 +85,7 @@ export class ViewParcelaComponent implements AfterViewInit {
 
     eliminar(idParcela:any){
       Swal.fire({
-        title:'Eliminar parcela',
+        title:'Eliminar información',
         text:'¿Estás seguro de eliminar la parcela?',
         icon:'warning',
         showCancelButton:true,
@@ -84,10 +98,10 @@ export class ViewParcelaComponent implements AfterViewInit {
           this.parcelaService.eliminar(idParcela).subscribe(
             (data) => {
               this.listaDatos = this.listaDatos.filter((datos:any) => datos.idParcela != idParcela);
-              Swal.fire('Parcela eliminado','La parcela ha sido eliminado','success');
+              Swal.fire('Información eliminada','La parcela ha sido eliminada','success');
             },
             (error) => {
-              Swal.fire('Error','Error al eliminar la parcela, la parcela debe estar vacio','error');
+              Swal.fire('Error','Error al eliminar la parcela','error');
             }
           )
         }
@@ -115,7 +129,7 @@ export class ViewParcelaComponent implements AfterViewInit {
   //agregar
   agregar(): void {
     const dialogRef = this.matDialog.open(AgregarParcela, {
-      data: { idConglomerado: this.idConglomerado},
+      data: { idConglomerado: this.idConglomerado, area:this.area},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarVigentes();
@@ -126,7 +140,7 @@ export class ViewParcelaComponent implements AfterViewInit {
   //editar
   editar(id:any, dato1:any, dato2:any, dato3:any, dato4:any, dato5:any): void {
     const dialogRef = this.matDialog.open(EditarParcela, {
-      data: { idParcela: id, codigoParcela:dato1,nombreParcela:dato2,coordenadaX:dato3,coordenadaY:dato4,idArea:dato5, idConglomerado:this.idConglomerado},
+      data: { idParcela: id, codigoParcela:dato1,nombreParcela:dato2,coordenadaX:dato3,coordenadaY:dato4,idArea:dato5, idConglomerado:this.idConglomerado, area:this.area},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarVigentes();
@@ -146,6 +160,7 @@ export interface dataEditar {
   coordenadaY: '',
   idConglomerado:0,
   idArea:0,
+  area : []
 }
 
 
@@ -171,7 +186,7 @@ onNoClick(): void {
 }
 
 ngOnInit(): void {
-  this.listarArea();
+  this.area = this.data1.area;
   this.data.idParcela=this.data1.idParcela;
   this.data.codigoParcela=this.data1.codigoParcela;
   this.data.nombreParcela=this.data1.nombreParcela;
@@ -232,13 +247,13 @@ public editar() {
 
 
   if (this.data.coordenadaX.trim() == '' || this.data.coordenadaX.trim() == null) {
-    this.snack.open('La coordenad "X" es requerido !!', 'Aceptar', {
+    this.snack.open('La coordenad X es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
   if (this.data.coordenadaY.trim() == '' || this.data.coordenadaY.trim() == null) {
-    this.snack.open('La coordenada "Y" es requerido !!', 'Aceptar', {
+    this.snack.open('La coordenada Y es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
@@ -253,15 +268,15 @@ public editar() {
   
   
 
-  this.parcelaService.guardar(this.data).subscribe(
+  this.parcelaService.actualizar(this.data).subscribe(
     (data) => {
-      Swal.fire('Parcela editada', 'La parsela se ha editado con éxito', 'success').then(
+      Swal.fire('Información actualizada', 'La parsela se actualizo con éxito', 'success').then(
         (e) => {
           this.afterClosed.emit();
           this.dialogRef.close();
         })
     }, (error) => {
-      Swal.fire('Error al editada la parcela', 'No se editada la parcela', 'error');
+      Swal.fire('Error en el sistema', 'No se actualizo la parcela', 'error');
       console.log(error);
     }
   );
@@ -305,7 +320,7 @@ public data = {
 }
 
 ngOnInit(): void {
-  this.listarArea();
+  this.area = this.data1.area;
   this.data.conglomerado.idConglomerado=this.data1.idConglomerado;
 }
 
@@ -342,13 +357,13 @@ public agregar() {
 
 
   if (this.data.coordenadaX.trim() == '' || this.data.coordenadaX.trim() == null) {
-    this.snack.open('La coordenad "X" es requerido !!', 'Aceptar', {
+    this.snack.open('La coordenad X es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
   if (this.data.coordenadaY.trim() == '' || this.data.coordenadaY.trim() == null) {
-    this.snack.open('La coordenada "Y" es requerido !!', 'Aceptar', {
+    this.snack.open('La coordenada Y es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
@@ -365,13 +380,13 @@ public agregar() {
 
   this.parcelaService.guardar(this.data).subscribe(
     (data) => {
-      Swal.fire('Parcela añadida', 'La parsela se añadio con éxito', 'success').then(
+      Swal.fire('Información guardada', 'La parsela se agrego con éxito', 'success').then(
         (e) => {
           this.afterClosed.emit();
           this.dialogRef.close();
         })
     }, (error) => {
-      Swal.fire('Error al anadir la parcela', 'No se registro la nueva parcela', 'error');
+      Swal.fire('Error en el sistema', 'No se agrego la parcela', 'error');
       console.log(error);
     }
   );

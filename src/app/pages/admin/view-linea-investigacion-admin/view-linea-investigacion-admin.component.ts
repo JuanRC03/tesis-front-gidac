@@ -43,8 +43,8 @@ export class ViewLineaInvestigacionAdminComponent implements OnInit {
 
     eliminar(id:any){
       Swal.fire({
-        title:'Eliminar linea de investigación',
-        text:'¿Estás seguro de eliminar la linea de investigación?',
+        title:'Eliminar información',
+        text:'¿Estás seguro de eliminar la línea de investigación?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
@@ -56,11 +56,11 @@ export class ViewLineaInvestigacionAdminComponent implements OnInit {
           this.lineaInvestigacionService.eliminar(id).subscribe(
             (data) => {
               this.listaDatosVigentes = this.listaDatosVigentes.filter((datos:any) => datos.idLineaInvestigacion!= id);
-              Swal.fire('Linea de investigación eliminado','La linea de investigación ha sido eliminado','success');
+              Swal.fire('Información eliminada','La línea de investigación ha sido eliminado','success');
               this.listarEliminados();
             },
             (error) => {
-              Swal.fire('Error','Error al eliminar la linea de investigación','error');
+              Swal.fire('Error en el sistema','Error al eliminar la línea de investigación','error');
             }
           )
         }
@@ -69,8 +69,8 @@ export class ViewLineaInvestigacionAdminComponent implements OnInit {
 
     restablecer(id:any){
       Swal.fire({
-        title:'Restablecer linea de investigación',
-        text:'¿Estás seguro de restablecer la linea de investigación?',
+        title:'Restaurar información',
+        text:'¿Estás seguro de restablecer la línea de investigación?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
@@ -82,11 +82,11 @@ export class ViewLineaInvestigacionAdminComponent implements OnInit {
           this.lineaInvestigacionService.restablecer(id).subscribe(
             (data) => {
               this.listaDatosEliminados = this.listaDatosEliminados.filter((datos:any) => datos.idLineaInvestigacion!= id);
-              Swal.fire('Linea de investigación restablecido','Linea de investigación restablecido','success');
+              Swal.fire('Información restaurada ','Línea de investigación restablecida','success');
               this.listarVigentes();
             },
             (error) => {
-              Swal.fire('Error','Error al restablecer la linea de investigación','error');
+              Swal.fire('Error','Error al restablecer la línea de investigación','error');
             }
           )
         }
@@ -163,7 +163,7 @@ export class DialogAddLineaInvestigacionAdmin {
 
   formSubmit() {
     if (this.datos.nombreLineaInvestigacion == '' || this.datos.nombreLineaInvestigacion == null) {
-      this.snack.open('El nombre de la linea de investigación es requerido !!', 'Aceptar', {
+      this.snack.open('El nombre de la línea de investigación es requerido !!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center'
@@ -173,13 +173,13 @@ export class DialogAddLineaInvestigacionAdmin {
 
     this.service.guardar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Linea de investigación guardada', 'La linea de investigación se ha guardado con exito', 'success');
+        Swal.fire('Información guardada', 'La línea de investigación se ha guardado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al guardar la linea de investigación', 'La linea de investigación no se ha guardado', 'error');
+        Swal.fire('Error en el sistema', 'La línea de investigación no se ha guardado', 'error');
       }
     )
   }
@@ -215,7 +215,7 @@ export class DialogActualizarLineaInvestigacionAdmin {
 
   formSubmit() {
     if (this.datos.nombreLineaInvestigacion == '' || this.datos.nombreLineaInvestigacion == null) {
-      this.snack.open('El nombre de la linea de investigación es requerido !!', 'Aceptar', {
+      this.snack.open('El nombre de la línea de investigación es requerido !!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center'
@@ -223,15 +223,15 @@ export class DialogActualizarLineaInvestigacionAdmin {
       return;
     }
 
-    this.service.guardar(this.datos).subscribe(
+    this.service.actualizar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Linea de investigación actualizada', 'La linea de investigación se ha actualizado con exito', 'success');
+        Swal.fire('Información actualizada', 'La línea de investigación se ha actualizado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al actualizar la linea de investigación', 'La linea de investigación no se ha actualizado', 'error');
+        Swal.fire('Error en el sistema', 'La línea de investigación no se ha actualizado', 'error');
       }
     )
   }

@@ -22,7 +22,8 @@ export class ViewAreasComponent implements AfterViewInit {
   dataSource: ViewAreasDataSource;
 
   constructor( private areaService:AreaService,
-    public matDialog: MatDialog) {
+    public matDialog: MatDialog,
+    private medidaService:MedidaService) {
     this.dataSource = new ViewAreasDataSource();
   }
 
@@ -33,18 +34,33 @@ export class ViewAreasComponent implements AfterViewInit {
   
   ngOnInit(): void {
     this.listar();
+    this.listarMedidas();
   }
+
+  medida : any = []
+  listarMedidas()
+    {
+      this.medidaService.listar().subscribe(
+          res=>{
+            this.medida=res;
+            console.log(this.medida);
+          },
+          err=>console.log(err)
+        )
+    }
 
     listaDatos : any = []
 
     listar()
     {
+      this.areaService.actualizarEditable().subscribe((data: any) => { 
       this.areaService.listar().subscribe(
           res=>{
             this.listaDatos=res;
           },
           err=>console.log(err)
         )
+      })
     }
   
     //paginacion y busqueda
@@ -95,7 +111,9 @@ export class ViewAreasComponent implements AfterViewInit {
 
     //agregar
     agregar(): void {
-      const dialogRef = this.matDialog.open(EditarArea, {});
+      const dialogRef = this.matDialog.open(AgregarArea, {
+        data: { medida: this.medida},
+      });
       dialogRef.afterClosed().subscribe(() => {
         this.listar();
       });
@@ -105,7 +123,7 @@ export class ViewAreasComponent implements AfterViewInit {
     //editar
     editar(id:any, dato1:any, dato2:any): void {
       const dialogRef = this.matDialog.open(EditarArea, {
-        data: { idArea: id, area:dato1,idUnidadMedida:dato2},
+        data: { idArea: id, area:dato1,idUnidadMedida:dato2, medida: this.medida},
       });
       dialogRef.afterClosed().subscribe(() => {
         this.listar();
@@ -119,8 +137,9 @@ export class ViewAreasComponent implements AfterViewInit {
   
 export interface dataEditar {
   idArea: 0,
-  area: '',
-  idUnidadMedida:0
+  area: null,
+  idUnidadMedida:0,
+  medida:[]
 }
 
 @Component({
@@ -143,7 +162,7 @@ export class EditarArea {
   }
 
   ngOnInit(): void {
-    this.listarMedidas();
+    this.medida = this.data1.medida;
     this.data.idArea=this.data1.idArea;
     this.data.area=this.data1.area;
     this.data.unidadMedida.idUnidadMedida=this.data1.idUnidadMedida;
@@ -163,7 +182,7 @@ export class EditarArea {
 
   public data = {
       idArea:-1,
-      area: '',
+      area: null,
       unidadMedida:{
         idUnidadMedida:-1
       }
@@ -173,7 +192,7 @@ export class EditarArea {
 
   public editar() {
 
-    if (this.data.area.trim() == '' || this.data.area.trim() == null) {
+    if (this.data.area == '' || this.data.area == null) {
       this.snack.open('El área es requerido !!', 'Aceptar', {
         duration: 3000
       })
@@ -188,15 +207,15 @@ export class EditarArea {
     }
     
 
-    this.areaService.guardar(this.data).subscribe(
+    this.areaService.actualizar(this.data).subscribe(
       (data) => {
-        Swal.fire('Área editada', 'El área se editado con éxito', 'success').then(
+        Swal.fire('Información actualizada', 'El área se actualizo con éxito', 'success').then(
           (e) => {
             this.afterClosed.emit();
             this.dialogRef.close();
           })
       }, (error) => {
-        Swal.fire('Error al editadar el área', 'No se editada el área', 'error');
+        Swal.fire('Error', 'No se actualizo el área', 'error');
         console.log(error);
       }
     );
@@ -215,6 +234,7 @@ export class EditarArea {
 export class AgregarArea {
   constructor(
     public dialogRef: MatDialogRef<AgregarArea>,
+    @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
     private areaService:AreaService,
     private snack: MatSnackBar,
     private medidaService:MedidaService
@@ -232,7 +252,7 @@ export class AgregarArea {
     }
 
   ngOnInit(): void {
-    this.listarMedidas();
+    this.medida = this.data1.medida;
   }
 
   medida : any = []
@@ -268,13 +288,13 @@ export class AgregarArea {
 
     this.areaService.guardar(this.data).subscribe(
       (data) => {
-        Swal.fire('Área añadida', 'El área se añadio con éxito', 'success').then(
+        Swal.fire('Información guardada', 'El área se añadio con éxito', 'success').then(
           (e) => {
             this.afterClosed.emit();
             this.dialogRef.close();
           })
       }, (error) => {
-        Swal.fire('Error al anadir el área', 'No se registro el área', 'error');
+        Swal.fire('Error', 'No se registro el área', 'error');
         console.log(error);
       }
     );

@@ -1,5 +1,7 @@
+<h2 class="text-center">Enviar solicitud</h2>
+<mat-dialog-content class="mat-typography">
 <form (ngSubmit)="formSubmit()" style="max-width: 400px;">
-  <h1 class="text-center">Enviar solicitud</h1>
+  
   <mat-form-field class="w100" appearance="outline">
     <mat-label>Nombre</mat-label>
     <input required [(ngModel)]="solicitudData.nombre" name="nombre" matInput placeholder="Digite su nombre">
@@ -16,28 +18,29 @@
   </mat-form-field>
 
   <mat-form-field class="w100" appearance="outline">
-    <mat-label>Nombre de la institucion</mat-label>
+    <mat-label>Nombre de la institución</mat-label>
     <input required [(ngModel)]="solicitudData.institucion" name="institucion" matInput
       placeholder="El nombre de la institución">
   </mat-form-field>
 
   <mat-form-field class="w100" appearance="outline">
-    <mat-label>Motivo de solicitud para el acceso a los datos</mat-label>
-    <textarea required name="descripcion" matInput placeholder="Ingrese el motivo de la solicitar el acceso a los datos"
+    <mat-label>Motivo de la solicitud para descargar los datos</mat-label>
+    <textarea required name="descripcion" matInput placeholder="Ingrese el motivo para descargar los datos"
       rows="3" [(ngModel)]="solicitudData.motivo">
               </textarea>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="mt20 w100">
-    <mat-label>Investigaciones disponibles</mat-label>
+    <mat-label>Proyectos disponibles</mat-label>
     <mat-select required name="investigaciones" [(ngModel)]="solicitudData.proyectoInvestigacion.idProyecto">
       <mat-option *ngFor="let c of investigacion" [value]="c.idproyecto">
         {{ c.nombreProyecto }}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-dialog-actions>
+  <mat-dialog-actions class="text-end" style="padding-bottom: 20px;">
     <button mat-button mat-dialog-close>Cancelar</button>
-    <button mat-button cdkFocusInitial>Enviar</button>
+    <button mat-button cdkFocusInitial class="text-end estilo-boton-enviar">Enviar</button>
   </mat-dialog-actions>
 </form>
+</mat-dialog-content>

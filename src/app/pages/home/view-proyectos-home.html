@@ -1,0 +1,65 @@
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+
+    <div mat-line>Proyecto</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button mat-icon-button mat-dialog-close matTooltip="White" color="White"
+        aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography">
+  <div class="estilo-buscar">
+    <div class="personalizado1">
+      <input type="text" #txtSearch required class="personalizado2" (keyup)="onSearch( txtSearch.value)">
+      <label class="lbl-busqueda">
+        <span class="text-busqueda">Buscar....</span>
+      </label>
+    </div>
+  </div>
+  <mat-list>
+    <mat-list-item
+      *ngFor="let oC of investigaciones | filtroInvestigacion:search | paginate:page_size1:page_number1; let i = index"
+      style="color: var(--color-texto-menu-home)">
+      <div mat-line><mat-card-title
+          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.nombreProyecto }}</mat-card-title>
+      </div>
+      <div mat-line style="font-size: 13px;"> {{oC.descripcion}}</div>
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button *ngIf="oC.idProyecto!=0" mat-icon-button matTooltip="var(--resaltado-color)"
+          color="var(--resaltado-color)" aria-label="Example icon-button with a heart icon"
+          (click)="openDialogInformacion(oC.idProyecto)">
+          <mat-icon style="color: var(--resaltado-color);">info</mat-icon>
+        </button>
+        <div class="pading-radio-buton">
+          <div class="container-1">
+            <div class="form-group">
+              <input style="display: none;" type="radio" name="radioOpcion" [id]="oC.idProyecto" [id]="oC.idProyecto"
+                [checked]="investigacionSeleccionada === oC.idProyecto"
+                (change)="filtrarInvestigacione(oC.idProyecto)" />
+              <label [for]="oC.idProyecto"><span class="radio-button-1"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+    <mat-list *ngIf="(investigaciones| filtroInvestigacion:search).length===0"
+      style="text-align: center; padding: 20px; margin: 20px;">
+      <p style="color: var(--color-texto-menu-home);">No existen proyectos !!</p>
+      <br>
+      <mat-divider></mat-divider>
+    </mat-list>
+  </mat-list>
+  <mat-divider></mat-divider>
+  <mat-paginator 
+    (page)="handlePage1($event)"
+    [length]="(investigaciones | filtroInvestigacion:search).length" [pageSize]="page_size1"
+    [pageSizeOptions]="page_size_options1" showFirstLastButtons>
+  </mat-paginator>
+
+</mat-dialog-content>

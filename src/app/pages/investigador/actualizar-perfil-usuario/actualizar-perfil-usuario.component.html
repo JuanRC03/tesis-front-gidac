@@ -10,7 +10,7 @@
         <div aria-label="breadcrumb" style="font-size: 12px; border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
             <li type="button" style="color: var(--color-texto-fondo); text-decoration: none;"
-              class="breadcrumb-item active derecha" aria-current="page" routerLink="/admin/"><mat-card-title
+              class="breadcrumb-item active derecha" aria-current="page" routerLink="/user-dashboard/"><mat-card-title
                 style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Inicio </mat-card-title></li>
             <li style="color: var(--resaltado-color); text-decoration: none;" class="breadcrumb-item active derecha"
               aria-current="page"><mat-card-title style="font-size: 14px;padding: 0; margin: 0; border: 0;"> Inicio
@@ -21,6 +21,7 @@
     </mat-list-item>
   </mat-list>
 </mat-card>
+
 <div class="joinnow">
   <div class="login col-lg-7 m-auto shadow-lg">
     <div class="container mt-4 mb-5">
@@ -33,11 +34,12 @@
                   style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin-top: o; padding-top: 0;border: 3px solid #2bc451;"
                   [src]="imagenUrl">
               </div>
-              <div class="w100" appearance="outline" style="text-align: center;">
+              
+              <!--<div class="w100" appearance="outline" style="text-align: center;">
                 <label for="photo" style="padding-right: 5px;">Foto: </label>
                 <input type="file" accept="image/jpeg" (change)="onFotoSeleccionada($event)">
               </div>
-              <br><br>
+              <br><br>-->
 
               <mat-form-field class="w100" appearance="outline">
                 <mat-label>Nombre :</mat-label>
@@ -62,9 +64,6 @@
                 <input [(ngModel)]="userFinal.telefono"  type="text" name="telefono" matInput
                   placeholder="Digite su teléfono">
               </mat-form-field>
-
-              
-
 
               <mat-form-field class="w100" appearance="outline">
                 <mat-label>Email:</mat-label>

@@ -13,6 +13,65 @@ export class UbicacionService {
     return this.http.post(`${baserUrl}/ubicacion/guardar-ubicacion`,modelo);
   }
 
+  //------------------------------------------------------------------------
+  //Guardar
+
+  public guardarPais(modelo:any){
+    return this.http.post(`${baserUrl}/ubicacion/guardar-pais`,modelo);
+  }
+
+  public guardarProvincia(modelo:any){
+    return this.http.post(`${baserUrl}/ubicacion/guardar-provincia`,modelo);
+  }
+
+  public guardarCanton(modelo:any){
+    return this.http.post(`${baserUrl}/ubicacion/guardar-canton`,modelo);
+  }
+
+  public guardarParroquia(modelo:any){
+    return this.http.post(`${baserUrl}/ubicacion/guardar-parroquia`,modelo);
+  }
+
+  //------------------------------------------------------------------------
+  //------------------------------------------------------------------------
+  //Guardar
+
+  public actualizarPais(modelo:any){
+    return this.http.post(`${baserUrl}/ubicacion/actualizar-pais`,modelo);
+  }
+
+  public actualizarProvincia(modelo:any){
+    return this.http.post(`${baserUrl}/ubicacion/actualizar-provincia`,modelo);
+  }
+
+  public actualizarCanton(modelo:any){
+    return this.http.post(`${baserUrl}/ubicacion/actualizar-canton`,modelo);
+  }
+
+  public actualizarParroquia(modelo:any){
+    return this.http.post(`${baserUrl}/ubicacion/actualizar-parroquia`,modelo);
+  }
+
+  //------------------------------------------------------------------------
+  //Eliminar
+
+  public eliminarPaises(idPais:any){
+    return this.http.delete(`${baserUrl}/ubicacion/eliminar-paises/${idPais}`); 
+  }
+
+  public eliminarProvincias(idPais:any,idProvincia:any){
+    return this.http.delete(`${baserUrl}/ubicacion/eliminar-provincias/${idPais}/${idProvincia}`); 
+  }
+
+  public eliminarCantones(idPais:any,idProvincia:any,idCanton:any){
+    return this.http.delete(`${baserUrl}/ubicacion/eliminar-cantones/${idPais}/${idProvincia}/${idCanton}`); 
+  }
+
+  public eliminarParroquia(idPais:any,idProvincia:any,idCanton:any,idParroquia:any){
+    return this.http.delete(`${baserUrl}/ubicacion/eliminar-parroquias/${idPais}/${idProvincia}/${idCanton}/${idParroquia}`); 
+  }
+
+  //------------------------------------------------------------------------
   public actualizar(modelo:any){
     return this.http.put(`${baserUrl}/ubicacion/guardar-ubicacion`,modelo);
   }

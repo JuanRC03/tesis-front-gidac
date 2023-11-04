@@ -48,11 +48,11 @@ export class AddProyectoInvestigacionComponent implements OnInit {
               private snack:MatSnackBar,
               private router:Router,
               private route:ActivatedRoute,
-              private lineaInvestigacionService: LineaInvestigacionService,
-              private areasInvestigacionService: AreasInvestigacionService,
               private tipoInvestigacionService: TipoInvestigacionService,
               private tipoProyectoService:TipoProyectoService,
               private sectorImpactoService:SectorImpactoService,
+              private lineaInvestigacionService: LineaInvestigacionService,
+              private areasInvestigacionService: AreasInvestigacionService,
               private estadoProyectoInvestigacionService:EstadoProyectoInvestigacionService,
               private ubicacionService:UbicacionService) { }
 
@@ -61,11 +61,11 @@ export class AddProyectoInvestigacionComponent implements OnInit {
     
     console.log(this.idUsuario)
     this.listarEstadoProyectoInvestigacion();
-    this.listarAreasInvestigacionDisponibles();
-    this.listarSectorImpacto();
     this.listarTipoInvestigacion();
     this.listarTipoProyecto();
     this.listarLineasInvestigacion();
+    this.listarAreasInvestigacionDisponibles();
+    this.listarSectorImpacto();
     this.listarPaises();
     //this.proyectoInvestigacion.areaInvestigacion.idAreaInvestigacion=this.idAreaInvestigacion;
   }
@@ -104,7 +104,6 @@ export class AddProyectoInvestigacionComponent implements OnInit {
 
   listarPaises()
     {
-      
       this.ubicacionService.obtenerPaises().subscribe(
           (res:any)=>{
             this.listaPaises=res;
@@ -112,7 +111,6 @@ export class AddProyectoInvestigacionComponent implements OnInit {
             this.listaCantones= [];
             this.listaParroquias = [];
             this.provinciaSeleccionado.codigoProvincia="";
-            
           },
           err=>console.log(err)
         )
@@ -196,7 +194,7 @@ export class AddProyectoInvestigacionComponent implements OnInit {
             nombreParroquia:this.parroquiaSeleccionado.nombreParroquia,
             });
         }else{
-          this.snack.open('La localizacion ya se encuentra asignada !!','Aceptar',{
+          this.snack.open('La localización ya se encuentra asignada !!','Aceptar',{
             duration : 3000
           });
         }
@@ -219,19 +217,7 @@ export class AddProyectoInvestigacionComponent implements OnInit {
         )
   }
 
-  listaSectorImpacto : any = []
-
-    listarSectorImpacto()
-    {
-      this.sectorImpactoService.listarVigentes().subscribe(
-          (res:any)=>{
-            this.listaSectorImpacto=res;
-            this.dataSource2.data = res;
-            this.listaDatos2 = res.map((SectorImpacto: any) => ({ ...SectorImpacto, checked: false }));
-          },
-          err=>console.log(err)
-        )
-    }
+  
 
     listaTipoProyecto : any = []
 
@@ -257,12 +243,23 @@ export class AddProyectoInvestigacionComponent implements OnInit {
         )
     }
 
+    listaSectorImpacto : any = []
+
+    listarSectorImpacto()
+    {
+      this.sectorImpactoService.listarVigentes().subscribe(
+          (res:any)=>{
+            this.listaSectorImpacto=res;
+            this.dataSource2.data = res;
+            this.listaDatos2 = res.map((SectorImpacto: any) => ({ ...SectorImpacto, checked: false }));
+          },
+          err=>console.log(err)
+        )
+    }
+
     listaDatosVigentes : any = []
 
-    
-
     listarAreasInvestigacionDisponibles(){
-
       this.areasInvestigacionService.obtenerAreasInvestigacionVigentes().subscribe(
         (dato:any) => {
           console.log(dato);
@@ -293,25 +290,25 @@ export class AddProyectoInvestigacionComponent implements OnInit {
     formSubmit(){
     
     if(this.proyectoInvestigacion.nombreProyecto.trim() == '' || this.proyectoInvestigacion.nombreProyecto == null){
-      this.snack.open("El nombre de la investigacion es requerida !!",'',{
+      this.snack.open("El nombre del proyecto es requerido !!",'',{
         duration:3000
       })
       return ;
     }
     if(this.proyectoInvestigacion.descripcion.trim() == '' || this.proyectoInvestigacion.descripcion == null){
-      this.snack.open("La descripcion es requerido !!",'',{
+      this.snack.open("La descripción es requerido !!",'',{
         duration:3000
       })
       return ;
     }
     if(this.proyectoInvestigacion.fechaInicio == null){
-      this.snack.open("La dehca de inico es requerida !!",'',{
+      this.snack.open("La fecha de inico es requerido !!",'',{
         duration:3000
       })
       return ;
     }
     if(this.proyectoInvestigacion.fechaFin == null){
-      this.snack.open("La fecha de fin es requerida !!",'',{
+      this.snack.open("La fecha de fin es requerido !!",'',{
         duration:3000
       })
       return ;
@@ -321,6 +318,47 @@ export class AddProyectoInvestigacionComponent implements OnInit {
         duration:3000
       })
       return ;
+    }
+    if(this.proyectoInvestigacion.tipoInvestigacion.idTipoInvestigacion == 0){
+      this.snack.open("El tipo de investigación es requerido !!",'',{
+        duration:3000
+      })
+      return ;
+    }
+
+    if(this.proyectoInvestigacion.tipoProyecto.idTipoProyecto == 0){
+      this.snack.open("El tipo de proyecto es requerido !!",'',{
+        duration:3000
+      })
+      return ;
+    }
+
+    if (this.listaDatosSeleccionados1.length === 0) {
+      this.snack.open('Aun no ha seleccionado ningun área de investigación !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.listaDatosSeleccionados2.length === 0) {
+      this.snack.open('Aun no ha seleccionado ningun sector de impacto!!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.listaDatosSeleccionados3.length === 0) {
+      this.snack.open('Aun no ha seleccionado ningun línea de investigación !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.listalocalizacion.length === 0) {
+      this.snack.open('Aun no ha seleccionado ningun localización !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
     }
     
 //    this.proyectoInvestigacion.usuario.idUsuario=this.idUsuario;
@@ -341,12 +379,16 @@ export class AddProyectoInvestigacionComponent implements OnInit {
         this.proyectoInvestigacion.descripcion = '';
         this.proyectoInvestigacion.fechaInicio = new Date(0);
         this.proyectoInvestigacion.fechaFin = new Date(0);
-        Swal.fire('Investigacion agregada','La investigacion ha sido agregada con éxito','success');
-        this.router.navigate(['/admin/ubicaTable']);
+        Swal.fire('Información guardada ','El proyecto ha sido agregado con éxito','success').then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/director-dashboard/view-proyecto-investigacion/'+this.idUsuario]);
+          }
+        });
+        
       },
       (error) => {
         console.log(error);
-        Swal.fire('Error !!','Error al guardar la investigacion','error')
+        Swal.fire('Error en el sistema !!','Error al agregar el proyecto','error')
       }
     )
   }

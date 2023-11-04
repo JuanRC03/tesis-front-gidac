@@ -20,7 +20,7 @@ export class ViewAccesoComponent implements AfterViewInit {
     this.dataSource = new ViewAccesoDataSource();
   }
 
-  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4'];
+  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4', 'dato5'];
   
   ngAfterViewInit(): void {
   }

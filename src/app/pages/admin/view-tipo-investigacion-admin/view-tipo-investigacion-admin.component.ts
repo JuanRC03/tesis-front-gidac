@@ -44,7 +44,7 @@ export class ViewTipoInvestigacionAdminComponent implements OnInit {
 
     eliminar(id:any){
       Swal.fire({
-        title:'Eliminar tipo investigación',
+        title:'Eliminar información',
         text:'¿Estás seguro de eliminar el tipo de investigación?',
         icon:'warning',
         showCancelButton:true,
@@ -57,7 +57,7 @@ export class ViewTipoInvestigacionAdminComponent implements OnInit {
           this.tipoInvestigacionService.eliminar(id).subscribe(
             (data) => {
               this.listaDatosVigentes = this.listaDatosVigentes.filter((datos:any) => datos.idTipoInvestigacion!= id);
-              Swal.fire('Tipo de investigación eliminado','El tipo de investigación ha sido eliminado','success');
+              Swal.fire('Información eliminada','El tipo de investigación ha sido eliminado','success');
               this.listarEliminados();
             },
             (error) => {
@@ -70,24 +70,24 @@ export class ViewTipoInvestigacionAdminComponent implements OnInit {
 
     restablecer(id:any){
       Swal.fire({
-        title:'Restablecer tipo investigación',
-        text:'¿Estás seguro de restablecer el tipo de investigación?',
+        title:'Restaurar información',
+        text:'¿Estás seguro de restaurar el tipo de investigación?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
         cancelButtonColor:'#d33',
-        confirmButtonText:'Restablecer',
+        confirmButtonText:'Restaurar',
         cancelButtonText:'Cancelar'
       }).then((result) => {
         if(result.isConfirmed){
           this.tipoInvestigacionService.restablecer(id).subscribe(
             (data) => {
               this.listaDatosEliminados = this.listaDatosEliminados.filter((datos:any) => datos.idTipoInvestigacion!= id);
-              Swal.fire('Tipo de investigación restablecido','El tipo de investigación ha restablecido','success');
+              Swal.fire('Información restaurada','El tipo de investigación ha sido restaurada','success');
               this.listarVigentes();
             },
             (error) => {
-              Swal.fire('Error','Error al restablecer el tipo de investigación','error');
+              Swal.fire('Error','Error al restaurar el tipo de investigación','error');
             }
           )
         }
@@ -174,13 +174,13 @@ export class DialogAddTipoInvestigacionAdmin {
 
     this.service.guardar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Tipo de investigación guardada', 'El tipo de investigación se ha guardado con exito', 'success');
+        Swal.fire('Información guardada ', 'El tipo de investigación se ha guardado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al guardar el tipo de investigación', 'El tipo de investigación no se ha guardado', 'error');
+        Swal.fire('Error en el sistema', 'El tipo de investigación no se ha guardado', 'error');
       }
     )
   }
@@ -224,15 +224,15 @@ export class DialogActualizarTipoInvestigacionAdmin {
       return;
     }
 
-    this.service.guardar(this.datos).subscribe(
+    this.service.actualizar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Tipo de investigación actualizado', 'EL tipo de investigación se ha actualizado con exito', 'success');
+        Swal.fire('Información actualizada', 'EL tipo de investigación se ha actualizado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al actualizar el tipo de investigación', 'EL tipo de investigación no se ha actualizado', 'error');
+        Swal.fire('Error en el sistema', 'EL tipo de investigación no se ha actualizado', 'error');
       }
     )
   }

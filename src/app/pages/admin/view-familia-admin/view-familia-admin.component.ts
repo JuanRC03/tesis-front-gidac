@@ -76,8 +76,8 @@ export class ViewFamiliaAdminComponent implements AfterViewInit {
   
   eliminar(id:any){
     Swal.fire({
-      title:'Eliminar clasificación',
-      text:'¿Esta seguro de eliminar la clasificación?',
+      title:'Eliminar información ',
+      text:'¿Esta seguro de eliminar la familia?',
       icon:'warning',
       showCancelButton:true,
       confirmButtonColor:'#3085d6',
@@ -88,12 +88,13 @@ export class ViewFamiliaAdminComponent implements AfterViewInit {
       if(result.isConfirmed){
         this.familiaService.eliminar(id).subscribe(
           (data) => {
-            this.listaDatosEliminados = this.listaDatosEliminados.filter((datos:any) => datos.idFamilia != id);
-            Swal.fire('Clasificación eliminada', 'La clasificación ha sido eliminada', 'success');
-            this.listarEliminados();
+            Swal.fire('Información eliminada', 'La familia ha sido eliminada', 'success').then(() => {
+              window.location.reload();
+            });
+            
           },
           (error) => {
-            Swal.fire('Error','Error al eliminar la clasificación','error');
+            Swal.fire('Error en el sistema','Error al eliminar la familia','error');
           }
         )
       }
@@ -102,8 +103,8 @@ export class ViewFamiliaAdminComponent implements AfterViewInit {
 
   restablecer(id:any){
     Swal.fire({
-      title:'Restaurar clasificación',
-      text:'¿Esta seguro de restaurar la clasificación?',
+      title:'Restaurar información',
+      text:'¿Esta seguro de restaurar la familia?',
       icon:'warning',
       showCancelButton:true,
       confirmButtonColor:'#3085d6',
@@ -115,11 +116,11 @@ export class ViewFamiliaAdminComponent implements AfterViewInit {
         this.familiaService.eliminar(id).subscribe(
           (data) => {
             this.listaDatosEliminados = this.listaDatosEliminados.filter((datos:any) => datos.idFamilia != id);
-            Swal.fire('Clasificación restaurada', 'La clasificación ha sido restaurada', 'success');
+            Swal.fire('Información restaurada ', 'La familia ha sido restaurada', 'success');
             this.listarVigentes();
           },
           (error) => {
-            Swal.fire('Error','Error al restaurar la clasificación','error');
+            Swal.fire('Error','Error al restaurar la familia','error');
           }
         )
       }
@@ -281,7 +282,7 @@ formSubmit() {
   }
 
   if (this.familia.descripcion == '') {
-    this.snack.open('La descripción es requerido !!', 'Aceptar', {
+    this.snack.open('El nombre de la familia es requerido !!', 'Aceptar', {
       duration: 3000,
       verticalPosition: 'bottom',
       horizontalPosition: 'center'
@@ -292,13 +293,13 @@ formSubmit() {
 
   this.service.guardar(this.familia).subscribe(
     (data) => {
-      Swal.fire('Familia guardada', 'La familia se ha guardado con exito', 'success');
+      Swal.fire('Información guardada ', 'La familia se ha guardado con exito', 'success');
       this.afterClosed.emit();
       this.dialogRef.close();
 
     }, (error) => {
       console.log(error);
-      Swal.fire('Error al guardar la familia ', 'La familia no se ha guardado', 'error');
+      Swal.fire('Error en el sistema', 'La familia no se ha guardado', 'error');
     }
   )
 }
@@ -342,7 +343,7 @@ ngOnInit(): void {
 
 formSubmit() {
   if (this.datos.codigo == '' || this.datos.codigo == null) {
-    this.snack.open('El código de la clasificación es requerido !!', 'Aceptar', {
+    this.snack.open('El código de la familia es requerido !!', 'Aceptar', {
       duration: 3000,
       verticalPosition: 'bottom',
       horizontalPosition: 'center'
@@ -351,7 +352,7 @@ formSubmit() {
   }
 
   if (this.datos.descripcion == '' || this.datos.descripcion == null) {
-    this.snack.open('La descripción es requerido !!', 'Aceptar', {
+    this.snack.open('El nombre de la familia es requerido !!', 'Aceptar', {
       duration: 3000,
       verticalPosition: 'bottom',
       horizontalPosition: 'center'
@@ -361,13 +362,13 @@ formSubmit() {
 
   this.service.actualizar(this.datos).subscribe(
     (data) => {
-      Swal.fire('Clasificación actualizada', 'La clasificación se ha actualizado con exito', 'success');
+      Swal.fire('Información actualizada', 'La familia se ha actualizado con exito', 'success');
       this.afterClosed.emit();
       this.dialogRef.close();
 
     }, (error) => {
       console.log(error);
-      Swal.fire('Error al actualizar la clasificación', 'La clasificación no se ha actualizado', 'error');
+      Swal.fire('Error en el sistema', 'La familia no se ha actualizado', 'error');
     }
   )
 }

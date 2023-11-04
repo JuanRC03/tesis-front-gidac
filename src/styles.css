@@ -138,6 +138,8 @@
     --tamanio-texto-camino:15px;
     --tamanio-cuadro-idicador:60px;
     --tamanio-icono-indocador:30px;
+
+    --color-datos-no-editables:#ee0e0e;
 }
 
 body

@@ -17,35 +17,20 @@
     <div class="box mt-3 mb-3">
       
         <div class="row">
-          <div class="col-md-6">
             <mat-form-field class="w100">
-              <mat-label>Fecha de inicio</mat-label>
+              <mat-label>Fecha de salida de campo</mat-label>
               <input
               required
               type="date"
               matInput
               name="fechaInicio"
-              placeholder="Ingrese la fecha de fin"
-              [(ngModel)] = "data.fechaInicio">
+              placeholder="Ingrese la fecha de salida de campo"
+              [(ngModel)] = "data.fechaSalidaCampo">
             </mat-form-field>
-          </div>
-  
-          <div class="col-md-6">
-            <mat-form-field class="w100">
-              <mat-label>Fecha de fin</mat-label>
-              <input
-              required
-              type="date"
-              matInput
-              name="fechaFin"
-              placeholder="Ingrese la fecha de inicio"
-              [(ngModel)] = "data.fechaFin">
-            </mat-form-field>
-          </div>
-  
+
   
         <mat-form-field appearance="fill" class="mt20 w100">
-          <mat-label>Profundidad del punto</mat-label>
+          <mat-label>Profundidad</mat-label>
           <mat-select name="medida" [(ngModel)] = "data.profundidadParcela.idProfundidad">
             <mat-option *ngFor = "let c of profundidad" [value] = "c.idProfundidad">
               {{ c.profundidadMinima }} - {{ c.profundidadMaxima }} ({{ c.unidadMedida.abreviatura }})
@@ -54,7 +39,7 @@
         </mat-form-field>
   
       <div class="center" style="text-align: center;">
-        <button mat-raised-button color="primary">Actualizar</button>
+        <button mat-raised-button color="primary">Agregar</button>
       </div>
       </div>
     </div>

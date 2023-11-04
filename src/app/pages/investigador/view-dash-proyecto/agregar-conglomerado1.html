@@ -2,7 +2,7 @@
 <mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
   <mat-list-item class="estilo-mat-item" style="color: black;">
     
-    <div mat-line style="padding-right: 20px;">Editar profundidad</div>
+    <div mat-line style="padding-right: 20px;">Agregar conglomerado</div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
       <button  mat-icon-button mat-dialog-close
         matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
@@ -49,7 +49,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="mt20 w100">
-        <mat-label>Altitud</mat-label>
+        <mat-label>Altura</mat-label>
         <mat-select name="tipoVariable" [(ngModel)] = "data.altura.idAltura">
           <mat-option *ngFor = "let c of altitud" [value] = "c.idAltura">
             {{ c.alturaMinima }} - {{ c.alturaMaxima }} ({{ c.unidadMedida.abreviatura }})
@@ -58,7 +58,7 @@
       </mat-form-field>
 
       <div class="center" style="text-align: center;">
-      <button mat-raised-button color="primary">Guardar</button>
+      <button mat-raised-button color="primary">Agregar</button>
     </div>
   </div>
   </form>

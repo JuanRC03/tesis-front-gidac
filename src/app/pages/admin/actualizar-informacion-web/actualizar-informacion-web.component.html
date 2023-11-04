@@ -1,5 +1,3 @@
-
-
 <mat-card
   style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
   <mat-list style="margin: 0; padding: 0; border: 0;">
@@ -7,13 +5,16 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">add_to_queue</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Actualiza la información de EcoAndes
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Actualiza
+          la información de EcoAndes
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color:var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Actualizar información</li>
+            <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
+                routerLink="/admin/">Inicio</a></li>
+            <li class="breadcrumb-item active derecha" style="color:var(--color-migajas-de-pan); text-decoration: none;"
+              aria-current="page">Actualizar información</li>
           </ol>
         </div>
       </div>
@@ -21,64 +22,43 @@
   </mat-list>
 </mat-card>
 
+<mat-card>
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <form *ngIf="datos" (submit)="actualizarDatos()">
 
-  <mat-card>
-      <div class="row">
-        <div class="col-md-8 offset-md-2" >
-          <form *ngIf = "datos" (submit) = "actualizarDatos()" >
-
-            <mat-form-field class="w100" appearance="outline"  >
-                <mat-label>Descripción</mat-label>
-                <textarea
-                name="descripcion"
-                matInput
-                placeholder="Ingrese la descripcion de la aplicación web"
-                rows="5"
-                [(ngModel)] = "informacionEcoAndes.descripcion"
-                >
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <textarea name="descripcion" matInput placeholder="Ingrese la descripción de la aplicación web" rows="5"
+            [(ngModel)]="informacionEcoAndes.descripcion">
                 </textarea>
-            </mat-form-field>
+        </mat-form-field>
 
-            <mat-form-field class="w100" appearance="outline">
-                <mat-label>Condiciones de uso</mat-label>
-                <textarea
-                name="condicionesDeUso"
-                matInput
-                placeholder="Ingrese las condiciones de uso de la aplicación web"
-                rows="5"
-                [(ngModel)] = "informacionEcoAndes.condicionesUso"
-                >
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Condiciones de uso</mat-label>
+          <textarea name="condicionesDeUso" matInput placeholder="Ingrese las condiciones de uso de la aplicación web"
+            rows="5" [(ngModel)]="informacionEcoAndes.condicionesUso">
                 </textarea>
-            </mat-form-field>
+        </mat-form-field>
 
-            <mat-form-field class="w100" appearance="outline">
-                <mat-label>Licencia de uso</mat-label>
-                <textarea
-                name="licenciaDeUso"
-                matInput
-                placeholder="Ingrese la licencia de uso de la aplicación web"
-                rows="5"
-                [(ngModel)] = "informacionEcoAndes.licenciaUso"
-                >
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Licencia de uso</mat-label>
+          <textarea name="licenciaDeUso" matInput placeholder="Ingrese la licencia de uso de la aplicación web" rows="5"
+            [(ngModel)]="informacionEcoAndes.licenciaUso">
                 </textarea>
-            </mat-form-field>
+        </mat-form-field>
 
-            <mat-form-field class="w100" appearance="outline">
-                <mat-label>Derechos reservados</mat-label>
-                <input
-                type="text"
-                name="derechos"
-                matInput
-                placeholder="Ingrese los derechos reservados"
-                [(ngModel)] = "informacionEcoAndes.derechoReservado"
-                >
-            </mat-form-field>
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Derechos reservados</mat-label>
+          <input type="text" name="derechos" matInput placeholder="Ingrese los derechos reservados"
+            [(ngModel)]="informacionEcoAndes.derechoReservado">
+        </mat-form-field>
 
-            <div class="container text-center">
-              <button mat-raised-button color="primary">Actualizar</button>
-            </div>
-          </form>
+        <div class="container text-center">
+          <button mat-raised-button color="primary">Actualizar</button>
         </div>
-      </div>
-    </mat-card>
-  
+
+      </form>
+    </div>
+  </div>
+</mat-card>

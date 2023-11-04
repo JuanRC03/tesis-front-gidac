@@ -25,6 +25,7 @@ export class ViewProfundidadesComponent implements AfterViewInit {
   
 
   constructor(private profundidadService:ProfundidadService,
+    private medidaService:MedidaService,
     public matDialog: MatDialog) {
     this.dataSource = new ViewProfundidadesDataSource();
   }
@@ -36,18 +37,34 @@ export class ViewProfundidadesComponent implements AfterViewInit {
   
   ngOnInit(): void {
     this.listarVigentes();
+
+    this.listarMedidas();
   }
+
+  medida : any = []
+  listarMedidas()
+    {
+      this.medidaService.listar().subscribe(
+          res=>{
+            this.medida=res;
+            console.log(this.medida);
+          },
+          err=>console.log(err)
+        )
+    }
 
     listaDatos : any = []
 
     listarVigentes()
     {
+      this.profundidadService.actualizarEditable().subscribe((data: any) => { 
       this.profundidadService.listar().subscribe(
           res=>{
             this.listaDatos=res;
           },
           err=>console.log(err)
         )
+        })
     }
   
     //paginacion y busqueda
@@ -70,7 +87,7 @@ export class ViewProfundidadesComponent implements AfterViewInit {
 
     eliminar(id:any){
       Swal.fire({
-        title:'Eliminar profundidad',
+        title:'Eliminar información',
         text:'¿Estás seguro de eliminar la profundidad?',
         icon:'warning',
         showCancelButton:true,
@@ -83,7 +100,7 @@ export class ViewProfundidadesComponent implements AfterViewInit {
           this.profundidadService.eliminar(id).subscribe(
             (data) => {
               this.listaDatos = this.listaDatos.filter((lista:any) => lista.idAltura != id);
-              Swal.fire('Profundidad eliminada','La profundidad ha sido eliminado','success');
+              Swal.fire('Información eliminada','La profundidad ha sido eliminada','success');
               this.listarVigentes();
             },
             (error) => {
@@ -96,7 +113,9 @@ export class ViewProfundidadesComponent implements AfterViewInit {
 
     //agregar
     agregar(): void {
-      const dialogRef = this.matDialog.open(AgregarProfundidad, {});
+      const dialogRef = this.matDialog.open(AgregarProfundidad, {
+        data: { medida: this.medida},
+      });
       dialogRef.afterClosed().subscribe(() => {
         this.listarVigentes();
       });
@@ -106,7 +125,7 @@ export class ViewProfundidadesComponent implements AfterViewInit {
     //editar
     editar(id:any, dato1:any, dato2:any, dato3:any): void {
       const dialogRef = this.matDialog.open(EditarProfundidad, {
-        data: { idArea: id, profundidadMinima:dato1,profundidadMaxima:dato2,idUnidadMedida:dato3},
+        data: { idProfundidad: id, profundidadMinima:dato1,profundidadMaxima:dato2,idUnidadMedida:dato3, medida: this.medida},
       });
       dialogRef.afterClosed().subscribe(() => {
         this.listarVigentes();
@@ -119,10 +138,11 @@ export class ViewProfundidadesComponent implements AfterViewInit {
 
   
 export interface dataEditar {
-  idArea: 0,
-  profundidadMinima: '',
-  profundidadMaxima: '',
-  idUnidadMedida:0
+  idProfundidad: 0,
+  profundidadMinima: null,
+  profundidadMaxima: null,
+  idUnidadMedida:0,
+  medida:[]
 }
 
 @Component({
@@ -145,17 +165,17 @@ export class EditarProfundidad {
   }
 
   ngOnInit(): void {
-    this.listarMedidas();
-    this.data.idArea=this.data1.idArea;
+    this.medida = this.data1.medida;
+    this.data.idProfundidad=this.data1.idProfundidad;
     this.data.profundidadMinima=this.data1.profundidadMinima;
     this.data.profundidadMaxima=this.data1.profundidadMaxima;
     this.data.unidadMedida.idUnidadMedida=this.data1.idUnidadMedida;
   }
 
   public data = {
-    idArea: 0,
-    profundidadMinima: '',
-    profundidadMaxima: '',
+    idProfundidad: 0,
+    profundidadMinima: null,
+    profundidadMaxima: null,
     unidadMedida:{
       idUnidadMedida:-1
     }
@@ -179,36 +199,36 @@ export class EditarProfundidad {
   public afterClosed: EventEmitter<void> = new EventEmitter<void>();
 
   public editar() {
-    if (this.data.profundidadMinima.trim() == '' || this.data.profundidadMinima.trim() == null) {
-      this.snack.open('La profundiad minima es requerido !!', 'Aceptar', {
+    if (this.data.profundidadMinima == null) {
+      this.snack.open('La profundiad mínima es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
     }
-    if (this.data.profundidadMaxima.trim() == '' || this.data.profundidadMaxima.trim() == null) {
-      this.snack.open('La profundiad maxima es requerido !!', 'Aceptar', {
+    if (this.data.profundidadMaxima == null) {
+      this.snack.open('La profundiad máxima es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
     }
     
     if (this.data.unidadMedida.idUnidadMedida == -1) {
-      this.snack.open('La medida es requerido !!', 'Aceptar', {
+      this.snack.open('La unidad de medida es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
     }
     
 
-    this.profundidadService.guardar(this.data).subscribe(
+    this.profundidadService.actualizar(this.data).subscribe(
       (data) => {
-        Swal.fire('Profundidad editada', 'La profundidad se editado con éxito', 'success').then(
+        Swal.fire('Información actualizada', 'La profundidad se actualizo con éxito', 'success').then(
           (e) => {
             this.afterClosed.emit();
             this.dialogRef.close();
           })
       }, (error) => {
-        Swal.fire('Error al editadar la profundidad', 'No se editado la profundidad', 'error');
+        Swal.fire('Error en el sistema', 'No se actualizo la profundidad', 'error');
         console.log(error);
       }
     );
@@ -227,6 +247,7 @@ export class EditarProfundidad {
 export class AgregarProfundidad {
   constructor(
     public dialogRef: MatDialogRef<AgregarProfundidad>,
+    @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
     private profundidadService:ProfundidadService,
     private snack: MatSnackBar,
     private medidaService:MedidaService
@@ -245,7 +266,7 @@ export class AgregarProfundidad {
   }
 
   ngOnInit(): void {
-    this.listarMedidas();
+    this.medida = this.data1.medida;
   }
 
   medida : any = []
@@ -265,20 +286,20 @@ export class AgregarProfundidad {
   public agregar() {
 
       if (this.data.profundidadMinima.trim() == '' || this.data.profundidadMinima.trim() == null) {
-        this.snack.open('La profundiad minima es requerido !!', 'Aceptar', {
+        this.snack.open('La profundiad mínima es requerida !!', 'Aceptar', {
           duration: 3000
         })
         return;
       }
       if (this.data.profundidadMaxima.trim() == '' || this.data.profundidadMaxima.trim() == null) {
-        this.snack.open('La profundiad maxima es requerido !!', 'Aceptar', {
+        this.snack.open('La profundiad máxima es requerida !!', 'Aceptar', {
           duration: 3000
         })
         return;
       }
       
       if (this.data.unidadMedida.idUnidadMedida == -1) {
-        this.snack.open('La medida es requerido !!', 'Aceptar', {
+        this.snack.open('La unidad de medida es requerida !!', 'Aceptar', {
           duration: 3000
         })
         return;
@@ -287,13 +308,13 @@ export class AgregarProfundidad {
   
       this.profundidadService.guardar(this.data).subscribe(
         (data) => {
-          Swal.fire('Profundidad añadido', 'La profundidad se añadio con éxito', 'success').then(
+          Swal.fire('Información guardada', 'La profundidad se agrego con éxito', 'success').then(
             (e) => {
               this.afterClosed.emit();
               this.dialogRef.close();
             })
         }, (error) => {
-          Swal.fire('Error al anadir la profundidad', 'No se registro la profundidad', 'error');
+          Swal.fire('Error en el sistema', 'No se agrego la profundidad', 'error');
           console.log(error);
         }
       );

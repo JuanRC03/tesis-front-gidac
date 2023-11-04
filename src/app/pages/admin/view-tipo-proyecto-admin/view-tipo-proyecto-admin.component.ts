@@ -44,7 +44,7 @@ export class ViewTipoProyectoAdminComponent implements OnInit {
 
     eliminar(id:any){
       Swal.fire({
-        title:'Eliminar tipo proyecto',
+        title:'Eliminar información',
         text:'¿Estás seguro de eliminar el tipo de proyecto?',
         icon:'warning',
         showCancelButton:true,
@@ -57,7 +57,7 @@ export class ViewTipoProyectoAdminComponent implements OnInit {
           this.tipoProyectoService.eliminar(id).subscribe(
             (data) => {
               this.listaDatosVigentes = this.listaDatosVigentes.filter((datos:any) => datos.idTipoProyecto!= id);
-              Swal.fire('Tipo de proyecto eliminado','El tipo de proyecto ha sido eliminado','success');
+              Swal.fire('Información eliminada','El tipo de proyecto ha sido eliminado','success');
               this.listarEliminados();
             },
             (error) => {
@@ -70,24 +70,24 @@ export class ViewTipoProyectoAdminComponent implements OnInit {
 
     restablecer(id:any){
       Swal.fire({
-        title:'Restablecer tipo proyecto',
-        text:'¿Estás seguro de restablecer el tipo de proyecto?',
+        title:'Restaurar información',
+        text:'¿Estás seguro de restaurar el tipo de proyecto?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
         cancelButtonColor:'#d33',
-        confirmButtonText:'Restablecer',
+        confirmButtonText:'Restaurar',
         cancelButtonText:'Cancelar'
       }).then((result) => {
         if(result.isConfirmed){
           this.tipoProyectoService.restablecer(id).subscribe(
             (data) => {
               this.listaDatosEliminados = this.listaDatosEliminados.filter((datos:any) => datos.idTipoProyecto!= id);
-              Swal.fire('Tipo de proyecto restablecido','El tipo de proyecto ha restablecido','success');
+              Swal.fire('Información restaurada','El tipo de proyecto ha sido restaurada','success');
               this.listarVigentes();
             },
             (error) => {
-              Swal.fire('Error','Error al restablecer el tipo de proyecto','error');
+              Swal.fire('Error','Error al restaurar el tipo de proyecto','error');
             }
           )
         }
@@ -174,13 +174,13 @@ export class DialogAddTipoProyectoAdmin {
 
     this.service.guardar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Tipo de proyecto guardada', 'El tipo de proyecto se ha guardado con exito', 'success');
+        Swal.fire('Información guardada ', 'El tipo de proyecto se ha guardado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al guardar el tipo de proyecto', 'El tipo de proyecto no se ha guardado', 'error');
+        Swal.fire('Error en el sistema', 'El tipo de proyecto no se ha guardado', 'error');
       }
     )
   }
@@ -226,13 +226,13 @@ export class DialogActualizarTipoProyectoAdmin {
 
     this.service.guardar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Tipo de proyecto actualizado', 'EL tipo de proyecto se ha actualizado con exito', 'success');
+        Swal.fire('Información actualizada', 'EL tipo de proyecto se ha actualizado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al actualizar el tipo de proyecto', 'EL tipo de proyecto no se ha actualizado', 'error');
+        Swal.fire('Error en el sistema', 'EL tipo de proyecto no se ha actualizado', 'error');
       }
     )
   }

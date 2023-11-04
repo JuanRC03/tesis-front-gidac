@@ -1,0 +1,92 @@
+
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line>Proyecto</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+<mat-dialog-content class="mat-typography">
+
+  <mat-list class="estilo-mat-list" style="padding: 5px;">
+    <mat-list-item class="estilo-mat-item">
+      <div mat-line *ngIf="investigacionDat.country==''">Explorar</div>
+      <div mat-line *ngIf="investigacionDat.country==''">Seleccione un punto para explorar !!</div>
+      <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 15px;"><b>Coordenadas:</b> {{investigacionDat.coordenadax}}, {{investigacionDat.coordenaday}}</div>
+      <div mat-line *ngIf="investigacionDat.country!=''" style="padding-top: 5px; font-size: 13px;"><b>País: </b>{{investigacionDat.country}}</div>
+      <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Provincia: </b>{{investigacionDat.state}}</div>
+      <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Cantón: </b>{{investigacionDat.county}}</div>
+      <div mat-line *ngIf="investigacionDat.country!=''" style="font-size: 13px;"><b>Parroquia: </b>{{investigacionDat.parroquia}}</div>
+      
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button (click)="menuLateral3.close()" (click)="selectedMenuItem = -1" (click)="ocultarMenu4" mat-icon-button
+          matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+
+    <mat-divider style="padding-top: 0px;"></mat-divider>
+  </mat-list>
+
+  
+
+  <mat-card style="padding: 0; margin-left: 10px; margin-right: 10px;">
+  <mat-expansion-panel *ngIf="dataNumerico && dataKeys1.length > 0" style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
+                     (closed)="panelOpenGrafico = false">
+  <mat-expansion-panel-header>
+      <mat-panel-title>
+        Variables numéricas
+      </mat-panel-title>
+      
+    </mat-expansion-panel-header>
+    <div mat-line *ngIf="investigacionDat.country==''">Seleccione un punto para explorar !!</div>
+    
+    
+    <mat-form-field  *ngIf="investigacionDat.country!=''" class="mt20 w100" style="padding: 0px;margin: 0px;padding-top: 0px; padding-right: 25px;">
+      <mat-label>Graficas</mat-label>
+      <mat-select name="chart" [(ngModel)]="tipoChartSeleccionado.idTipoChart" (selectionChange)="onTipoChart($event)" >
+        <mat-option *ngFor="let c of listaTipoChart" [value]="c.idTipoChart">
+          {{ c.descripcion }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+
+    <div  id="chartsContainer" style="min-width: 170px;"></div>
+  </mat-expansion-panel>
+  <mat-expansion-panel *ngIf="dataNominal && dataKeys2.length > 0" style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
+                     (closed)="panelOpenGrafico = false">
+  <mat-expansion-panel-header>
+      <mat-panel-title>
+        Variables nominales
+      </mat-panel-title>
+      
+    </mat-expansion-panel-header>
+    <div mat-line *ngIf="investigacionDat.country==''">Seleccione un punto para explorar !!</div>
+    <mat-card *ngFor="let investigacion of modeloNominal.investigacionDatos" class="investigacion">
+      <h2 style="font-size: 15px; margin-bottom: 0px;">{{ investigacion.tipoValor }}</h2>
+      <ul class="valores-lista">
+        <li *ngFor="let valor of investigacion.valoresLista">
+          <div class="valor-item">
+            <p><strong>Profundidad:</strong> {{ valor.profundidad }}</p>
+            <p><strong>Valor:</strong> {{ valor.valor }}</p>
+          </div>
+        </li>
+      </ul>
+    </mat-card>
+
+  </mat-expansion-panel>
+  </mat-card>
+
+
+
+
+  
+</mat-dialog-content>

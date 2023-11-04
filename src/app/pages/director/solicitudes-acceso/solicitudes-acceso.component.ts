@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RespuestaSolicitudDescargaService } from 'src/app/services/respuesta-solicitud-descarga.service';
 import { ActivatedRoute } from '@angular/router';
+import { SideDirectorComponent } from '../side-director/side-director.component';
 
 
 export interface DialogData {
@@ -42,7 +43,8 @@ export class SolicitudesAccesoComponent implements OnInit {
   constructor(private solicitudAccesoService:SolicitudAccesoService, 
               public dialog: MatDialog,
               private route:ActivatedRoute,
-              private respuestaSolicitudDescargaService:RespuestaSolicitudDescargaService) { }
+              private respuestaSolicitudDescargaService:RespuestaSolicitudDescargaService,
+              private sideDirectorComponent:SideDirectorComponent) { }
 
   dataSource:any= [];
   dataDescarga:any= [];
@@ -85,7 +87,7 @@ export class SolicitudesAccesoComponent implements OnInit {
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement: PeriodicElement | null=null;
 
-  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4', 'dato5', 'opciones'];
+  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4', 'opciones'];
 
   idAreaInvestigacion=0;
 
@@ -132,7 +134,6 @@ export class SolicitudesAccesoComponent implements OnInit {
     this.respuestaSolicitudDescargaService.obtenerSolicitudesDescargaAceptadas(this.idAreaInvestigacion).subscribe(
       (data:any) => {
         this.dataSourceAceptado=this.transformarFechas(data);
-        console.log(data);
       }
     )
   }
@@ -140,7 +141,6 @@ export class SolicitudesAccesoComponent implements OnInit {
     this.respuestaSolicitudDescargaService.obtenerSolicitudesDescargaRechazadas(this.idAreaInvestigacion).subscribe(
       (data:any)  => {
         this.dataSourceRechazado=this.transformarFechas(data);
-        console.log(data);
         //this.dataSourceRechazado=this.transformarFechas(data);
       }
     )
@@ -192,8 +192,8 @@ export class SolicitudesAccesoComponent implements OnInit {
   //Aprobar solicitud
   aceptarSolicitud(idSolicitudDescarga:any){
     Swal.fire({
-      title:'Enviar datos de investigación',
-      text:'¿Estás seguro de enviar los datos de la investigación?',
+      title:'Enviar datos del proyecto',
+      text:'¿Estás seguro de enviar los datos del proyecto?',
       icon:'warning',
       showCancelButton:true,
       confirmButtonColor:'#3085d6',
@@ -207,8 +207,9 @@ export class SolicitudesAccesoComponent implements OnInit {
             //location.reload();
             this.listarAprobador();
             this.dataSource = this.dataSource.filter((dato:any) => dato.idSolicitudDescarga != idSolicitudDescarga);
-            Swal.fire('Datos enviados','Los datos han sido enviados al usuario','success');
+            Swal.fire('Datos enviados','Los datos han sido enviados al email del usuario','success');
             this.listarAprobador();
+            this.sideDirectorComponent.listarContadorDeSolicitudes();
           },
           (error) => {
             Swal.fire('Error','Error al enviar los datos','error');
@@ -253,13 +254,13 @@ export class SolicitudesAccesoComponent implements OnInit {
       data: {id: idSolicitudDescarga, respuesta:''},
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      
-      this.datoresult=result;
-      if(this.datoresult!=''){
-        this.listarRechazados();
-        this.dataSource = this.dataSource.filter((dato:any) => dato.idSolicitudDescarga != idSolicitudDescarga);
-        console.log(this.datoresult);
+    dialogRef.afterClosed().subscribe((result) => {
+    
+      if(result == 'Rechazado'){
+          this.listarRechazados();
+          this.sideDirectorComponent.listarContadorDeSolicitudes();
+          this.dataSource = this.dataSource.filter((dato:any) => dato.idSolicitudDescarga != idSolicitudDescarga);
+          console.log(this.datoresult);
       }
     });
   }
@@ -454,11 +455,13 @@ formSubmit(){
     (data) => {
       console.log(data);
       Swal.fire('Solicitud rechazada','La solicitud ha sido rechazada','success');
-      this.dialogRef.close();
+      //this.sideDirectorComponent.listarContadorDeSolicitudes();
+      
+      this.dialogRef.close('Rechazado');
       
     },(error) => {
       console.log(error);
-      this.snack.open('Ha ocurrido un error en el sistema !!','Aceptar',{
+      this.snack.open('Error en el sistema !!','Aceptar',{
         duration : 3000
       });
     }

@@ -28,4 +28,9 @@ export class AreaService {
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/area/eliminar/${id}`); 
   }
+
+  public actualizarEditable(){
+    return this.http.get(`${baserUrl}/area/actualizar-editable`); 
+  }
+
 }

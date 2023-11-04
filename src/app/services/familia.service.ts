@@ -54,7 +54,14 @@ export class FamiliaService {
     return this.http.get(`${baserUrl}/familia/listar-por-id-aux/${id}`);
   }
 
+  public actualizarFamiliasVariable(modelo:any){
+    return this.http.post(`${baserUrl}/variable-familia/actualizar-familia`,modelo);
+  }
+
   
+  public listarFamiliasSeleccionadasPorVariable(idVariable:any){
+    return this.http.get(`${baserUrl}/variable-familia/listar-familia-por-variable/${idVariable}`); 
+  }  
 
   getHijosFinales(): Observable<FamiliaDTO[]> {
     return this.http.get<FamiliaDTO[]>(`${baserUrl}/familia/hijos-finales`);

@@ -15,6 +15,10 @@ export class VariableService {
     return this.http.post(`${baserUrl}/variable/guardar-variable`,modelo);
   }
 
+  public actualizarDatosGeneralesVariable(modelo:any){
+    return this.http.put(`${baserUrl}/variable/actualizar-datos-generales-variable`,modelo);
+  }
+
   public guardarDatosVariable(modelo:any){
     return this.http.post(`${baserUrl}/variable/guardar-datos-variable`,modelo);
   }
@@ -39,6 +43,14 @@ export class VariableService {
     return this.http.get(`${baserUrl}/variable/listar-variable-completas`);
   }
 
+  public listarVigetes(){
+    return this.http.get(`${baserUrl}/variable/variables-vigentes`);
+  }
+
+  public listarNoVigetes(){
+    return this.http.get(`${baserUrl}/variable/variables-no-vigentes`);
+  }
+
   public listarCompletasInvestigador(){
     return this.http.get(`${baserUrl}/variable/listar-variable-completas-investigador`);
   }
@@ -49,6 +61,10 @@ export class VariableService {
 
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/variable/eliminar-variable/${id}`); 
+  }
+
+  public activar(id:any){
+    return this.http.delete(`${baserUrl}/variable/activar-variable/${id}`); 
   }
 
   public listarFamiliasVariables(){

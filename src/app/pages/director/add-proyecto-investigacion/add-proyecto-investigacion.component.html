@@ -5,13 +5,17 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">storage</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Agrega nuevos proyectos
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Agrega
+          nuevo proyecto
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/director-dashboard">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Añadir proyecto</li>
+            <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
+                routerLink="/director-dashboard">Inicio</a></li>
+            <li class="breadcrumb-item active derecha"
+              style="color: var(--color-migajas-de-pan); text-decoration: none;" aria-current="page">Agregar proyecto
+            </li>
           </ol>
         </div>
       </div>
@@ -30,69 +34,68 @@
           <div class="bootstrap-wrapper">
             <div class="row">
               <div class="col-md-8 offset-md-2">
-                
-                  <mat-form-field class="w100" appearance="outline">
-                    <mat-label>Nombre proyecto investigacion</mat-label>
-                    <input type="text" name="nombre" matInput placeholder="Ingrese un nombre de la investigacion"
-                      [(ngModel)]="proyectoInvestigacion.nombreProyecto">
-                  </mat-form-field>
-                  <mat-form-field class="w100" appearance="outline">
-                    <mat-label>Descripción</mat-label>
-                    <textarea name="descripcion" matInput placeholder="Digite la descripción de la investigacion"
-                      rows="15" [(ngModel)]="proyectoInvestigacion.descripcion">
+
+                <mat-form-field class="w100" appearance="outline">
+                  <mat-label>Nombre del proyecto</mat-label>
+                  <input type="text" name="nombre" matInput placeholder="Ingrese un nombre del proyecto"
+                    [(ngModel)]="proyectoInvestigacion.nombreProyecto">
+                </mat-form-field>
+                <mat-form-field class="w100" appearance="outline">
+                  <mat-label>Descripción</mat-label>
+                  <textarea name="descripcion" matInput placeholder="Digite la descripción del proyecto" rows="15"
+                    [(ngModel)]="proyectoInvestigacion.descripcion">
                     </textarea>
-                  </mat-form-field>
+                </mat-form-field>
 
-                  <div class="row">
-                    <div class="col-md-6">
-                      <mat-form-field class="w100">
-                        <mat-label>Fecha de inicio</mat-label>
-                        <input  type="date" matInput name="fechaInicio" placeholder="Ingrese la fecha de fin"
-                          [(ngModel)]="proyectoInvestigacion.fechaInicio">
-                      </mat-form-field>
-                    </div>
-
-                    <div class="col-md-6">
-                      <mat-form-field class="w100">
-                        <mat-label>Fecha de fin</mat-label>
-                        <input  type="date" matInput name="fechaFin" placeholder="Ingrese la fecha de inicio"
-                          [(ngModel)]="proyectoInvestigacion.fechaFin">
-                      </mat-form-field>
-                    </div>
-
+                <div class="row">
+                  <div class="col-md-6">
+                    <mat-form-field class="w100">
+                      <mat-label>Fecha de inicio</mat-label>
+                      <input type="date" matInput name="fechaInicio" placeholder="Ingrese la fecha de inicio"
+                        [(ngModel)]="proyectoInvestigacion.fechaInicio">
+                    </mat-form-field>
                   </div>
 
-                  <mat-form-field appearance="fill" class="mt20 w100">
-                    <mat-label>Estado del proyecto de investigacion</mat-label>
-                    <mat-select name="estadoProyectoInvestigacion"
-                      [(ngModel)]="proyectoInvestigacion.estadoProyectoInvestigacion">
-                      <mat-option *ngFor="let c of estadoProyectoInvestigacion" [value]="c">
-                        {{ c.nombreEstadoProyecto }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  <div class="col-md-6">
+                    <mat-form-field class="w100">
+                      <mat-label>Fecha de fin</mat-label>
+                      <input type="date" matInput name="fechaFin" placeholder="Ingrese la fecha de fin"
+                        [(ngModel)]="proyectoInvestigacion.fechaFin">
+                    </mat-form-field>
+                  </div>
 
-                  <mat-form-field appearance="fill" class="mt20 w100">
-                    <mat-label>Tipo proyecto</mat-label>
-                    <mat-select name="tipoProyecto" [(ngModel)]="proyectoInvestigacion.tipoProyecto">
-                      <mat-option *ngFor="let c of listaTipoProyecto" [value]="c">
-                        {{ c.nombreTipoProyecto }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                </div>
 
-                  <mat-form-field appearance="fill" class="mt20 w100">
-                    <mat-label>Tipo investigación </mat-label>
-                    <mat-select name="tipoInvestigacion"
-                      [(ngModel)]="proyectoInvestigacion.tipoInvestigacion">
-                      <mat-option *ngFor="let c of listaTipoInvestigacion" [value]="c">
-                        {{ c.nombreTipoInvestigacion }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <br><br>
-                  
-                
+                <mat-form-field appearance="fill" class="mt20 w100">
+                  <mat-label>Estado del proyecto</mat-label>
+                  <mat-select name="estadoProyectoInvestigacion"
+                    [(ngModel)]="proyectoInvestigacion.estadoProyectoInvestigacion">
+                    <mat-option *ngFor="let c of estadoProyectoInvestigacion" [value]="c">
+                      {{ c.nombreEstadoProyecto }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="mt20 w100">
+                  <mat-label>Tipo proyecto</mat-label>
+                  <mat-select name="tipoProyecto" [(ngModel)]="proyectoInvestigacion.tipoProyecto">
+                    <mat-option *ngFor="let c of listaTipoProyecto" [value]="c">
+                      {{ c.nombreTipoProyecto }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="mt20 w100">
+                  <mat-label>Tipo investigación </mat-label>
+                  <mat-select name="tipoInvestigacion" [(ngModel)]="proyectoInvestigacion.tipoInvestigacion">
+                    <mat-option *ngFor="let c of listaTipoInvestigacion" [value]="c">
+                      {{ c.nombreTipoInvestigacion }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <br><br>
+
+
               </div>
             </div>
           </div>
@@ -115,7 +118,7 @@
             <div class="row">
               <div>
                 <div class="box mt-3 mb-3">
-                  <mat-card-title style="font-size: 15px;">Areas de investigacion</mat-card-title>
+                  <mat-card-title style="font-size: 15px;">Áreas de investigación</mat-card-title>
                   <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8">
 
                     <!-- Checkbox Column -->
@@ -135,7 +138,7 @@
 
 
                     <ng-container matColumnDef="nombreAreaInvestigacion">
-                      <th mat-header-cell *matHeaderCellDef>Area investigacion</th>
+                      <th mat-header-cell *matHeaderCellDef>Área investigación</th>
                       <td mat-cell *matCellDef="let element"> {{ element.nombreAreaInvestigacion }} </td>
                     </ng-container>
 
@@ -157,7 +160,7 @@
             <div class="row">
               <div>
                 <div class="box mt-3 mb-3">
-                  <mat-card-title style="font-size: 15px;">Lineas de investigación</mat-card-title>
+                  <mat-card-title style="font-size: 15px;">Líneas de investigación</mat-card-title>
                   <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8">
 
                     <!-- Checkbox Column -->
@@ -177,7 +180,7 @@
 
 
                     <ng-container matColumnDef="nombreLineaInvestigacion">
-                      <th mat-header-cell *matHeaderCellDef>Linea de investigacion</th>
+                      <th mat-header-cell *matHeaderCellDef>Línea de investigación</th>
                       <td mat-cell *matCellDef="let element"> {{ element.nombreLineaInvestigacion }} </td>
                     </ng-container>
 
@@ -252,7 +255,7 @@
                 <div class="box mt-3 mb-3">
 
                   <mat-form-field appearance="fill" class="mt20 w100">
-                    <mat-label>Pais</mat-label>
+                    <mat-label>País</mat-label>
                     <mat-select name="pais" [(ngModel)]="paisSeleccionado" (selectionChange)="listarProvincias()">
                       <mat-option *ngFor="let c of listaPaises" [value]="c">
                         {{ c.nombrePais }}
@@ -311,7 +314,7 @@
                     <mat-list-item *ngFor="let oC of listalocalizacion; let i = index">
                       <mat-icon mat-list-icon>streetview</mat-icon>
                       <div mat-line><mat-card-title
-                          style="font-size: 14px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">PAIS:
+                          style="font-size: 14px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">PAÍS:
                           {{oC.nombrePais }}</mat-card-title></div>
                       <div mat-line><mat-card-title
                           style="font-size: 14px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">PROVINCIA:
@@ -354,73 +357,77 @@
           <div class="container mt-4 mb-5">
             <div class="row">
               <div>
-                
+
                 <div class="box mt-3 mb-3">
-                  <form (submit)="formSubmit()">  
-                  <mat-card-title style="font-size: 20px; text-align: center;">Datos del proyecto</mat-card-title>
+                  <form (submit)="formSubmit()">
+                    <mat-card-title style="font-size: 20px; text-align: center;">Datos del proyecto</mat-card-title>
 
 
-                  <br>
-                  <h4><b>Nombre del proyecto: </b>{{proyectoInvestigacion?.nombreProyecto}}</h4>
-                  <h4><b>Descripción: </b> {{proyectoInvestigacion?.descripcion}}</h4>
-                  <h4><b>Fecha de inicio: </b> 
-                    <span *ngIf="proyectoInvestigacion?.fechaInicio">{{ proyectoInvestigacion?.fechaInicio | date:'dd/MM/yyyy' }}</span>
-                    <span *ngIf="!proyectoInvestigacion?.fechaInicio">No definida</span>
-                  </h4>
-                  <h4><b>Fecha de fin: </b>
-                    <span *ngIf="proyectoInvestigacion?.fechaFin">{{ proyectoInvestigacion?.fechaFin | date:'dd/MM/yyyy' }}</span>
-                    <span *ngIf="!proyectoInvestigacion?.fechaFin">No definida</span>
-                  </h4>
-                  <h4><b>Estado: </b> {{proyectoInvestigacion?.estadoProyectoInvestigacion?.nombreEstadoProyecto}}</h4>
-                  <h4><b>Tipo de investigación:</b> {{proyectoInvestigacion?.tipoInvestigacion?.nombreTipoInvestigacion}}</h4>
-                  <h4><b>Tipo de proyecto:</b> {{proyectoInvestigacion?.tipoProyecto?.nombreTipoProyecto}}</h4>
-                  <br>
-                  
+                    <br>
+                    <h4><b>Nombre del proyecto: </b>{{proyectoInvestigacion?.nombreProyecto}}</h4>
+                    <h4><b>Descripción: </b> {{proyectoInvestigacion?.descripcion}}</h4>
+                    <h4><b>Fecha de inicio: </b>
+                      <span
+                        *ngIf="proyectoInvestigacion?.fechaInicio">{{ proyectoInvestigacion?.fechaInicio | date:'dd/MM/yyyy' }}</span>
+                      <span *ngIf="!proyectoInvestigacion?.fechaInicio">No definida</span>
+                    </h4>
+                    <h4><b>Fecha de fin: </b>
+                      <span
+                        *ngIf="proyectoInvestigacion?.fechaFin">{{ proyectoInvestigacion?.fechaFin | date:'dd/MM/yyyy' }}</span>
+                      <span *ngIf="!proyectoInvestigacion?.fechaFin">No definida</span>
+                    </h4>
+                    <h4><b>Estado: </b> {{proyectoInvestigacion?.estadoProyectoInvestigacion?.nombreEstadoProyecto}}
+                    </h4>
+                    <h4><b>Tipo de investigación:</b>
+                      {{proyectoInvestigacion?.tipoInvestigacion?.nombreTipoInvestigacion}}</h4>
+                    <h4><b>Tipo de proyecto:</b> {{proyectoInvestigacion?.tipoProyecto?.nombreTipoProyecto}}</h4>
+                    <br>
 
-                  <h3><b>Areas de investigación:</b></h3>
-                  <ul>
-                    <div *ngFor="let oC of listaDatosSeleccionados1">
-                      <li>
-                        <h4>{{oC?.nombreAreaInvestigacion}}</h4>
-                      </li>
+
+                    <h3><b>Áreas de investigación:</b></h3>
+                    <ul>
+                      <div *ngFor="let oC of listaDatosSeleccionados1">
+                        <li>
+                          <h4>{{oC?.nombreAreaInvestigacion}}</h4>
+                        </li>
+                      </div>
+                    </ul>
+                    <br>
+
+                    <h3><b>Líneas de investigación:</b></h3>
+                    <ul>
+                      <div *ngFor="let oC of listaDatosSeleccionados3">
+                        <li>
+                          <h4>{{oC?.nombreLineaInvestigacion}}</h4>
+                        </li>
+                      </div>
+                    </ul>
+                    <br>
+
+                    <h3><b>Sector de impacto:</b></h3>
+                    <ul>
+                      <div *ngFor="let oC of listaDatosSeleccionados2">
+                        <li>
+                          <h4>{{oC?.nombreSectorImpacto}}</h4>
+                        </li>
+                      </div>
+                    </ul>
+                    <br>
+
+                    <h3><b>Localización</b></h3>
+                    <ul>
+                      <div *ngFor="let oC of listalocalizacion">
+                        <li>
+                          <h4>{{oC?.nombrePais}}, {{oC?.nombreProvincia}},
+                            {{oC?.nombreCanton}}, {{oC?.nombreParroquia}}</h4>
+                        </li>
+                      </div>
+                    </ul>
+                    <br>
+
+                    <div class="container text-center mt15">
+                      <button mat-raised-button color="primary">Guardar proyecto</button>
                     </div>
-                  </ul>
-                  <br>
-
-                  <h3><b>Lineas de investigación:</b></h3>
-                  <ul>
-                    <div *ngFor="let oC of listaDatosSeleccionados3">
-                      <li>
-                        <h4>{{oC?.nombreLineaInvestigacion}}</h4>
-                      </li>
-                    </div>
-                  </ul>
-                  <br>
-
-                  <h3><b>Sector de impacto:</b></h3>
-                  <ul>
-                    <div *ngFor="let oC of listaDatosSeleccionados2">
-                      <li>
-                        <h4>{{oC?.nombreSectorImpacto}}</h4>
-                      </li>
-                    </div>
-                  </ul>
-                  <br>
-
-                  <h3><b>Cobertura (Localización)</b></h3>
-                  <ul>
-                    <div *ngFor="let oC of listalocalizacion">
-                      <li>
-                        <h4>{{oC?.nombrePais}}, {{oC?.nombreProvincia}},
-                          {{oC?.nombreCanton}}, {{oC?.nombreParroquia}}</h4>
-                      </li>
-                    </div>
-                  </ul>
-                  <br>
-
-                  <div class="container text-center mt15">
-                    <button mat-raised-button color="primary">Guardar proyecto</button>
-                  </div>
                   </form>
                 </div>
               </div>

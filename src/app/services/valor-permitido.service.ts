@@ -13,6 +13,10 @@ export class ValorPermitidoService {
     return this.http.post(`${baserUrl}/valor-permitido/guardar-valor-permitido`,modelo);
   }
 
+  public guardarValorPermitido(modelo:any){
+    return this.http.post(`${baserUrl}/valor-permitido/guardar-datos-valor-permitodo`,modelo);
+  }
+
   public actualizar(modelo:any){
     return this.http.put(`${baserUrl}/valor-permitido/guardar-valor-permitido`,modelo);
   }
@@ -31,5 +35,9 @@ export class ValorPermitidoService {
 
   public obtenerPorVariable(id:any){
     return this.http.get(`${baserUrl}/valor-permitido/listar-valor-permitido/por-variable/${id}`);
+  }
+
+  public listarPorVariable(id:any){
+    return this.http.get(`${baserUrl}/valor-permitido/por-variable/${id}`);
   }
 }

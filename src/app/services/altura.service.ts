@@ -9,12 +9,14 @@ export class AlturaService {
 
   constructor(private http:HttpClient) { }
 
+  
+
   public guardar(modelo:any){
     return this.http.post(`${baserUrl}/altura/guardar-altura`,modelo);
   }
 
   public actualizar(modelo:any){
-    return this.http.put(`${baserUrl}/altura/guardar-altura`,modelo);
+    return this.http.put(`${baserUrl}/altura/actualizar`,modelo);
   }
 
   public obtener(id:any){
@@ -27,5 +29,9 @@ export class AlturaService {
 
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/altura/eliminar-altura/${id}`); 
+  }
+
+  public actualizarEditable(){
+    return this.http.get(`${baserUrl}/altura/actualizar-editable`); 
   }
 }

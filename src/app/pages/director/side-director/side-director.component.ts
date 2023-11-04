@@ -123,7 +123,7 @@ export class SideDirectorComponent {
     this.idUsuario=this.usuario.idUsuario;
     this.listarContadorDeSolicitudes();
 
-    const intervalo = interval(2 * 60 * 1000); // 10 minutos en milisegundos
+    const intervalo = interval(10 * 60 * 1000); // 10 minutos en milisegundos
     this.subscription = intervalo.pipe(take(2)).subscribe(() => {
       this.ngOnDestroy();
       this.listarContadorDeSolicitudes();

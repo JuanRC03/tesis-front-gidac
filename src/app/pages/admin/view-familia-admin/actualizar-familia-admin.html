@@ -2,7 +2,7 @@
 <mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
   <mat-list-item class="estilo-mat-item" style="color: black;">
     
-    <div mat-line style="padding-right: 20px;">Editar familia</div>
+    <div mat-line style="padding-right: 20px;">Actualizar familia</div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
       <button  mat-icon-button mat-dialog-close
         matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
@@ -19,13 +19,13 @@
 
       <mat-form-field class="w100" appearance="outline">
         <mat-label>Cógigo</mat-label>
-        <input [(ngModel)]="datos.codigo"  type="text" name="telefono" matInput
-          placeholder="Digite el teléfono">
+        <input [(ngModel)]="datos.codigo"  type="text" name="codigo" matInput
+          placeholder="Digite el código de la familia">
       </mat-form-field>
 
       <mat-form-field class="w100" appearance="outline">
-        <mat-label>Nombre de la familia </mat-label>
-        <textarea required name="descripcion" matInput placeholder="Digite el nombre de la clasificación"
+        <mat-label>Nombre de la família </mat-label>
+        <textarea required name="nombre" matInput placeholder="Digite el nombre de la familia"
           rows="3" [(ngModel)]="datos.descripcion">
                   </textarea>
       </mat-form-field>

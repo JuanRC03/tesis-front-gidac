@@ -10,19 +10,19 @@ import Swal from 'sweetalert2';
 })
 export class AddDirectorComponent implements OnInit {
 
-  
+
   constructor(
     private userService: UserService,
     private snack: MatSnackBar) { }
 
-  
+
   hidePass = true;
 
   public usuario = {
     nombreUsuario: '',
     apellidoUsuario: '',
-    cedula:'',
-    telefono:'',
+    cedula: '',
+    telefono: '',
     email: '',
     contrasenia: '',
     vigencia: 1,
@@ -74,20 +74,18 @@ export class AddDirectorComponent implements OnInit {
 
     this.userService.aniadirUsuario(this.usuario).subscribe(
       (data) => {
-        Swal.fire('Director añadido', 'El director se añadio con éxito', 'success').then(
+        Swal.fire('Información actualizada', 'El director se agrego con éxito', 'success').then(
           (e) => {
-            this.usuario.nombreUsuario='';
-            this.usuario.apellidoUsuario='';
-            this.usuario.cedula='';
-            this.usuario.telefono='';
-            this.usuario.email='';
+            this.usuario.nombreUsuario = '';
+            this.usuario.apellidoUsuario = '';
+            this.usuario.cedula = '';
+            this.usuario.telefono = '';
+            this.usuario.email = '';
           })
       }, (error) => {
-        Swal.fire('Error al anadir director', 'No se registro el nuevo director', 'error');
+        Swal.fire('Error en el sistema', 'No se agrego el nuevo director', 'error');
         console.log(error);
       }
     );
   }
-
-  
 }

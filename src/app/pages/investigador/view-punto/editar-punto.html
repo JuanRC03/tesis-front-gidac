@@ -2,7 +2,7 @@
 <mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
   <mat-list-item class="estilo-mat-item" style="color: black;">
     
-    <div mat-line style="padding-right: 20px;">Editar punto</div>
+    <div mat-line style="padding-right: 20px;">Actualizar punto</div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
       <button  mat-icon-button mat-dialog-close
         matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
@@ -16,35 +16,23 @@
 <form (ngSubmit)= "editar()">
     <div class="box mt-3 mb-3">
       <div class="row">
-        <div class="col-md-6">
-          <mat-form-field class="w100">
-            <mat-label>Fecha de inicio</mat-label>
-            <input
-            required
-            type="date"
-            matInput
-            name="fechaInicio"
-            placeholder="Ingrese la fecha de fin"
-            [ngModel]="formatDate(data.fechaInicio)">
-          </mat-form-field>
-        </div>
 
-        <div class="col-md-6">
-          <mat-form-field class="w100">
-            <mat-label>Fecha de fin</mat-label>
-            <input
-            required
-            type="date"
-            matInput
-            name="fechaFin"
-            placeholder="Ingrese la fecha de inicio"
-            [ngModel]="formatDate(data.fechaFin)">
-          </mat-form-field>
-        </div>
+      <mat-form-field class="w100">
+        <mat-label>Fecha de salida de campo</mat-label>
+        <input
+          required
+          type="date"
+          matInput
+          name="fechaInicio"
+          placeholder="Ingrese la fecha de salida de campo"
+          [value]="formatDate(dataAux.fechaSalidaCampo)"
+          (change)="guardarFechaSalidaCampo($event)"
+        >
+      </mat-form-field>
 
 
       <mat-form-field appearance="fill" class="mt20 w100">
-        <mat-label>Profundidad del punto</mat-label>
+        <mat-label>Profundidad</mat-label>
         <mat-select name="medida" [(ngModel)] = "data.profundidadParcela.idProfundidad">
           <mat-option *ngFor = "let c of profundidad" [value] = "c.idProfundidad">
             {{ c.profundidadMinima }} - {{ c.profundidadMaxima }} ({{ c.unidadMedida.abreviatura }})

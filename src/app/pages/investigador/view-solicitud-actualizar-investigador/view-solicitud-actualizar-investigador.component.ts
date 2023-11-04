@@ -53,7 +53,7 @@ export class ViewSolicitudActualizarInvestigadorComponent implements AfterViewIn
                                     'grupoInvestigacion.usuario.apellidoUsuario', 
                                     'grupoInvestigacion.usuario.email', ];
   columnLabelsRes: { [key: string]: string } = {
-                                      'grupoInvestigacion.usuario.cedula': 'Cedula',
+                                      'grupoInvestigacion.usuario.cedula': 'Cédula',
                                       'grupoInvestigacion.usuario.nombreUsuario': 'Nombre',
                                       'grupoInvestigacion.usuario.apellidoUsuario': 'Apellido',
                                       'grupoInvestigacion.usuario.email': 'Email',

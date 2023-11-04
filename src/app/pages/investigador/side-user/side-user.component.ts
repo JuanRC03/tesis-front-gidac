@@ -146,33 +146,26 @@ export class SideUserComponent {
     
     this.isLoggedIn = this.login.isLoggedIn();
     this.usuario = this.login.getUser();
-
-    //this.listarContadorDeSolicitudes();
-    
-    this.idUsuario=this.usuario.idUsuario;
-        this.userService.getImagen(this.idUsuario).subscribe((imagen: Blob)=>{
-          if (imagen.size > 0) {
-            const reader = new FileReader();
-            reader.onload = () => {
-              this.imagenUrl = reader.result as string;
-            };
-            reader.readAsDataURL(imagen);
-          }else{
-            this.imagenUrl= '../../../../assets/img/auxPerfil.jpg'; 
-          }
-        },
-        (error) => {
-          this.logout();
-        })
-        
+    this.idUsuario = this.usuario.idUsuario;
+    this.userService.getImagen(this.idUsuario).subscribe((imagen: Blob) => {
+      if (imagen.size > 0) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagenUrl = reader.result as string;
+        };
+        reader.readAsDataURL(imagen);
+      } else {
+        this.imagenUrl = '../../../../assets/img/auxPerfil.jpg';
+      }
+    })
     this.login.loginStatusSubjec.asObservable().subscribe(
       data => {
         this.isLoggedIn = this.login.isLoggedIn();
         this.usuario = this.login.getUser();
-        
+        console.log(this.usuario);
+
       }
     )
-    
     this.listarInvestigaciones();
 
     

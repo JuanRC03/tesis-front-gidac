@@ -1,20 +1,37 @@
-<form style="max-width: 400px;">
-    <h1 class="text-center">Guardar familia</h1>
-    <mat-form-field class="w100" appearance="outline">
-      <mat-label>Código </mat-label>
-      <textarea required name="descripcion" matInput placeholder="Digite el código de la clasificación"
-        rows="3" [(ngModel)]="familia.codigo ">
-                </textarea>
-    </mat-form-field>
-    <mat-form-field class="w100" appearance="outline">
-      <mat-label>Descripción</mat-label>
-      <textarea required name="descripcion" matInput placeholder="Digite la Descripción"
-        rows="5" [(ngModel)]="familia.descripcion">
-                </textarea>
-    </mat-form-field>
-    <mat-dialog-actions style="align-items: center; text-align: right;">
-      <button mat-button mat-dialog-close>Cancelar</button>
-      <button mat-button cdkFocusInitial (click)="formSubmit()">Guardar</button>
-    </mat-dialog-actions>
-  </form>
 
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line style="padding-right: 20px;">Agregar familia</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<form (ngSubmit)= "formSubmit()">
+  <div class="box mt-3 mb-3">
+    
+
+    <mat-form-field class="w100" appearance="outline">
+      <mat-label>Cógigo</mat-label>
+      <input [(ngModel)]="familia.codigo"  type="text" name="codigo" matInput
+        placeholder="Digite el código de la familia">
+    </mat-form-field>
+
+    <mat-form-field class="w100" appearance="outline">
+      <mat-label>Nombre de la familia </mat-label>
+      <textarea required name="nombre" matInput placeholder="Digite el nombre de la familia"
+        rows="3" [(ngModel)]="familia.descripcion">
+                </textarea>
+    </mat-form-field>
+
+    <div class="center" style="text-align: center;">
+    <button mat-raised-button color="primary">Agregar</button>
+  </div>
+</div>
+</form>

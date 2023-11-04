@@ -64,7 +64,7 @@ export class ViewOrganizacionAdminComponent implements AfterViewInit {
 
     eliminar(id:any){
       Swal.fire({
-        title:'Eliminar organización',
+        title:'Eliminar información ',
         text:'¿Estás seguro de eliminar la organización?',
         icon:'warning',
         showCancelButton:true,
@@ -77,7 +77,7 @@ export class ViewOrganizacionAdminComponent implements AfterViewInit {
           this.service.eliminar(id).subscribe(
             (data) => {
               this.listaDatos = this.listaDatos.filter((datosAux:any) => datosAux.idOrganizacion != id);
-              Swal.fire('Organización eliminada','la organización ha sido eliminada','success');
+              Swal.fire('Información eliminada','La organización ha sido eliminada','success');
               //this.listarEliminado();
             },
             (error) => {
@@ -154,7 +154,7 @@ export class DialogAddOrganizacionAdmin {
       return;
     }
     if (this.datos.siglas == '' || this.datos.siglas == null) {
-      this.snack.open('Las siglas de la organización es requerido !!', 'Aceptar', {
+      this.snack.open('La sigla de la organización es requerido !!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center'
@@ -162,7 +162,7 @@ export class DialogAddOrganizacionAdmin {
       return;
     }
     if (this.datos.descripcion == '' || this.datos.descripcion == null) {
-      this.snack.open('El email es requerido !!', 'Aceptar', {
+      this.snack.open('La descripción de la organización es requerido !!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center'
@@ -172,13 +172,13 @@ export class DialogAddOrganizacionAdmin {
 
     this.service.guardar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Organización guardada', 'La organización se ha guardado con exito', 'success');
+        Swal.fire('Información guardada ', 'La organización se ha guardado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al guardar la organización', 'La organización no se ha guardado', 'error');
+        Swal.fire('Error en el sistema', 'La organización no se ha guardado', 'error');
       }
     )
   }
@@ -222,7 +222,7 @@ export class DialogActualizarOrganizacionAdmin {
       return;
     }
     if (this.datos.siglas == '' || this.datos.siglas == null) {
-      this.snack.open('Las siglas de la organización es requerido !!', 'Aceptar', {
+      this.snack.open('La sigla de la organización es requerido !!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center'
@@ -230,7 +230,7 @@ export class DialogActualizarOrganizacionAdmin {
       return;
     }
     if (this.datos.descripcion == '' || this.datos.descripcion == null) {
-      this.snack.open('El email es requerido !!', 'Aceptar', {
+      this.snack.open('La descripción de la organización es requerido !!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center'
@@ -238,15 +238,15 @@ export class DialogActualizarOrganizacionAdmin {
       return;
     }
 
-    this.service.guardar(this.datos).subscribe(
+    this.service.actualizar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Organización actualizada', 'La organización se ha actualizado con exito', 'success');
+        Swal.fire('Información actualizada', 'La organización se ha actualizado con exito', 'success');
         this.afterClosed.emit();
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error al actualizar la organización', 'La organización no se ha actualizado', 'error');
+        Swal.fire('Error en el sistema', 'La organización no se ha actualizado', 'error');
       }
     )
   }

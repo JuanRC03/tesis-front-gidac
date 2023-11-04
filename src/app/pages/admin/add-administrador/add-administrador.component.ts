@@ -17,14 +17,14 @@ export class AddAdministradorComponent implements OnInit {
     private userService: UserService,
     private snack: MatSnackBar,) { }
 
-  
+
   hidePass = true;
 
   public usuario = {
     nombreUsuario: '',
     apellidoUsuario: '',
-    cedula:'',
-    telefono:'',
+    cedula: '',
+    telefono: '',
     email: '',
     contrasenia: '',
     vigencia: 1,
@@ -35,7 +35,7 @@ export class AddAdministradorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usuario.email="";
+    this.usuario.email = "";
   }
 
 
@@ -74,20 +74,18 @@ export class AddAdministradorComponent implements OnInit {
 
     this.userService.aniadirUsuario(this.usuario).subscribe(
       (data) => {
-        Swal.fire('Administrador añadido', 'El administrador se añadio con éxito', 'success').then(
+        Swal.fire('Información guardada', 'El administrador se agrego con éxito', 'success').then(
           (e) => {
-            this.usuario.nombreUsuario='';
-            this.usuario.apellidoUsuario='';
-            this.usuario.cedula='';
-            this.usuario.telefono='';
-            this.usuario.email='';
+            this.usuario.nombreUsuario = '';
+            this.usuario.apellidoUsuario = '';
+            this.usuario.cedula = '';
+            this.usuario.telefono = '';
+            this.usuario.email = '';
           })
       }, (error) => {
-        Swal.fire('Error al anadir administrador', 'No se registro el nuevo administrador', 'error');
+        Swal.fire('Error en el sistema', 'No se agrego el nuevo administrador', 'error');
         console.log(error);
       }
     );
   }
-
-  
 }

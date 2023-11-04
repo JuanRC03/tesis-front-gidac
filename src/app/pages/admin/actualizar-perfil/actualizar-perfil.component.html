@@ -5,13 +5,17 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">person_pin</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Actualiza tu perfil
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Actualiza
+          tu perfil
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Actualizar perfil</li>
+            <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
+                routerLink="/admin/">Inicio</a></li>
+            <li class="breadcrumb-item active derecha"
+              style="color: var(--color-migajas-de-pan); text-decoration: none;" aria-current="page">Actualizar perfil
+            </li>
           </ol>
         </div>
       </div>
@@ -27,46 +31,38 @@
         <div>
           <form *ngIf="user" (submit)="actualizarDatos()">
             <div class="box mt-3 mb-3">
+
               <div class="image-container">
                 <img class="circle-image"
                   style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin-top: o; padding-top: 0;border: 3px solid #2bc451;"
                   [src]="imagenUrl">
               </div>
-              <div class="w100" appearance="outline" style="text-align: center;">
-                <label for="photo" style="padding-right: 5px;">Foto: </label>
-                <input type="file" accept="image/jpeg" (change)="onFotoSeleccionada($event)">
-              </div>
-              <br><br>
 
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Nombre :</mat-label>
+                <mat-label>Nombre</mat-label>
                 <input [(ngModel)]="userFinal.nombreUsuario" required type="text" name="nombre" matInput
                   placeholder="Digite su nombre">
               </mat-form-field>
 
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Apellido:</mat-label>
+                <mat-label>Apellido</mat-label>
                 <input [(ngModel)]="userFinal.apellidoUsuario" required type="text" name="apellido" matInput
                   placeholder="Digite su apellido">
               </mat-form-field>
 
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Cédula:</mat-label>
-                <input [(ngModel)]="userFinal.cedula"  type="text" name="cedula" matInput
-                  placeholder="Digite su cédula">
+                <mat-label>Cédula</mat-label>
+                <input [(ngModel)]="userFinal.cedula" type="text" name="cedula" matInput placeholder="Digite su cédula">
               </mat-form-field>
 
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Teléfono:</mat-label>
-                <input [(ngModel)]="userFinal.telefono"  type="text" name="telefono" matInput
+                <mat-label>Teléfono</mat-label>
+                <input [(ngModel)]="userFinal.telefono" type="text" name="telefono" matInput
                   placeholder="Digite su teléfono">
               </mat-form-field>
 
-              
-
-
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Email:</mat-label>
+                <mat-label>Email</mat-label>
                 <input [(ngModel)]="userFinal.email" required type="text" name="email" matInput
                   placeholder="Digite su email">
               </mat-form-field>
@@ -91,9 +87,11 @@
                 </button>
               </mat-form-field>
               <br>
+
               <div class="container text-center mt15">
                 <button mat-raised-button color="primary">Actualizar perfil</button>
               </div>
+              
             </div>
           </form>
         </div>

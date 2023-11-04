@@ -45,13 +45,13 @@
 <mat-card >
 <mat-card>
 <mat-list>
-  <mat-list-item *ngFor = "let oC of hijosRecursivos| filtroInvestigacion:search | paginate:page_size:page_number">
+  <mat-list-item *ngFor = "let oC of hijosRecursivos| filtroFamiliaAdmin:search | paginate:page_size:page_number">
     <mat-icon mat-list-icon>streetview</mat-icon>
     <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.codigo}}</mat-card-subtitle></div>
     <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.descripcion}}</mat-card-subtitle></div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
     
-      <button mat-raised-button color="primary" (click)="cargarHijosRecursivos(oC.idFamilia, oC.idPadre)">Sub familia</button>
+      
       <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" 
       (click)="openDialogEditar(oC.idFamilia, oC.codigo, oC.descripcion)"
       >
@@ -60,12 +60,13 @@
       <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminar(oC.idFamilia)">
         <mat-icon>delete</mat-icon>
       </button>               
+      <button mat-raised-button color="primary" (click)="cargarHijosRecursivos(oC.idFamilia, oC.idPadre)">Sub familia</button>
      </div>
      
     <mat-divider></mat-divider>
 
   </mat-list-item>
-  <mat-list *ngIf="(hijosRecursivos).length===0" style="text-align: center; padding: 20px; margin: 20px;">
+  <mat-list *ngIf="(hijosRecursivos| filtroFamiliaAdmin:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
     <p>No existen familias</p>
     <br>
     
@@ -73,7 +74,7 @@
   <mat-divider></mat-divider>
   <mat-paginator 
                  (page)="handlePage($event)"
-                 [length]="(hijosRecursivos| filtroInvestigacion:search).length"
+                 [length]="(hijosRecursivos| filtroFamiliaAdmin:search).length"
                  [pageSize]="page_size"
                  [pageSizeOptions]="page_size_options"
                  showFirstLastButtons>

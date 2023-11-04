@@ -5,13 +5,17 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">supervised_user_circle</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Agrega nuevos directores
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Agrega
+          nuevos directores
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Añadir director</li>
+            <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
+                routerLink="/admin/">Inicio</a></li>
+            <li class="breadcrumb-item active derecha"
+              style="color: var(--color-migajas-de-pan); text-decoration: none;" aria-current="page">Agregar director
+            </li>
           </ol>
         </div>
       </div>
@@ -26,42 +30,41 @@
         <div>
           <form (submit)="agregarDirector()">
             <div class="box mt-3 mb-3">
-              
+
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Nombre del director:</mat-label>
-                <input [(ngModel)]="usuario.nombreUsuario"  type="text" name="nombre" matInput
+                <mat-label>Nombre del director</mat-label>
+                <input [(ngModel)]="usuario.nombreUsuario" type="text" name="nombre" matInput
                   placeholder="Digite el nombre">
               </mat-form-field>
 
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Apellido del director:</mat-label>
-                <input [(ngModel)]="usuario.apellidoUsuario"  type="text" name="apellido" matInput
+                <mat-label>Apellido del director</mat-label>
+                <input [(ngModel)]="usuario.apellidoUsuario" type="text" name="apellido" matInput
                   placeholder="Digite el apellido">
               </mat-form-field>
 
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Cédula del director:</mat-label>
-                <input [(ngModel)]="usuario.cedula"  type="text" name="cedula" matInput
-                  placeholder="Digite la cédula">
+                <mat-label>Cédula del director</mat-label>
+                <input [(ngModel)]="usuario.cedula" type="text" name="cedula" matInput placeholder="Digite la cédula">
               </mat-form-field>
 
               <mat-form-field class="w100" appearance="outline">
-                <mat-label>Teléfono del director:</mat-label>
-                <input [(ngModel)]="usuario.telefono"  type="text" name="telefono" matInput
+                <mat-label>Teléfono del director</mat-label>
+                <input [(ngModel)]="usuario.telefono" type="text" name="telefono" matInput
                   placeholder="Digite el teléfono">
               </mat-form-field>
 
 
               <mat-form-field class="w100" appearance="outline">
                 <mat-label>Email del director:</mat-label>
-                <input [(ngModel)]="usuario.email"  type="text" name="email" matInput
-                  placeholder="Digite el su email">
+                <input [(ngModel)]="usuario.email" type="text" name="email" matInput placeholder="Digite el email">
               </mat-form-field>
 
               <br>
               <div class="container text-center mt15">
                 <button mat-raised-button color="primary">Agregar director</button>
               </div>
+              
             </div>
           </form>
         </div>

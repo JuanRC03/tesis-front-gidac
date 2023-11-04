@@ -2,7 +2,7 @@
 <mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
   <mat-list-item class="estilo-mat-item" style="color: black;">
     
-    <div mat-line style="padding-right: 20px;">Editar dato recolectado</div>
+    <div mat-line style="padding-right: 20px;">Actualizar dato recolectado</div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
       <button  mat-icon-button mat-dialog-close
         matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
@@ -30,10 +30,10 @@
 
 
       <mat-form-field appearance="fill" class="mt20 w100">
-        <mat-label>Tipo de variable</mat-label>
+        <mat-label>Variable del sistema</mat-label>
         <mat-select name="medida" [(ngModel)] = "data.variableUnidadMedida.idVariableUnidadMedida">
-          <mat-option *ngFor = "let c of variableUnidadMedida" [value] = "c.variable.idVariable">
-            {{ c.variable.nombreVariable }}
+          <mat-option *ngFor = "let c of variableUnidadMedida" [value] = "c.variable.idVariable" (click)="seleccionarVariable(c.variable.tipoVariable.idTipoVariable)">
+            {{ c.variable.nombreVariable }} - {{ c.unidadMedida.abreviatura }} 
           </mat-option>
         </mat-select>
       </mat-form-field>

@@ -1,0 +1,35 @@
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+
+    <div mat-line style="padding-right: 30px;">Actualizar cantón</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button mat-icon-button mat-dialog-close matTooltip="White" color="White"
+        aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+<br>
+<mat-dialog-content style="max-width: 500px;">
+  <form (ngSubmit)="formSubmit()">
+    <mat-form-field class="w100" appearance="outline">
+      <mat-label>Código del cantón:</mat-label>
+      <input [(ngModel)]="nuevaLocalizacion.codigoCanton" type="text" name="codigoCanton4" matInput
+        placeholder="Ingrese el código cantón">
+    </mat-form-field>
+  
+    <mat-form-field class="w100" appearance="outline">
+      <mat-label>Nombre del cantón:</mat-label>
+      <input [(ngModel)]="nuevaLocalizacion.nombreCanton" type="text" name="nombreCanton4" matInput
+        placeholder="Ingrese el nombre de la cantón">
+    </mat-form-field>
+  
+    
+    <div class="container text-center mt15">
+      <button mat-raised-button color="primary">Actualizar</button>
+    </div>
+  </form>
+  
+  </mat-dialog-content>

@@ -22,6 +22,7 @@ export class AddMedidaComponent implements OnInit {
   idBusqueda= 0;
 
   public medida = {
+    idUnidadMedida: 500,
     abreviatura: '',
     magnitud: '',
     unidadMedida: '',
@@ -58,14 +59,14 @@ export class AddMedidaComponent implements OnInit {
 
     this.medidaService.guardar(this.medida).subscribe(
       (data) => {
-        Swal.fire('La medida añadido', 'La medida se añadio con éxito', 'success').then(
+        Swal.fire('Información guardada', 'La unidad de medida se agrego con éxito', 'success').then(
           (e) => {
             this.medida.abreviatura='';
             this.medida.magnitud='';
             this.medida.unidadMedida='';
           })
       }, (error) => {
-        Swal.fire('Error al anadir la medida', 'No se registro la nueva medida', 'error');
+        Swal.fire('Error', 'No se registro la nueva unidad de medida', 'error');
         console.log(error);
       }
     );

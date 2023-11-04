@@ -52,7 +52,8 @@ export class ViewDashProyectoComponent implements OnInit   {
     private variableService:VariableService,
     private organizacionService:OrganizacionService,
     private conglomeradoService:ConglomeradoService,
-    public matDialog: MatDialog) { 
+    public matDialog: MatDialog,
+    private alturaService:AlturaService) { 
       
     }
 
@@ -84,12 +85,11 @@ export class ViewDashProyectoComponent implements OnInit   {
   }
 
   onTabChange(event: any) {
-    
-    if(event.index === 1 || !this.map) {
-      console.log('llega')
-      this.initMap();
-      this.fetchData(this.idProyecto);
-      this.listarTipoChart();
+    if(event.index === 1) {
+      if (!this.map) {
+        this.initMap();
+        this.fetchData(this.idProyecto);
+      }
     }
   }
 
@@ -107,8 +107,8 @@ export class ViewDashProyectoComponent implements OnInit   {
 
   eliminar(idConglomerado: any) {
     Swal.fire({
-      title: 'Eliminar conglomerado',
-      text: '¿Estás seguro de eliminar al conglomerado?',
+      title: 'Eliminar información',
+      text: '¿Estás seguro de eliminar el conglomerado?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -119,11 +119,11 @@ export class ViewDashProyectoComponent implements OnInit   {
       if (result.isConfirmed) {
         this.conglomeradoService.eliminar(idConglomerado).subscribe(
           (data) => {
-            this.listaDatos = this.listaDatos.filter((datos: any) => datos.idConglomerado != idConglomerado);
-            Swal.fire('Conglomerado eliminado', 'El conglomerado ha sido eliminado', 'success');
+            this.listaDatosConglomerado = this.listaDatosConglomerado.filter((datos: any) => datos.idConglomerado != idConglomerado);
+            Swal.fire('Información eliminada', 'El conglomerado ha sido eliminado', 'success');
           },
           (error) => {
-            Swal.fire('Error', 'Error al eliminar el conglomerado, el conglomerado debe estar vacio', 'error');
+            Swal.fire('Error', 'Error al eliminar el conglomerado', 'error');
           }
         )
       }
@@ -131,7 +131,8 @@ export class ViewDashProyectoComponent implements OnInit   {
   }
   
   ngAfterViewInit(): void {
-    this.initMap();
+    //this.initMap();
+    //this.fetchData(this.idProyecto);
   }
   ngOnInit(): void {
     
@@ -142,10 +143,23 @@ export class ViewDashProyectoComponent implements OnInit   {
       this.listarVariablesDifucion(0,0);
       this.listarOrganizaciones();
       this.listarFamiliasVariables();
-      this.fetchData(this.idProyecto);
+      
       this.listarTipoChart();
+      this.listarAltitud();
     })
   }
+
+  altitud : any = []
+
+  listarAltitud()
+    {
+      this.alturaService.listar().subscribe(
+          res=>{
+            this.altitud=res;
+          },
+          err=>console.log(err)
+        )
+    }
 
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
@@ -972,7 +986,7 @@ export class ViewDashProyectoComponent implements OnInit   {
   //agregar
   agregar(id:any): void {
     const dialogRef = this.dialog.open(AgregarConglomerado1, {
-      data: { idProyecto: id},
+      data: { idProyecto: id, altitud: this.altitud},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarConglomeradosVigentes();
@@ -983,7 +997,7 @@ export class ViewDashProyectoComponent implements OnInit   {
   //editar
   editar(id:any, dato1:any, dato2:any, dato3:any, dato4:any, dato5:any): void {
     const dialogRef = this.dialog.open(EditarConglomerado1, {
-      data: { idConglomerado: id, codigoConglomerado:dato1,nombreConglomerado:dato2,sector:dato3,idProyecto:dato4,idAltura:dato5},
+      data: { idConglomerado: id, codigoConglomerado:dato1,nombreConglomerado:dato2,sector:dato3,idProyecto:dato4,idAltura:dato5, altitud: this.altitud},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarConglomeradosVigentes();
@@ -1002,6 +1016,7 @@ export interface dataEditar {
   sector: '',
   idProyecto:0,
   idAltura:0,
+  altitud : []
 }
 
 
@@ -1025,7 +1040,7 @@ onNoClick(): void {
 }
 
 ngOnInit(): void {
-  this.listarAltitud();
+  this.altitud = this.data1.altitud;
   this.data.idConglomerado=this.data1.idConglomerado;
   this.data.codigoConglomerado=this.data1.codigoConglomerado;
   this.data.nombreConglomerado=this.data1.nombreConglomerado;
@@ -1092,15 +1107,15 @@ public editar() {
   }
   
 
-  this.conglomeradoService.guardar(this.data).subscribe(
+  this.conglomeradoService.actualizar(this.data).subscribe(
     (data) => {
-      Swal.fire('Conglomerado editado', 'El conglomerado se edito con éxito', 'success').then(
+      Swal.fire('Información actualizada', 'El conglomerado se ediactualizo con éxito', 'success').then(
         (e) => {
           this.afterClosed.emit();
           this.dialogRef.close();
         })
     }, (error) => {
-      Swal.fire('Error al editar el conglomerado', 'No se edito el conglomerado', 'error');
+      Swal.fire('Error en el sistema', 'No se actualizo el conglomerado', 'error');
       console.log(error);
     }
   );
@@ -1143,7 +1158,7 @@ public data = {
 }
 
 ngOnInit(): void {
-  this.listarAltitud();
+  this.altitud = this.data1.altitud;
   this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
 }
 
@@ -1192,13 +1207,13 @@ public agregar() {
 
   this.conglomeradoService.guardar(this.data).subscribe(
     (data) => {
-      Swal.fire('Conglomerado añadido', 'El conglomerado se añadio con éxito', 'success').then(
+      Swal.fire('Información guardada', 'El conglomerado se agrego con éxito', 'success').then(
         (e) => {
           this.afterClosed.emit();
           this.dialogRef.close();
         })
     }, (error) => {
-      Swal.fire('Error al anadir el conglomerado', 'No se registro el nuevo conglomerado', 'error');
+      Swal.fire('Error en el sistema', 'No se registro el nuevo conglomerado', 'error');
       console.log(error);
     }
   );

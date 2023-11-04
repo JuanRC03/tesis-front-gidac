@@ -56,14 +56,14 @@ export class ActualizarInformacionWebComponent implements OnInit {
     public actualizarDatos(){
 
       if(this.informacionEcoAndes.descripcion.trim() == '' || this.informacionEcoAndes.descripcion.trim() == null){
-        this.snack.open('La descripción es requerido !!','Aceptar',{
+        this.snack.open('La descripción es requerida !!','Aceptar',{
           duration:3000
         })
         return;
       }
 
       if(this.informacionEcoAndes.condicionesUso.trim() == '' || this.informacionEcoAndes.condicionesUso.trim() == null){
-        this.snack.open('la condición de uso es requerido !!','Aceptar',{
+        this.snack.open('Las condiciones de uso son requeridas !!','Aceptar',{
           duration:3000
         })
         return;
@@ -71,13 +71,13 @@ export class ActualizarInformacionWebComponent implements OnInit {
       
       
       if(this.informacionEcoAndes.licenciaUso.trim() == '' || this.informacionEcoAndes.licenciaUso.trim() == null){
-        this.snack.open('La licencia de uso es requerido !!','Aceptar',{
+        this.snack.open('La licencia de uso es requerida !!','Aceptar',{
           duration:3000
         })
         return;
       }
       if(this.informacionEcoAndes.derechoReservado.trim() == '' || this.informacionEcoAndes.derechoReservado.trim() == null){
-        this.snack.open('EL derecho reservado es requerido !!','Aceptar',{
+        this.snack.open('Los derechos reservados son requeridos !!','Aceptar',{
           duration:3000
         })
         return;
@@ -85,14 +85,14 @@ export class ActualizarInformacionWebComponent implements OnInit {
 
       this.appWebService.actualizarInformacionAppWeb(this.informacionEcoAndes).subscribe(
         (data) => {
-          Swal.fire('Información de la aplicacion web actualizado','La información de la aplicacion web ha sido actualizado con éxito','success').then(
+          Swal.fire('Informacion actualizada','La información de la aplicación web ha sido actualizado con éxito','success').then(
             (e) => {
               this.mostrarInformacionVigente();
             }
           );
         },
         (error) => {
-          Swal.fire('Error en el sistema','No se ha podido actualizar la información de la aplicacion web','error');
+          Swal.fire('Error en el sistema','No se ha podido actualizar la información de la aplicación web','error');
           console.log(error);
         }
       )

@@ -4,7 +4,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatoRecolectadoService } from 'src/app/services/dato-recolectado.service';
 import Swal from 'sweetalert2';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -44,6 +44,7 @@ export class ImportarXlsComponent implements OnInit {
   constructor(private datoRecolectadoService:DatoRecolectadoService,
               private route:ActivatedRoute,
               private snack:MatSnackBar,
+              private router:Router,
               private investigacionService:InvestigacionService ) {}
   
   displayedColumns: string[] = ['dato1', 'dato2', 'dato3', 'dato4','dato5'];
@@ -174,7 +175,7 @@ export class ImportarXlsComponent implements OnInit {
           this.datoRecolectadoService.variablesDeXLS(formData).subscribe((listaVariables:any) => {
             if (listaVariables && listaVariables.length > 0) {
               this.listaDatos=listaVariables;
-              Swal.fire('Archivo correcto','El archivo tine la estructura correcta','success');
+              Swal.fire('Archivo correcto','El archivo tiene la estructura correcta','success');
               this.verBoton=false;
               this.verBotonImput=false;
               this.verBotonSiguintePaso=true;
@@ -225,7 +226,11 @@ export class ImportarXlsComponent implements OnInit {
     formData.append('file', this.file);
     this.datoRecolectadoService.guardarXLS(formData).subscribe(
       (dato:any) => {
-        Swal.fire('Registro exitoso','Los datos se han registrado de forma correcta','success');
+        Swal.fire('Registro exitoso','Los datos se han registrado de forma correcta','success').then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/user-dashboard/view-dash-proyecto/'+this.idProyecto]);
+          }
+        });
       },
       (error) => {
         console.log(error);

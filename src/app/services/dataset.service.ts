@@ -14,7 +14,7 @@ export class DatasetService {
   }
 
   public actualizar(modelo:any){
-    return this.http.put(`${baserUrl}/dataset/guardar-dataset`,modelo);
+    return this.http.put(`${baserUrl}/dataset/actualizar-dataset`,modelo);
   }
 
   public obtener(id:any){

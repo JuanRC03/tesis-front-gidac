@@ -14,7 +14,7 @@ export class MedidaService {
   }
 
   public actualizar(modelo:any){
-    return this.http.put(`${baserUrl}/medida/guardar-medida`,modelo);
+    return this.http.put(`${baserUrl}/medida/actualizar-medida`,modelo);
   }
 
   public obtener(id:any){
@@ -28,4 +28,11 @@ export class MedidaService {
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/medida/eliminar-medida/${id}`); 
   }
+
+
+  public actualizarEditable(){
+    return this.http.get(`${baserUrl}/medida/actualizar-editable`); 
+  }
+
+  
 }

@@ -14,7 +14,7 @@ export class ProfundidadService {
   }
 
   public actualizar(modelo:any){
-    return this.http.put(`${baserUrl}/profundidad/guardar-profundidad`,modelo);
+    return this.http.put(`${baserUrl}/profundidad/actualizar-profundidad`,modelo);
   }
 
   public obtener(id:any){
@@ -31,5 +31,9 @@ export class ProfundidadService {
 
   public obtenerPorMedida(id:any){
     return this.http.get(`${baserUrl}/profundidad/obtener-profundidad/por-medida/${id}`);
+  }
+
+  public actualizarEditable(){
+    return this.http.get(`${baserUrl}/profundidad/actualizar-editable`); 
   }
 }

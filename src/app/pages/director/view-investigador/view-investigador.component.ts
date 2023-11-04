@@ -62,7 +62,7 @@ export class ViewInvestigadorComponent implements AfterViewInit {
   
     eliminarUsuario(idUsuario:any){
       Swal.fire({
-        title:'Eliminar investigador',
+        title:'Eliminar información',
         text:'¿Estás seguro de eliminar al investigador?',
         icon:'warning',
         showCancelButton:true,
@@ -71,24 +71,52 @@ export class ViewInvestigadorComponent implements AfterViewInit {
         confirmButtonText:'Eliminar',
         cancelButtonText:'Cancelar'
       }).then((result) => {
+
         if(result.isConfirmed){
-          this.userServicio.eliminarUsuario(idUsuario).subscribe(
-            (data) => {
-              this.listaUsuarios = this.listaUsuarios.filter((usuario:any) => usuario.idUsuario != idUsuario);
-              Swal.fire('Investigador eliminado','El investigador ha sido eliminado','success');
-              this.listarEliminado();
-            },
-            (error) => {
-              Swal.fire('Error','Error al eliminar el investigador','error');
+          Swal.fire({
+            title:'Eliminar información del investigador del proyecto',
+            text:'¿Quiere eliminar las asignaciones del investigador en los proyectos?',
+            icon:'warning',
+            showCancelButton:true,
+            confirmButtonColor:'#3085d6',
+            cancelButtonColor:'#d33',
+            confirmButtonText:'Si',
+            cancelButtonText:'No'
+          }).then((result) => {
+
+            if(result.isConfirmed){
+              this.userServicio.eliminarInvestigador(idUsuario).subscribe(
+                (data) => {
+                  this.listaUsuarios = this.listaUsuarios.filter((usuario:any) => usuario.idUsuario != idUsuario);
+                  Swal.fire('Información eliminada','El investigador ha sido eliminado con la asignación del proyecto','success');
+                  this.listarEliminado();
+                },
+                (error) => {
+                  Swal.fire('Error en el sistema','Error al eliminar el investigador','error');
+                }
+              )
+            }else {
+              this.userServicio.eliminarUsuario(idUsuario).subscribe(
+                (data) => {
+                  this.listaUsuarios = this.listaUsuarios.filter((usuario:any) => usuario.idUsuario != idUsuario);
+                  Swal.fire('Información eliminada','El investigador ha sido eliminado','success');
+                  this.listarEliminado();
+                },
+                (error) => {
+                  Swal.fire('Error en el sistema','Error al eliminar el investigador','error');
+                }
+              )
             }
-          )
+            
+          })
         }
+
       })
     }
 
     restaurarUsuario(idUsuario:any){
       Swal.fire({
-        title:'Restaurar investigador',
+        title:'Restaurar información',
         text:'¿Estás seguro de restaurar al investigador?',
         icon:'warning',
         showCancelButton:true,
@@ -101,11 +129,11 @@ export class ViewInvestigadorComponent implements AfterViewInit {
           this.userServicio.restaurarUsuario(idUsuario).subscribe(
             (data) => {
               this.listaUsuariosEliminados = this.listaUsuariosEliminados.filter((usuario:any) => usuario.idUsuario != idUsuario);
-              Swal.fire('Investigador restaurado','El investigador ha sido restaurado','success');
+              Swal.fire('Información restaurada','El investigador ha sido restaurado','success');
               this.listarVigentes();
             },
             (error) => {
-              Swal.fire('Error','Error al restaurar el investigador','error');
+              Swal.fire('Error en el sistema','Error al restaurar el investigador','error');
             }
           )
         }
@@ -154,7 +182,6 @@ export interface dataEditar {
   telefono:'',
   email: '',
   vigencia: 1,
-  idRol: 1
 }
 
 
@@ -186,7 +213,6 @@ ngOnInit(): void {
   this.data.cedula=this.data1.cedula;
   this.data.telefono=this.data1.telefono;
   this.data.email=this.data1.email;
-  this.data.rol.idRol=this.data1.idRol;
 }
 
 public data = {
@@ -198,59 +224,56 @@ public data = {
   email: '',
   vigencia: 1,
   rol: {
-    idRol: 1
+    idRol: 3
   }
 }
-
-
-
 
 
 public afterClosed: EventEmitter<void> = new EventEmitter<void>();
 
 public editar() {
   if (this.data.nombreUsuario.trim() == '' || this.data.nombreUsuario.trim() == null) {
-    this.snack.open('El nombre del administrador es requerido !!', 'Aceptar', {
+    this.snack.open('El nombre del investigador es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
   if (this.data.apellidoUsuario.trim() == '' || this.data.apellidoUsuario.trim() == null) {
-    this.snack.open('El apellido del administrador es requerido !!', 'Aceptar', {
+    this.snack.open('El apellido del investigador es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
   if (this.data.cedula.trim() == '' || this.data.cedula.trim() == null) {
-    this.snack.open('La cédula del administrador es requerido !!', 'Aceptar', {
+    this.snack.open('La cédula del investigador es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
 
   if (this.data.telefono.trim() == '' || this.data.telefono.trim() == null) {
-    this.snack.open('El teléfono del administrador es requerido !!', 'Aceptar', {
+    this.snack.open('El teléfono del investigador es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
   if (this.data.email.trim() == '' || this.data.email.trim() == null) {
-    this.snack.open('El email del administrador es requerido !!', 'Aceptar', {
+    this.snack.open('El email del investigador es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
   
 
-  this.userService.editarPerfil(this.data).subscribe(
+  this.userService.actualizarUsuario(this.data).subscribe(
     (data) => {
-      Swal.fire('Administrador actualizado', 'El administrador se actualizado con éxito', 'success').then(
+      Swal.fire('Información actualizada', 'El investigador se actualizado con éxito', 'success').then(
         (e) => {
           this.afterClosed.emit();
           this.dialogRef.close();
         })
     }, (error) => {
-      Swal.fire('Error al actualizadar al administrador', 'No se actualizado al administrador', 'error');
+      Swal.fire('Error en el sistema', 'No se actualizo el investigador', 'error');
       console.log(error);
     }
   );

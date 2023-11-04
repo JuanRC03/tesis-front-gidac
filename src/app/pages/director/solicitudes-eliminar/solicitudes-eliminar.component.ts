@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import { SolicitudEliminarService } from 'src/app/services/solicitud-eliminar.service';
 import { ActivatedRoute } from '@angular/router';
 import { RespuestaSolicitudActualizarService } from 'src/app/services/respuesta-solicitud-actualizar.service';
+import { SideDirectorComponent } from '../side-director/side-director.component';
 
 export interface DialogData {
   id: '';
@@ -33,6 +34,7 @@ export class SolicitudesEliminarComponent implements OnInit {
   constructor(private solicitudAccesoService:SolicitudAccesoService, 
               private respuestaSolicitudActualizarService:RespuestaSolicitudActualizarService,
               public dialog: MatDialog,
+              public sideDirectorComponent:SideDirectorComponent,
               private route:ActivatedRoute,) { }
 
   dataSourceSolicitado:any= [];
@@ -45,7 +47,7 @@ export class SolicitudesEliminarComponent implements OnInit {
                                     'grupoInvestigacion.usuario.apellidoUsuario', 
                                     'grupoInvestigacion.usuario.email', ];
   columnLabelsRes: { [key: string]: string } = {
-                                      'grupoInvestigacion.usuario.cedula': 'Cedula',
+                                      'grupoInvestigacion.usuario.cedula': 'Cédula',
                                       'grupoInvestigacion.usuario.nombreUsuario': 'Nombre',
                                       'grupoInvestigacion.usuario.apellidoUsuario': 'Apellido',
                                       'grupoInvestigacion.usuario.email': 'Email',
@@ -152,13 +154,13 @@ export class SolicitudesEliminarComponent implements OnInit {
   aceptarEliminar(id:any){
     console.log(id);
     Swal.fire({
-      title:'Eliminar dato de la investigación',
-      text:'¿Estás seguro de eliminar el dato de la investigación?',
+      title:'Eliminar información ',
+      text:'¿Estás seguro de eliminar el dato del proyecto?',
       icon:'warning',
       showCancelButton:true,
       confirmButtonColor:'#3085d6',
       cancelButtonColor:'#d33',
-      confirmButtonText:'Enviar',
+      confirmButtonText:'Eliminar',
       cancelButtonText:'Cancelar'
     }).then((result) => {
       if(result.isConfirmed){
@@ -167,10 +169,10 @@ export class SolicitudesEliminarComponent implements OnInit {
             //location.reload();
             this.listarAprobador();
             this.dataSourceSolicitado = this.dataSourceSolicitado.filter((dato:any) => dato.idSolicitudActualizar != id);
-            Swal.fire('Dato eliminado','El dato han sido eliminado','success');
+            Swal.fire('Información eliminada','El dato ha sido eliminado','success');
           },
           (error) => {
-            Swal.fire('Error','Error al enviar los datos','error');
+            Swal.fire('Error en el sistema','Error al eliminar el dato','error');
           }
         )
       }
@@ -216,9 +218,9 @@ export class SolicitudesEliminarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       
-      this.datoresult=result;
-      if(this.datoresult!=''){
+      if(result == 'Rechazado'){
         this.listarRechazados();
+        this.sideDirectorComponent.listarContadorDeSolicitudes();
         this.dataSourceSolicitado = this.dataSourceSolicitado.filter((dato:any) => dato.idSolicitudActualizar != idSol);
         console.log(this.datoresult);
       }
@@ -408,7 +410,7 @@ formSubmit(){
       console.log(data);
 
       Swal.fire('Solicitud rechazada','La solicitud ha sido rechazada','success');
-      this.dialogRef.close();
+      this.dialogRef.close('Rechazado');
       
     },(error) => {
       console.log(error);

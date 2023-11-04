@@ -6,7 +6,7 @@
 
   <mat-form-field class="w100" appearance="outline">
     <mat-label>Email de usuario</mat-label>
-    <input [(ngModel)] = "loginData.email" name = "email"  matInput placeholder="Digite su email">
+    <input [(ngModel)] = "loginData.email" name = "email"  matInput placeholder="Ingrese su email">
     <mat-hint>El email de usuario debe ser valido</mat-hint>
   </mat-form-field>
   <br><br>
@@ -17,7 +17,7 @@
       [type]="hidePass ? 'password' : 'text'"
       name="pass1"
       matInput
-      placeholder="Ingrese su contraseña antigua"
+      placeholder="Ingrese su contraseña"
     >
     <button mat-icon-button matSuffix (click)="hidePass = !hidePass" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePass">
       <mat-icon>{{hidePass ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -26,7 +26,8 @@
   <br><br>
   <div class = "container text-center">
     <button type = "submit" mat-raised-button color="accent" >Iniciar sesión</button>
-    <button mat-dialog-close style = "margin-left: 20px;" mat-raised-button color="primary">Cancelar</button>
+    <span style = "margin: 5px;"></span>
+    <button mat-dialog-close mat-raised-button color="primary">Cancelar</button>
     <!--<button type="reset" style = "margin-left: 20px;" mat-raised-button color="primary">Limpiar</button>-->
   </div>
 </form>

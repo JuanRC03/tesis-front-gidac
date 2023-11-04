@@ -14,11 +14,15 @@ export class CatalogoOrganizacionService {
   }
 
   public actualizar(modelo:any){
-    return this.http.put(`${baserUrl}/catalogo-organizacion/guardar-catalogo-organizacion`,modelo);
+    return this.http.put(`${baserUrl}/catalogo-organizacion/actualizar-catalogo-organizacion`,modelo);
   }
 
   public obtener(id:any){
     return this.http.get(`${baserUrl}/catalogo-organizacion/obtener-catalogo-organizacion/${id}`);
+  }
+
+  public obtenerPorCodigoOrganizacion(id:any){
+    return this.http.get(`${baserUrl}/catalogo-organizacion/obtener-catalogo-organizacion-codigo/${id}`);
   }
 
   public obtenerCatalogoPorOrganizacion(id:any){
