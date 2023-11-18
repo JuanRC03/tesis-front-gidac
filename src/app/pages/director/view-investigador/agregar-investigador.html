@@ -1,0 +1,53 @@
+
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line style="padding-right: 20px;">Agregar investigador</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<form (ngSubmit)= "agregar()" style="max-width: 400px;">
+    <div class="box mt-3 mb-3">
+      
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input [(ngModel)]="data.nombreUsuario"  type="text" name="nombre" matInput
+          placeholder="Digite el nombre">
+      </mat-form-field>
+
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Apellido</mat-label>
+        <input [(ngModel)]="data.apellidoUsuario"  type="text" name="apellido" matInput
+          placeholder="Digite el apellido">
+      </mat-form-field>
+
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Cédula</mat-label>
+        <input [(ngModel)]="data.cedula"  type="text" name="cedula" matInput
+          placeholder="Digite la cédula">
+      </mat-form-field>
+
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input [(ngModel)]="data.telefono"  type="text" name="telefono" matInput
+          placeholder="Digite el teléfono">
+      </mat-form-field>
+
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input [(ngModel)]="data.email"  type="text" name="email" matInput
+          placeholder="Digite el email">
+      </mat-form-field>
+
+      <div class="center" style="text-align: center;">
+      <button mat-raised-button color="primary">Agregar</button>
+    </div>
+  </div>
+  </form>
