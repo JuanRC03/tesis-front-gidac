@@ -107,6 +107,8 @@ import { EditarDirector } from './pages/admin/view-director/view-director.compon
 import { DialogEditarVariableOrganizacion } from './pages/admin/view-catalogo-organizacion-admin/view-catalogo-organizacion-admin.component';
 import { FiltroFamiliaAdminPipe } from './pipes/filtro-familia-admin.pipe';
 import { FiltroOrganizacionAdminPipe } from './pipes/filtro-organizacion-admin.pipe';
+import { AgregarDirector } from './pages/admin/view-director/view-director.component';
+import { AgregarAdministrador } from './pages/admin/view-administrador/view-administrador.component';
 
 //Director
 import { SideDirectorComponent } from './pages/director/side-director/side-director.component';
@@ -129,6 +131,8 @@ import { DialogIformacionAprobado } from './pages/director/solicitudes-acceso/so
 import { ViewSolicitudActualizarAprobado } from './pages/director/solicitudes-eliminar/solicitudes-eliminar.component';
 import { ViewSolicitudActualizarRechazado } from './pages/director/solicitudes-eliminar/solicitudes-eliminar.component';
 import { EditarInvestigador } from './pages/director/view-investigador/view-investigador.component';
+import { AgregarInvestigador } from './pages/director/view-investigador/view-investigador.component';
+
 
 //Investigador
 import { ViewConglomeradosComponent } from './pages/investigador/view-conglomerados/view-conglomerados.component';
@@ -393,6 +397,9 @@ import { FiltroParroquiaPipe } from './pipes/filtro-parroquia.pipe';
     FiltroProvinciaPipe,
     FiltroCantonPipe,
     FiltroParroquiaPipe,
+    AgregarDirector,
+    AgregarAdministrador,
+    AgregarInvestigador,
   ],
   imports: [
     MatTreeModule,

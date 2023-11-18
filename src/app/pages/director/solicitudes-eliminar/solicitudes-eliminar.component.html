@@ -5,13 +5,13 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">library_books</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar solicitudes de actualizar datos
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Atender solicitudes actualizar datos
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
             <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/director-dashboard">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver solicitudes de actualizar datos</li>
+            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver solicitudes actualizar datos</li>
           </ol>
         </div>
       </div>
@@ -72,14 +72,14 @@
                <div style="padding-right: 50px; padding-top: 20px;padding-bottom: 20px;">
                   
                 
-                  <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Proyecto:</b> {{element.grupoInvestigacion.proyectoInvestigacion.nombreProyecto}}</p>
+                  <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Proyecto de investigación:</b> {{element.grupoInvestigacion.proyectoInvestigacion.nombreProyecto}}</p>
                   <br>
                   <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Variable: </b>{{element.datoRecolectado.variableUnidadMedida.variable.nombreVariable}}</p>
                   <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Dato recolectado: </b>{{element.datoRecolectado.valor}} {{element.datoRecolectado.variableUnidadMedida.unidadMedida.abreviatura}}</p>
                   <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Unidad de medida: </b>{{element.datoRecolectado.variableUnidadMedida.unidadMedida.unidadMedida}}</p>
                   <br>
                   <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Motivo:</b> {{element.motivo}}</p>
-                  <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Fecha recibida solicitud:</b> {{element.fechaEnvioSolicitud}}</p>
+                  <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Fecha de recibo de la solicitud:</b> {{element.fechaEnvioSolicitud}}</p>
                   <br>
                   
                   
@@ -107,7 +107,7 @@
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
     <mat-list *ngIf="(dataSourceSolicitado | filtroSolicitudActualizar:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-      <p>No existen solicitudes de actualizar</p>
+      <p>No existen solicitudes de actualizar datos</p>
       <br>
       <mat-divider></mat-divider>
     </mat-list>
@@ -163,7 +163,7 @@
         </table>
         
         <mat-list *ngIf="(dataSourceAceptado | filtroSolicitudActualizarRespuesta:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-          <p>No existen solicitudes de descarga aprobadas</p>
+          <p>No existen solicitudes de actualizar datos aprobadas</p>
           <br>
           <mat-divider></mat-divider>
         </mat-list>
@@ -221,7 +221,7 @@
         </table>
         
         <mat-list *ngIf="(dataSourceAceptado | filtroSolicitudActualizarRespuesta:search).length===0" style="text-align: center; padding: 20px; margin: 20px;">
-          <p>No existen solicitudes de descarga rechazadas</p>
+          <p>No existen solicitudes de actualizar datos rechazadas</p>
           <br>
           <mat-divider></mat-divider>
         </mat-list>

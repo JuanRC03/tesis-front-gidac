@@ -63,7 +63,7 @@
           <mat-label>Organización</mat-label>
           <mat-select name="organizaciones" [(ngModel)]="listaOrganizaciones.idOrganizacion" (selectionChange)="onOrganizacionChange($event)" >
             <mat-option *ngFor="let c of listaOrganizaciones" [value]="c.idOrganizacion">
-              {{ c.nombreOrganizacion }}
+              {{ c.siglas }}
             </mat-option>
           </mat-select>
         </mat-form-field>

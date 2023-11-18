@@ -5,7 +5,7 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">collections_bookmark</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar cantones
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Localización - Cantón
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
@@ -13,9 +13,9 @@
             <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
                 routerLink="/admin/">Inicio</a></li>
             <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
-                [routerLink]="'/admin/view-pais-admin'">Países</a></li>
+                [routerLink]="'/admin/view-pais-admin'">País</a></li>
             <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
-                [routerLink]="'/admin/view-provincia-admin/'+idPais">Provincias</a></li>
+                [routerLink]="'/admin/view-provincia-admin/'+idPais">Provincia</a></li>
             <li class="breadcrumb-item active derecha"
               style="color: var(--color-migajas-de-pan); text-decoration: none;" aria-current="page">Ver cantones</li>
           </ol>
@@ -24,9 +24,7 @@
     </mat-list-item>
   </mat-list>
 </mat-card>
-
-
-<br>
+<mat-card style="background-color: var(--dash-sidebar-bakcolor);">
 <mat-list>
   <mat-list-item>
     <div mat-line>
@@ -37,13 +35,13 @@
     </div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
 
-      <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar cantón</button>
+      <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar</button>
     </div>
 
   </mat-list-item>
 </mat-list>
 
-<mat-card style="margin-top: 0; border-top: 0; padding-top: 5px;">
+
   <div class="mat-elevation-z8 table-container">
     <table class="table" mat-table [dataSource]="listaDatos | filtroCanton:search | paginate:page_size:page_number"
       class="full-width-table" matSort aria-label="Elements">
@@ -89,12 +87,13 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-list *ngIf="(listaDatos | filtroCanton:search).length===0"
-      style="text-align: center; padding: 20px; margin: 20px;">
-      <p>No existen cantones disponibles</p>
-      <br>
-      <mat-divider></mat-divider>
-    </mat-list>
+    <mat-card *ngIf="(listaDatos | filtroCanton:search).length===0">
+      <mat-list 
+        style="text-align: center;">
+        <p>No existen cantones disponibles</p>
+        <br>
+      </mat-list>
+      </mat-card>
 
     <mat-paginator (page)="handlePage($event)" [length]="(listaDatos | filtroCanton:search).length"
       [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>

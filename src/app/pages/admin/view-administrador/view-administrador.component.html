@@ -22,8 +22,7 @@
   </mat-list>
 </mat-card>
 
-<mat-card style="margin-top: 0; border-top: 0; padding-top: 5px;">
-  <br>
+<mat-card style="background-color: var(--dash-sidebar-bakcolor);">
   <mat-list>
     <mat-list-item>
       
@@ -35,7 +34,7 @@
       </div>
 
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-        <button routerLink="/admin/add-administrador" mat-raised-button color="primary">Agregar administrador</button>
+        <button (click)="agregar()" mat-raised-button color="primary">Agregar</button>
       </div>
 
     </mat-list-item>
@@ -43,7 +42,7 @@
 
   <mat-card>
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
-      <mat-tab label="Administradores disponibles">
+      <mat-tab label="Disponibles">
         <div class="mat-elevation-z8 table-container">
           <table class="table" mat-table
             [dataSource]="listaUsuarios | filtroUsuarios:search | paginate:page_size:page_number"
@@ -111,7 +110,7 @@
 
 
       </mat-tab>
-      <mat-tab label="Administradores eliminados">
+      <mat-tab label="Eliminados">
 
         <div class="mat-elevation-z8 table-container">
           <table class="table" mat-table
@@ -147,8 +146,9 @@
             <ng-container matColumnDef="opciones">
               <th mat-header-cell *matHeaderCellDef>Opciones</th>
               <td mat-cell *matCellDef="let row">
-                <button class="padding-izquierda" mat-raised-button color="accent"
-                  (click)="restaurarUsuario(row.idUsuario)">Restaurar</button>
+                <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="restaurarUsuario(row.idUsuario)">
+                  <mat-icon>restore_from_trash</mat-icon>
+                </button>             
               </td>
             </ng-container>
 

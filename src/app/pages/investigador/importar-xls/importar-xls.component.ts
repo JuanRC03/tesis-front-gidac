@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatStepperModule} from '@angular/material/stepper';
+import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatoRecolectadoService } from 'src/app/services/dato-recolectado.service';
@@ -200,8 +200,17 @@ export class ImportarXlsComponent implements OnInit {
     )
   }
 
+  @ViewChild('matStepperNext') stepper!: MatStepper;
+
   perfilarDatos(){
+    if(this.listaDatos.length==0){
+      this.snack.open("No exiten variables encontradas para perfilar!!",'',{
+        duration:3000
+      })
+      return ;
+    }
     const formData = new FormData();
+    
     formData.append('proyectoInvestigacion', JSON.stringify(this.proyectoInvestigacion));
     formData.append('variablesEncontradas', JSON.stringify(this.listaDatos));
     formData.append('file', this.file);

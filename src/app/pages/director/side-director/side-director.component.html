@@ -1,123 +1,4 @@
-<!--
-<mat-sidenav-container class="sidenav-container" (click)="listarContadorDeSolicitudes()">
-  
-  <mat-sidenav  #drawer class="sidenav"  fixedInViewport      
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false" >      
-  
-    <mat-nav-list>
-      <h4 style="text-align:center; margin: 0; padding: 0; border: none;">{{ user.username }}</h4>
-      <div class="box mt-3 mb-3" style="border: 0; margin: 0; padding: 0;">
-        <div class="image-container" style="border: 0; margin: 0; padding: 0;">
-          <img class="circle-image" style="width: 70px; height: 70px; border-radius: 70%; overflow: hidden; border: 0; margin: 0; padding: 0; border: 2px solid #2bc451;" [src]="imagenUrl">
-        </div>
-      </div>
-      <h5 style="text-align:center; padding-top: 0; margin-top: 0; border-top: 0;">Director</h5>
 
-  
-      <button routerLink = "/admin" mat-list-item (click)="panel.close()"  style="font-size: 15px; height: 50px;">
-        <mat-icon mat-list-icon style="font-size: 21px;">home</mat-icon> Panel de control
-      </button>
-      <button mat-list-item routerLink = "/admin/categorias" (click)="panel.close()" style="font-size: 15px; height: 50px;">
-        <mat-icon mat-list-icon style="font-size: 21px;">list</mat-icon>Categorías
-      </button>
-      <button mat-list-item routerLink = "/admin/usuariosTable" (click)="panel.close()"  style="font-size: 15px; height: 50px;">
-        <mat-icon mat-list-icon style="font-size: 21px;">list</mat-icon>Usuarios
-      </button>
-
-      <button  mat-list-item [routerLink] = "'/director-dashboard/solicitudesAcceso'" (click)="panel.close()"  style="font-size: 15px; height: 50px;">
-        <mat-icon mat-list-icon>description</mat-icon>Solicitudes de datos
-      </button>
-      <button  mat-list-item [routerLink] = "'/director-dashboard/solicitudesEliminar'" (click)="panel.close()"  style="font-size: 15px; height: 50px;">
-        <mat-icon mat-list-icon>delete</mat-icon>Solicitudes de eliminar
-      </button>
-
-      
-      <div style="max-width: 230px;">
-        <mat-expansion-panel #panel (opened)="panelOpenState = true"
-                             (closed)="panelOpenState = false">
-          <mat-expansion-panel-header style="font-size: 15px; height: 50px; padding-left: 20px; margin-left: 0; border-left: 0;">
-            <mat-panel-title style="font-size: 15px; height: 50px;">
-              <mat-icon mat-list-icon style="font-size: 21px; padding-right: 5px;">home</mat-icon>Actualizar Pagina
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <button routerLink = "/admin/actualizarNavbar" mat-list-item style="font-size: 12px; height: 50px; padding: 0; margin: 0; border: 0; border-radius: 10px;" >
-            Encavezado
-         </button>
-          <button routerLink = "/admin/actualizarHome"  mat-list-item style="font-size: 12px; height: 50px; padding: 0; margin: 0; border: 0; border-radius: 10px;" >
-             Contenido
-          </button>
-          <button routerLink = "/admin/actualizarFooter"  mat-list-item style="font-size: 12px; height: 50px; padding: 0; margin: 0; border: 0; border-radius: 10px;" >
-            Pie de página
-         </button>
-
-        </mat-expansion-panel>
-      </div>
-      
-    </mat-nav-list>
-    
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <mat-toolbar style="height: 60px;" >
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" [routerLink] = "'/admin'">
-        <mat-icon style="font-size: 35px;"  >terrain</mat-icon>
-      </button>
-      <mat-card-title style="margin-bottom: 5px; margin-top: 8px; margin-left: 10px; padding-bottom: 3px; font-size: 20px;"> GIDAC </mat-card-title>
-      
-      <span class="example-spacer"></span>
-      
-      <button  mat-icon-button aria-label="Example icon-button with a menu" [routerLink] = "'/director-dashboard/solicitudesAcceso'">
-        <mat-icon matBadge="{{contadorDeSolicitudes.contSolAcceso}} "  [matBadgeHidden]="hiddenSolicitud" matBadgeColor="warn">description</mat-icon>
-      </button>
-
-      <button  mat-icon-button aria-label="Example icon-button with a menu" [routerLink] = "'/director-dashboard/solicitudesEliminar'">
-        <mat-icon matBadge="{{contadorDeSolicitudes.contSolEliminar}}"  [matBadgeHidden]="hiddenEliminar" matBadgeColor="warn">delete</mat-icon>
-      </button>
-
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async ">
-        
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-
-      
-      <button  *ngIf = "isLoggedIn && user" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-
-      <mat-menu #menu="matMenu" >
-        <button mat-menu-item [routerLink] = "'/admin/actualizarPerfil/'+user.id">
-          <mat-icon>person_pin</mat-icon>
-          <span>Perfil</span>
-        </button>
-
-        <button mat-menu-item [routerLink] = "'/'">
-          <mat-icon>public</mat-icon>
-          <span>Página</span>
-        </button>
-
-        <button mat-menu-item (click) = "logout()">
-          <mat-icon>logout</mat-icon>
-          <span>Salir</span>
-        </button>
-        
-      </mat-menu>
-    </mat-toolbar>
-    <mat-divider></mat-divider>
-    <mat-divider></mat-divider>
-    <mat-divider></mat-divider>
-   <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
--->
-
-<!----------------------------------------------------------->
 
 <mat-sidenav-container class="sidenav-container" >
   <mat-sidenav *ngIf="menuVisible" #drawer class="sidenav" style="background-color: var(--color-menu-dashboar);"
@@ -140,47 +21,25 @@
       <div class=" navbar-light bg-light" style=" min-width: var(--tamanio-menu); max-width: var(--tamanio-menu);">
         <ul class="navbar-nav " style="background-color: var(--color-menu-dashboar);">
 
-          <li class="navbar-nav">
-            <a class="nav-link  mi-elemento personalizado" routerLink="/director-dashboard" routerLinkActive="active-link"
-              [routerLinkActiveOptions]="{exact:true}" mat-list-item (click)="esconderToggleMenu()">
-              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">home</mat-icon>
-              Panel de control
-            </a>
-          </li>
+          <div style="box-shadow: 0 2px 4px var(--color-menu-dashboar-grupo)" >
+            <li class="navbar-nav">
+              <a class="nav-link  mi-elemento personalizado" routerLink="/director-dashboard" routerLinkActive="active-link"
+                [routerLinkActiveOptions]="{exact:true}" mat-list-item (click)="esconderToggleMenu()">
+                <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">home</mat-icon>
+                Panel de control
+              </a>
+            </li>
+          </div>
           <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
 
           <div style="box-shadow: 0 2px 4px var(--color-menu-dashboar-grupo)" >
-            <li class="nav-item">
-              <a class="nav-link  mi-elemento personalizado" routerLinkActive="active-link" mat-list-item
-                (click)="toggleMenu1()">
+            <li class="navbar-nav">
+              <a class="nav-link  mi-elemento personalizado" routerLink="/director-dashboard/view-investigador" routerLinkActive="active-link"
+                mat-list-item (click)="esconderToggleMenu()">
                 <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">person_pin</mat-icon>
-                <div style="width: var(--tamanio-ancho-despelgable);">Investigadores</div>
-                <span>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
-                    *ngIf="isArrowUp1==false">keyboard_arrow_down</mat-icon>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
-                    *ngIf="isArrowUp1==true">keyboard_arrow_up</mat-icon>
-                </span>
+                Investigador
               </a>
             </li>
-
-            <ul class="navbar-nav " *ngIf="isMenuOpen1">
-              <li class="nav-item">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link" routerLink="/director-dashboard/add-investigador"
-                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                  type="button">
-                  Añadir investigador
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link" routerLink="/director-dashboard/view-investigador"
-                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                  type="button">
-                  Lista de investigador
-                </a>
-              </li>
-
-            </ul>
           </div>
           <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
 
@@ -206,7 +65,7 @@
                 [routerLink] = "'/director-dashboard/add-proyecto-investigacion/'+idUsuario"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
-                  Añadir proyecto de investigación
+                  Agregar
                 </a>
               </li>
               <li class="nav-item">
@@ -214,7 +73,7 @@
                 [routerLink] = "'/director-dashboard/view-proyecto-investigacion/'+idUsuario"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
-                  Lista proyectos de investigación
+                  Listar
                 </a>
               </li>
             </ul>
@@ -226,7 +85,7 @@
               <a class="nav-link  mi-elemento personalizado" routerLinkActive="active-link" mat-list-item
                 (click)="toggleMenu3()">
                 <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">library_books</mat-icon>
-                <div style="width: var(--tamanio-ancho-despelgable);">Solicitudes</div>
+                <div style="width: var(--tamanio-ancho-despelgable);">Atender solicitudes</div>
                 <span>
                   <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
                     *ngIf="isArrowUp1==false">keyboard_arrow_down</mat-icon>

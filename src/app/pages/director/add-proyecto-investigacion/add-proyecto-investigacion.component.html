@@ -5,8 +5,7 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">storage</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Agrega
-          nuevo proyecto
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Agrega proyecto de investigación
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
@@ -14,7 +13,7 @@
             <li class="breadcrumb-item derecha"><a style="color: black; text-decoration: none;"
                 routerLink="/director-dashboard">Inicio</a></li>
             <li class="breadcrumb-item active derecha"
-              style="color: var(--color-migajas-de-pan); text-decoration: none;" aria-current="page">Agregar proyecto
+              style="color: var(--color-migajas-de-pan); text-decoration: none;" aria-current="page">Agregar proyecto de investigación
             </li>
           </ol>
         </div>
@@ -294,8 +293,7 @@
 
 
                   <div class="container text-center mt15">
-                    <button mat-raised-button color="primary" (click)="agregarLocalizacion()">Agregar
-                      Localización</button>
+                    <button mat-raised-button color="primary" (click)="agregarLocalizacion()">Agregar</button>
                   </div>
                 </div>
               </div>
@@ -349,7 +347,7 @@
   </mat-step>
 
   <mat-step>
-    <ng-template matStepLabel>Datos del proyecto</ng-template>
+    <ng-template matStepLabel>Agregar</ng-template>
     <ng-template matStepContent>
 
       <div class="joinnow">
@@ -360,7 +358,7 @@
 
                 <div class="box mt-3 mb-3">
                   <form (submit)="formSubmit()">
-                    <mat-card-title style="font-size: 20px; text-align: center;">Datos del proyecto</mat-card-title>
+                    <mat-card-title style="font-size: 20px; text-align: center;">Datos del proyecto de investigación</mat-card-title>
 
 
                     <br>
@@ -426,7 +424,7 @@
                     <br>
 
                     <div class="container text-center mt15">
-                      <button mat-raised-button color="primary">Guardar proyecto</button>
+                      <button mat-raised-button color="primary">Agregar</button>
                     </div>
                   </form>
                 </div>

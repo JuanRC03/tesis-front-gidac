@@ -233,61 +233,31 @@
       <div class=" navbar-light bg-light" style=" min-width: var(--tamanio-menu); max-width: var(--tamanio-menu);">
         <ul class="navbar-nav " style="background-color: var(--color-menu-dashboar);">
 
-          <li class="navbar-nav">
-            <a class="nav-link  mi-elemento personalizado" routerLink="/user-dashboard" routerLinkActive="active-link"
-              [routerLinkActiveOptions]="{exact:true}" mat-list-item (click)="esconderToggleMenu()">
-              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">home</mat-icon>
-              Panel de control
-            </a>
-          </li>
+          <div style="box-shadow: 0 2px 4px var(--color-menu-dashboar-grupo)">
+            <li class="navbar-nav">
+              <a class="nav-link  mi-elemento personalizado" routerLink="/user-dashboard" routerLinkActive="active-link"
+                [routerLinkActiveOptions]="{exact:true}" mat-list-item (click)="esconderToggleMenu()">
+                <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">home</mat-icon>
+                Panel de control
+              </a>
+            </li>
+          </div>
           
           <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
 
-          <!--
-          <li class="navbar-nav">
-            <a class="nav-link  mi-elemento personalizado" routerLink="/user-dashboard/convertir-xls" routerLinkActive="active-link"
-               mat-list-item (click)="esconderToggleMenu()">
-              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">home</mat-icon>
-              convertir
-            </a>
-          </li>
-          -->
-         
           <div style="box-shadow: 0 2px 4px var(--color-menu-dashboar-grupo)">
-            <li class="nav-item">
-              <a class="nav-link  mi-elemento personalizado" routerLinkActive="active-link" mat-list-item
-                (click)="toggleMenu4()">
+            <li class="navbar-nav">
+              <a class="nav-link  mi-elemento personalizado" routerLink="/user-dashboard/view-medidas" routerLinkActive="active-link"
+                 mat-list-item (click)="esconderToggleMenu()">
                 <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">shutter_speed</mat-icon>
-                <div style="width: var(--tamanio-ancho-despelgable);">Unidad de medida</div>
-                <span>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
-                    *ngIf="isArrowUp4==false">keyboard_arrow_down</mat-icon>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
-                    *ngIf="isArrowUp4==true">keyboard_arrow_up</mat-icon>
-                </span>
+                Unidad de medida
               </a>
             </li>
-
-            <ul class="navbar-nav " *ngIf="isMenuOpen4">
-              <li class="nav-item">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link" routerLink="/user-dashboard/add-medida"
-                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                  type="button">
-                  Añadir unidad de medida
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link" routerLink="/user-dashboard/view-medidas"
-                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                  type="button">
-                  Listar unidades de medida
-                </a>
-              </li>
-            </ul>
           </div>
+          
           <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
-
-
+         
+        
          
           <div style="box-shadow: 0 2px 4px var(--color-menu-dashboar-grupo)">
             <li class="nav-item">
@@ -335,7 +305,7 @@
               <a class="nav-link  mi-elemento personalizado" routerLinkActive="active-link" mat-list-item
                 (click)="toggleMenu2()">
                 <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">dashboard</mat-icon>
-                <div style="width: var(--tamanio-ancho-despelgable);">Catalogo</div>
+                <div style="width: var(--tamanio-ancho-despelgable);">Catálogo de datos</div>
                 <span>
                   <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
                     *ngIf="isArrowUp2==false">keyboard_arrow_down</mat-icon>
@@ -359,7 +329,7 @@
                 <a class="nav-link  mi-elemento " routerLinkActive="active-link" routerLink="/user-dashboard/view-catalogo-organizacion"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
-                  Equivalencia
+                  Equivalencia de variables
                 </a>
               </li>
             </ul>

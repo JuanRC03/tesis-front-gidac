@@ -5,13 +5,13 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">collections_bookmark</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar sectores de impacto
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Sector de impacto
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
           <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
             <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/admin/">Inicio</a></li>
-            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver sectores de impacto</li>
+            <li class="breadcrumb-item active derecha" style="color: var(--color-migajas-de-pan); text-decoration: none;"  aria-current="page">Ver sector de impacto</li>
           </ol>
         </div>
       </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
           
-          <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar sector de impacto</button>             
+          <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar</button>             
          </div>
         <mat-divider></mat-divider>
       </mat-list-item>
@@ -46,7 +46,7 @@
     
     <mat-card >
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"  >
-        <mat-tab label="Sectores de impacto disponibles">
+        <mat-tab label="Disponibles">
 
           <mat-list>
             <mat-list-item *ngFor = "let oC of listaDatosVigentes| filtroSectorImpacto:search | paginate:page_size:page_number">
@@ -85,7 +85,7 @@
 
 
 </mat-tab>
-<mat-tab label="Sectores de impacto eliminadas">
+<mat-tab label="Eliminadas">
   <mat-list>
     <mat-list-item *ngFor = "let oC of listaDatosEliminados| filtroSectorImpacto:search | paginate:page_size:page_number">
       <mat-icon mat-list-icon>streetview</mat-icon>

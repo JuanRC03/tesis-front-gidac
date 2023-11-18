@@ -5,7 +5,7 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">library_books</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Atender
           solicitudes de descarga
         </mat-card-title></div>
       <div mat-line>
@@ -68,8 +68,7 @@
           <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
             <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
               <div style="padding-right: 50px; padding-top: 20px;padding-bottom: 20px;">
-                <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Fecha envio la
-                    solicitud: </b> {{element.fechaEnvioSolicitud}}</p>
+                <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Fecha de recibo de la solicitud: </b> {{element.fechaEnvioSolicitud}}</p>
                 <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Proyecto
                     listarSolicitados: </b> {{element.proyectoInvestigacion.nombreProyecto}}</p>
                 <p style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;"><b>Motivo:</b>

@@ -141,7 +141,7 @@ export class HomeComponent {
       (dato: any) => {
         this.investigaciones = dato;
         if (this.investigaciones.length > 0) {
-          this.investigaciones.unshift({ idProyecto: 0, nombreProyecto: 'Todos los proyectos', descripcion: 'Vizualizar todas los proyectos' });
+          this.investigaciones.unshift({ idProyecto: 0, nombreProyecto: 'Todos los proyectos de investigación', descripcion: 'Vizualizar todas los proyectos' });
         }
       }, (error) => {
 
@@ -209,7 +209,7 @@ export class HomeComponent {
           this.listaOrganizaciones=res;
 
           if (this.listaOrganizaciones.length > 0) {
-            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Por defecto'});
+            this.listaOrganizaciones.unshift({ idOrganizacion: 0, siglas: 'Variables del sistema'});
           }
           this.organizacionSeleccionado.idOrganizacion = 0;
           
@@ -878,8 +878,8 @@ export class HomeComponent {
           this.investigacionDat.parroquia = response.address.village;
           this.investigacionDat.coordenadax = latLng[0];
           this.investigacionDat.coordenaday = latLng[1];
-          
-          let message = `<div style="margin-bottom: 7px;"><b>Coordenadas:</b><br> <b>Latitud:</b> ${latLng[0]}, <b>Longitud:</b> ${latLng[1]}</div>`;
+          let message = `<div style="display: flex; justify-content: center; align-items: center;"><b>Muestras</b></div>`;
+          message += `<div style="margin-bottom: 7px;"><b>Coordenadas:</b><br> <b>Latitud:</b> ${latLng[0]}, <b>Longitud:</b> ${latLng[1]}</div>`;
           message += `<div style="margin-bottom: 7px;"><b>Ubicación:</b><br> <b>Pais:</b> ${locationData.country}<br><b>Provincia:</b> ${locationData.state}<br><b>Cantón:</b> ${locationData.county}<br><b>Parroquia:</b> ${locationData.parroquia}</div>`;
 
           for (const tipoValor in info) {
@@ -1942,7 +1942,7 @@ export class ViewCatalogoHome {
           this.listaOrganizaciones=res;
 
           if (this.listaOrganizaciones.length > 0) {
-            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Por defecto'});
+            this.listaOrganizaciones.unshift({ idOrganizacion: 0, siglas: 'Variables del sistema'});
           }
           this.organizacionSeleccionado.idOrganizacion = 0;
           

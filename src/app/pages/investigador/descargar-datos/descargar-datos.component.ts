@@ -100,7 +100,7 @@ export class DescargarDatosComponent implements OnInit {
           this.listaOrganizaciones=res;
 
           if (this.listaOrganizaciones.length > 0) {
-            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Por defecto', siglas:'Todos', descripcion:'Todos'});
+            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Variables del sistema', siglas:'Variables del sistema', descripcion:'Variables del sistema'});
             this.listaOrganizaciones.idOrganizacion = 0;
             //this.primerElemento = this.listaOrganizaciones[0];
             //this.listaOrganizaciones.idOrganizacion = this.primerElemento.idOrganizacion;

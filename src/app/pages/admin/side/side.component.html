@@ -20,83 +20,25 @@
         <ul class="navbar-nav " style="background-color: var(--color-menu-dashboar);">
 
           
-          <li class="navbar-nav">
-            <a class="nav-link  mi-elemento personalizado" routerLink="/admin" routerLinkActive="active-link"
-              [routerLinkActiveOptions]="{exact:true}" mat-list-item (click)="esconderToggleMenu()">
-              <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">home</mat-icon>
-              Panel de control
-            </a>
-          </li>
-          
-          <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
-
-          <div style="box-shadow: 0 2px 4px var(--color-menu-dashboar-grupo)" *ngIf="idUsuario==1">
-            <li class="nav-item">
-              <a class="nav-link  mi-elemento personalizado" routerLinkActive="active-link" mat-list-item
-                (click)="toggleMenu1()">
-                <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">person_pin</mat-icon>
-                <div style="width: var(--tamanio-ancho-despelgable);">Administradores</div>
-                <span>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
-                    *ngIf="isArrowUp1==false">keyboard_arrow_down</mat-icon>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
-                    *ngIf="isArrowUp1==true">keyboard_arrow_up</mat-icon>
-                </span>
+          <div style="box-shadow: 0 2px 4px var(--color-menu-dashboar-grupo)">
+            <li class="navbar-nav">
+              <a class="nav-link  mi-elemento personalizado" routerLink="/admin" routerLinkActive="active-link"
+                [routerLinkActiveOptions]="{exact:true}" mat-list-item (click)="esconderToggleMenu()">
+                <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">home</mat-icon>
+                Panel de control
               </a>
             </li>
-
-            <ul class="navbar-nav " *ngIf="isMenuOpen1">
-              <li class="nav-item">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link" routerLink="/admin/add-administrador"
-                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                  type="button">
-                  Añadir administrador
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link" routerLink="/admin/view-administrador"
-                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                  type="button">
-                  Lista de administradores
-                </a>
-              </li>
-
-            </ul>
           </div>
           <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
 
-
           <div style="box-shadow: 0 2px 4px var(--color-menu-dashboar-grupo)">
-            <li class="nav-item">
-              <a class="nav-link  mi-elemento personalizado" routerLinkActive="active-link" mat-list-item
-                (click)="toggleMenu2()">
+            <li class="navbar-nav">
+              <a class="nav-link  mi-elemento personalizado" routerLink="/admin/view-director" routerLinkActive="active-link"
+                mat-list-item (click)="esconderToggleMenu()">
                 <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">supervised_user_circle</mat-icon>
-                <div style="width: var(--tamanio-ancho-despelgable);">Directores</div>
-                <span>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
-                    *ngIf="isArrowUp2==false">keyboard_arrow_down</mat-icon>
-                  <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
-                    *ngIf="isArrowUp2==true">keyboard_arrow_up</mat-icon>
-                </span>
+                Director proyecto
               </a>
             </li>
-
-            <ul class="navbar-nav " *ngIf="isMenuOpen2">
-              <li class="nav-item">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link" routerLink="/admin/add-director"
-                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                  type="button">
-                  Añadir director
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link" routerLink="/admin/view-director"
-                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                  type="button">
-                  Lista de directores
-                </a>
-              </li>
-            </ul>
           </div>
           <mat-divider style="background-color: var(--color-linea-divisora);"></mat-divider>
 
@@ -237,7 +179,7 @@
                   routerLink="/admin/view-sector-impacto-admin"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
-                  Sectores de impacto
+                  Sector de impacto
                 </a>
               </li>
               <li class="nav-item">
@@ -245,7 +187,7 @@
                   routerLink="/admin/view-area-investigacion-admin"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
-                  Áreas de investigación
+                  Área de investigación
                 </a>
               </li>
               <li class="nav-item">
@@ -253,7 +195,7 @@
                   routerLink="/admin/view-tipo-investigacion-admin"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
-                  Tipos de investigación
+                  Tipo de investigación
                 </a>
               </li>
               <li class="nav-item">
@@ -261,7 +203,7 @@
                   routerLink="/admin/view-tipo-proyecto-admin"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
-                  Tipos de proyecto
+                  Tipo de proyecto
                 </a>
               </li>
               <li class="nav-item">
@@ -269,7 +211,7 @@
                   routerLink="/admin/view-linea-investigacion-admin"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
-                  Lineas de investigacion
+                  Linea de investigacion
                 </a>
               </li>
 
@@ -278,7 +220,7 @@
                   routerLink="/admin/view-pais-admin"
                   style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
                   type="button">
-                  Localizacines 
+                  Localización
                 </a>
               </li>
 
@@ -302,7 +244,7 @@
               <a class="nav-link  mi-elemento personalizado" routerLinkActive="active-link" mat-list-item
                 (click)="toggleMenu7()">
                 <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);">vertical_split</mat-icon>
-                <div style="width: var(--tamanio-ancho-despelgable);">Catálogo de de datos</div>
+                <div style="width: var(--tamanio-ancho-despelgable);">Catálogo de datos</div>
                 <span>
                   <mat-icon mat-list-icon style="font-size: var(--tamanio-icono-menu);"
                     *ngIf="isArrowUp7==false">keyboard_arrow_down</mat-icon>
@@ -315,6 +257,15 @@
             
 
             <ul class="navbar-nav " *ngIf="isMenuOpen7">
+
+              <li class="nav-item">
+                <a class="nav-link  mi-elemento " routerLinkActive="active-link"
+                  routerLink="/admin/view-organizacion-admin"
+                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
+                  type="button">
+                  Organización
+                </a>
+              </li>
 
               <li class="nav-item">
                 <a class="nav-link  mi-elemento " routerLinkActive="active-link"
@@ -335,14 +286,7 @@
                 </a>
               </li>
               
-              <li class="nav-item">
-                <a class="nav-link  mi-elemento " routerLinkActive="active-link"
-                  routerLink="/admin/view-organizacion-admin"
-                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
-                  type="button">
-                  Organizaciones
-                </a>
-              </li>
+              
               
               <!--<li class="nav-item">
                 <a class="nav-link  mi-elemento " routerLinkActive="active-link"
@@ -412,6 +356,14 @@
             </li>
 
             <ul class="navbar-nav " *ngIf="isMenuOpen8">
+              <li class="nav-item">
+                <a class="nav-link  mi-elemento " routerLinkActive="active-link"
+                  routerLink="/admin/view-administrador"
+                  style="max-width: var(--tamanio-menu); padding-left: var(--pading-left-subtitulo); font-size: var(--tamanio-subtexto-menu);"
+                  type="button">
+                  Gestionar administrador
+                </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link  mi-elemento " routerLinkActive="active-link"
                   [routerLink]="'/admin/actualizar-informacion-app-web/'+usuario.idUsuario"

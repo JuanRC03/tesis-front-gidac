@@ -5,7 +5,7 @@
       <mat-icon mat-list-icon
         style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">vertical_split</mat-icon>
       <div mat-line><mat-card-title
-          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar organizaciones
+          style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Organización
         </mat-card-title></div>
       <div mat-line>
         <div aria-label="breadcrumb" style="font-size: var(--tamanio-texto-camino); border: 0; padding: 0; margin: 0;">
@@ -18,9 +18,7 @@
     </mat-list-item>
   </mat-list>
 </mat-card>
-
-
-  <br>
+<mat-card style="background-color: var(--dash-sidebar-bakcolor);">
   <mat-list>
     <mat-list-item>
       <div mat-line>
@@ -31,13 +29,13 @@
       </div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
         
-        <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar organización</button>
+        <button (click)="openDialogAgregar()" mat-raised-button color="primary">Agregar</button>
       </div>
 
     </mat-list-item>
   </mat-list>
 
-  <mat-card style="margin-top: 0; border-top: 0; padding-top: 5px;">
+  
           <div class="mat-elevation-z8 table-container">
             <table class="table" mat-table
               [dataSource]="listaDatos | filtroOrganizacionAdmin:search | paginate:page_size:page_number"

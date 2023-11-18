@@ -31,7 +31,6 @@ export class ViewMedidaComponent implements AfterViewInit {
   }
   
   ngOnInit(): void {
-    
     this.listarVigentes();
   }
 

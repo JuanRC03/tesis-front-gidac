@@ -1,8 +1,8 @@
 <mat-list class="estilo-mat-list" style="padding: 0;">
   <mat-list-item class="estilo-mat-item">
     
-    <div mat-line>Investigadores</div>
-    <div mat-line style="color: var(--resaltado-color);">{{nombreProyecto}}</div>
+    <div mat-line>Gestionar investigadores del proyecto de investigación</div>
+    
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
       <button  mat-icon-button mat-dialog-close
         matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
@@ -12,8 +12,9 @@
   </mat-list-item>
 </mat-list>
 <mat-divider></mat-divider>
+<p style="padding: 10px 10px 0px 15px;"><b>Proyecto: </b>{{nombreProyecto}} </p>
+<mat-divider></mat-divider>
 <mat-dialog-content class="mat-typography">
-  <br>
     <mat-list>
       <mat-list-item >
         <div mat-line>
@@ -32,7 +33,7 @@
     </mat-list>
 <mat-card>   
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"  >
-      <mat-tab label="Investigadores asignados">
+      <mat-tab label="Asignados">
 
   <div>
     <div *ngFor = "let oC of grupoInvestigacion | filtroGrupoInvestigacion:search | paginate:page_size:page_number">
@@ -72,7 +73,7 @@
   </div>
 
 </mat-tab>
-<mat-tab label="Investigadores no asignados">
+<mat-tab label="No asignados">
 
   <div>
     

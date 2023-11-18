@@ -142,6 +142,14 @@ export class ViewAdministradorComponent implements AfterViewInit {
     });
   }
 
+  agregar(): void {
+    const dialogRef = this.dialog.open(AgregarAdministrador, {
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarVigentes();
+    });
+  }
+
 }
 
 
@@ -156,7 +164,90 @@ export interface dataEditar {
   vigencia: 1
 }
 
+@Component({
+  selector: 'agregar-administrador',
+  templateUrl: 'agregar-administrador.html',
+  styleUrls: ['./view-administrador.component.css']
+})
 
+export class AgregarAdministrador {
+  constructor(
+    public dialogRef: MatDialogRef<AgregarAdministrador>,
+    private userService: UserService,
+    private snack: MatSnackBar,
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  ngOnInit(): void {
+  }
+
+  public data = {
+    nombreUsuario: '',
+    apellidoUsuario: '',
+    cedula: '',
+    telefono: '',
+    email: '',
+    vigencia: 1,
+    rol: {
+      idRol: 1
+    }
+  }
+
+  public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+  public agregar() {
+    if (this.data.nombreUsuario.trim() == '' || this.data.nombreUsuario.trim() == null) {
+      this.snack.open('El nombre del administrador es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    if (this.data.apellidoUsuario.trim() == '' || this.data.apellidoUsuario.trim() == null) {
+      this.snack.open('El apellido del administrador es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    if (this.data.cedula.trim() == '' || this.data.cedula.trim() == null) {
+      this.snack.open('La cédula del administrador es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.data.telefono.trim() == '' || this.data.telefono.trim() == null) {
+      this.snack.open('El teléfono del administrador es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    if (this.data.email.trim() == '' || this.data.email.trim() == null) {
+      this.snack.open('El email del administrador es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+
+    this.userService.actualizarUsuario(this.data).subscribe(
+      (data) => {
+        Swal.fire('Información agregada', 'El administrador agregado con éxito', 'success').then(
+          (e) => {
+            this.afterClosed.emit();
+            this.dialogRef.close();
+          })
+      }, (error) => {
+        Swal.fire('Error en el sistema', 'No se agrego el administrador', 'error');
+        console.log(error);
+      }
+    );
+
+  }
+
+}
 
 
 
@@ -238,7 +329,7 @@ export class EditarAdministrador {
 
     this.userService.actualizarUsuario(this.data).subscribe(
       (data) => {
-        Swal.fire('Información actualizada', 'El administrador se actualizado con éxito', 'success').then(
+        Swal.fire('Información actualizada', 'El administrador actualizado con éxito', 'success').then(
           (e) => {
             this.afterClosed.emit();
             this.dialogRef.close();

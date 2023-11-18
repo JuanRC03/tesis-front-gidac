@@ -164,6 +164,13 @@ export class ViewDirectorComponent implements AfterViewInit {
     });
   }
 
+  agregar(): void {
+    const dialogRef = this.dialog.open(AgregarDirector, {});
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarVigentes();
+    });
+  }
+
 }
 
 
@@ -177,6 +184,93 @@ export interface dataEditar {
   email: '',
   vigencia: 1,
   idRol: 2
+}
+
+
+
+@Component({
+  selector: 'agregar-director',
+  templateUrl: 'agregar-director.html',
+  styleUrls: ['./view-director.component.css']
+})
+
+export class AgregarDirector {
+  constructor(
+    public dialogRef: MatDialogRef<AgregarDirector>,
+    private userService: UserService,
+    private snack: MatSnackBar,
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  ngOnInit(): void {
+  }
+
+  public data = {
+    nombreUsuario: '',
+    apellidoUsuario: '',
+    cedula: '',
+    telefono: '',
+    email: '',
+    vigencia: 1,
+    rol: {
+      idRol: 2
+    }
+  }
+
+  public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+  public agregar() {
+    if (this.data.nombreUsuario.trim() == '' || this.data.nombreUsuario.trim() == null) {
+      this.snack.open('El nombre del director es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    if (this.data.apellidoUsuario.trim() == '' || this.data.apellidoUsuario.trim() == null) {
+      this.snack.open('El apellido del director es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    if (this.data.cedula.trim() == '' || this.data.cedula.trim() == null) {
+      this.snack.open('La cédula del director es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.data.telefono.trim() == '' || this.data.telefono.trim() == null) {
+      this.snack.open('El teléfono del director es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    if (this.data.email.trim() == '' || this.data.email.trim() == null) {
+      this.snack.open('El email del director es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+
+    this.userService.aniadirUsuario(this.data).subscribe(
+      (data) => {
+        Swal.fire('Información agregada', 'El director se agrego con éxito', 'success').then(
+          (e) => {
+            this.afterClosed.emit();
+            this.dialogRef.close();
+          })
+      }, (error) => {
+        Swal.fire('Error en el sistema', 'No se agrego el director', 'error');
+        console.log(error);
+      }
+    );
+
+  }
+
 }
 
 

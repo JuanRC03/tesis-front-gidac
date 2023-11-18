@@ -12,31 +12,31 @@
 </mat-list>
 <mat-divider></mat-divider>
 
-<form (ngSubmit)="editar()">
+<form (ngSubmit)="editar()" style="max-width: 400px;">
   <div class="box mt-3 mb-3">
 
     <mat-form-field class="w100" appearance="outline">
-      <mat-label>Nombre del administrador</mat-label>
+      <mat-label>Nombre</mat-label>
       <input [(ngModel)]="data.nombreUsuario" type="text" name="nombre" matInput placeholder="Digite el nombre">
     </mat-form-field>
 
     <mat-form-field class="w100" appearance="outline">
-      <mat-label>Apellido del administrador</mat-label>
+      <mat-label>Apellido</mat-label>
       <input [(ngModel)]="data.apellidoUsuario" type="text" name="apellido" matInput placeholder="Digite el apellido">
     </mat-form-field>
 
     <mat-form-field class="w100" appearance="outline">
-      <mat-label>Cédula del administrador</mat-label>
+      <mat-label>Cédula</mat-label>
       <input [(ngModel)]="data.cedula" type="text" name="cedula" matInput placeholder="Digite la cédula">
     </mat-form-field>
 
     <mat-form-field class="w100" appearance="outline">
-      <mat-label>Teléfono del administrador</mat-label>
+      <mat-label>Teléfono</mat-label>
       <input [(ngModel)]="data.telefono" type="text" name="telefono" matInput placeholder="Digite el teléfono">
     </mat-form-field>
 
     <mat-form-field class="w100" appearance="outline">
-      <mat-label>Email del administrador</mat-label>
+      <mat-label>Email</mat-label>
       <input [(ngModel)]="data.email" type="text" name="email" matInput placeholder="Digite el email">
     </mat-form-field>
 
