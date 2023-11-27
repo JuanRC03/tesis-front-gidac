@@ -87,7 +87,7 @@
 </mat-tab>
 <mat-tab label="Eliminadas">
   <mat-list>
-    <mat-list-item *ngFor = "let oC of listaDatosEliminados| filtroSectorImpacto:search | paginate:page_size:page_number">
+    <mat-list-item *ngFor = "let oC of listaDatosEliminados| filtroSectorImpacto:search | paginate:page_size:page_number1">
       <mat-icon mat-list-icon>streetview</mat-icon>
       <div mat-line ><mat-card-subtitle style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.nombreSectorImpacto }}</mat-card-subtitle></div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -108,7 +108,7 @@
     </mat-list>
     <mat-divider></mat-divider>
     <mat-paginator 
-                   (page)="handlePage($event)"
+                   (page)="handlePage1($event)"
                    [length]="(listaDatosEliminados| filtroSectorImpacto:search).length"
                    [pageSize]="page_size"
                    [pageSizeOptions]="page_size_options"

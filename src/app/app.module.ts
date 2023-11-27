@@ -109,6 +109,7 @@ import { FiltroFamiliaAdminPipe } from './pipes/filtro-familia-admin.pipe';
 import { FiltroOrganizacionAdminPipe } from './pipes/filtro-organizacion-admin.pipe';
 import { AgregarDirector } from './pages/admin/view-director/view-director.component';
 import { AgregarAdministrador } from './pages/admin/view-administrador/view-administrador.component';
+import { ViewCatalogoVariable } from './pages/admin/view-variables-admin/view-variables-admin.component';
 
 //Director
 import { SideDirectorComponent } from './pages/director/side-director/side-director.component';
@@ -226,6 +227,7 @@ import { FiltroPaisPipe } from './pipes/filtro-pais.pipe';
 import { FiltroProvinciaPipe } from './pipes/filtro-provincia.pipe';
 import { FiltroCantonPipe } from './pipes/filtro-canton.pipe';
 import { FiltroParroquiaPipe } from './pipes/filtro-parroquia.pipe';
+import { FiltroEquivalenciaVariableSistemaCatalogPipe } from './pipes/filtro-equivalencia-variable-sistema-catalog.pipe';
 
 @NgModule({
   declarations: [
@@ -400,6 +402,8 @@ import { FiltroParroquiaPipe } from './pipes/filtro-parroquia.pipe';
     AgregarDirector,
     AgregarAdministrador,
     AgregarInvestigador,
+    ViewCatalogoVariable,
+    FiltroEquivalenciaVariableSistemaCatalogPipe,
   ],
   imports: [
     MatTreeModule,

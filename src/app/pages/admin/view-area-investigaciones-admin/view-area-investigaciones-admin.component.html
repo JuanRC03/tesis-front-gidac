@@ -83,7 +83,7 @@
       <mat-tab label="Eliminadas">
         <mat-list>
           <mat-list-item
-            *ngFor="let oC of listaDatosEliminados| filtroAreaInvestigacion:search | paginate:page_size:page_number">
+            *ngFor="let oC of listaDatosEliminados| filtroAreaInvestigacion:search | paginate:page_size:page_number1">
             <mat-icon mat-list-icon>streetview</mat-icon>
             <div mat-line><mat-card-subtitle
                 style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0; color: black;">{{oC.nombreAreaInvestigacion }}</mat-card-subtitle>
@@ -107,7 +107,7 @@
 
           </mat-list>
           <mat-divider></mat-divider>
-          <mat-paginator (page)="handlePage($event)"
+          <mat-paginator (page)="handlePage1($event)"
             [length]="(listaDatosEliminados| filtroAreaInvestigacion:search).length" [pageSize]="page_size"
             [pageSizeOptions]="page_size_options" showFirstLastButtons>
           </mat-paginator>

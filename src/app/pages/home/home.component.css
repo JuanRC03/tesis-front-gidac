@@ -93,7 +93,7 @@
 }
 
 .mi-elemento:hover:not(.menu-selected) {
-  background-color: var(--resaltado-color);
+  background-color: var(--resaltado-color-menu-principal);
 }
 .mat-list-item-content{
   padding: 0;
@@ -504,4 +504,25 @@ input:checked + label .radio-button-1::after {
 
 .valor-item p:first-child {
   margin-bottom: 3px;
+}
+
+
+.navbar-light .navbar-nav .nav-link
+{
+  border-radius: 5px;
+  color:var(--color-menu-dashboar-texto) ;
+}
+
+.navbar-light .navbar-nav .nav-link
+{
+  border-radius: 5px;
+  color:var(--color-menu-dashboar-texto) ;
+}
+
+span.mat-list-text {
+  padding-left: 0 !important;
+}
+
+.active-link {
+  background-color: var(--resaltado-color-menu-principal); 
 }

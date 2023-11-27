@@ -25,6 +25,14 @@ export class MedidaService {
     return this.http.get(`${baserUrl}/medida/listar-medida`);
   }
 
+  public listarEliminads(){
+    return this.http.get(`${baserUrl}/medida/listar-medida-eliminado`);
+  }
+
+  public restaurar(id:any){
+    return this.http.delete(`${baserUrl}/medida/restaurar-medida/${id}`); 
+  }
+
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/medida/eliminar-medida/${id}`); 
   }

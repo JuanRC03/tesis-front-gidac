@@ -25,6 +25,14 @@ export class AreaService {
     return this.http.get(`${baserUrl}/area/listar`);
   }
 
+  public listarEliminads(){
+    return this.http.get(`${baserUrl}/area/listar-eliminada`);
+  }
+
+  public restaurar(id:any){
+    return this.http.delete(`${baserUrl}/area/restaurar/${id}`); 
+  }
+
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/area/eliminar/${id}`); 
   }

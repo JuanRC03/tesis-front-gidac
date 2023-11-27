@@ -38,6 +38,10 @@ export class DatoRecolectadoService {
     return this.http.get(`${baserUrl}/dato-recolectado/obtener-por-dataset/${id}`);
   }
 
+  public obtenerPorProfundidadParcela(idProfundidad:any, idParcela:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/obtener-por-profundidad-parcela/${idProfundidad}/${idParcela}`);
+  }
+
   public comprobarXLS(modelo:any){
     return this.http.post(`${baserUrl}/dato-recolectado/comprobar-estado-archivo`,modelo);
   }
@@ -66,8 +70,8 @@ export class DatoRecolectadoService {
     return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos/${id}`);
   }
 
-  public listarTodosLosDatosUnidos(id:any, idVariable:any){
-    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-unidos/${id}/${idVariable}`);
+  public listarTodosLosDatosUnidos(id:any, idVariable:any, codigoDataset:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-unidos/${id}/${idVariable}/${codigoDataset}`);
   }
 
   public listarTodosLosDatosCatalogoUnidos(id:any){
@@ -94,8 +98,8 @@ export class DatoRecolectadoService {
     return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-proyecto-variable-nominal/${idProyecto}/${idVariable}`);
   }
 
-  public dashlistarTodosLosDatosProyectoVariableUnido(idProyecto:any, idVariable:any){
-    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-proyecto-variable-unidos/${idProyecto}/${idVariable}`);
+  public dashlistarTodosLosDatosProyectoVariableUnido(idProyecto:any, idVariable:any, codigoDataset:any){
+    return this.http.get(`${baserUrl}/dato-recolectado/listar-todos-datos-proyecto-variable-unidos/${idProyecto}/${idVariable}/${codigoDataset}`);
   }
 
 }

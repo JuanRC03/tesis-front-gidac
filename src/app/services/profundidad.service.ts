@@ -25,6 +25,14 @@ export class ProfundidadService {
     return this.http.get(`${baserUrl}/profundidad/listar-profundidad`);
   }
 
+  public listarEliminads(){
+    return this.http.get(`${baserUrl}/profundidad/listar-profundidad-eliminada`);
+  }
+
+  public restaurar(id:any){
+    return this.http.delete(`${baserUrl}/profundidad/restaurar-profundidad/${id}`); 
+  }
+
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/profundidad/eliminar-profundidad/${id}`); 
   }

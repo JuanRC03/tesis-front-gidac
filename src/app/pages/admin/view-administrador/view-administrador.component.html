@@ -3,7 +3,7 @@
   <mat-list style="margin: 0; padding: 0; border: 0;">
     <mat-list-item style="margin: 0; padding: 0; border: 0; height: var(--tamanio-cuadro-idicador);">
       <mat-icon mat-list-icon
-        style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">person_pin</mat-icon>
+        style="padding: 0px; margin: 0; border: 0; font-size: var(--tamanio-icono-indocador);">add_to_queue</mat-icon>
       <div mat-line><mat-card-title
           style="font-size: var(--tamanio-texto-indicador); margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Gestionar administradores
         </mat-card-title></div>
@@ -114,7 +114,7 @@
 
         <div class="mat-elevation-z8 table-container">
           <table class="table" mat-table
-            [dataSource]="listaUsuariosEliminados | filtroUsuarios:search | paginate:page_size:page_number"
+            [dataSource]="listaUsuariosEliminados | filtroUsuarios:search | paginate:page_size:page_number1"
             class="full-width-table" matSort aria-label="Elements">
 
             <ng-container matColumnDef="dato1">
@@ -163,7 +163,7 @@
             <mat-divider></mat-divider>
           </mat-list>
 
-          <mat-paginator (page)="handlePage($event)" [length]="(listaUsuariosEliminados | filtroUsuarios:search).length"
+          <mat-paginator (page)="handlePage1($event)" [length]="(listaUsuariosEliminados | filtroUsuarios:search).length"
             [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
           </mat-paginator>
         </div>

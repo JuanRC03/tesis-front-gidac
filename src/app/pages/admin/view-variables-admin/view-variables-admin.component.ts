@@ -135,6 +135,13 @@ export class ViewVariablesAdminComponent implements AfterViewInit {
       this.page_number=e.pageIndex + 1
     }
     
+    page_number1: number = 1
+
+    handlePage1(e: PageEvent) {
+      this.page_size = e.pageSize
+      this.page_number1 = e.pageIndex + 1
+    }
+
     public search: string = '';
   
     onSearch( search: string ) {
@@ -160,6 +167,16 @@ export class ViewVariablesAdminComponent implements AfterViewInit {
 
     openDialogCompletarDatos(id:any, nombre:any): void {
       const dialogRef = this.dialog.open(DialogCompletarDatosVariable, {
+        data: { idVariable: id, nombreVariable:nombre},
+      });
+      dialogRef.afterClosed().subscribe(() => {
+        this.listarVigentes();
+        
+      });
+    }
+
+    openViewVariableSistema(id:any, nombre:any): void {
+      const dialogRef = this.dialog.open(ViewCatalogoVariable, {
         data: { idVariable: id, nombreVariable:nombre},
       });
       dialogRef.afterClosed().subscribe(() => {
@@ -340,13 +357,13 @@ export class DialogAddEquivalencia {
   
       this.variableService.guardarDatosVariable(formData).subscribe(
         (data) => {
-          Swal.fire('Información guardada', 'La variable se agrego con éxito', 'success').then(
+          Swal.fire('Información agregada', 'La variable se agrego con éxito', 'success').then(
             (e) => {
               this.afterClosed.emit();
               this.dialogRef.close();
             })
         }, (error) => {
-          Swal.fire('Error en el sistema', 'No se guardo la nueva variable del sistema', 'error');
+          Swal.fire('Error en el sistema', 'No se agrego la nueva variable del sistema', 'error');
           console.log(error);
         }
       );
@@ -547,6 +564,9 @@ export class DialogEditarEquivalencia {
       idOrganizacion:0,
       nombreOrganizacion:'',
     },
+    variable:{
+      idVariable:0,
+    },
   }
 
   public afterClosed: EventEmitter<void> = new EventEmitter<void>();
@@ -596,6 +616,7 @@ export class DialogEditarEquivalencia {
             this.variableOrganizacion.descripcion=res.descripcion
             this.variableOrganizacion.organizacion.idOrganizacion=res.organizacion.idOrganizacion
             this.variableOrganizacion.organizacion.nombreOrganizacion=res.organizacion.nombreOrganizacion
+            this.variableOrganizacion.variable.idVariable=res.variable.idVariable
           },
           err=>console.log(err)
         )
@@ -816,7 +837,6 @@ export class DialogEditarEquivalencia {
                 this.valorPermitido.valorMaximo = '';
                 this.valorPermitido.valorMinimo = '';
                 this.valorPermitido.valorPermitido = '';
-                this.unidadMedida.idUnidadMedida=0;
 
               }else{
                 this.snack.open('El valor minimo de ser menor que el maximo !!','Aceptar',{
@@ -976,7 +996,63 @@ interface DatosActualizar {
   idVariable: '',
   nombreVariable: '',
 }
+
+@Component({
+  selector: 'view-equivalencia-catalogo-variable',
+  templateUrl: 'view-equivalencia-catalogo-variable.html',
+  styleUrls: ['./view-variables-admin.component.css']
+})
+export class ViewCatalogoVariable {
+  constructor(
+    
+    public dialogRef: MatDialogRef<ViewCatalogoVariable>,
+    @Inject(MAT_DIALOG_DATA) public datos: DatosActualizar,
+    private catalogoOrganizacionService:CatalogoOrganizacionService,
+  ) { }
+
+
+  public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+  displayedColumns = ['dato1', 'dato2', 'dato3'];
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
+  ngOnInit(): void {
+    this.listarCatalogoVariable();
+  }
+
+  listaDatos : any = []
+
+  listarCatalogoVariable()
+    {
+      this.catalogoOrganizacionService.obtenerPorVariableSistemaVigente(this.datos.idVariable).subscribe(
+          res=>{
+            this.listaDatos=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+    page_size:number=5
+    page_number:number=1
+    page_size_options=[5,10,20,50,100]
   
+    handlePage(e: PageEvent){
+      this.page_size=e.pageSize
+      this.page_number=e.pageIndex + 1
+    }
+    
+    public search: string = '';
+  
+    onSearch( search: string ) {
+      this.search = search;
+    }
+
+}
+
 @Component({
   selector: 'completar-datos-variable',
   templateUrl: 'completar-datos-variable.html',

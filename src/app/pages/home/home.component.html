@@ -41,32 +41,87 @@
         <mat-divider></mat-divider>
       </mat-list-item>
     </mat-list>-->
+
+
+
+
+
     <mat-list>
-      <mat-list-item
-        *ngFor="let oC of investigaciones | filtroInvestigacion:search | paginate:page_size1:page_number1; let i = index"
-        style="color: var(--color-texto-menu-home)">
+
+      <div
+      *ngFor="let oC of investigaciones | filtroInvestigacion:search | paginate:page_size1:page_number1; let i = index"
+      >
+      <mat-list-item 
+      
+        style="color: var(--color-texto-menu-home);">
         <div mat-line><mat-card-title
             style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">{{oC.nombreProyecto }}</mat-card-title>
         </div>
         <div mat-line style="font-size: 13px;"> {{oC.descripcion}}</div>
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+
+
           <button *ngIf="oC.idProyecto!=0" mat-icon-button matTooltip="var(--resaltado-color)" color="var(--resaltado-color)"
             aria-label="Example icon-button with a heart icon" (click)="openDialogInformacion(oC.idProyecto)">
             <mat-icon  style="color: var(--resaltado-color);">info</mat-icon>
           </button>
+
           <div class="pading-radio-buton">
             <div class="container-1">
               <div class="form-group">
                 <input style="display: none;" type="radio" name="radioOpcion" [id]="oC.idProyecto"
                   [id]="oC.idProyecto" [checked]="investigacionSeleccionada === oC.idProyecto"
-                  (change)="filtrarInvestigacione(oC.idProyecto)" />
+                  (change)="filtrarInvestigacione(oC.idProyecto)" (click)="toggleMenuProyecto(oC)"/>
                 <label [for]="oC.idProyecto"><span class="radio-button-1"></span></label>
               </div>
             </div>
           </div>
+
+          <!--<button *ngIf="oC.idProyecto!=0" mat-icon-button matTooltip="var(--resaltado-color)" color="var(--resaltado-color)"
+            aria-label="Example icon-button with a heart icon">
+            
+            <mat-icon style="font-size: var(--tamanio-icono-menu);" *ngIf="!oC.isMenuOpen" (click)="toggleMenuProyecto(oC)"> 
+              keyboard_arrow_down
+            </mat-icon>
+            <mat-icon  style="font-size: var(--tamanio-icono-menu);" *ngIf="oC.isMenuOpen" (click)="toggleMenuProyectoEsconder(oC)">
+              keyboard_arrow_up
+            </mat-icon>
+          </button>-->
+
         </div>
+
         <mat-divider></mat-divider>
       </mat-list-item>
+      
+      <ul class="navbar-nav" *ngIf="oC.isMenuOpen">
+
+        
+
+        <div mat-line><mat-card-title
+          style="font-size: 14px; margin-bottom: 0; padding-top: 10px; padding-bottom: 0; padding-left: 16px;">Dataset:</mat-card-title>
+        </div>
+
+        <li class="nav-item" *ngFor="let oDataset of listaDatosDatasetProyecto"  >
+          
+            <a class="nav-link mi-elemento" routerLinkActive="active-link" (click)="obtenerDatasetProyecto(oC.idProyecto, oDataset.codigoDataset)"
+              [class.active-link]="oDataset.codigoDataset === datasetSeleccionadaBackcraun"
+              style="padding-left: 25px; font-size: var(--tamanio-subtexto-menu); color: unset;"
+              type="button">
+              {{ oDataset.codigoDataset !== 0 ? 'Dataset ' + oDataset.codigoDataset +' - ' : '' }} {{ oDataset.fechaDataset }}
+            </a>          
+        </li>
+
+        <mat-list *ngIf="listaDatosDatasetProyecto.length===0"
+              style="text-align: center">
+              <p style="color: var(--color-texto-menu-home);">No existen dataset !!</p>
+              <br>
+            </mat-list>
+        <mat-divider></mat-divider>
+      </ul>
+    </div>
+
+      
+
       <mat-list *ngIf="(investigaciones| filtroInvestigacion:search).length===0"
         style="text-align: center; padding: 20px; margin: 20px;">
         <p style="color: var(--color-texto-menu-home);">No existen proyectos !!</p>

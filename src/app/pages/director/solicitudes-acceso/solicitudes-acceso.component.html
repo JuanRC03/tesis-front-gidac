@@ -115,7 +115,7 @@
 
       <div class="mat-elevation-z8 table-container">
         <table class="table" mat-table
-          [dataSource]="dataSourceAceptado | filtroSolicitudDescargaRespuesta:search | paginate:page_size:page_number"
+          [dataSource]="dataSourceAceptado | filtroSolicitudDescargaRespuesta:search | paginate:page_size:page_number2"
           class="full-width-table" matSort aria-label="Elements">
 
           <ng-container matColumnDef="dato1">
@@ -162,7 +162,7 @@
           <mat-divider></mat-divider>
         </mat-list>
 
-        <mat-paginator (page)="handlePage($event)"
+        <mat-paginator (page)="handlePage2($event)"
           [length]="(dataSourceAceptado | filtroSolicitudDescargaRespuesta:search).length" [pageSize]="page_size"
           [pageSizeOptions]="page_size_options" showFirstLastButtons>
         </mat-paginator>
@@ -174,7 +174,7 @@
 
       <div class="mat-elevation-z8 table-container">
         <table class="table" mat-table
-          [dataSource]="dataSourceRechazado | filtroSolicitudDescargaRespuesta:search | paginate:page_size:page_number"
+          [dataSource]="dataSourceRechazado | filtroSolicitudDescargaRespuesta:search | paginate:page_size:page_number3"
           class="full-width-table" matSort aria-label="Elements">
 
           <ng-container matColumnDef="dato1">
@@ -221,7 +221,7 @@
           <mat-divider></mat-divider>
         </mat-list>
 
-        <mat-paginator (page)="handlePage($event)"
+        <mat-paginator (page)="handlePage3($event)"
           [length]="(dataSourceRechazado | filtroSolicitudDescargaRespuesta:search).length" [pageSize]="page_size"
           [pageSizeOptions]="page_size_options" showFirstLastButtons>
         </mat-paginator>

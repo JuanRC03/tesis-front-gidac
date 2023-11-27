@@ -24,11 +24,24 @@ export class CatalogoOrganizacionService {
   public obtenerPorCodigoOrganizacion(id:any){
     return this.http.get(`${baserUrl}/catalogo-organizacion/obtener-catalogo-organizacion-codigo/${id}`);
   }
+  
 
   public obtenerCatalogoPorOrganizacion(id:any){
     return this.http.get(`${baserUrl}/catalogo-organizacion/listar-por-organizacion/${id}`);
   }
 
+  public obtenerCatalogoPorOrganizacionEliminado(id:any){
+    return this.http.get(`${baserUrl}/catalogo-organizacion/listar-por-organizacion-eliminado/${id}`);
+  }
+
+  public obtenerPorVariableSistemaVigente(id:any){
+    return this.http.get(`${baserUrl}/catalogo-organizacion/listar-por-variable-sistema-vigente/${id}`);
+  }
+
+  public obtenerPorVariableSistemaEliminado(id:any){
+    return this.http.get(`${baserUrl}/catalogo-organizacion/listar-por-variable-sistema-eliminado/${id}`);
+  }
+  
 
   public listar(){
     return this.http.get(`${baserUrl}/catalogo-organizacion/listar-catalogo-organizacion`);
@@ -36,6 +49,10 @@ export class CatalogoOrganizacionService {
 
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/catalogo-organizacion/eliminar-catalogo-organizacion/${id}`); 
+  }
+
+  public restablecer(id:any){
+    return this.http.delete(`${baserUrl}/catalogo-organizacion/reestablecer/${id}`); 
   }
 
   public comprobarArchivo(modelo:any){

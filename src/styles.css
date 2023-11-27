@@ -53,6 +53,7 @@
     --submenu-color: rgb(236, 240, 241);
     /*color del resaltado del texto*/
     --resaltado-color:#2bc451;
+    --resaltado-color-menu-principal:rgba(133, 143, 116, 0.507);
     --migajas-color:rgb(94, 93, 93);
     /*color de lineas separatorias*/
     /*--lineas-color:rgb(215,215,215);*/
@@ -129,7 +130,7 @@
     --color-menu-dashboar-texto: rgb(0,0,0);
     --resaltado-color-dash:rgb(133, 143, 116);
     --backgraud-valor:rgb(58,149,228);
-    --backgraud-valor:#2bc451;
+    --backgraud-valor:#21be48;
     --color-menu-dashboar-resaltado:#259441;
     --color-migajas-de-pan:#3FC060;
     

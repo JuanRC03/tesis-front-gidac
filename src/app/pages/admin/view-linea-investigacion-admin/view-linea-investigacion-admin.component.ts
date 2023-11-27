@@ -103,6 +103,12 @@ export class ViewLineaInvestigacionAdminComponent implements OnInit {
       this.page_number=e.pageIndex + 1
     }
     
+    page_number1: number = 1
+    handlePage1(e: PageEvent) {
+      this.page_size = e.pageSize
+      this.page_number1 = e.pageIndex + 1
+    }
+    
     public search: string = '';
   
     onSearch( search: string ) {

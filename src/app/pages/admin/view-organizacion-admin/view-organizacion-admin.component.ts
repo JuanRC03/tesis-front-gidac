@@ -31,6 +31,7 @@ export class ViewOrganizacionAdminComponent implements AfterViewInit {
   
   ngOnInit(): void {
     this.listar();
+    this.listarEliminados();
   }
 
     listaDatos : any = []
@@ -44,6 +45,18 @@ export class ViewOrganizacionAdminComponent implements AfterViewInit {
           err=>console.log(err)
         )
     }
+
+    listaDatosEliminados : any = []
+
+    listarEliminados()
+    {
+      this.service.listarEliminados().subscribe(
+          res=>{
+            this.listaDatosEliminados=res;
+          },
+          err=>console.log(err)
+        )
+    }
   
     //paginacion y busqueda
     page_size:number=5
@@ -53,6 +66,12 @@ export class ViewOrganizacionAdminComponent implements AfterViewInit {
     handlePage(e: PageEvent){
       this.page_size=e.pageSize
       this.page_number=e.pageIndex + 1
+    }
+
+    page_number1: number = 1
+    handlePage1(e: PageEvent) {
+      this.page_size = e.pageSize
+      this.page_number1 = e.pageIndex + 1
     }
     
     public search: string = '';
@@ -78,10 +97,36 @@ export class ViewOrganizacionAdminComponent implements AfterViewInit {
             (data) => {
               this.listaDatos = this.listaDatos.filter((datosAux:any) => datosAux.idOrganizacion != id);
               Swal.fire('Información eliminada','La organización ha sido eliminada','success');
-              //this.listarEliminado();
+              this.listarEliminados();
             },
             (error) => {
               Swal.fire('Error','Error al eliminar la organización','error');
+            }
+          )
+        }
+      })
+    }
+
+    restablecer(id:any){
+      Swal.fire({
+        title:'Restaurar información',
+        text:'¿Estás seguro de restaurar la organización?',
+        icon:'warning',
+        showCancelButton:true,
+        confirmButtonColor:'#3085d6',
+        cancelButtonColor:'#d33',
+        confirmButtonText:'Restaurar',
+        cancelButtonText:'Cancelar'
+      }).then((result) => {
+        if(result.isConfirmed){
+          this.service.restablecer(id).subscribe(
+            (data) => {
+              this.listaDatosEliminados = this.listaDatosEliminados.filter((datos:any) => datos.idOrganizacion!= id);
+              Swal.fire('Información restaurada','La organización ha sido restaurada','success');
+              this.listar();
+            },
+            (error) => {
+              Swal.fire('Error','Error al restaurar la organización','error');
             }
           )
         }

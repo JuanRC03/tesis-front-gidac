@@ -76,8 +76,8 @@ export class VariableService {
   }
 
 
-  public obtenerVariablesDescargarProyecto(id:any, idOrganizacion:any){
-    return this.http.get(`${baserUrl}/variable/listar-variable-descargar-proyecto/${id}/${idOrganizacion}`);
+  public obtenerVariablesDescargarProyecto(id:any, idOrganizacion:any, codigoDataset:any){
+    return this.http.get(`${baserUrl}/variable/listar-variable-descargar-proyecto/${id}/${idOrganizacion}/${codigoDataset}`);
   }
 
   

@@ -13,9 +13,19 @@
 </mat-list>
 <mat-divider></mat-divider>
 
-<form (ngSubmit)= "agregar()">
+<form (ngSubmit)= "agregar()" style="max-width: 400px;">
     <div class="box mt-3 mb-3">
       
+
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Fecha de salida de campo</mat-label>
+        <input
+        type="date"
+        matInput
+        name="fechaInicio"
+        placeholder="Ingrese la fecha de salida de campo"
+        [(ngModel)] = "data.dataset.fechaSalidaCampo">
+      </mat-form-field>
 
       <mat-form-field class="w100" appearance="outline">
         <mat-label>Valor del dato recolectado</mat-label>
@@ -31,9 +41,20 @@
       <mat-form-field appearance="fill" class="mt20 w100">
         <mat-label>Variable del sistema</mat-label>
         <mat-select name="medida" [(ngModel)] = "data.variableUnidadMedida.idVariableUnidadMedida" >
-          <mat-option *ngFor = "let c of variableUnidadMedida" [value] = "c.variable.idVariable" (click)="seleccionarVariable(c.variable.tipoVariable.idTipoVariable)">
+          <mat-option *ngFor = "let c of variableUnidadMedida" [value] = "c.idVariableUnidadMedida" (click)="seleccionarVariable(c.variable.tipoVariable.idTipoVariable)">
             {{ c.variable.nombreVariable }} - {{ c.unidadMedida.abreviatura }} 
           </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="mt20 w100">
+        <mat-label>Datasets</mat-label>
+        <mat-select name="datasets" [(ngModel)]="data.dataset.codigoDataset">
+          <ng-container *ngFor="let c of listaDatosDataset">
+            <mat-option [value]="c.codigoDataset">
+              {{ c.codigoDataset !== 0 ? 'Dataset ' + c.codigoDataset +' - ' : '' }} {{ c.fechaDataset }}
+            </mat-option>
+          </ng-container>
         </mat-select>
       </mat-form-field>
         

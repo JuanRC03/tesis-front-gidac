@@ -77,7 +77,7 @@
 
   <div>
     
-    <div *ngFor = "let oC of listaUsuariosDisponibles | filtroUsuarios:search | paginate:page_size:page_number">
+    <div *ngFor = "let oC of listaUsuariosDisponibles | filtroUsuarios:search | paginate:page_size:page_number1">
       
       <mat-list>
       <mat-list-item>
@@ -105,7 +105,7 @@
     </mat-list>
   
     <mat-paginator 
-                   (page)="handlePage($event)"
+                   (page)="handlePage1($event)"
                    [length]="(listaUsuariosDisponibles | filtroUsuarios:search).length"
                    [pageSize]="page_size"
                    [pageSizeOptions]="page_size_options"

@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { VariableService } from 'src/app/services/variable.service';
 
+
+
 @Component({
   selector: 'app-view-catalogo-organizacion-admin',
   templateUrl: './view-catalogo-organizacion-admin.component.html',
@@ -41,6 +43,7 @@ export class ViewCatalogoOrganizacionAdminComponent implements AfterViewInit {
     this.idOrganizacion = this.route.snapshot.params['idOrganizacion'];
     this.siglasOrganizacion = this.route.snapshot.params['siglas'];
     this.listar();
+    this.listarEliminados();
   }
 
   listaDatos: any = []
@@ -49,6 +52,19 @@ export class ViewCatalogoOrganizacionAdminComponent implements AfterViewInit {
     this.catalogoOrganizacionService.obtenerCatalogoPorOrganizacion(this.idOrganizacion).subscribe(
       res => {
         this.listaDatos = res;
+        console.log(this.listaDatos)
+      },
+      err => console.log(err)
+    )
+  }
+
+  listaDatosEliminados: any = []
+
+  listarEliminados() {
+    this.catalogoOrganizacionService.obtenerCatalogoPorOrganizacionEliminado(this.idOrganizacion).subscribe(
+      res => {
+        this.listaDatosEliminados = res;
+        console.log(this.listaDatos)
       },
       err => console.log(err)
     )
@@ -70,11 +86,38 @@ export class ViewCatalogoOrganizacionAdminComponent implements AfterViewInit {
         this.catalogoOrganizacionService.eliminar(id).subscribe(
           (data) => {
             this.listaDatos = this.listaDatos.filter((lista: any) => lista.idVariableOrganizacion != id);
-            Swal.fire('Información eliminada', 'La variable ha sido eliminada', 'success');
-            this.listar();
+            Swal.fire('Información eliminada', 'La variable ha sido eliminada', 'success').then(() => {
+              this.listarEliminados();
+            });
           },
           (error) => {
             Swal.fire('Error en el sistema', 'Error al eliminar la variable', 'error');
+          }
+        )
+      }
+    })
+  }
+
+  restablecer(id:any){
+    Swal.fire({
+      title:'Restaurar información',
+      text:'¿Estás seguro de restaurar la variable?',
+      icon:'warning',
+      showCancelButton:true,
+      confirmButtonColor:'#3085d6',
+      cancelButtonColor:'#d33',
+      confirmButtonText:'Restaurar',
+      cancelButtonText:'Cancelar'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.catalogoOrganizacionService.restablecer(id).subscribe(
+          (data) => {
+            this.listaDatosEliminados = this.listaDatosEliminados.filter((datos:any) => datos.idVariableOrganizacion!= id);
+            Swal.fire('Información restaurada','La variable ha sido restaurada','success');
+            this.listar();
+          },
+          (error) => {
+            Swal.fire('Error','Error al restaurar la variable','error');
           }
         )
       }
@@ -89,6 +132,14 @@ export class ViewCatalogoOrganizacionAdminComponent implements AfterViewInit {
   handlePage(e: PageEvent) {
     this.page_size = e.pageSize
     this.page_number = e.pageIndex + 1
+  }
+
+  
+  page_number1: number = 1
+
+  handlePage1(e: PageEvent) {
+    this.page_size = e.pageSize
+    this.page_number1 = e.pageIndex + 1
   }
 
   public search: string = '';
@@ -115,9 +166,9 @@ export class ViewCatalogoOrganizacionAdminComponent implements AfterViewInit {
     });
   }
 
-  editar(id: any, dato1: any, dato2: any, dato3: any, dato4: any): void {
+  editar(id: any, dato1: any, dato2: any, dato3: any, dato4: any, dato5: any): void {
     const dialogRef = this.dialog.open(DialogEditarVariableOrganizacion, {
-      data: { idVariableOrganizacion: id, codigoVariableOrganizacion: dato1, nombreVariableOrganizacion: dato2, descripcion: dato3, idVariable: dato4, idOrganizacion: this.idOrganizacion },
+      data: { idVariableOrganizacion: id, codigoVariableOrganizacion: dato1, nombreVariableOrganizacion: dato2, descripcion: dato3, idVariable: dato4, variableSistema: dato5, idOrganizacion: this.idOrganizacion },
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listar();
@@ -137,6 +188,7 @@ interface DatosActualizar {
   descripcion: '',
   nombreVariableOrganizacion: '',
   vigencia: 1,
+  variableSistema: 0,
   idOrganizacion: 0,
   idVariable: 0,
 }
@@ -164,6 +216,7 @@ export class DialogAgregarVariableOrganizacion {
     descripcion: '',
     nombreVariableOrganizacion: '',
     vigencia: 1,
+    variableSistema: 0,
     organizacion: {
       idOrganizacion: 0,
     },
@@ -191,7 +244,7 @@ export class DialogAgregarVariableOrganizacion {
   varible: any = []
 
   listarVariables() {
-    this.variableService.listar().subscribe(
+    this.variableService.listarVigetes().subscribe(
       res => {
         this.varible = res;
       },
@@ -335,6 +388,10 @@ export class DialogEditarVariableOrganizacion {
     this.data.nombreVariableOrganizacion = this.data1.nombreVariableOrganizacion;
     this.data.variable.idVariable = this.data1.idVariable;
     this.data.organizacion.idOrganizacion = this.data1.idOrganizacion;
+    this.data.variableSistema = this.data1.variableSistema;
+    
+    console.log(this.data.variableSistema)
+    console.log(this.data1.variableSistema)
     this.listarVariables();
   }
 
@@ -344,6 +401,7 @@ export class DialogEditarVariableOrganizacion {
     descripcion: '',
     nombreVariableOrganizacion: '',
     vigencia: 1,
+    variableSistema: 0,
     organizacion: {
       idOrganizacion: 0,
     },
@@ -358,7 +416,7 @@ export class DialogEditarVariableOrganizacion {
 
 
   listarVariables() {
-    this.variableService.listar().subscribe(
+    this.variableService.listarVigetes().subscribe(
       res => {
         this.varible = res;
       },
@@ -429,7 +487,7 @@ export class DialogEditarVariableOrganizacion {
       return;
     } 
 
-    this.catalogoOrganizacionService.guardar(this.data).subscribe(
+    this.catalogoOrganizacionService.actualizar(this.data).subscribe(
       (data) => {
         Swal.fire('Información actualizada', 'La variable se actualizo con éxito', 'success').then(
           (e) => {

@@ -37,8 +37,8 @@ export class ViewProfundidadesComponent implements AfterViewInit {
   
   ngOnInit(): void {
     this.listarVigentes();
-
     this.listarMedidas();
+    this.listarEliminados();
   }
 
   medida : any = []
@@ -102,9 +102,53 @@ export class ViewProfundidadesComponent implements AfterViewInit {
               this.listaDatos = this.listaDatos.filter((lista:any) => lista.idAltura != id);
               Swal.fire('Información eliminada','La profundidad ha sido eliminada','success');
               this.listarVigentes();
+              this.listarEliminados();
             },
             (error) => {
               Swal.fire('Error','Error al eliminar la profundidad','error');
+            }
+          )
+        }
+      })
+    }
+
+    page_number1: number = 1
+    handlePage1(e: PageEvent) {
+      this.page_size = e.pageSize
+      this.page_number1 = e.pageIndex + 1
+    }
+
+    listaDatosEliminados : any = []
+    listarEliminados()
+    {
+      this.profundidadService.listarEliminads().subscribe(
+          res=>{
+            this.listaDatosEliminados=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+    restaurar(id: any) {
+      Swal.fire({
+        title: 'Restaurar información',
+        text: '¿Estás seguro de restaurar la profundidad?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Restaurar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.profundidadService.restaurar(id).subscribe(
+            (data) => {
+              Swal.fire('Información restaurada', 'La profundidad ha sido restaurado', 'success');
+              this.listarEliminados();
+              this.listarVigentes();
+            },
+            (error) => {
+              Swal.fire('Error en el sistema', 'Error al restaurar la profundidad', 'error');
             }
           )
         }

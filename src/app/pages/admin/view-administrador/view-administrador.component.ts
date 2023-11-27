@@ -119,12 +119,17 @@ export class ViewAdministradorComponent implements AfterViewInit {
 
   //paginacion y busqueda
   page_size: number = 5
-  page_number: number = 1
   page_size_options = [5, 10, 20, 50, 100]
-
+  page_number: number = 1
   handlePage(e: PageEvent) {
     this.page_size = e.pageSize
     this.page_number = e.pageIndex + 1
+  }
+
+  page_number1: number = 1
+  handlePage1(e: PageEvent) {
+    this.page_size = e.pageSize
+    this.page_number1 = e.pageIndex + 1
   }
 
   public search: string = '';

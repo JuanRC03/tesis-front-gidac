@@ -27,6 +27,14 @@ export class AlturaService {
     return this.http.get(`${baserUrl}/altura/listar-altura`);
   }
 
+  public listarEliminads(){
+    return this.http.get(`${baserUrl}/altura/listar-altura-eliminadas`);
+  }
+
+  public restaurar(id:any){
+    return this.http.delete(`${baserUrl}/altura/restarurar-altura/${id}`); 
+  }
+
   public eliminar(id:any){
     return this.http.delete(`${baserUrl}/altura/eliminar-altura/${id}`); 
   }

@@ -78,6 +78,8 @@
           <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminar(row.idVariable)">
             <mat-icon>delete</mat-icon>
           </button>
+          <button mat-raised-button color="primary" (click)="openViewVariableSistema(row.idVariable, row.nombreVariable)">Equivalencias</button>
+          
         </div>
       </td>
     </ng-container>
@@ -106,7 +108,7 @@
 <mat-tab label="Eliminadas" >
 
   <div class="mat-elevation-z8 table-container">
-    <table class="table" mat-table [dataSource]="listaEliminados | filtroVaribleSistema:search | paginate:page_size:page_number" class="full-width-table" matSort aria-label="Elements">
+    <table class="table" mat-table [dataSource]="listaEliminados | filtroVaribleSistema:search | paginate:page_size:page_number1" class="full-width-table" matSort aria-label="Elements">
       
       <ng-container matColumnDef="dato1">
         <th mat-header-cell *matHeaderCellDef>Código variable</th>
@@ -146,7 +148,7 @@
     </mat-list>
   
     <mat-paginator 
-                   (page)="handlePage($event)"
+                   (page)="handlePage1($event)"
                    [length]="(listaEliminados | filtroVaribleSistema:search).length"
                    [pageSize]="page_size"
                    [pageSizeOptions]="page_size_options"

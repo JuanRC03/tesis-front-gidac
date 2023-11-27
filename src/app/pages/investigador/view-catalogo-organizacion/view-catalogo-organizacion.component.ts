@@ -43,8 +43,7 @@ export class ViewCatalogoOrganizacionComponent implements AfterViewInit {
           err=>console.log(err)
         )
     }
-  
-    //paginacion y busqueda
+    
     page_size:number=5
     page_number:number=1
     page_size_options=[5,10,20,50,100]

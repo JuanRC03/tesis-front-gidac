@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ProfundidadService } from 'src/app/services/profundidad.service';
 import { FormsModule } from '@angular/forms';
+import { ProfundidadParcelaService } from 'src/app/services/profundidad-parcela.service';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class ViewPuntoComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<ViewPuntoItem>;
   dataSource: ViewPuntoDataSource;
 
-  constructor(private datasetService:DatasetService,
+  constructor(private profundidadParcelaService:ProfundidadParcelaService,
     private route:ActivatedRoute,
     private investigacionService:InvestigacionService,
     public profundidadService:ProfundidadService,
@@ -32,7 +33,7 @@ export class ViewPuntoComponent implements AfterViewInit {
     this.dataSource = new ViewPuntoDataSource();
   }
 
-  displayedColumns = ['dato1', 'dato2', 'opciones'];
+  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4', 'opciones'];
   
   ngAfterViewInit(): void {
   }
@@ -76,9 +77,10 @@ export class ViewPuntoComponent implements AfterViewInit {
 
     listarVigentes()
     {
-      this.datasetService.obtenerPorParcela(this.idParcela).subscribe(
+      this.profundidadParcelaService.obtenerPorParcela(this.idParcela).subscribe(
           (res:any)=>{
             this.listaDatos=this.transformarFechas(res);
+            
           },
           err=>console.log(err)
         )
@@ -104,7 +106,7 @@ export class ViewPuntoComponent implements AfterViewInit {
     }
 
 
-    eliminar(idDataset:any){
+    eliminar(idProfundidad:any, idParcela:any ){
       Swal.fire({
         title:'Eliminar punto',
         text:'¿Estás seguro de eliminar el punto?',
@@ -116,13 +118,13 @@ export class ViewPuntoComponent implements AfterViewInit {
         cancelButtonText:'Cancelar'
       }).then((result) => {
         if(result.isConfirmed){
-          this.datasetService.eliminar(idDataset).subscribe(
+          this.profundidadParcelaService.eliminar(idProfundidad,idParcela ).subscribe(
             (data) => {
-              this.listaDatos = this.listaDatos.filter((datos:any) => datos.idDataset != idDataset);
-              Swal.fire('Punto eliminado','El punto ha sido eliminado','success');
+              this.listarVigentes()
+              Swal.fire('Informacion eliminada','El punto ha sido eliminado','success');
             },
             (error) => {
-              Swal.fire('Error','Error al eliminar el punto, el puntp debe estar vacio','error');
+              Swal.fire('Error','Error al eliminar el punto, el punto debe estar vacio','error');
             }
           )
         }
@@ -150,7 +152,7 @@ export class ViewPuntoComponent implements AfterViewInit {
   //agregar
   agregar(): void {
     const dialogRef = this.matDialog.open(AgregarPunto, {
-      data: { idParcela:this.idParcela, profundidad:this.profundidad, idProyecto:this.idProyecto},
+      data: { idParcela:this.idParcela, profundidad:this.profundidad},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarVigentes();
@@ -159,9 +161,9 @@ export class ViewPuntoComponent implements AfterViewInit {
   }
 
   //editar
-  editar(id:any, dato1:any, dato2:any): void {
+  editar(dato1:any, dato2:any): void {
     const dialogRef = this.matDialog.open(EditarPunto, {
-      data: { idDataset: id, fechaSalidaCampo:dato1,idProfundidad:dato2, idParcela:this.idParcela, profundidad:this.profundidad, idProyecto:this.idProyecto},
+      data: {idProfundidad:dato1, fechaSalidaCampo:dato2, idParcela:this.idParcela, profundidad:this.profundidad},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarVigentes();
@@ -174,7 +176,6 @@ export class ViewPuntoComponent implements AfterViewInit {
 
 
 export interface dataEditar {
-  idDataset:0,
   fechaSalidaCampo: any,
   idProfundidad:0,
   idParcela:0,
@@ -196,7 +197,7 @@ export class EditarPunto {
 constructor(
   public dialogRef: MatDialogRef<EditarPunto>,
   @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
-  private datasetService:DatasetService,
+  private profundidadParcelaService:ProfundidadParcelaService,
   private snack: MatSnackBar,
   private profundidadService:ProfundidadService
 
@@ -208,13 +209,10 @@ onNoClick(): void {
 
 ngOnInit(): void {
   this.profundidad=this.data1.profundidad;
-  this.data.idDataset=this.data1.idDataset;
   this.data.fechaSalidaCampo=this.data1.fechaSalidaCampo;
   this.dataAux.fechaSalidaCampo=this.data1.fechaSalidaCampo;
-  this.data.profundidadParcela.idParcela=this.data1.idParcela;
-  this.data.profundidadParcela.idProfundidad=this.data1.idProfundidad;
-  this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
-  
+  this.data.parcela.idParcela=this.data1.idParcela;
+  this.data.profundidad.idProfundidad=this.data1.idProfundidad;
 }
 
 public dataAux = {
@@ -222,15 +220,15 @@ public dataAux = {
 }
 
 public data = {
-  idDataset:0,
-  fechaSalidaCampo: new Date(0),
-  profundidadParcela:{
+    fechaSalidaCampo: new Date(0),
     idProfundidad:0,
-    idParcela:0
-  },
-  proyectoInvestigacion:{
-    idProyecto:0
-  }
+    idParcela:0,
+    profundidad:{
+      idProfundidad:0
+    },
+    parcela:{
+      idParcela:0
+    }
 }
 
 
@@ -277,16 +275,15 @@ public editar() {
     return ;
   }
   
-  if (this.data.profundidadParcela.idProfundidad == 0) {
+  if (this.data.profundidad.idProfundidad == 0) {
     this.snack.open('La profundidad es requerido !!', 'Aceptar', {
       duration: 3000
     })
     return;
   }
-  this.aumentarUnDia();
-  this.datasetService.actualizar(this.data).subscribe(
+  this.profundidadParcelaService.actualizar(this.data).subscribe(
     (data) => {
-      Swal.fire('Punto actualizado', 'El punto se actualizo con éxito', 'success').then(
+      Swal.fire('Información actualizada', 'El punto se actualizo con éxito', 'success').then(
         (e) => {
           this.afterClosed.emit();
           this.dialogRef.close();
@@ -313,7 +310,7 @@ export class AgregarPunto {
 constructor(
   public dialogRef: MatDialogRef<AgregarPunto>,
   @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
-  private datasetService:DatasetService,
+  private profundidadParcelaService:ProfundidadParcelaService,
   private snack: MatSnackBar,
   private profundidadService:ProfundidadService
 ) { }
@@ -324,29 +321,28 @@ onNoClick(): void {
 
 public data = {
   fechaSalidaCampo: new Date(0),
-  profundidadParcela:{
-    idProfundidad:0,
-    idParcela:0
+  profundidad:{
+    idProfundidad:0
   },
-  proyectoInvestigacion:{
-    idProyecto:0
+  parcela:{
+    idParcela:0
   }
 }
 
 
 
 ngOnInit(): void {
-  this.profundidad=this.data1.profundidad;
-  this.data.profundidadParcela.idParcela=this.data1.idParcela;
-  this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
+  this.profundidadData=this.data1.profundidad;
+  console.log(this.profundidadData)
+  this.data.parcela.idParcela=this.data1.idParcela;
 }
 
-profundidad : any = []
+profundidadData : any = []
 listarProfundidad()
     {
       this.profundidadService.listar().subscribe(
           res=>{
-            this.profundidad=res;
+            this.profundidadData=res;
           },
           err=>console.log(err)
         )
@@ -364,7 +360,7 @@ public agregar() {
     return ;
   }
 
-  if (this.data.profundidadParcela.idProfundidad == 0) {
+  if (this.data.profundidad.idProfundidad == 0) {
     this.snack.open('La profundidad es requerido !!', 'Aceptar', {
       duration: 3000
     })
@@ -372,7 +368,7 @@ public agregar() {
   }
   
 
-  this.datasetService.guardar(this.data).subscribe(
+  this.profundidadParcelaService.guardar(this.data).subscribe(
     (data) => {
       Swal.fire('Información guardada', 'El punto se agrego con éxito', 'success').then(
         (e) => {

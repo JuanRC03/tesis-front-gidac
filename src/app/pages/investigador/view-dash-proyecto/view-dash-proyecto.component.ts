@@ -17,6 +17,7 @@ import { ConglomeradoService } from 'src/app/services/conglomerado.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlturaService } from 'src/app/services/altura.service';
+import { DatasetService } from 'src/app/services/dataset.service';
 
 
 interface Marker {
@@ -53,7 +54,8 @@ export class ViewDashProyectoComponent implements OnInit   {
     private organizacionService:OrganizacionService,
     private conglomeradoService:ConglomeradoService,
     public matDialog: MatDialog,
-    private alturaService:AlturaService) { 
+    private alturaService:AlturaService,
+    private datasetService:DatasetService) { 
       
     }
 
@@ -92,6 +94,25 @@ export class ViewDashProyectoComponent implements OnInit   {
       }
     }
   }
+
+  opcionSeleccionadaDataset: any = {
+    codigoDataset: 0,
+  }
+  listaDatosDataset: any = [];
+    listarDatasets() {
+      this.datasetService.obtenerDatasets(this.idProyecto).subscribe(
+        res => {
+          this.listaDatosDataset = res;
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Todos' });
+          this.opcionSeleccionadaDataset.codigoDataset=0;
+        },
+        err => console.log(err)
+      )
+    }
+
+    onDatasetChange(): void {
+      this.reloadMarkersCatalogo();
+    }
 
   listaDatosConglomerado: any = []
 
@@ -146,6 +167,7 @@ export class ViewDashProyectoComponent implements OnInit   {
       
       this.listarTipoChart();
       this.listarAltitud();
+      this.listarDatasets();
     })
   }
 
@@ -210,7 +232,7 @@ export class ViewDashProyectoComponent implements OnInit   {
   private fetchData(id:any) {
     this.dataNominal=[];
     this.dataNumerico=[];
-    this.datoRecolectadoService.dashlistarTodosLosDatosProyectoVariableUnido(id,0).subscribe(
+    this.datoRecolectadoService.dashlistarTodosLosDatosProyectoVariableUnido(id,0,0).subscribe(
       (response: any) => {
         this.plotData(response);
 
@@ -923,17 +945,17 @@ export class ViewDashProyectoComponent implements OnInit   {
 
   filtrarCatalogo(id: any) {
     this.variableSeleccionada = id;
-    this.reloadMarkersCatalogo(id);
+    this.reloadMarkersCatalogo();
   }
 
-  private reloadMarkersCatalogo(id: any) {
+  private reloadMarkersCatalogo() {
     this.dataNominal=[];
     this.dataNumerico=[];
     this.openPopup?.closePopup();
     this.openPopup = null;
     this.clearMarkers()
     
-    this.datoRecolectadoService.dashlistarTodosLosDatosProyectoVariableUnido(this.idProyecto,id).subscribe(
+    this.datoRecolectadoService.dashlistarTodosLosDatosProyectoVariableUnido(this.idProyecto, this.variableSeleccionada, this.opcionSeleccionadaDataset.codigoDataset).subscribe(
       (response: any) => {
         this.plotData(response);
       },
@@ -942,7 +964,7 @@ export class ViewDashProyectoComponent implements OnInit   {
       }
     );
 
-    this.cargarDatosVariableProyecto(id);
+    this.cargarDatosVariableProyecto(this.variableSeleccionada);
     
 
     if (!this.chartsContainer) {

@@ -12,6 +12,7 @@ import { SolicitudAccesoService } from 'src/app/services/solicitud-acceso.servic
 import { LoginService } from 'src/app/services/login.service';
 import { InvestigacionService } from 'src/app/services/investigacion.service';
 import { VariableUnidadMedidaService } from 'src/app/services/variable-unidad-medida.service';
+import { DatasetService } from 'src/app/services/dataset.service';
 
 @Component({
   selector: 'app-view-dato-recolectado',
@@ -30,16 +31,17 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
     public login:LoginService,
     public dialog: MatDialog,
     public investigacionService:InvestigacionService,
+    public datasetService:DatasetService,
     public variableUnidadMedidaService:VariableUnidadMedidaService) {
     this.dataSource = new ViewDatoRecolectadoDataSource();
   }
 
-  displayedColumns = ['dato1', 'dato2','dato3','dato4', 'opciones'];
+  displayedColumns = ['dato1', 'dato2','dato3', 'opciones'];
   
   ngAfterViewInit(): void {
   }
   
-  idPunto= 0;
+  idProfundidad= 0;
   idParcela= 0;
   idConglomerado= 0;
   idProyecto= 0;
@@ -48,25 +50,54 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
     this.usuario = this.login.getUser();
     console.log(this.usuario);
     console.log(this.usuario.idUsuario);
-    this.idPunto = this.route.snapshot.params['idPunto'];
+    this.idProfundidad = this.route.snapshot.params['idProfundidad'];
     this.idParcela = this.route.snapshot.params['idParcela'];
     this.idConglomerado = this.route.snapshot.params['idConglomerado'];
     this.idProyecto = this.route.snapshot.params['idProyecto'];
     this.listarVigentes();
     this.listarProyectosVigentes();
     this.listarVariableUnidadMedida();
+    this.listarDatasets();
   }
 
   variableUnidadMedida : any = []
   listarVariableUnidadMedida()
     {
-      this.variableUnidadMedidaService.listar().subscribe(
+      this.variableUnidadMedidaService.listarVigentesVariableVigente().subscribe(
           res=>{
             this.variableUnidadMedida=res;
             
           },
           err=>console.log(err)
         )
+    }
+
+    listaDatosDataset: any = [];
+    listarDatasets() {
+      this.listaDatosDataset=[];
+      this.datasetService.obtenerDatasets(this.idProyecto).subscribe(
+        res => {
+          this.listaDatosDataset = res;
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Todos' });
+          this.opcionSeleccionada.codigoDataset=0;
+        },
+        err => console.log(err)
+      )
+    }
+    public searchEstado: string = '';
+    
+    opcionSeleccionada: any = {
+      codigoDataset: 0,
+      fechaDataset: null
+    }
+
+    onEstadoChange(event: any): void {
+      if (this.opcionSeleccionada.codigoDataset == 0) {
+        this.searchEstado = "";
+      } else {
+        this.searchEstado = this.opcionSeleccionada.codigoDataset;
+      }
+      console.log(this.searchEstado)
     }
 
   datos : any = []
@@ -84,7 +115,7 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
 
     listarVigentes()
     {
-      this.datoRecolectadoService.obtenerPorDataset(this.idPunto).subscribe(
+      this.datoRecolectadoService.obtenerPorProfundidadParcela(this.idProfundidad, this.idParcela).subscribe(
           res=>{
             this.listaDatos=res;
             console.log(res)
@@ -153,20 +184,22 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
   //agregar
   agregar(): void {
     const dialogRef = this.dialog.open(AgregarDatoRecolectado, {
-      data: { idDataset:this.idPunto, variableUnidadMedida:this.variableUnidadMedida},
+      data: { idProyecto:this.idProyecto,idProfundidad:this.idProfundidad,idParcela:this.idParcela, variableUnidadMedida:this.variableUnidadMedida},
     });
     dialogRef.afterClosed().subscribe(() => {
+      this.listarDatasets();
       this.listarVigentes();
     });
     
   }
 
   //editar
-  editar(id:any, dato1:any, dato2:any, dato3:any): void {
+  editar(id:any, dato1:any, dato2:any, dato3:any,codigoDataset:any,fechaSalidaCampo:any): void {
     const dialogRef = this.dialog.open(EditarDatoRecolectado, {
-      data: { idDatoRecolectado: id, valor:dato1,idVariableUnidadMedida:dato2,idDataset:dato3, variableUnidadMedida:this.variableUnidadMedida},
+      data: { idProyecto:this.idProyecto, idDatoRecolectado: id, valor:dato1,idVariableUnidadMedida:dato2,idDataset:dato3,codigoDataset:codigoDataset ,fechaSalidaCampo:fechaSalidaCampo,variableUnidadMedida:this.variableUnidadMedida},
     });
     dialogRef.afterClosed().subscribe(() => {
+      this.listarDatasets();
       this.listarVigentes();
     });
   }
@@ -181,6 +214,11 @@ export interface dataEditar {
   valor: '',
   idDataset:0,
   idVariableUnidadMedida:0,
+  idProyecto:0,
+  idProfundidad:0,
+  idParcela:0,
+  codigoDataset:0,
+  fechaSalidaCampo:any,
   variableUnidadMedida:[]
 }
 
@@ -197,7 +235,8 @@ constructor(
   @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
   private datoRecolectadoService:DatoRecolectadoService,
   private snack: MatSnackBar,
-  private variableUnidadMedidaService:VariableUnidadMedidaService
+  private variableUnidadMedidaService:VariableUnidadMedidaService,
+  private datasetService:DatasetService
 
 ) { }
 
@@ -210,16 +249,21 @@ ngOnInit(): void {
   this.data.idDatoRecolectado=this.data1.idDatoRecolectado;
   this.data.valor=this.data1.valor;
   this.data.dataset.idDataset=this.data1.idDataset;
+  this.data.dataset.codigoDataset=this.data1.codigoDataset;
+  this.data.dataset.fechaSalidaCampo=this.data1.fechaSalidaCampo;
   this.data.variableUnidadMedida.idVariableUnidadMedida=this.data1.idVariableUnidadMedida;
+  this.listarDatasets();
 }
 
 
 public data = {
-  idDatoRecolectado:0,
+  idDatoRecolectado: 0,
   valor: '',
   vigencia: 1,
   dataset:{
-    idDataset:0
+    idDataset:0,
+    codigoDataset:0,
+    fechaSalidaCampo:new Date(0),
   },
   variableUnidadMedida:{
     idVariableUnidadMedida:0
@@ -235,6 +279,16 @@ formatDate(date: string): string {
   return '';
 }
 
+listaDatosDataset: any = [];
+    listarDatasets() {
+      this.datasetService.obtenerDatasets(this.data1.idProyecto).subscribe(
+        res => {
+          this.listaDatosDataset = res;
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Nuevo dataset' });
+        },
+        err => console.log(err)
+      )
+    }
 
 
 variableUnidadMedida : any = []
@@ -251,7 +305,22 @@ listarVariableUnidadMedida()
 
 public afterClosed: EventEmitter<void> = new EventEmitter<void>();
 
+aumentarUnDia() {
+  const fechaOriginal = new Date(this.data.dataset.fechaSalidaCampo);
+  fechaOriginal.setDate(fechaOriginal.getDate() + 1);
+  this.data.dataset.fechaSalidaCampo = fechaOriginal;
+}
+
 public editar() {
+
+  if (this.data.dataset.fechaSalidaCampo==null) {
+    this.snack.open('La fecha de salida de campo es requerida !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  
+
   if (this.data.valor== '') {
     this.snack.open('EL valor del dato recolectado es requerido !!', 'Aceptar', {
       duration: 3000
@@ -273,7 +342,7 @@ public editar() {
       return;
     }
   }
-
+  this.aumentarUnDia();
   this.datoRecolectadoService.actualizar(this.data).subscribe(
     (data) => {
       Swal.fire('Información actualizada', 'El dato recolectado se actualizo con éxito', 'success').then(
@@ -308,7 +377,8 @@ constructor(
   @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
   private variableUnidadMedidaService:VariableUnidadMedidaService,
   private snack: MatSnackBar,
-  private datoRecolectadoService:DatoRecolectadoService
+  private datoRecolectadoService:DatoRecolectadoService,
+  private datasetService:DatasetService
 ) { }
 
 onNoClick(): void {
@@ -321,19 +391,45 @@ public data = {
   valor: '',
   vigencia: 1,
   dataset:{
-    idDataset:0
+    codigoDataset:0,
+    fechaSalidaCampo:new Date(0),
+    proyectoInvestigacion:{
+      idProyecto:0,
+    },
+    profundidadParcela:{
+      profundidad:{
+        idProfundidad:0,
+      },
+      parcela:{
+        idParcela:0,
+      }
+    },
   },
   variableUnidadMedida:{
     idVariableUnidadMedida:0
   }
 }
 
+listaDatosDataset: any = [];
+    listarDatasets() {
+      this.datasetService.obtenerDatasets(this.data1.idProyecto).subscribe(
+        res => {
+          this.listaDatosDataset = res;
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Nuevo dataset' });
+          this.data.dataset.codigoDataset=0;
+        },
+        err => console.log(err)
+      )
+    }
 
 
 ngOnInit(): void {
   this.variableUnidadMedida=this.data1.variableUnidadMedida;
   console.log(this.variableUnidadMedida);
-  this.data.dataset.idDataset=this.data1.idDataset;
+  this.data.dataset.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
+  this.data.dataset.profundidadParcela.profundidad.idProfundidad=this.data1.idProfundidad;
+  this.data.dataset.profundidadParcela.parcela.idParcela=this.data1.idParcela;
+  this.listarDatasets();
 }
 
 variableUnidadMedida : any = []
@@ -351,8 +447,23 @@ listarVariableUnidadMedida()
 
 public afterClosed: EventEmitter<void> = new EventEmitter<void>();
 
+aumentarUnDia() {
+  const fechaOriginal = new Date(this.data.dataset.fechaSalidaCampo);
+  fechaOriginal.setDate(fechaOriginal.getDate() + 1);
+  this.data.dataset.fechaSalidaCampo = fechaOriginal;
+}
+
 public agregar() {
   
+  console.log(this.data)
+  
+  if (this.data.dataset.fechaSalidaCampo==null) {
+    this.snack.open('La fecha de salida de campo es requerida !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+
   if (this.data.valor== '') {
     this.snack.open('EL valor del dato recolectado es requerido !!', 'Aceptar', {
       duration: 3000
@@ -375,6 +486,7 @@ public agregar() {
     }
   }
 
+  this.aumentarUnDia();
   this.datoRecolectadoService.guardar(this.data).subscribe(
     (data) => {
       Swal.fire('Información guardada', 'El dato recolectado se agrego con éxito', 'success').then(

@@ -169,7 +169,7 @@
     <mat-tab label="Rechazado"> 
 
       <div class="mat-elevation-z8 table-container">
-        <table class="table" mat-table [dataSource]="dataSourceRechazado | filtroSolicitudActualizarRespuesta:search | paginate:page_size:page_number2" class="full-width-table" matSort aria-label="Elements">
+        <table class="table" mat-table [dataSource]="dataSourceRechazado | filtroSolicitudActualizarRespuesta:search | paginate:page_size:page_number3" class="full-width-table" matSort aria-label="Elements">
           
           
           <ng-container matColumnDef="dato1">
@@ -214,7 +214,7 @@
         </mat-list>
       
         <mat-paginator 
-                       (page)="handlePage2($event)"
+                       (page)="handlePage3($event)"
                        [length]="(dataSourceAceptado | filtroSolicitudActualizarRespuesta:search).length"
                        [pageSize]="page_size"
                        [pageSizeOptions]="page_size_options"

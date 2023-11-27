@@ -1,0 +1,63 @@
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+
+    <div mat-line style="padding-right: 30px;">Equivalencia de variable del sistema con variables organización</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button mat-icon-button mat-dialog-close matTooltip="White" color="White"
+        aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<br>
+  <mat-list>
+    <mat-list-item>
+      <div mat-line>
+        <mat-form-field>
+          <input type="text" class=" mb-2" placeholder="Buscar.." #txtSearch matInput
+            (keyup)="onSearch( txtSearch.value )" />
+        </mat-form-field>
+      </div>
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        
+      </div>
+
+    </mat-list-item>
+  </mat-list>
+
+          <section class="example-container mat-elevation-z8" tabindex="0">
+            <table mat-table [dataSource]="listaDatos | filtroEquivalenciaVariableSistemaCatalog:search | paginate:page_size:page_number">
+          
+              <ng-container matColumnDef="dato1" sticky>
+                <th mat-header-cell *matHeaderCellDef> Variable sistema </th>
+                <td mat-cell *matCellDef="let element"> {{element.variable.nombreVariable}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="dato2">
+                <th mat-header-cell *matHeaderCellDef style="padding-left: 30px;"> Variable organización </th>
+                <td mat-cell *matCellDef="let element" style="padding-left: 30px;"> {{element.nombreVariableOrganizacion}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="dato3">
+                <th mat-header-cell *matHeaderCellDef style="padding-left: 30px;"> Organización </th>
+                <td mat-cell *matCellDef="let element" style="padding-left: 30px;"> {{element.organizacion.siglas}} </td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-list *ngIf="(listaDatos | filtroEquivalenciaVariableSistemaCatalog:search).length===0"
+              style="text-align: center; padding: 20px; margin: 20px;">
+              <p>No existen variables disponibles</p>
+              <br>
+              <mat-divider></mat-divider>
+            </mat-list>
+
+            <mat-paginator (page)="handlePage($event)" [length]="(listaDatos | filtroEquivalenciaVariableSistemaCatalog:search).length"
+              [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
+            </mat-paginator>
+          </section>

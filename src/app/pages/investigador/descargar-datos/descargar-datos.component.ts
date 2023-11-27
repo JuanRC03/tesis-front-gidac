@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as L from 'leaflet';
 import { InvestigacionService } from 'src/app/services/investigacion.service';
 import { OrganizacionService } from 'src/app/services/organizacion.service';
+import { DatasetService } from 'src/app/services/dataset.service';
 
 interface OrganizacionProyecto {
   idOrganizacion: number;
@@ -36,7 +37,8 @@ export class DescargarDatosComponent implements OnInit {
     private snack: MatSnackBar,
     private route: ActivatedRoute,
     private investigacionService:InvestigacionService,
-    private organizacionService:OrganizacionService) { }
+    private organizacionService:OrganizacionService,
+    private datasetService:DatasetService) { }
 
   ngAfterViewInit(): void {
   }
@@ -48,8 +50,10 @@ export class DescargarDatosComponent implements OnInit {
 
   ngOnInit() {
     this.idProyecto = this.route.snapshot.params['idProyecto'];
+    this.opcionSeleccionadaProyecto.idProyecto=this.idProyecto;
     this.listarOrganizaciones();
-    this.listarVariablesDescarga(0)
+    this.listarVariablesDescarga(0,0)
+    this.listarDatasets();
     this.datoRecolectadoService.listarPorProyecto(this.idProyecto).subscribe((data: any) => {
       this.listaDatosRecolectador = data;
       //console.log(data);
@@ -57,10 +61,36 @@ export class DescargarDatosComponent implements OnInit {
     this.listarProyectosVigentes();
   }
 
-  listarVariablesDescarga(idOrganizacion:any){
+  opcionSeleccionadaDataset: any = {
+    codigoDataset: 0,
+  }
+  listaDatosDataset: any = [];
+    listarDatasets() {
+      this.datasetService.obtenerDatasets(this.idProyecto).subscribe(
+        res => {
+          this.listaDatosDataset = res;
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Todos' });
+          this.opcionSeleccionadaDataset.codigoDataset=0;
+        },
+        err => console.log(err)
+      )
+    }
+    public searchEstado: string = '';
+    
+    
+
+    opcionSeleccionadaOrganizacion: any = {
+      idOrganizacion: 0,
+    }
+
+    opcionSeleccionadaProyecto: any = {
+      idProyecto: 0,
+    }
+
+  listarVariablesDescarga(idOrganizacion:any, codigoDataset:any){
     this.dataSource.data = [];
     this.deseleccionarTodo();
-    this.variableService.obtenerVariablesDescargarProyecto(this.idProyecto, idOrganizacion).subscribe((data: any) => {
+    this.variableService.obtenerVariablesDescargarProyecto(this.idProyecto, idOrganizacion, codigoDataset).subscribe((data: any) => {
       this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
       this.listaDatos = data.map((variable: any) => ({ ...variable, checked: false }));
@@ -114,10 +144,17 @@ export class DescargarDatosComponent implements OnInit {
 
   public searchOrganizacionVariable: string = '';
   opcionSeleccionada:any;
-  onOrganizacionChange(event: any): void {
-    this.opcionSeleccionada = this.listaOrganizaciones.find((option: OrganizacionProyecto) => option.idOrganizacion === event.value);
-    this.listarVariablesDescarga(this.opcionSeleccionada.idOrganizacion)
+
+  onOrganizacionChange(): void {
+    
+    this.listarVariablesDescarga(this.opcionSeleccionadaOrganizacion.idOrganizacion, this.opcionSeleccionadaDataset.codigoDataset)
   }
+
+  onDatasetChange(): void {
+    this.listarVariablesDescarga(this.opcionSeleccionadaOrganizacion.idOrganizacion, this.opcionSeleccionadaDataset.codigoDataset)
+  }
+
+  
 
   displayedColumns: string[] = ['select', 'nombreVariable', 'unidadMedida', 'tipoValor', 'organization'];
   dataSource = new MatTableDataSource<Variable>();
@@ -139,6 +176,8 @@ export class DescargarDatosComponent implements OnInit {
     } else {
       const formData = new FormData();
       formData.append('equivalenciasVariables', JSON.stringify(selectedData));
+      formData.append('proyectoDatos', JSON.stringify(this.opcionSeleccionadaProyecto));
+      formData.append('datasetDatos', JSON.stringify(this.opcionSeleccionadaDataset));
       this.datoRecolectadoService.unirDatos(formData).subscribe((data: any) => {
         console.log(data)
         this.downloadExcel(data, this.listaDatosSeleccionados)
@@ -157,6 +196,8 @@ export class DescargarDatosComponent implements OnInit {
     } else {
       const formData = new FormData();
       formData.append('equivalenciasVariables', JSON.stringify(this.listaDatosSeleccionados));
+      formData.append('proyectoDatos', JSON.stringify(this.opcionSeleccionadaProyecto));
+      formData.append('datasetDatos', JSON.stringify(this.opcionSeleccionadaDataset));
       this.datoRecolectadoService.unirDatos(formData).subscribe((data: any) => {
         console.log(data);
         this.downloadCSV(data, this.listaDatosSeleccionados)

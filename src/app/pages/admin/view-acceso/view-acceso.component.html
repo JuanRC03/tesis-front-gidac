@@ -91,7 +91,7 @@
 
         <div class="mat-elevation-z8 table-container">
           <table class="table" mat-table
-            [dataSource]="listaDatosDirector | filtroHistorialAcceso:search | paginate:page_size:page_number"
+            [dataSource]="listaDatosDirector | filtroHistorialAcceso:search | paginate:page_size:page_number1"
             class="full-width-table" matSort aria-label="Elements">
 
             <ng-container matColumnDef="dato1">
@@ -131,7 +131,7 @@
             <mat-divider></mat-divider>
           </mat-list>
 
-          <mat-paginator (page)="handlePage($event)" [length]="(listaDatosDirector | filtroHistorialAcceso:search).length"
+          <mat-paginator (page)="handlePage1($event)" [length]="(listaDatosDirector | filtroHistorialAcceso:search).length"
             [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
           </mat-paginator>
         </div>
@@ -142,7 +142,7 @@
 
           <div class="mat-elevation-z8 table-container">
             <table class="table" mat-table
-              [dataSource]="listaDatosInvestigador | filtroHistorialAcceso:search | paginate:page_size:page_number"
+              [dataSource]="listaDatosInvestigador | filtroHistorialAcceso:search | paginate:page_size:page_number2"
               class="full-width-table" matSort aria-label="Elements">
 
               <ng-container matColumnDef="dato1">
@@ -182,7 +182,7 @@
               <mat-divider></mat-divider>
             </mat-list>
 
-            <mat-paginator (page)="handlePage($event)" [length]="(listaDatosInvestigador | filtroHistorialAcceso:search).length"
+            <mat-paginator (page)="handlePage2($event)" [length]="(listaDatosInvestigador | filtroHistorialAcceso:search).length"
               [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons>
             </mat-paginator>
           </div>

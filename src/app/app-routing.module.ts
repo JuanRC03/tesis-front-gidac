@@ -265,7 +265,7 @@ const routes: Routes = [
         component:ViewPuntoComponent
       },
       {
-        path:'view-datos-recolectados/:idPunto/:idParcela/:idConglomerado/:idProyecto',
+        path:'view-datos-recolectados/:idProfundidad/:idParcela/:idConglomerado/:idProyecto',
         component:ViewDatoRecolectadoComponent
       },
       {

@@ -13,7 +13,7 @@
 </mat-list>
 <mat-divider></mat-divider>
 
-<form (ngSubmit)= "editar()">
+<form (ngSubmit)= "editar()" style="max-width: 400px;">
     <div class="box mt-3 mb-3">
       <div class="row">
 
@@ -30,15 +30,6 @@
         >
       </mat-form-field>
 
-
-      <mat-form-field appearance="fill" class="mt20 w100">
-        <mat-label>Profundidad</mat-label>
-        <mat-select name="medida" [(ngModel)] = "data.profundidadParcela.idProfundidad">
-          <mat-option *ngFor = "let c of profundidad" [value] = "c.idProfundidad">
-            {{ c.profundidadMinima }} - {{ c.profundidadMaxima }} ({{ c.unidadMedida.abreviatura }})
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
 
     <div class="center" style="text-align: center;">
       <button mat-raised-button color="primary">Actualizar</button>

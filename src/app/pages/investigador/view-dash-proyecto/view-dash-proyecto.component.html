@@ -153,6 +153,32 @@
           </mat-list>
       
           <div style="padding: 0;">
+
+            <mat-card-content>
+              <mat-expansion-panel style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
+                               (closed)="panelOpenGrafico = false">
+            <mat-expansion-panel-header style="max-width: 500px;">
+                <mat-panel-title>
+                  Dataset
+                </mat-panel-title>
+                
+              </mat-expansion-panel-header>
+              
+              <mat-form-field  class="mt20 w100 " style="padding: 0px;margin: 0px;padding-top: 20px; height: 100%; min-width: 360px;">
+                <mat-label>Seleccionar datasets</mat-label>
+                  <mat-select name="datasets" [(ngModel)]="opcionSeleccionadaDataset.codigoDataset" (selectionChange)="onDatasetChange()">
+                    <ng-container *ngFor="let c of listaDatosDataset">
+                      <mat-option [value]="c.codigoDataset">
+                        {{ c.codigoDataset !== 0 ? 'Dataset ' + c.codigoDataset +' - ' : '' }} {{ c.fechaDataset }}
+                      </mat-option>
+                    </ng-container>
+                  </mat-select>
+              </mat-form-field>
+
+              <!--aqui los dataset-->
+            </mat-expansion-panel>
+          </mat-card-content>
+
             <mat-card-content>
             <mat-expansion-panel style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
                              (closed)="panelOpenGrafico = false">

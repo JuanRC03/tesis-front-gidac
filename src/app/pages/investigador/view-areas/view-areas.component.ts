@@ -35,6 +35,7 @@ export class ViewAreasComponent implements AfterViewInit {
   ngOnInit(): void {
     this.listar();
     this.listarMedidas();
+    this.listarEliminados();
   }
 
   medida : any = []
@@ -98,11 +99,55 @@ export class ViewAreasComponent implements AfterViewInit {
           this.areaService.eliminar(id).subscribe(
             (data) => {
               this.listaDatos = this.listaDatos.filter((lista:any) => lista.idAltura != id);
-              Swal.fire('Área eliminado','El área ha sido eliminado','success');
+              Swal.fire('Información eliminado','El área ha sido eliminado','success');
               this.listar();
+              this.listarEliminados();
             },
             (error) => {
               Swal.fire('Error','Error al eliminar el área','error');
+            }
+          )
+        }
+      })
+    }
+
+    page_number1: number = 1
+    handlePage1(e: PageEvent) {
+      this.page_size = e.pageSize
+      this.page_number1 = e.pageIndex + 1
+    }
+
+    listaDatosEliminados : any = []
+    listarEliminados()
+    {
+      this.areaService.listarEliminads().subscribe(
+          res=>{
+            this.listaDatosEliminados=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+    restaurar(id: any) {
+      Swal.fire({
+        title: 'Restaurar información',
+        text: '¿Estás seguro de restaurar el área?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Restaurar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.areaService.restaurar(id).subscribe(
+            (data) => {
+              Swal.fire('Información restaurada', 'El área ha sido restaurado', 'success');
+              this.listarEliminados();
+              this.listar();
+            },
+            (error) => {
+              Swal.fire('Error en el sistema', 'Error al restaurar el área', 'error');
             }
           )
         }

@@ -55,14 +55,24 @@
 
               
               <ng-container matColumnDef="dato1">
-                <th mat-header-cell *matHeaderCellDef>Profundidad</th>
-                <td mat-cell *matCellDef="let row">{{row.profundidadParcela.profundidad.profundidadMinima}} - {{row.profundidadParcela.profundidad.profundidadMaxima}} ({{row.profundidadParcela.profundidad.unidadMedida.abreviatura}})</td>
+                <th mat-header-cell *matHeaderCellDef>Profundidad minima</th>
+                <td mat-cell *matCellDef="let row">{{row.profundidad.profundidadMinima}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato2">
+                <th mat-header-cell *matHeaderCellDef>Profundidad maxima</th>
+                <td mat-cell *matCellDef="let row"> {{row.profundidad.profundidadMaxima}}</td>
               </ng-container>
 
 
-              <ng-container matColumnDef="dato2">
-                <th mat-header-cell *matHeaderCellDef>Fecha salida de campo</th>
-                <td mat-cell *matCellDef="let row">{{row.fechaSalidaCampo}}</td>
+              <ng-container matColumnDef="dato3">
+                <th mat-header-cell *matHeaderCellDef>Abreviatura</th>
+                <td mat-cell *matCellDef="let row">{{row.profundidad.unidadMedida.abreviatura}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dato4">
+                <th mat-header-cell *matHeaderCellDef>Unidad de medida</th>
+                <td mat-cell *matCellDef="let row">{{row.profundidad.unidadMedida.unidadMedida}}</td>
               </ng-container>
 
 
@@ -75,14 +85,14 @@
                   
                   
                   
-                    <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="editar(row.idDataset, row.fechaSalidaCampo, row.profundidadParcela.profundidad.idProfundidad)" >
+                    <!--<button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="editar(row.profundidad.idProfundidad, row.fechaSalidaCampo)" >
                       <mat-icon>edit</mat-icon>
-                    </button>
-                    <button *ngIf="row.editable==true" mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click)="eliminar(row.idDataset)">
+                    </button>-->
+                    <button *ngIf="row.editable==true" mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click)="eliminar(row.profundidad.idProfundidad, row.parcela.idParcela)">
                       <mat-icon>delete</mat-icon>
                     </button>
   
-                    <button mat-raised-button color="accent" [routerLink]="'/user-dashboard/view-datos-recolectados/'+row.idDataset+'/'+idParcela+'/'+idConglomerado+'/'+idProyecto">Datos recolectados</button>
+                    <button mat-raised-button color="accent" [routerLink]="'/user-dashboard/view-datos-recolectados/'+row.profundidad.idProfundidad+'/'+idParcela+'/'+idConglomerado+'/'+idProyecto">Datos recolectados</button>
                   </div>
                   
                 </td>

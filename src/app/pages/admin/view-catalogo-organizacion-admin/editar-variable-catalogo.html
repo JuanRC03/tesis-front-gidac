@@ -12,9 +12,10 @@
 </mat-list>
 <mat-divider></mat-divider>
 
-<form (ngSubmit)="agregar()">
+<form (ngSubmit)="agregar()" style="max-width: 550px;">
+  
   <div class="box mt-3 mb-3">
-
+    <p style="color: blue;" *ngIf="data.variableSistema==1" >*Los datos de la variable son equivalentes a los datos de la variable del sistema, modificar los datos de esta variable implica modificar los datos de la variable del sistema relacionada.</p>
     <mat-form-field class="w100" appearance="outline">
       <mat-label>Código de la variable</mat-label>
       <input type="text" name="codigo" matInput placeholder="Ingrese el código de la variable"
@@ -30,12 +31,21 @@
     <mat-form-field class="w100" appearance="outline">
       <mat-label>Descripción</mat-label>
       <input type="text" name="descripcion" matInput placeholder="Ingrese la descripcion de la variable"
-        [(ngModel)]="data.descripcion">
+        [(ngModel)]="data.descripcion" >
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="mt20 w100">
+    <mat-form-field appearance="fill" class="mt20 w100" *ngIf="data.variableSistema==1" >
       <mat-label>Variable equivalente</mat-label>
-      <mat-select name="Variable" [(ngModel)]="data.variable.idVariable ">
+      <mat-select name="Variable" [(ngModel)]="data.variable.idVariable " [disabled]="true">
+        <mat-option *ngFor="let c of varible" [value]="c.idVariable" >
+          {{ c.nombreVariable }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="mt20 w100" *ngIf="data.variableSistema==0">
+      <mat-label>Variable equivalente</mat-label>
+      <mat-select name="Variable1" [(ngModel)]="data.variable.idVariable ">
         <mat-option *ngFor="let c of varible" [value]="c.idVariable">
           {{ c.nombreVariable }}
         </mat-option>
