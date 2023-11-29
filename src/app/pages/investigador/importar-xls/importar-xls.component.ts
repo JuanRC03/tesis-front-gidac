@@ -20,7 +20,8 @@ interface DataModel {
   cantidadDatosCorrectos:number;
   cantidadFueraRanngo:number;
   cantidadNulos: number;
-  cantidadRepetidos: number | null;
+  cantidadOutlier:number;
+  cantidadRepetidos: number;
   idVariable: number;
   nombreTipoVariable: string;
   nombreVariable: string;
@@ -309,12 +310,12 @@ export class ImportarXlsComponent implements OnInit {
     responsive: true,
   };
   
-  public barChartLabels: Label[] = ['Cantidad de datos correctos', 'Cantidad de Nulos', 'Cantidad Fuera de Rango'];
+  public barChartLabels: Label[] = ['Correctos', 'Nulos', 'Fuera de Rango', 'Repetidos'];
   public barChartData: ChartDataSets[][] = [];
   public barChartType: ChartType = 'bar';
   public barChartColors: Color[] = [
     {
-      backgroundColor: ['rgba(7,143,174)', 'rgba(174,7,70)', 'rgba(255,189,54)'],
+      backgroundColor: ['rgba(7,143,174)', 'rgba(174,7,70)', 'rgba(255,189,54)', 'rgba(55,189,54)'],
     },
   ];
   
@@ -328,12 +329,12 @@ export class ImportarXlsComponent implements OnInit {
     },
   };
   
-  public pieChartLabels: Label[] = ['Cantidad de datos correctos', 'Cantidad de Nulos', 'Cantidad Fuera de Rango'];
+  public pieChartLabels: Label[] = ['Correctos', 'Nulos', 'Fuera de Rango', 'Repetidos', 'Outlier'];
   public pieChartData: number[][] = [];
   public pieChartType: ChartType = 'pie';
   public pieChartColors: Color[] = [
     {
-      backgroundColor: ['rgba(7,143,174)', 'rgba(174,7,70)', 'rgba(255,189,54)'],
+      backgroundColor: ['rgba(55,189,54)','rgba(7,143,174)', 'rgba(174,7,70)', 'rgba(255,189,54)', 'rgba(74,70,70)'],
     },
   ];
   public dataModels: DataModel[] = [];
@@ -343,19 +344,27 @@ export class ImportarXlsComponent implements OnInit {
       this.barChartData.push([
         {
           data: [model.cantidadDatosCorrectos],
-          label: 'Cantidad de datos correctos',
+          label: 'Correctos',
         },
         {
           data: [model.cantidadNulos],
-          label: 'Cantidad de Nulos',
+          label: 'Nulos',
         },
         {
           data: [model.cantidadFueraRanngo],
-          label: 'Cantidad Fuera de Rango',
+          label: 'Fuera de Rango',
+        },
+        {
+          data: [model.cantidadRepetidos],
+          label: 'Repetidos',
+        },
+        {
+          data: [model.cantidadOutlier],
+          label: 'Outlier',
         },
       ]);
   
-      this.pieChartData.push([model.cantidadDatosCorrectos, model.cantidadNulos, model.cantidadFueraRanngo]);
+      this.pieChartData.push([model.cantidadDatosCorrectos, model.cantidadNulos, model.cantidadFueraRanngo, model.cantidadRepetidos, model.cantidadOutlier]);
     });
   }
   

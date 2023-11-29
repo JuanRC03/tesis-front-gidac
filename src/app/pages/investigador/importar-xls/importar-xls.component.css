@@ -18,23 +18,23 @@
   .contenedor-btn-file {
     display: inline-block;
     position: relative;
-    background-color: var(--resaltado-color);
+    background-color: var(--color-boton-importar);
     color: #fff;
     border: 0;
-    padding: 12px 20px;
-    border-radius: 8px;
+    padding: 8px 20px;
+    border-radius: 4px;
     box-shadow: 0 0 12px rgba(0, 0, 0, .15);
     overflow: hidden;
     transition: ease-out 120ms background-color;
   }
   .contenedor-btn-file:hover {
-    background-color: var(--resaltado-color);
+    background-color: var(--color-boton-importar);
   }
   .contenedor-btn-file:active {
-    background-color: var(--resaltado-color);
+    background-color: var(--color-boton-importar);
   }
   .contenedor-btn-file > i {
-    margin-right: 15px;
+    margin-right: 0px;
   }
   
   .contenedor-btn-file label {
@@ -49,12 +49,12 @@
   }
   
   .contenedor-btn-file.bordeado {
-    background-color: #fff;
-    border: 2px solid var(--resaltado-color);
-    color: var(--resaltado-color);
+    background-color: var(--color-boton-importar);
+    border: 2px solid var(--color-boton-importar);
+    color: #fff;
   }
   .contenedor-btn-file.bordeado:hover {
-    background-color: var(--resaltado-color);
+    background-color: var(--color-boton-importar);
     color: #fff;
   }
   table {
@@ -100,4 +100,14 @@
   }
 
 
+
   
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+  .link-unstyled {
+    color: inherit;
+    text-decoration: none;
+    /* Agrega cualquier otra propiedad que desees para anular los estilos */
+  }

@@ -1,25 +1,3 @@
-<!--<mat-card
-  style="margin-bottom: 5px; padding-bottom: 0%; margin-top: 0; padding-top: 0; border-top: 0; padding-left: 0px; margin-left: 0; border-left: 0;">
-  <mat-list style="margin: 0; padding: 0; border: 0;">
-    <mat-list-item style="margin: 0; padding: 0; border: 0; height: 58px;">
-      <mat-icon mat-list-icon
-        style="padding-left: 0px; margin-left: 0; border-left: 0;">supervised_user_circle</mat-icon>
-      <div mat-line><mat-card-title
-          style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Importar datos de xls
-        </mat-card-title></div>
-      <div mat-line>
-        <div aria-label="breadcrumb" style="font-size: 14px; border: 0; padding: 0; margin: 0;">
-          <ol class="breadcrumb " style="border: 0; padding: 0; margin: 0;">
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" routerLink = "/user-dashboard/">Inicio</a></li>
-            <li class="breadcrumb-item derecha"><a  style="color: black; text-decoration: none;" [routerLink] = "'/user-dashboard/view-conglomerados/'+idProyecto">Conglomerados</a></li>
-            <li style="color: #3FC060; text-decoration: none;" class="breadcrumb-item active derecha" aria-current="page">Importar archivo XLS</li>
-          </ol>
-        </div>
-      </div>
-    </mat-list-item>
-  </mat-list>
-</mat-card>-->
-
 <div class="bootstrap-wrapper" >
   <div class="container-fluid">
     <div class="row mt20" >
@@ -49,26 +27,53 @@
 </div>
 
 
-
-<mat-list>
-    <mat-list-item>
-      <div mat-line>
-      </div>
-      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-        
-        <button mat-icon-button matTooltip="Primary" color="primary"  aria-label="Example icon-button with a heart icon" (click)="recargarPantalla()">
-            <mat-icon>cached</mat-icon>
-          </button>
-        <!--<button mat-raised-button color="primary"  (click)="openDialogProyecto(idProyecto)" >Importar datos</button>-->
-        <button style="margin-left: 10px;" mat-raised-button color="primary">Descargar formato</button>
-      </div>
-
-    </mat-list-item>
-  </mat-list>
 <mat-stepper orientation="horizontal">
         <mat-step>
           <ng-template matStepLabel>Cargar archivo</ng-template>
           <ng-template matStepContent>
+            <mat-divider></mat-divider>
+            <mat-list>  
+              
+              
+              <mat-list-item >
+                <span class="example-spacer"></span>
+                <span class="example-spacer"></span>
+                <span class="example-spacer"></span>
+                <span class="example-spacer"></span>
+                <span class="example-spacer"></span>
+                <mat-card-title style="font-size: 17px;">Cargar archivo</mat-card-title>
+                <span class="example-spacer"></span>
+                <span class="example-spacer"></span>
+                <span class="example-spacer"></span>
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                  <button mat-icon-button matTooltip="Primary" color="primary"  aria-label="Example icon-button with a heart icon" (click)="recargarPantalla()">
+                    <mat-icon>cached</mat-icon>
+                </button>
+                
+
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                  <button style="margin-left: 10px;" mat-raised-button color="primary" [matMenuTriggerFor]="menu" aria-label="Toggle menu">Descargar formato</button>
+                  
+                  <mat-menu #menu="matMenu" xPosition="before">
+                    <button class="custom-button mat-menu-item">
+                      <a href="assets/docs/Formato.xls" class="link-unstyled" type="button">
+                        Formato importar datos
+                      </a>
+                    </button>
+
+                    <button class="custom-button mat-menu-item">
+                      <a href="assets/docs/FormatoEjemplo.xls" class="link-unstyled" type="button">
+                        Formato ejemplo importar datos
+                      </a>
+                    </button>
+                  </mat-menu>           
+                </div>
+
+                 </div>
+              </mat-list-item>
+              
+            </mat-list>
+            <mat-divider></mat-divider>
             
             <br>
             <br>
@@ -100,7 +105,7 @@
             <div *ngIf="verBotonSiguintePaso===true" style="text-align: center;">
                 <button class="contenedor-btn-file bordeado" matStepperNext>
                   <i class="fas fa-file"></i>
-                   Ver datos que se van a cargar 
+                   Ver variables encontradas
                   <label for="btn-file">   </label>
                 </button>
             </div>
@@ -110,6 +115,17 @@
         <mat-step>
           <ng-template matStepLabel>Variables encontradas</ng-template>
           <ng-template matStepContent>
+            <mat-divider></mat-divider>
+            <mat-list>  
+              
+              <mat-list-item>
+                <span class="example-spacer"></span>
+                <mat-card-title style="font-size: 17px;">Variables encontradas del archivo</mat-card-title>
+                <span class="example-spacer"></span>
+              </mat-list-item>
+              
+            </mat-list>
+            <mat-divider></mat-divider>
             
             <table mat-table [dataSource]="listaDatos" class="mat-elevation-z8">
 
@@ -161,7 +177,7 @@
                 <div style="display: inline-block;">
                   <button class="contenedor-btn-file bordeado" matStepperPrevious>
                     <i class="fas fa-file"></i>
-                    Regresar a la carga de archivo
+                    Cargar archivo
                     <label for="btn-file"></label>
                   </button>
                 </div>
@@ -187,37 +203,41 @@
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Perfilado de datos</ng-template>
+          <ng-template matStepContent>
+            
+          <mat-divider></mat-divider>
+            <mat-list>  
+              <mat-list-item>
+                <span class="example-spacer"></span>
+                <span class="example-spacer" *ngIf="dataModels.length!=0" ></span>
+                <span class="example-spacer" *ngIf="dataModels.length!=0" ></span>
+                <mat-card-title style="font-size: 17px;">Perfilado de datos</mat-card-title>
+                <span class="example-spacer"></span>
+                <span class="example-spacer" *ngIf="dataModels.length!=0" ></span>
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                  <button *ngIf="dataModels.length!=0" class="contenedor-btn-file bordeado" (click)="guardarDatos()">
+                    <i class="fas fa-file"></i>
+                     Importar datos 
+                    <label for="btn-file">   </label>
+                  </button>            
+                 </div>
+              </mat-list-item>
+            </mat-list>
+            <mat-divider></mat-divider>
+
+
           
-
           <mat-list *ngIf="dataModels.length==0"
-              style="text-align: center; padding: 20px; margin: 20px;">
-              <p>No existen datos perfilados!!</p>
-              <br>
-              <mat-divider></mat-divider>
-          </mat-list>
-
-          <mat-list *ngIf="dataModels.length!=0">
-            <mat-list-item>
-              <div mat-line>
-              </div>
-              <div >
-                <button class="contenedor-btn-file bordeado" (click)="guardarDatos()">
-                  <i class="fas fa-file"></i>
-                   Cargar datos 
-                  <label for="btn-file">   </label>
-                </button>
-              </div>
-        
-            </mat-list-item>
-          </mat-list>
-
-          <br>
-
+            style="text-align: center;">
+            <br>
+            <p>No existen datos perfilados!!</p>
+            <br>
+            <mat-divider></mat-divider>
+        </mat-list>
           <div class="card-container">
             
             <div *ngFor="let model of dataModels; let i = index">
-              <mat-divider style="background-color: black;"></mat-divider>
-              <mat-divider></mat-divider>
+              
               <mat-divider></mat-divider>
               <br>
               <h3 style="text-align: center;">{{ model.nombreVariableOrganizacion }} {{ model.unidadMedida }}</h3>
@@ -227,9 +247,7 @@
 
                 <div class="col-md-4" >
                   <mat-card class="mb20">
-                    <div class="info-item">
-                      <p><b>Organización:</b> {{ model.nombreOrganizacion }}</p>
-                    </div>
+                    
                     <div class="info-item">
                       <p><b>Tipo de variable:</b> {{ model.nombreTipoVariable }}</p>
                     </div>
@@ -244,6 +262,14 @@
                     </div>
                     <div class="info-item">
                       <p><b>Total de datos nulos:</b> {{ model.cantidadNulos }}</p>
+                    </div>
+
+                    <div class="info-item">
+                      <p><b>Total de datos repetidos:</b> {{ model.cantidadRepetidos }}</p>
+                    </div>
+
+                    <div class="info-item">
+                      <p><b>Total de datos outlier:</b> {{ model.cantidadOutlier }}</p>
                     </div>
                     
                     <div class="info-item">
@@ -269,9 +295,8 @@
               </div>
             </div>
           </div>
-          <mat-divider style="background-color: black;"></mat-divider>
-              <mat-divider></mat-divider>
               <mat-divider></mat-divider>
           </div>
           </div>
+          </ng-template>
         </mat-step>

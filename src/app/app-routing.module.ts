@@ -289,7 +289,7 @@ const routes: Routes = [
         component:ViewAlturaComponent       
       },
       {
-        path:'importar-xls/:idProyecto',
+        path:'importar-datos/:idProyecto',
         component:ImportarXlsComponent       
       },
       {
