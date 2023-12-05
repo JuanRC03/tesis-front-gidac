@@ -110,6 +110,7 @@ import { FiltroOrganizacionAdminPipe } from './pipes/filtro-organizacion-admin.p
 import { AgregarDirector } from './pages/admin/view-director/view-director.component';
 import { AgregarAdministrador } from './pages/admin/view-administrador/view-administrador.component';
 import { ViewCatalogoVariable } from './pages/admin/view-variables-admin/view-variables-admin.component';
+import { ViewUnidadMedidavariableAdmin } from './pages/admin/view-variables-admin/view-variables-admin.component';
 
 //Director
 import { SideDirectorComponent } from './pages/director/side-director/side-director.component';
@@ -175,6 +176,9 @@ import { ViewDashProyectoComponent } from './pages/investigador/view-dash-proyec
 import { SideUserComponent } from './pages/investigador/side-user/side-user.component';
 import { DashUserComponent } from './pages/investigador/dash-user/dash-user.component';
 import { ActualizarPerfilUsuarioComponent } from './pages/investigador/actualizar-perfil-usuario/actualizar-perfil-usuario.component';
+import { ViewUnidadMedidavariable } from './pages/investigador/view-catalogo-organizacion/view-catalogo-organizacion.component';
+import { ViewValorPermitidoVariableNumerica } from './pages/investigador/view-catalogo-organizacion/view-catalogo-organizacion.component';
+import { ViewValorPermitidoVariableTextual } from './pages/investigador/view-catalogo-organizacion/view-catalogo-organizacion.component';
 
 //Filtros
 import { FiltroAreaInvestigacionPipe } from './pipes/filtro-area-investigacion.pipe';
@@ -228,6 +232,7 @@ import { FiltroProvinciaPipe } from './pipes/filtro-provincia.pipe';
 import { FiltroCantonPipe } from './pipes/filtro-canton.pipe';
 import { FiltroParroquiaPipe } from './pipes/filtro-parroquia.pipe';
 import { FiltroEquivalenciaVariableSistemaCatalogPipe } from './pipes/filtro-equivalencia-variable-sistema-catalog.pipe';
+import { FiltroUnidadMedidaVariablePipe } from './pipes/filtro-unidad-medida-variable.pipe';
 
 @NgModule({
   declarations: [
@@ -404,6 +409,11 @@ import { FiltroEquivalenciaVariableSistemaCatalogPipe } from './pipes/filtro-equ
     AgregarInvestigador,
     ViewCatalogoVariable,
     FiltroEquivalenciaVariableSistemaCatalogPipe,
+    ViewUnidadMedidavariable,
+    FiltroUnidadMedidaVariablePipe,
+    ViewUnidadMedidavariableAdmin,
+    ViewValorPermitidoVariableNumerica,
+    ViewValorPermitidoVariableTextual
   ],
   imports: [
     MatTreeModule,

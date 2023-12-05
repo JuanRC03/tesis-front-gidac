@@ -85,7 +85,7 @@ export class LoginService {
 
   //resetear password
   public enviarEmail(correo:any){
-    return this.http.post(`${baserUrl}/enviar-email`,correo);
+    return this.http.post(`${baserUrl}/enviar-email-recuperar-contrasenia`,correo);
   }
 
   

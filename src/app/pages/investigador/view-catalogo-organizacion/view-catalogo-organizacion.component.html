@@ -44,7 +44,7 @@
 
               <ng-container matColumnDef="dato1">
                 <th mat-header-cell *matHeaderCellDef>Variable del sistema</th>
-                <td mat-cell *matCellDef="let row" ><button mat-button color="primary">{{row.nombreVariable}}</button></td>
+                <td mat-cell *matCellDef="let row" ><button mat-button color="primary" (click)="openViewUnidadMedidaVariable(row.idVariable,row.nombreVariable)">{{row.nombreVariable}}</button></td>
               </ng-container>
 
               <ng-container matColumnDef="dato2">

@@ -13,6 +13,10 @@ export class VariableUnidadMedidaService {
     return this.http.get(`${baserUrl}/unidad-medida-variable/listar`);
   }
 
+  public findByVigenciaAndVariableIdVariableAndVariableVigenciaAndUnidadMedidaVigencia(id:any){
+    return this.http.get(`${baserUrl}/unidad-medida-variable/listar-por-variable-vigente/${id}`);
+  }
+
   public listarVigentes(){
     return this.http.get(`${baserUrl}/unidad-medida-variable/listar-equivalencia-variable-vigentes`);
   }

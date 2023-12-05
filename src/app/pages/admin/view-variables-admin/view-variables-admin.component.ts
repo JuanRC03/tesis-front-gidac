@@ -17,6 +17,7 @@ import { FamiliaService } from 'src/app/services/familia.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { OrganizacionService } from 'src/app/services/organizacion.service';
 import { ValorPermitidoService } from 'src/app/services/valor-permitido.service';
+import { VariableUnidadMedidaService } from 'src/app/services/variable-unidad-medida.service';
 
 @Component({
   selector: 'app-view-variables-admin',
@@ -182,6 +183,12 @@ export class ViewVariablesAdminComponent implements AfterViewInit {
       dialogRef.afterClosed().subscribe(() => {
         this.listarVigentes();
         
+      });
+    }
+
+    openViewUnidadMedidaVariable(id:any, nombre:any): void {
+      const dialogRef = this.dialog.open(ViewUnidadMedidavariableAdmin, {
+        data: { idVariable: id, nombreVariable:nombre},
       });
     }
   }
@@ -790,12 +797,7 @@ export class DialogEditarEquivalencia {
         }
       }
       agregarValorPermitido() {
-        if (this.variable.tipoVariable.idTipoVariable == 0) {
-          this.snack.open('El tipo de variable es requerido !!', 'Aceptar', {
-            duration: 3000
-          })
-          return;
-        }
+        
         if(this.idTipoVariableAux==1){
           
           
@@ -821,7 +823,7 @@ export class DialogEditarEquivalencia {
 
                 this.valorPermitidoService.guardarValorPermitido(formData).subscribe(
                   (data) => {
-                    Swal.fire('Información actualizada', 'El valor permitido se añadio con éxito', 'success').then(
+                    Swal.fire('Información actualizada 1', 'El valor permitido se añadio con éxito', 'success').then(
                       (e) => {
                         this.listarValorPermitido();
                       })
@@ -1337,3 +1339,61 @@ export class DialogCompletarDatosVariable {
   
 
   
+
+interface DatosActualizar {
+  idVariable: '',
+  nombreVariable: '',
+}
+
+@Component({
+  selector: 'view-unidad-medida-variable-admin',
+  templateUrl: 'view-unidad-medida-variable-admin.html',
+  styleUrls: ['./view-variables-admin.component.css']
+})
+export class ViewUnidadMedidavariableAdmin {
+  constructor(
+    
+    public dialogRef: MatDialogRef<ViewUnidadMedidavariableAdmin>,
+    @Inject(MAT_DIALOG_DATA) public datos: DatosActualizar,
+    private variableUnidadMedidaService:VariableUnidadMedidaService,
+  ) { }
+
+
+  displayedColumns = ['dato1', 'dato2', 'dato3'];
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  ngOnInit(): void {
+    this.listar();
+  }
+
+  listaDatos : any = []
+
+  listar()
+    {
+      this.variableUnidadMedidaService.findByVigenciaAndVariableIdVariableAndVariableVigenciaAndUnidadMedidaVigencia(this.datos.idVariable).subscribe(
+          res=>{
+            this.listaDatos=res;
+          },
+          err=>console.log(err)
+        )
+    }
+
+    page_size:number=5
+    page_number:number=1
+    page_size_options=[5,10,20,50,100]
+  
+    handlePage(e: PageEvent){
+      this.page_size=e.pageSize
+      this.page_number=e.pageIndex + 1
+    }
+    
+    public search: string = '';
+  
+    onSearch( search: string ) {
+      this.search = search;
+    }
+
+}
