@@ -111,6 +111,8 @@ import { AgregarDirector } from './pages/admin/view-director/view-director.compo
 import { AgregarAdministrador } from './pages/admin/view-administrador/view-administrador.component';
 import { ViewCatalogoVariable } from './pages/admin/view-variables-admin/view-variables-admin.component';
 import { ViewUnidadMedidavariableAdmin } from './pages/admin/view-variables-admin/view-variables-admin.component';
+import { DialogActualizarEmailEnvio } from './pages/admin/view-email-envio/view-email-envio.component';
+import { DialogAddEmailEnvio } from './pages/admin/view-email-envio/view-email-envio.component';
 
 //Director
 import { SideDirectorComponent } from './pages/director/side-director/side-director.component';
@@ -233,6 +235,8 @@ import { FiltroCantonPipe } from './pipes/filtro-canton.pipe';
 import { FiltroParroquiaPipe } from './pipes/filtro-parroquia.pipe';
 import { FiltroEquivalenciaVariableSistemaCatalogPipe } from './pipes/filtro-equivalencia-variable-sistema-catalog.pipe';
 import { FiltroUnidadMedidaVariablePipe } from './pipes/filtro-unidad-medida-variable.pipe';
+import { ViewEmailEnvioComponent } from './pages/admin/view-email-envio/view-email-envio.component';
+import { FiltroEmailEnvioPipe } from './pipes/filtro-email-envio.pipe';
 
 @NgModule({
   declarations: [
@@ -413,7 +417,11 @@ import { FiltroUnidadMedidaVariablePipe } from './pipes/filtro-unidad-medida-var
     FiltroUnidadMedidaVariablePipe,
     ViewUnidadMedidavariableAdmin,
     ViewValorPermitidoVariableNumerica,
-    ViewValorPermitidoVariableTextual
+    ViewValorPermitidoVariableTextual,
+    ViewEmailEnvioComponent,
+    DialogActualizarEmailEnvio,
+    DialogAddEmailEnvio,
+    FiltroEmailEnvioPipe
   ],
   imports: [
     MatTreeModule,

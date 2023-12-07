@@ -34,6 +34,7 @@ import { ViewFamiliaAdminComponent } from './pages/admin/view-familia-admin/view
 import { ImportarCatalogoOrganizacionComponent } from './pages/admin/importar-catalogo-organizacion/importar-catalogo-organizacion.component';
 import { ImportarCatalogoEspochComponent } from './pages/admin/importar-catalogo-espoch/importar-catalogo-espoch.component';
 import { ViewVariablesAdminComponent } from './pages/admin/view-variables-admin/view-variables-admin.component';
+import { ViewEmailEnvioComponent } from './pages/admin/view-email-envio/view-email-envio.component';
 
 //Director
 import { SideDirectorComponent } from './pages/director/side-director/side-director.component';
@@ -186,6 +187,11 @@ const routes: Routes = [
         path:'view-variable-admin',
         component:ViewVariablesAdminComponent
       },
+      {
+        path:'view-envio-email',
+        component:ViewEmailEnvioComponent
+      },
+      
     ]
   },
   //--------------------------------------------------------------------------

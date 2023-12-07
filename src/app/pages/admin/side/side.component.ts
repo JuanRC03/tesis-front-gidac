@@ -309,8 +309,7 @@ export class SideComponent {
   @ViewChild('drawer') drawer!: MatDrawer;
 
   isLoggedIn = false;
-  usuario: any = null;
-  idUsuario = 0;
+  
 
   menuVisible = true;
 
@@ -355,6 +354,9 @@ export class SideComponent {
   }
 
   navbar: any;
+
+  usuario: any = null;
+  idUsuario = 0;
   ngOnInit(): void {
 
     this.isLoggedIn = this.login.isLoggedIn();
