@@ -11,6 +11,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RespuestaSolicitudDescargaService } from 'src/app/services/respuesta-solicitud-descarga.service';
 import { ActivatedRoute } from '@angular/router';
 import { SideDirectorComponent } from '../side-director/side-director.component';
+import { VariableService } from 'src/app/services/variable.service';
+import { DatoRecolectadoService } from 'src/app/services/dato-recolectado.service';
 
 
 export interface DialogData {
@@ -44,10 +46,12 @@ export class SolicitudesAccesoComponent implements OnInit {
               public dialog: MatDialog,
               private route:ActivatedRoute,
               private respuestaSolicitudDescargaService:RespuestaSolicitudDescargaService,
-              private sideDirectorComponent:SideDirectorComponent) { }
+              private sideDirectorComponent:SideDirectorComponent,
+              private variableService:VariableService,
+              private datoRecolectadoService:DatoRecolectadoService,
+              private snack: MatSnackBar,) { }
 
   dataSource:any= [];
-  dataDescarga:any= [];
   dataSourceAceptado:any= [];
   dataSourceRechazado:any= [];
   columnsToDisplay = ['nombre', 'apellido', 'emial', 'institucion'];
@@ -126,6 +130,7 @@ export class SolicitudesAccesoComponent implements OnInit {
       (data:any) => {
         this.dataSource=this.transformarFechasSolicitadas(data);
         console.log(data);
+        this.sideDirectorComponent.listarContadorDeSolicitudes();
       }
     )
   }
@@ -190,7 +195,7 @@ export class SolicitudesAccesoComponent implements OnInit {
   }
 
   //Aprobar solicitud
-  aceptarSolicitud(idSolicitudDescarga:any){
+  aceptarSolicitud(idSolicitudDescarga:any, idProyecto:any){
     Swal.fire({
       title:'Enviar datos del proyecto',
       text:'¿Estás seguro de enviar los datos del proyecto?',
@@ -202,20 +207,15 @@ export class SolicitudesAccesoComponent implements OnInit {
       cancelButtonText:'Cancelar'
     }).then((result) => {
       if(result.isConfirmed){
-        this.solicitudAccesoService.solicitudAprobada(idSolicitudDescarga).subscribe(
-          (data) => {
-            //location.reload();
-            this.listarAprobador();
-            this.dataSource = this.dataSource.filter((dato:any) => dato.idSolicitudDescarga != idSolicitudDescarga);
-            Swal.fire('Datos enviados','Los datos han sido enviados al email del usuario','success');
-            this.listarAprobador();
-            this.sideDirectorComponent.listarContadorDeSolicitudes();
-          },
-          (error) => {
-            Swal.fire('Error','Error al enviar los datos','error');
-          }
-        )
-      }
+        this.listarVariablesDescarga(idProyecto,idSolicitudDescarga).then(() => {
+          //location.reload();
+          this.listarAprobador();
+          this.dataSource = this.dataSource.filter((dato:any) => dato.idSolicitudDescarga != idSolicitudDescarga);
+          Swal.fire('Datos enviados','Los datos han sido enviados al email del usuario','success');
+          this.listarAprobador();
+          this.sideDirectorComponent.listarContadorDeSolicitudes();
+        
+      })};
     })
   }
    //paginacion y busqueda pagina 1
@@ -278,134 +278,134 @@ export class SolicitudesAccesoComponent implements OnInit {
       data: {idRespuesta: idRespuestaDescarga},
     });
   }
-
-  recorerDatos(datosPaso:any){
-    for(let i = 0; i < datosPaso.length; i++) {
-      // Agregas los valores al arreglo 'dataAux'
-      const nuevoElemento = {
-        id: datosPaso[i].idSolicitudDescarga,
-        nombre_usuario: datosPaso[i].nombre,
-        apellido: datosPaso[i].apellido,
-        email:datosPaso[i].emial,
-        institucion: datosPaso[i].institucion,
-        motivo: datosPaso[i].motivo,
-        proyecto:datosPaso[i].proyectoInvestigacion?.nombreProyecto,
-
-      };
-      this.dataDescarga.push(nuevoElemento);
-    }
-  }
-
-  recorerDatosRespuesta(datosPaso:any){
-    for(let i = 0; i < datosPaso.length; i++) {
-      // Agregas los valores al arreglo 'dataAux'
-      const nuevoElemento = {
-        nombre_usuario: datosPaso[i].solicitudDescarga?.nombre,
-        apellido: datosPaso[i].solicitudDescarga?.apellido,
-        email:datosPaso[i].solicitudDescarga?.emial,
-        institucion: datosPaso[i].solicitudDescarga?.institucion,
-        motivo: datosPaso[i].solicitudDescarga?.motivo,
-        proyecto_investigacion: datosPaso[i].solicitudDescarga?.proyectoInvestigacion?.nombreProyecto,
-      };
-      this.dataDescarga.push(nuevoElemento);
-    }
-  }
-
-  downloadTodosExcel() {
-    this.dataDescarga= [];
-    this.recorerDatos(this.dataSource);
-    let worksheet = XLSX.utils.json_to_sheet(this.dataDescarga);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Solicitados');
-
-    this.dataDescarga= [];
-    this.recorerDatos(this.dataSourceAceptado);
-    worksheet = XLSX.utils.json_to_sheet(this.dataDescarga);
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Aceptados');
-
-    this.dataDescarga= [];
-    this.recorerDatos(this.dataSourceRechazado);
-    worksheet = XLSX.utils.json_to_sheet(this.dataDescarga);
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Rechazados');
-
-    // Convertir el libro de trabajo a un archivo de Excel y crear un objeto Blob con el contenido
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    
-    // Descargar el archivo Excel usando la librería file-saver
-    saveAs(blob, 'table_data.xlsx');
-  }
-
-  downloadExcel(datosPaso:any) {
-    this.dataDescarga= [];
-    this.recorerDatosRespuesta(datosPaso);
-    // Convertir los datos de la tabla en un objeto de hoja de cálculo
-    const worksheet = XLSX.utils.json_to_sheet(this.dataDescarga);
-  
-    // Crear un objeto de libro de trabajo y agregar la hoja de cálculo
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'DatosSolitud');
-  
-    // Convertir el libro de trabajo a un archivo de Excel y crear un objeto Blob con el contenido
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    
-    // Descargar el archivo Excel usando la librería file-saver
-    saveAs(blob, 'table_data.xlsx');
-  }
-
-  downloadTodosCSV() {
-    // Convertir los datos de la tabla en un archivo CSV
-    this.dataDescarga= [];
-    this.recorerDatos(this.dataSource);
-    this.recorerDatos(this.dataSourceAceptado);
-    this.recorerDatos(this.dataSourceRechazado);
-    const csv = this.convertToCSV(this.dataDescarga);
-    
-    // Crear un objeto Blob con el contenido del archivo CSV
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-
-    // Descargar el archivo CSV usando la librería file-saver
-    saveAs(blob, 'table_data.csv');
-
-  }
-
-  downloadCSV(datosPaso:any) {
-    // Convertir los datos de la tabla en un archivo CSV
-    this.dataDescarga= [];
-    this.recorerDatos(datosPaso);
-    const csv = this.convertToCSV(this.dataDescarga);
-    
-    // Crear un objeto Blob con el contenido del archivo CSV
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-
-    // Descargar el archivo CSV usando la librería file-saver
-    saveAs(blob, 'table_data.csv');
-
-  }
-
-  convertToCSV(data: any[]) {
-    const separator = ',';
-    const keys = Object.keys(data[0]);
-
-    // Crear la primera fila del archivo CSV con los nombres de las columnas
-    let csv = keys.join(separator) + '\n';
-
-    // Crear el resto de filas del archivo CSV con los datos de la tabla
-    data.forEach(item => {
-      const row = keys.map(key => item[key]).join(separator) + '\n';
-      csv += row;
-    });
-
-    return csv;
-  }
-
   
   page_number:number=1
 
   handlePage(e: PageEvent){
     this.page_size=e.pageSize
     this.page_number=e.pageIndex + 1
+  }
+
+  //-----------------------------------------------------------------------------
+  //Cargar datos para aprobar
+  listaDatosRecolectador: any = [];
+  listaDatosSeleccionados: any = [];
+
+  opcionSeleccionadaProyecto: any = {
+    idProyecto: 0,
+  }
+
+  opcionSeleccionadaDataset: any = {
+    codigoDataset: 0,
+  }
+
+  opcionSeleccionadaSolicitudDescarga: any = {
+    idSolicitudDescarga: 0,
+  }
+
+  listarVariablesDescarga(idProyecto:any, idSolicitudDescarga:any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.listaDatosSeleccionados = [];
+      this.opcionSeleccionadaProyecto.idProyecto=idProyecto;
+      this.variableService.obtenerVariablesDescargarProyecto(idProyecto, 0, 0).subscribe((data: any) => {
+        this.listaDatosSeleccionados = data;
+        this.downloadSelectedDataXLS(idSolicitudDescarga) 
+        resolve(data);
+      },
+      (error: any) => {
+        reject(error); // Rechaza la promesa con el error, si lo hay
+      }
+      );
+    });
+  }
+
+  downloadSelectedDataXLS(idSolicitudDescarga:any) {
+    this.listaDatosSeleccionados
+    console.log(this.listaDatosSeleccionados);
+    if (this.listaDatosSeleccionados.length === 0) {
+      this.snack.open('No ha seleccionado alguna variable para descargar !!', 'Aceptar', {
+        duration: 3000
+      });
+    } else {
+      const formData = new FormData();
+      formData.append('equivalenciasVariables', JSON.stringify(this.listaDatosSeleccionados));
+      formData.append('proyectoDatos', JSON.stringify(this.opcionSeleccionadaProyecto));
+      formData.append('datasetDatos', JSON.stringify(this.opcionSeleccionadaDataset));
+      this.datoRecolectadoService.unirDatos(formData).subscribe((data: any) => {
+        console.log(data)
+        this.downloadExcel(data, this.listaDatosSeleccionados, idSolicitudDescarga)
+      });
+    }
+  }
+
+  dataDescarga:any= [];
+
+
+  downloadExcel(datosPaso: any, listaDatoSeleccionado: any, idSolicitudDescarga:any) {
+    this.dataDescarga = [];
+    this.recorerDatos(datosPaso, listaDatoSeleccionado);
+    const worksheet = XLSX.utils.json_to_sheet(this.dataDescarga);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'datos');
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    const formData = new FormData();
+    this.opcionSeleccionadaSolicitudDescarga.idSolicitudDescarga=idSolicitudDescarga;
+
+    formData.append('solicitudDescarga', JSON.stringify(this.opcionSeleccionadaSolicitudDescarga));
+    formData.append('file', blob, 'tabla_datos.xlsx');
+
+    this.solicitudAccesoService.solicitudAprobadaEnvioMensaje(formData).subscribe(
+      (data) => {
+        
+      },
+      (error) => {
+        Swal.fire('Error','Error al enviar los datos','error');
+      }
+    )
+
+    saveAs(blob, 'tabla_datos.xlsx');
+  }
+
+  recorerDatos(datosPaso: any, listaDatoSeleccionado: any) {
+    let n = 0;
+    for (let i = 0; i < datosPaso.length; i++) {
+      const subarreglo = datosPaso[i];
+      const nuevoElemento: any = {
+        'Altitud minima': subarreglo[n++],
+        'Altitud maxima': subarreglo[n++],
+        'Unidad de medidad altitud': subarreglo[n++],
+        'Código conglomerado': subarreglo[n++],
+        'Nombre conglomerado': subarreglo[n++],
+        'Sector': subarreglo[n++],
+        'Código parcela': subarreglo[n++],
+        'Nombre parcela': subarreglo[n++],
+        'Coordenada x': subarreglo[n++],
+        'Coordenada y': subarreglo[n++],
+        'Area parcela': subarreglo[n++],
+        'Unidad de medida parcela': subarreglo[n++],
+        'Profundidad minima': subarreglo[n++],
+        'Profundidad maxima': subarreglo[n++],
+        'Unidad de medidad profundidad': subarreglo[n++],
+        'Fecha salida campo': subarreglo[n++],
+      };
+
+      for (let j = n; j < subarreglo.length; j += 3) {
+        const etiqueta = subarreglo[j];
+        const variableUnidadMedida = subarreglo[j+1];
+        const valor = subarreglo[j + 2];
+
+        
+        if(variableUnidadMedida=='NA'){
+          nuevoElemento[etiqueta] = valor;
+        }else{
+          nuevoElemento[etiqueta+' - '+variableUnidadMedida] = valor;
+        } 
+      }
+      n = 0;
+      this.dataDescarga.push(nuevoElemento);
+    }
   }
   
 

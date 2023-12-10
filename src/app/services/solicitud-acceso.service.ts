@@ -29,6 +29,10 @@ export class SolicitudAccesoService {
     return this.http.get(`${baserUrl}/solicitud/solicitud-aprobada/${idSolicitud}`);
   }
 
+  public solicitudAprobadaEnvioMensaje(modelo:any){
+    return this.http.post(`${baserUrl}/solicitud/solicitud-aprobada-envio-mensaje`,modelo);
+  }
+
   public solicitudRechazada(id:any, respuesta:any){
     return this.http.get(`${baserUrl}/solicitud/solicitud-rechazada/${id}/${respuesta}`);
   }

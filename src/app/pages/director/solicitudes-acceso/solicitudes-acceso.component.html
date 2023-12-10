@@ -78,7 +78,7 @@
                 <mat-card-actions>
                   <div class="container text-center mt20" style="padding-bottom: 20px;">
                     <button mat-raised-button color="primary"
-                      (click)="aceptarSolicitud(element.idSolicitudDescarga)">Aprobar</button>
+                      (click)="aceptarSolicitud(element.idSolicitudDescarga,element.proyectoInvestigacion.idProyecto)">Aprobar</button>
                     <button mat-raised-button color="warn"
                       (click)="openDialog(element.idSolicitudDescarga )">Rechazar</button>
                   </div>
