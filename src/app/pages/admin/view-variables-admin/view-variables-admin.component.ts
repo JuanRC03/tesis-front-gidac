@@ -18,6 +18,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { OrganizacionService } from 'src/app/services/organizacion.service';
 import { ValorPermitidoService } from 'src/app/services/valor-permitido.service';
 import { VariableUnidadMedidaService } from 'src/app/services/variable-unidad-medida.service';
+import { ViewMedidaComponent } from '../../investigador/view-medida/view-medida.component';
 
 @Component({
   selector: 'app-view-variables-admin',
@@ -212,8 +213,8 @@ export class DialogAddEquivalencia {
     private tipoVariableService:TipoVariableService,
     private medidaService:MedidaService,
     private familiaService:FamiliaService,
-    private organizacionService:OrganizacionService
-
+    private organizacionService:OrganizacionService,
+    private matDialog:MatDialog,
   ) { }
 
   variable={
@@ -258,6 +259,7 @@ export class DialogAddEquivalencia {
       this.medidaService.listar().subscribe(
           res=>{
             this.medida=res;
+            this.medida.unshift({ idUnidadMedida: -1, unidadMedida: 'Nuevo' });
             console.log(this.medida);
           },
           err=>console.log(err)
@@ -525,7 +527,95 @@ export class DialogAddEquivalencia {
     onSearch(search: string) {
       this.search = search;
     }
+
+    agregarUnidadMedida(): void {
+      const dialogRef = this.matDialog.open(AgregarUnidadMedidaVariable, {});
+      dialogRef.afterClosed().subscribe(() => {
+        this.listarMedidas();
+      });
+    }
+
+    onSelectionChange(event: any) {
+      const idSeleccionado = event.value.idUnidadMedida;
+      if(idSeleccionado==-1){
+        this.agregarUnidadMedida();
+      }
+    }
 }
+
+
+
+@Component({
+  selector: 'agregar-unidad-medida-variable',
+  templateUrl: 'agregar-unidad-medida-variable.html',
+  styleUrls: ['./view-variables-admin.component.css']
+})
+
+export class AgregarUnidadMedidaVariable {
+  constructor(
+    public dialogRef: MatDialogRef<AgregarUnidadMedidaVariable>,
+    private medidaService:MedidaService,
+    private snack: MatSnackBar
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  public medida = {
+    idUnidadMedida: 30,
+    abreviatura: '',
+    magnitud: '',
+    unidadMedida: '',
+    vigencia:1
+  }
+
+  ngOnInit(): void {
+  }
+
+  public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+  public agregar() {
+
+    if (this.medida.abreviatura.trim() == '' || this.medida.abreviatura.trim() == null) {
+      this.snack.open('La abreviatura es requerida !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.medida.unidadMedida.trim() == '' || this.medida.unidadMedida.trim() == null) {
+      this.snack.open('La unidad de medida es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.medida.magnitud.trim() == '' || this.medida.magnitud.trim() == null) {
+      this.snack.open('La magnitud es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    
+
+    this.medidaService.guardar(this.medida).subscribe(
+      (data) => {
+        Swal.fire('Información guardada', 'La unidad de medida se agrego con éxito', 'success').then(
+          (e) => {
+            this.afterClosed.emit();
+            this.dialogRef.close();
+          })
+      }, (error) => {
+        Swal.fire('Error en el sistema', 'No se agrego la unidad de medida', 'error');
+        console.log(error);
+      }
+    );
+  }
+
+}
+
+
 
 
 @Component({
@@ -548,6 +638,7 @@ export class DialogEditarEquivalencia {
     private familiaService:FamiliaService,
     private organizacionService:OrganizacionService,
     private valorPermitidoService:ValorPermitidoService,
+    private matDialog:MatDialog
   ) { }
 
   variable={
@@ -637,6 +728,7 @@ export class DialogEditarEquivalencia {
       this.medidaService.listar().subscribe(
           res=>{
             this.medida=res;
+            this.medida.unshift({ idUnidadMedida: -1, unidadMedida: 'Nuevo' });
           },
           err=>console.log(err)
         )
@@ -991,6 +1083,21 @@ export class DialogEditarEquivalencia {
     onSearch(search: string) {
       this.search = search;
     }
+
+    agregarUnidadMedida(): void {
+      const dialogRef = this.matDialog.open(AgregarUnidadMedidaVariable, {});
+      dialogRef.afterClosed().subscribe(() => {
+        this.listarMedidas();
+      });
+    }
+
+    onSelectionChange(event: any) {
+      const idSeleccionado = event.value.idUnidadMedida;
+      if(idSeleccionado==-1){
+        this.agregarUnidadMedida();
+      }
+    }
+
 }
 
 
@@ -1052,6 +1159,8 @@ export class ViewCatalogoVariable {
     onSearch( search: string ) {
       this.search = search;
     }
+
+    
 
 }
 

@@ -113,6 +113,7 @@ import { ViewCatalogoVariable } from './pages/admin/view-variables-admin/view-va
 import { ViewUnidadMedidavariableAdmin } from './pages/admin/view-variables-admin/view-variables-admin.component';
 import { DialogActualizarEmailEnvio } from './pages/admin/view-email-envio/view-email-envio.component';
 import { DialogAddEmailEnvio } from './pages/admin/view-email-envio/view-email-envio.component';
+import { AgregarUnidadMedidaVariable } from './pages/admin/view-variables-admin/view-variables-admin.component';
 
 //Director
 import { SideDirectorComponent } from './pages/director/side-director/side-director.component';
@@ -181,6 +182,7 @@ import { ActualizarPerfilUsuarioComponent } from './pages/investigador/actualiza
 import { ViewUnidadMedidavariable } from './pages/investigador/view-catalogo-organizacion/view-catalogo-organizacion.component';
 import { ViewValorPermitidoVariableNumerica } from './pages/investigador/view-catalogo-organizacion/view-catalogo-organizacion.component';
 import { ViewValorPermitidoVariableTextual } from './pages/investigador/view-catalogo-organizacion/view-catalogo-organizacion.component';
+import { AgregarAlturaConglomerado } from './pages/investigador/view-dash-proyecto/view-dash-proyecto.component';
 
 //Filtros
 import { FiltroAreaInvestigacionPipe } from './pipes/filtro-area-investigacion.pipe';
@@ -421,7 +423,9 @@ import { FiltroEmailEnvioPipe } from './pipes/filtro-email-envio.pipe';
     ViewEmailEnvioComponent,
     DialogActualizarEmailEnvio,
     DialogAddEmailEnvio,
-    FiltroEmailEnvioPipe
+    FiltroEmailEnvioPipe,
+    AgregarUnidadMedidaVariable,
+    AgregarAlturaConglomerado
   ],
   imports: [
     MatTreeModule,

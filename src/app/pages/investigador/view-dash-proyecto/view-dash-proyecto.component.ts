@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlturaService } from 'src/app/services/altura.service';
 import { DatasetService } from 'src/app/services/dataset.service';
+import { MedidaService } from 'src/app/services/medida.service';
 
 
 interface Marker {
@@ -1160,7 +1161,8 @@ constructor(
   @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
   private conglomeradoService:ConglomeradoService,
   private snack: MatSnackBar,
-  private alturaService:AlturaService
+  private alturaService:AlturaService,
+  private matDialog:MatDialog
 ) { }
 
 onNoClick(): void {
@@ -1191,6 +1193,7 @@ altitud : any = []
       this.alturaService.listar().subscribe(
           res=>{
             this.altitud=res;
+            this.altitud.unshift({ idAltura: -1, alturaMinima: 'Nuevo' });
           },
           err=>console.log(err)
         )
@@ -1242,6 +1245,21 @@ public agregar() {
     
   }
 
+  agregarAltura(): void {
+    const dialogRef = this.matDialog.open(AgregarAlturaConglomerado, {
+    });
+    dialogRef.afterClosed().subscribe(() => {
+        this.listarAltitud();
+    });
+  }
+
+  onSelectionChange(event: any) {
+    const idSeleccionado = event.value.idAltitud;
+    if(idSeleccionado==-1){
+      this.agregarAltura();
+    }
+  }
+
 }
 
 
@@ -1257,5 +1275,89 @@ public agregar() {
 
 
 
+@Component({
+  selector: 'agregar-altura-conglomerado',
+  templateUrl: 'agregar-altura-conglomerado.html',
+  styleUrls: ['./view-dash-proyecto.component.css']
+})
+
+export class AgregarAlturaConglomerado {
+  constructor(
+    public dialogRef: MatDialogRef<AgregarAlturaConglomerado>,
+    private alturaService:AlturaService,
+    private snack: MatSnackBar,
+    private medidaService:MedidaService
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  public data = {
+    alturaMinima: '',
+    alturaMaxima: '',
+    unidadMedida:{
+      idUnidadMedida:-1
+    }
+  }
+
+  ngOnInit(): void {
+    this.listarMedidas();
+  }
+
+  medida : any = []
+  listarMedidas()
+    {
+      this.medidaService.listar().subscribe(
+          res=>{
+            this.medida=res;
+            console.log(this.medida);
+          },
+          err=>console.log(err)
+        )
+    }
+
+  
+
+  public agregar() {
+
+    if (this.data.alturaMinima.trim() == '' || this.data.alturaMinima.trim() == null) {
+      this.snack.open('La altura mínima es requerida !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    if (this.data.alturaMaxima.trim() == '' || this.data.alturaMaxima.trim() == null) {
+      this.snack.open('La altura máxima es requerida !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    
+    if (this.data.unidadMedida.idUnidadMedida == 0) {
+      this.snack.open('La unidad de medida es requerida !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    
+
+    this.alturaService.guardar(this.data).subscribe(
+      (data) => {
+        Swal.fire('Información guardada', 'La altura se agrego con éxito', 'success').then(
+          (e) => {
+            
+            this.dialogRef.close();
+          })
+      }, (error) => {
+        Swal.fire('Error en el sistema', 'No se registro la altura', 'error');
+        console.log(error);
+      }
+    );
+  }
+
+}
 
 
+
+  

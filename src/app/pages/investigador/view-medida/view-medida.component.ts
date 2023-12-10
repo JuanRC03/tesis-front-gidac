@@ -294,7 +294,7 @@ export class AgregarUnidadMedida {
     }
     
 
-    this.medidaService.actualizar(this.medida).subscribe(
+    this.medidaService.guardar(this.medida).subscribe(
       (data) => {
         Swal.fire('Información guardada', 'La unidad de medida se agrego con éxito', 'success').then(
           (e) => {

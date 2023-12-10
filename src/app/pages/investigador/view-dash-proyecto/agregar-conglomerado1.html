@@ -50,7 +50,7 @@
 
       <mat-form-field appearance="fill" class="mt20 w100">
         <mat-label>Altura</mat-label>
-        <mat-select name="tipoVariable" [(ngModel)] = "data.altura.idAltura">
+        <mat-select name="tipoVariable" [(ngModel)] = "data.altura.idAltura" (selectionChange)="onSelectionChange($event)">
           <mat-option *ngFor = "let c of altitud" [value] = "c.idAltura">
             {{ c.alturaMinima }} - {{ c.alturaMaxima }} ({{ c.unidadMedida.abreviatura }})
           </mat-option>
