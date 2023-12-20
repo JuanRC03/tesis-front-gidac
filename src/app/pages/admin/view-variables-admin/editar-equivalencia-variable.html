@@ -76,7 +76,7 @@
             <mat-label>Unidad de medida</mat-label>
             <mat-select name="medida" [(ngModel)]="unidadMedida" (selectionChange)="onSelectionChange($event)">
               <mat-option *ngFor="let c of medida" [value]="c">
-                {{ c.unidadMedida }}  <span style="color: blue;">{{ c.abreviatura }}</span> 
+                {{ c.idUnidadMedida !== -1 ? c.unidadMedida + ' - ' + c.abreviatura : 'Nuevo' }} 
               </mat-option>
             </mat-select>
           </mat-form-field>

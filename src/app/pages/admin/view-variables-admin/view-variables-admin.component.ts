@@ -563,7 +563,6 @@ export class AgregarUnidadMedidaVariable {
   }
 
   public medida = {
-    idUnidadMedida: 30,
     abreviatura: '',
     magnitud: '',
     unidadMedida: '',

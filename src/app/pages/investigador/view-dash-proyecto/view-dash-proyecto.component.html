@@ -96,7 +96,7 @@
                     
                     
                     
-                      <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="editar(row.idConglomerado, row.codigoConglomerado, row.nombreConglomerado, row.sector, idProyecto, row.altura.idAltura)">
+                      <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="editar(row.idConglomerado, row.codigoConglomerado, row.nombreConglomerado, row.sector, idProyecto, row.altura.idAltura,row.altura.alturaMinima,row.altura.alturaMaxima ,row.altura.unidadMedida.idUnidadMedida )">
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button *ngIf="row.editable==true" mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click)="eliminar(row.idConglomerado)">

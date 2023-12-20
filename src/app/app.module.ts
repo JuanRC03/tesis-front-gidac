@@ -183,6 +183,7 @@ import { ViewUnidadMedidavariable } from './pages/investigador/view-catalogo-org
 import { ViewValorPermitidoVariableNumerica } from './pages/investigador/view-catalogo-organizacion/view-catalogo-organizacion.component';
 import { ViewValorPermitidoVariableTextual } from './pages/investigador/view-catalogo-organizacion/view-catalogo-organizacion.component';
 import { AgregarAlturaConglomerado } from './pages/investigador/view-dash-proyecto/view-dash-proyecto.component';
+import { AgregarUnidadMedidaConglomerado } from './pages/investigador/view-dash-proyecto/view-dash-proyecto.component';
 
 //Filtros
 import { FiltroAreaInvestigacionPipe } from './pipes/filtro-area-investigacion.pipe';
@@ -242,6 +243,7 @@ import { FiltroEmailEnvioPipe } from './pipes/filtro-email-envio.pipe';
 
 @NgModule({
   declarations: [
+    AgregarUnidadMedidaConglomerado,
     AppComponent,
     PaginatePipe,
     FiltroPipe,

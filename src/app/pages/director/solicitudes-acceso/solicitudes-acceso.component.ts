@@ -365,7 +365,7 @@ export class SolicitudesAccesoComponent implements OnInit {
       }
     )
 
-    saveAs(blob, 'tabla_datos.xlsx');
+    //saveAs(blob, 'tabla_datos.xlsx');
   }
 
   recorerDatos(datosPaso: any, listaDatoSeleccionado: any) {

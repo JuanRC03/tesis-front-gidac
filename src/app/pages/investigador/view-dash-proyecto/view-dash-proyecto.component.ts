@@ -1018,9 +1018,9 @@ export class ViewDashProyectoComponent implements OnInit   {
   }
 
   //editar
-  editar(id:any, dato1:any, dato2:any, dato3:any, dato4:any, dato5:any): void {
+  editar(id:any, dato1:any, dato2:any, dato3:any, dato4:any, dato5:any, dato6:any, dato7:any, dato8:any): void {
     const dialogRef = this.dialog.open(EditarConglomerado1, {
-      data: { idConglomerado: id, codigoConglomerado:dato1,nombreConglomerado:dato2,sector:dato3,idProyecto:dato4,idAltura:dato5, altitud: this.altitud},
+      data: { idConglomerado: id, codigoConglomerado:dato1,nombreConglomerado:dato2,sector:dato3,idProyecto:dato4,idAltura:dato5,alturaMinima: dato6, alturaMaxima: dato7, idUnidadMedida:dato8, altitud: this.altitud},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarConglomeradosVigentes();
@@ -1039,6 +1039,9 @@ export interface dataEditar {
   sector: '',
   idProyecto:0,
   idAltura:0,
+  alturaMinima: '',
+  alturaMaxima: '',
+  idUnidadMedida:-1,
   altitud : []
 }
 
@@ -1055,21 +1058,26 @@ constructor(
   @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
   private conglomeradoService:ConglomeradoService,
   private snack: MatSnackBar,
-  private alturaService:AlturaService
-) { }
+  private alturaService:AlturaService,
+  private matDialog:MatDialog
+) { this.listarAltitud()}
 
 onNoClick(): void {
   this.dialogRef.close();
 }
 
 ngOnInit(): void {
-  this.altitud = this.data1.altitud;
-  this.data.idConglomerado=this.data1.idConglomerado;
+  
   this.data.codigoConglomerado=this.data1.codigoConglomerado;
   this.data.nombreConglomerado=this.data1.nombreConglomerado;
   this.data.sector=this.data1.sector;
   this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
   this.data.altura.idAltura=this.data1.idAltura;
+  this.data.altura.alturaMinima=this.data1.alturaMinima
+  this.data.altura.alturaMaxima=this.data1.alturaMaxima
+  this.data.altura.unidadMedida.idUnidadMedida=this.data1.idUnidadMedida
+  console.log(this.data)
+  
 }
 
 public data = {
@@ -1081,7 +1089,12 @@ public data = {
     idProyecto:0
   },
   altura:{
-    idAltura:0
+    idAltura:0,
+    alturaMinima: '',
+    alturaMaxima: '',
+    unidadMedida:{
+      idUnidadMedida:-1
+    }
   }
 }
 
@@ -1089,11 +1102,14 @@ public data = {
 
 altitud : any = []
 
-  listarAltitud()
+  listarAltitud():void
     {
       this.alturaService.listar().subscribe(
           res=>{
             this.altitud=res;
+            //this.altitud.unshift({ idAltura: -1, alturaMinima:0, alturaMaxima:0, unidadMedida: { abreviatura: 'NA' } });
+            this.data.idConglomerado=this.data1.idConglomerado;
+  
           },
           err=>console.log(err)
         )
@@ -1145,6 +1161,23 @@ public editar() {
     
   }
 
+  agregarAltura(): void {
+    const dialogRef = this.matDialog.open(AgregarAlturaConglomerado, {
+    });
+    dialogRef.afterClosed().subscribe(() => {
+        this.listarAltitud();
+    });
+  }
+
+  onSelectionChange(event: any) {
+    const idSeleccionado = event.value.idAltura;
+    console.log(event.value.idAltura)
+    if(idSeleccionado==-1){
+      console.log(idSeleccionado)
+      this.agregarAltura();
+    }
+  }
+
 }
 
 
@@ -1182,7 +1215,8 @@ public data = {
 }
 
 ngOnInit(): void {
-  this.altitud = this.data1.altitud;
+  this.listarAltitud();
+  
   this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
 }
 
@@ -1193,7 +1227,7 @@ altitud : any = []
       this.alturaService.listar().subscribe(
           res=>{
             this.altitud=res;
-            this.altitud.unshift({ idAltura: -1, alturaMinima: 'Nuevo' });
+            //this.altitud.unshift({ idAltura: -1, alturaMinima:0, alturaMaxima:0, unidadMedida: { abreviatura: 'NA' } });
           },
           err=>console.log(err)
         )
@@ -1222,7 +1256,7 @@ public agregar() {
     return;
   }
 
-  if (this.data.altura.idAltura==0) {
+  if (this.data.altura.idAltura==0 || this.data.altura.idAltura==-1) {
     this.snack.open('La altura del conglomerado es requerido !!', 'Aceptar', {
       duration: 3000
     })
@@ -1254,26 +1288,15 @@ public agregar() {
   }
 
   onSelectionChange(event: any) {
-    const idSeleccionado = event.value.idAltitud;
+    const idSeleccionado = event.valuea;
+    console.log(event.valuea)
     if(idSeleccionado==-1){
+      console.log(idSeleccionado)
       this.agregarAltura();
     }
   }
 
 }
-
-
-
-
-
-
-
-
-  
-  
-
-
-
 
 @Component({
   selector: 'agregar-altura-conglomerado',
@@ -1286,7 +1309,8 @@ export class AgregarAlturaConglomerado {
     public dialogRef: MatDialogRef<AgregarAlturaConglomerado>,
     private alturaService:AlturaService,
     private snack: MatSnackBar,
-    private medidaService:MedidaService
+    private medidaService:MedidaService,
+    private matDialog:MatDialog
   ) { }
 
   onNoClick(): void {
@@ -1311,12 +1335,28 @@ export class AgregarAlturaConglomerado {
       this.medidaService.listar().subscribe(
           res=>{
             this.medida=res;
+            this.medida.unshift({ idUnidadMedida: -1, unidadMedida: 'Nuevo' });
             console.log(this.medida);
           },
           err=>console.log(err)
         )
     }
 
+    agregarUnidadMedida(): void {
+      const dialogRef = this.matDialog.open(AgregarUnidadMedidaConglomerado, {});
+      
+      dialogRef.afterClosed().subscribe(() => {
+        this.listarMedidas();
+      });
+    }
+
+    onSelectionChange(event: any) {
+      const idSeleccionado = event.value.idUnidadMedida;
+      console.log(idSeleccionado)
+      if(idSeleccionado==-1){
+        this.agregarUnidadMedida();
+      }
+    }
   
 
   public agregar() {
@@ -1355,9 +1395,76 @@ export class AgregarAlturaConglomerado {
       }
     );
   }
-
 }
 
 
 
-  
+@Component({
+  selector: 'agregar-unidad-medida-conglomerado',
+  templateUrl: 'agregar-unidad-medida-conglomerado.html',
+  styleUrls: ['./view-dash-proyecto.component.css']
+})
+
+export class AgregarUnidadMedidaConglomerado {
+  constructor(
+    public dialogRef: MatDialogRef<AgregarUnidadMedidaConglomerado>,
+    private medidaService:MedidaService,
+    private snack: MatSnackBar
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  public medida = {
+    abreviatura: '',
+    magnitud: '',
+    unidadMedida: '',
+    vigencia:1
+  }
+
+  ngOnInit(): void {
+  }
+
+  public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+  public agregar() {
+
+    if (this.medida.abreviatura.trim() == '' || this.medida.abreviatura.trim() == null) {
+      this.snack.open('La abreviatura es requerida !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.medida.unidadMedida.trim() == '' || this.medida.unidadMedida.trim() == null) {
+      this.snack.open('La unidad de medida es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.medida.magnitud.trim() == '' || this.medida.magnitud.trim() == null) {
+      this.snack.open('La magnitud es requerido !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+    
+
+    this.medidaService.guardar(this.medida).subscribe(
+      (data) => {
+        Swal.fire('Información guardada', 'La unidad de medida se agrego con éxito', 'success').then(
+          (e) => {
+            this.afterClosed.emit();
+            this.dialogRef.close();
+          })
+      }, (error) => {
+        Swal.fire('Error en el sistema', 'No se agrego la unidad de medida', 'error');
+        console.log(error);
+      }
+    );
+  }
+
+}
+

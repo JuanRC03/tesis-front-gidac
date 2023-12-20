@@ -40,14 +40,15 @@
 
     <mat-form-field appearance="fill" class="mt20 w100">
       <mat-label>Unidad de medida</mat-label>
-      <mat-select name="medida" [(ngModel)] = "data.unidadMedida.idUnidadMedida">
-        <mat-option *ngFor = "let c of medida" [value] = "c?.idUnidadMedida">
-          {{ c?.unidadMedida }}
+      <mat-select name="medida" [(ngModel)] = "data.unidadMedida" (selectionChange)="onSelectionChange($event)">
+        <mat-option *ngFor = "let c of medida" [value] = "c">
+          {{ c.idUnidadMedida !== -1 ? c.unidadMedida + ' - ' + c.abreviatura : 'Nuevo' }} 
+          
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <div class="container text-center mt15">
+    <div class=" text-center">
       <button mat-raised-button color="primary">Agregar</button>
     </div>
   </div>
