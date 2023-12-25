@@ -52,7 +52,7 @@
         <mat-label>Altura</mat-label>
         <mat-select name="tipoVariable" [(ngModel)]="data.altura" (selectionChange)="onSelectionChange($event)">
           <mat-option *ngFor = "let c of altitud" [value] = "c" >
-            {{ c.idAltura !== -1 ? c.alturaMinima + ' - ' + c.alturaMaxima+' ('+ c.unidadMedida.abreviatura+')' : 'Nuevo' }} 
+            {{ c.idAltura !== -1 ? c.altura + ' - '+ c.unidadMedida.abreviatura+'' : 'Nuevo' }} 
           </mat-option>
         </mat-select>
       </mat-form-field>

@@ -240,22 +240,22 @@ export class DescargarDatosComponent implements OnInit {
     for (let i = 0; i < datosPaso.length; i++) {
       const subarreglo = datosPaso[i];
       const nuevoElemento: any = {
-        'Altitud minima': subarreglo[n++],
-        'Altitud maxima': subarreglo[n++],
+        'Fecha salida campo': subarreglo[n++],
+        'Coordenada x': subarreglo[n++],
+        'Coordenada y': subarreglo[n++],
+        'Altitud': subarreglo[n++],
         'Unidad de medidad altitud': subarreglo[n++],
         'Código conglomerado': subarreglo[n++],
         'Nombre conglomerado': subarreglo[n++],
         'Sector': subarreglo[n++],
         'Código parcela': subarreglo[n++],
         'Nombre parcela': subarreglo[n++],
-        'Coordenada x': subarreglo[n++],
-        'Coordenada y': subarreglo[n++],
         'Area parcela': subarreglo[n++],
         'Unidad de medida parcela': subarreglo[n++],
         'Profundidad minima': subarreglo[n++],
         'Profundidad maxima': subarreglo[n++],
         'Unidad de medidad profundidad': subarreglo[n++],
-        'Fecha salida campo': subarreglo[n++],
+        
       };
 
       for (let j = n; j < subarreglo.length; j += 3) {

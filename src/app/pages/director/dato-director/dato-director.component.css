@@ -1,0 +1,13 @@
+.full-width-table {
+    width: 100%;
+  }
+  
+  .example-header-image {
+    background-image: url('/assets/imgIconoProyecto.JPG');
+    background-size: cover;
+  }
+  
+  
+  .w100{
+    width: 100%;
+  }

@@ -33,7 +33,7 @@ export class ViewAlturaComponent implements AfterViewInit {
     this.dataSource = new ViewAlturaDataSource();
   }
   
-  displayedColumns = ['dato1', 'dato2', 'dato3', 'dato4', 'opciones'];
+  displayedColumns = ['dato1', 'dato2', 'dato3', 'opciones'];
   
   ngAfterViewInit(): void {
   }
@@ -171,9 +171,9 @@ export class ViewAlturaComponent implements AfterViewInit {
 
   
 
-    editar(id:any, dato1:any, dato2:any, dato3:any): void {
+    editar(id:any, dato1:any, dato2:any): void {
       const dialogRef = this.matDialog.open(EditarAltura, {
-        data: { idAltura: id, alturaMinima:dato1,alturaMaxima:dato2,idUnidadMedida:dato3,medida: this.medida},
+        data: { idAltura: id, altura:dato1,idUnidadMedida:dato2,medida: this.medida},
       });
       dialogRef.afterClosed().subscribe(() => {
         this.listar();
@@ -187,8 +187,7 @@ export class ViewAlturaComponent implements AfterViewInit {
   
 export interface dataEditar {
   idAltura: 0,
-  alturaMinima: null,
-  alturaMaxima: null,
+  altura: null,
   idUnidadMedida:0,
   medida:[]
 }
@@ -216,8 +215,7 @@ export class EditarAltura {
   ngOnInit(): void {
     this.medida = this.data1.medida;
     this.data.idAltura=this.data1.idAltura;
-    this.data.alturaMinima=this.data1.alturaMinima;
-    this.data.alturaMaxima=this.data1.alturaMaxima;
+    this.data.altura=this.data1.altura;
     this.data.unidadMedida.idUnidadMedida=this.data1.idUnidadMedida;
     this.cdRef.detectChanges(); 
   }
@@ -238,8 +236,7 @@ export class EditarAltura {
 
   public data = {
     idAltura: 0,
-    alturaMinima: null,
-    alturaMaxima: null,
+    altura: null,
     unidadMedida:{
       idUnidadMedida:-1
     }
@@ -249,14 +246,8 @@ export class EditarAltura {
 
   public editar() {
 
-    if (this.data.alturaMinima == null) {
-      this.snack.open('La altura mínima es requerida !!', 'Aceptar', {
-        duration: 3000
-      })
-      return;
-    }
-    if (this.data.alturaMaxima == null) {
-      this.snack.open('La altura máxima es requerida !!', 'Aceptar', {
+    if (this.data.altura == null) {
+      this.snack.open('La altura es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;
@@ -308,8 +299,7 @@ export class AgregarAltura {
   }
 
   public data = {
-    alturaMinima: '',
-    alturaMaxima: '',
+    altura: '',
     unidadMedida:{
       idUnidadMedida:-1
     }
@@ -335,14 +325,8 @@ export class AgregarAltura {
 
   public agregar() {
 
-    if (this.data.alturaMinima.trim() == '' || this.data.alturaMinima.trim() == null) {
-      this.snack.open('La altura mínima es requerida !!', 'Aceptar', {
-        duration: 3000
-      })
-      return;
-    }
-    if (this.data.alturaMaxima.trim() == '' || this.data.alturaMaxima.trim() == null) {
-      this.snack.open('La altura máxima es requerida !!', 'Aceptar', {
+    if (this.data.altura.trim() == '' || this.data.altura.trim() == null) {
+      this.snack.open('La altura es requerida !!', 'Aceptar', {
         duration: 3000
       })
       return;

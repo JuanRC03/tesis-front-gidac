@@ -85,7 +85,7 @@
   
                 <ng-container matColumnDef="dato3">
                   <th mat-header-cell *matHeaderCellDef>Altura</th>
-                  <td mat-cell *matCellDef="let row">{{row.altura.alturaMinima}} - {{row.altura.alturaMaxima}} ({{row.altura.unidadMedida.abreviatura}})</td>
+                  <td mat-cell *matCellDef="let row">{{row.altura.altura}} - {{row.altura.unidadMedida.abreviatura}}</td>
                 </ng-container>
   
   
@@ -159,6 +159,24 @@
                                (closed)="panelOpenGrafico = false">
             <mat-expansion-panel-header style="max-width: 500px;">
                 <mat-panel-title>
+                  Descripción
+                </mat-panel-title>
+                
+              </mat-expansion-panel-header>
+              
+              <mat-card-subtitle style="color: black; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">
+                {{datos.descripcion}}
+              </mat-card-subtitle>
+
+              <!--aqui los dataset-->
+            </mat-expansion-panel>
+          </mat-card-content>
+
+            <mat-card-content>
+              <mat-expansion-panel style="background-color: var(--submenu-color); " (opened)="panelOpenGrafico = true"
+                               (closed)="panelOpenGrafico = false">
+            <mat-expansion-panel-header style="max-width: 500px;">
+                <mat-panel-title>
                   Dataset
                 </mat-panel-title>
                 
@@ -196,20 +214,24 @@
                 </label>
               </div>
             </div>
+            
+        
             <mat-form-field  class="mt20 w100 " style="padding: 0px;margin: 0px;padding-top: 20px; height: 100%; min-width: 360px;">
-              <mat-label>Organización</mat-label>
-              <mat-select name="organizaciones" [(ngModel)]="organizacionSeleccionado.idOrganizacion" (selectionChange)="onOrganizacionChange($event)" >
-                <mat-option *ngFor="let c of listaOrganizaciones" [value]="c.idOrganizacion">
-                  {{ c.nombreOrganizacion }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-        <br>
-            <mat-form-field class="mt20 w100 " style="padding: 0px;margin: 0px;padding-top: 0px; height: 100%; min-width: 360px;">
               <mat-label>Familia</mat-label>
               <mat-select name="familia" [(ngModel)]="familiaOrganizacionSeleccionado.idFamilia" (selectionChange)="onFamiliaChange($event)" >
                 <mat-option *ngFor="let c of listaFamiliaVariable" [value]="c.idFamilia">
                   {{ c.descripcion }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <br>
+
+            <mat-form-field class="mt20 w100 " style="padding: 0px;margin: 0px;padding-top: 0px; height: 100%; min-width: 360px;">
+              <mat-label>Organización</mat-label>
+              <mat-select name="organizaciones" [(ngModel)]="organizacionSeleccionado.idOrganizacion" (selectionChange)="onOrganizacionChange($event)" >
+                <mat-option *ngFor="let c of listaOrganizaciones" [value]="c.idOrganizacion">
+                  {{ c.siglas }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -286,7 +308,7 @@
                              (closed)="panelOpenGrafico = false">
           <mat-expansion-panel-header>
               <mat-panel-title>
-                Variables nominales
+                Variables categóricas
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div mat-line *ngIf="investigacionDat.country==''">Seleccione un punto para explorar !!</div>

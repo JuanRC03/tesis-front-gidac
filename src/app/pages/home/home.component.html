@@ -162,7 +162,17 @@
         </label>
       </div>
     </div>
+
     <mat-form-field class="mt20 w100" style="padding: 0px;margin: 0px;padding-top: 20px; padding-left: 18px; padding-right: 25px; ">
+      <mat-label>Familia</mat-label>
+      <mat-select name="familia" [(ngModel)]="familiaOrganizacionSeleccionado.idFamilia" (selectionChange)="onFamiliaChange($event)" >
+        <mat-option *ngFor="let c of listaFamiliaVariable" [value]="c.idFamilia">
+          {{ c.descripcion }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field  class="mt20 w100" style="padding: 0px;margin: 0px;padding-top: 0px; padding-left: 18px; padding-right: 25px;">
       <mat-label>Organización</mat-label>
       <mat-select name="organizaciones" [(ngModel)]="organizacionSeleccionado.idOrganizacion" (selectionChange)="onOrganizacionChange($event)" >
         <mat-option *ngFor="let c of listaOrganizaciones" [value]="c.idOrganizacion">
@@ -171,14 +181,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field  class="mt20 w100" style="padding: 0px;margin: 0px;padding-top: 0px; padding-left: 18px; padding-right: 25px;">
-      <mat-label>Familia</mat-label>
-      <mat-select name="familia" [(ngModel)]="familiaOrganizacionSeleccionado.idFamilia" (selectionChange)="onFamiliaChange($event)" >
-        <mat-option *ngFor="let c of listaFamiliaVariable" [value]="c.idFamilia">
-          {{ c.descripcion }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    
 
     
     <mat-list>
@@ -278,7 +281,7 @@
                        (closed)="panelOpenGrafico = false">
     <mat-expansion-panel-header>
         <mat-panel-title>
-          Variables nominales
+          Variables categóricas
         </mat-panel-title>
         
       </mat-expansion-panel-header>

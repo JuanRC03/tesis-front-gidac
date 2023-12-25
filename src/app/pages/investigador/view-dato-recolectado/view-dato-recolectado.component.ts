@@ -557,7 +557,7 @@ formSubmit(){
   this.solicitudAccesoService.enviarSolicitudEliminar(this.data.id,this.data.idProyInv,this.data.idUsuario,this.data.motivo).subscribe(
     (data) => {
       console.log(data);
-      Swal.fire('Solicitud enviada','El director aprovara o rechazara la eliminación del dato','success');
+      Swal.fire('Solicitud enviada','El director aprobara o rechazara la solicitud','success');
       this.dialogRef.close('Solicitado');
       
     },(error) => {

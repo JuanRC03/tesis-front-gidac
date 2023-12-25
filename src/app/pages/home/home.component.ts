@@ -362,6 +362,8 @@ export class HomeComponent {
       this.router.navigate(['user-dashboard']);
     } else if (this.login.getUserRole() == 'DIRECTOR') {
       this.router.navigate(['director-dashboard']);
+    } else if (this.login.getUserRole() == 'ADMINISTRADOR DE DATOS') {
+      this.router.navigate(['admin-datos']);
     }
     else {
       this.login.logout();
@@ -1537,6 +1539,17 @@ export class autenticacion {
             this.datoRecolectadoService.actualizarEditable().subscribe((data: any) => {
             });
 
+          } else if (this.loginService.getUserRole() == 'ADMINISTRADOR DE DATOS') {
+            this.router.navigate(['admin-datos']);
+            this.loginService.loginStatusSubjec.next(true);
+
+            Swal.fire({
+              position: 'top-end',
+              icon: 'info',
+              title: 'Bienvenido administrador de datos',
+              showConfirmButton: false,
+              timer: 3000
+            })
           } else if (this.loginService.getUserRole() == 'DIRECTOR') {
             this.router.navigate(['director-dashboard']);
             this.loginService.loginStatusSubjec.next(true);

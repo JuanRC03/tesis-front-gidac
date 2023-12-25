@@ -55,6 +55,12 @@ export class DashboardService {
     return this.http.get(`${baserUrl}/dash/obtener-estado-proyectos/${id}`);
   }
 
+
+  //admin datos
+  public obtenerIndicadoresProyecto(){
+    return this.http.get(`${baserUrl}/dash/obtener-indicadores-proyecto`);
+  }
+
   
   public obtenerSolicitudesDescarga(id:any){
     return this.http.get(`${baserUrl}/dash/obtener-solicitudes-descarga/${id}`);

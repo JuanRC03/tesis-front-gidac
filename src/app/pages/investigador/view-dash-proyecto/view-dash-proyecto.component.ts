@@ -207,7 +207,7 @@ export class ViewDashProyectoComponent implements OnInit   {
           this.listaOrganizaciones=res;
 
           if (this.listaOrganizaciones.length > 0) {
-            this.listaOrganizaciones.unshift({ idOrganizacion: 0, nombreOrganizacion: 'Por defecto'});
+            this.listaOrganizaciones.unshift({ idOrganizacion: 0, siglas: 'Variables del sistema'});
           }
           this.organizacionSeleccionado.idOrganizacion = 0;
           

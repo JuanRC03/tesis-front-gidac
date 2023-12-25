@@ -114,6 +114,8 @@ import { ViewUnidadMedidavariableAdmin } from './pages/admin/view-variables-admi
 import { DialogActualizarEmailEnvio } from './pages/admin/view-email-envio/view-email-envio.component';
 import { DialogAddEmailEnvio } from './pages/admin/view-email-envio/view-email-envio.component';
 import { AgregarUnidadMedidaVariable } from './pages/admin/view-variables-admin/view-variables-admin.component';
+import { DialogAddTiempoEdicionDato } from './pages/admin/view-tiempo-edicion-dato/view-tiempo-edicion-dato.component';
+import { DialogActualizarTiempoEdicionDato } from './pages/admin/view-tiempo-edicion-dato/view-tiempo-edicion-dato.component';
 
 //Director
 import { SideDirectorComponent } from './pages/director/side-director/side-director.component';
@@ -137,7 +139,7 @@ import { ViewSolicitudActualizarAprobado } from './pages/director/solicitudes-el
 import { ViewSolicitudActualizarRechazado } from './pages/director/solicitudes-eliminar/solicitudes-eliminar.component';
 import { EditarInvestigador } from './pages/director/view-investigador/view-investigador.component';
 import { AgregarInvestigador } from './pages/director/view-investigador/view-investigador.component';
-
+import { ViewInformacionProyectoInvestigacionDirector } from './pages/director/view-proyecto-investigacion/view-proyecto-investigacion.component';
 
 //Investigador
 import { ViewConglomeradosComponent } from './pages/investigador/view-conglomerados/view-conglomerados.component';
@@ -221,6 +223,26 @@ import { FiltroPipe } from './pipes/filtro.pipe';
 import { FiltroUbicacionPipe } from './pipes/filtro-ubicacion.pipe';
 import { FiltroUsuariosPipe } from './pipes/filtro-usuarios.pipe';
 
+//Administrador de datos
+import { AgregarAdministradorDatos } from './pages/admin/view-administrador-datos/view-administrador-datos.component';
+import { EditarAdministradorDatos } from './pages/admin/view-administrador-datos/view-administrador-datos.component';
+import { DialogAgregarVariableOrganizacionAdminDatos } from './pages/admin-datos/view-catalogo-organizacion-admin-datos/view-catalogo-organizacion-admin-datos.component';
+import { DialogEditarVariableOrganizacionAdminDatos } from './pages/admin-datos/view-catalogo-organizacion-admin-datos/view-catalogo-organizacion-admin-datos.component';
+import { DialogAddEquivalenciaAdminDatos } from './pages/admin-datos/view-variables-admin-datos/view-variables-admin-datos.component';
+import { AgregarUnidadMedidaVariableAdminDatos } from './pages/admin-datos/view-variables-admin-datos/view-variables-admin-datos.component';
+import { DialogEditarEquivalenciaAdminDatos } from './pages/admin-datos/view-variables-admin-datos/view-variables-admin-datos.component';
+import { ViewCatalogoVariableAdminDatos } from './pages/admin-datos/view-variables-admin-datos/view-variables-admin-datos.component';
+import { DialogCompletarDatosVariableAdminDatos } from './pages/admin-datos/view-variables-admin-datos/view-variables-admin-datos.component';
+import { ViewUnidadMedidavariableAdminDatos } from './pages/admin-datos/view-variables-admin-datos/view-variables-admin-datos.component';
+import { DialogAddOrganizacionAdminDatos } from './pages/admin-datos/view-organizacion-admin-datos/view-organizacion-admin-datos.component';
+import { DialogActualizarOrganizacionAdminDatos } from './pages/admin-datos/view-organizacion-admin-datos/view-organizacion-admin-datos.component';
+import { DialogActualizarFamiliaAdminDatos } from './pages/admin-datos/view-familia-admin-datos/view-familia-admin-datos.component';
+import { DialogAddFamiliaAdminDatos } from './pages/admin-datos/view-familia-admin-datos/view-familia-admin-datos.component';
+import { ViewInformacionProyectoInvestigacionAdminDatos } from './pages/admin-datos/view-proyectos-admin-datos/view-proyectos-admin-datos.component';
+import { AgregarUnidadMedidaAdminDatos } from './pages/admin-datos/view-unidad-medida-admin-datos/view-unidad-medida-admin-datos.component';
+import { EditarUnidadMedidaAdminDatos } from './pages/admin-datos/view-unidad-medida-admin-datos/view-unidad-medida-admin-datos.component';
+
+
 //Charts
 import { ChartsModule } from 'ng2-charts';
 
@@ -240,6 +262,31 @@ import { FiltroEquivalenciaVariableSistemaCatalogPipe } from './pipes/filtro-equ
 import { FiltroUnidadMedidaVariablePipe } from './pipes/filtro-unidad-medida-variable.pipe';
 import { ViewEmailEnvioComponent } from './pages/admin/view-email-envio/view-email-envio.component';
 import { FiltroEmailEnvioPipe } from './pipes/filtro-email-envio.pipe';
+import { FiltroTiempoEdicionDatoPipe } from './pipes/filtro-tiempo-edicion-dato.pipe';
+import { ViewTiempoEdicionDatoComponent } from './pages/admin/view-tiempo-edicion-dato/view-tiempo-edicion-dato.component';
+import { ViewAdministradorDatosComponent } from './pages/admin/view-administrador-datos/view-administrador-datos.component';
+import { FiltroVariableGraficoPipe } from './pipes/filtro-variable-grafico.pipe';
+import { SidebarAdminDatosComponent } from './pages/admin-datos/sidebar-admin-datos/sidebar-admin-datos.component';
+import { DashAdminDatosComponent } from './pages/admin-datos/dash-admin-datos/dash-admin-datos.component';
+import { ViewCatalogoOrganizacionAdminDatosComponent } from './pages/admin-datos/view-catalogo-organizacion-admin-datos/view-catalogo-organizacion-admin-datos.component';
+import { ViewOrganizacionAdminDatosComponent } from './pages/admin-datos/view-organizacion-admin-datos/view-organizacion-admin-datos.component';
+import { ViewFamiliaAdminDatosComponent } from './pages/admin-datos/view-familia-admin-datos/view-familia-admin-datos.component';
+import { ViewVariablesAdminDatosComponent } from './pages/admin-datos/view-variables-admin-datos/view-variables-admin-datos.component';
+import { ActualizarPerfilAdminDatosComponent } from './pages/admin-datos/actualizar-perfil-admin-datos/actualizar-perfil-admin-datos.component';
+import { ViewProyectosAdminDatosComponent } from './pages/admin-datos/view-proyectos-admin-datos/view-proyectos-admin-datos.component';
+import { FiltroProyectoEstadoAdminDatosPipe } from './pipes/filtro-proyecto-estado-admin-datos.pipe';
+import { ConglomeradoAdminDatosComponent } from './pages/admin-datos/conglomerado-admin-datos/conglomerado-admin-datos.component';
+import { ParcelaAdminDatosComponent } from './pages/admin-datos/parcela-admin-datos/parcela-admin-datos.component';
+import { PuntoAdminDatosComponent } from './pages/admin-datos/punto-admin-datos/punto-admin-datos.component';
+import { DatoAdminDatosComponent } from './pages/admin-datos/dato-admin-datos/dato-admin-datos.component';
+import { DescargarDatoAdminDatosComponent } from './pages/admin-datos/descargar-dato-admin-datos/descargar-dato-admin-datos.component';
+import { ConglomeradoDirectorComponent } from './pages/director/conglomerado-director/conglomerado-director.component';
+import { ParcelaDirectorComponent } from './pages/director/parcela-director/parcela-director.component';
+import { PuntoDirectorComponent } from './pages/director/punto-director/punto-director.component';
+import { DatoDirectorComponent } from './pages/director/dato-director/dato-director.component';
+import { DescargaDatoDirectorComponent } from './pages/director/descarga-dato-director/descarga-dato-director.component';
+import { ViewUnidadMedidaAdminDatosComponent } from './pages/admin-datos/view-unidad-medida-admin-datos/view-unidad-medida-admin-datos.component';
+
 
 @NgModule({
   declarations: [
@@ -427,7 +474,52 @@ import { FiltroEmailEnvioPipe } from './pipes/filtro-email-envio.pipe';
     DialogAddEmailEnvio,
     FiltroEmailEnvioPipe,
     AgregarUnidadMedidaVariable,
-    AgregarAlturaConglomerado
+    AgregarAlturaConglomerado,
+    FiltroTiempoEdicionDatoPipe,
+    ViewTiempoEdicionDatoComponent,
+    DialogAddTiempoEdicionDato,
+    DialogActualizarTiempoEdicionDato,
+    ViewAdministradorDatosComponent,
+    FiltroVariableGraficoPipe,
+    SidebarAdminDatosComponent,
+    DashAdminDatosComponent,
+    AgregarAdministradorDatos,
+    EditarAdministradorDatos,
+    ViewCatalogoOrganizacionAdminDatosComponent,
+    DialogAgregarVariableOrganizacionAdminDatos,
+    DialogEditarVariableOrganizacionAdminDatos,
+    ViewOrganizacionAdminDatosComponent,
+    ViewFamiliaAdminDatosComponent,
+    ViewVariablesAdminDatosComponent,
+    DialogAddEquivalenciaAdminDatos,
+    AgregarUnidadMedidaVariableAdminDatos,
+    DialogEditarEquivalenciaAdminDatos,
+    ViewCatalogoVariableAdminDatos,
+    DialogCompletarDatosVariableAdminDatos,
+    ViewUnidadMedidavariableAdminDatos,
+    DialogAddOrganizacionAdminDatos,
+    DialogActualizarOrganizacionAdminDatos,
+    DialogActualizarFamiliaAdminDatos,
+    DialogAddFamiliaAdminDatos,
+    ActualizarPerfilAdminDatosComponent,
+    ViewProyectosAdminDatosComponent,
+    ViewInformacionProyectoInvestigacionAdminDatos,
+    FiltroProyectoEstadoAdminDatosPipe,
+    ViewInformacionProyectoInvestigacionDirector,
+    ConglomeradoAdminDatosComponent,
+    ParcelaAdminDatosComponent,
+    PuntoAdminDatosComponent,
+    DatoAdminDatosComponent,
+    DescargarDatoAdminDatosComponent,
+    ConglomeradoDirectorComponent,
+    ParcelaDirectorComponent,
+    PuntoDirectorComponent,
+    DatoDirectorComponent,
+    DescargaDatoDirectorComponent,
+    ViewUnidadMedidaAdminDatosComponent,
+    AgregarUnidadMedidaAdminDatos,
+    EditarUnidadMedidaAdminDatos
+
   ],
   imports: [
     MatTreeModule,

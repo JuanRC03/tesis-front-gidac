@@ -1,0 +1,218 @@
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+
+    <div mat-line style="padding-right: 30px;">Actualizar variable del sistema</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button mat-icon-button mat-dialog-close matTooltip="White" color="White"
+        aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<div mat-dialog-content style="color: black;">
+  <mat-stepper orientation="horizontal">
+    <mat-step>
+      <ng-template matStepLabel>Datos variable</ng-template>
+
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Código de la variable</mat-label>
+        <input type="text" name="codigo" matInput placeholder="Ingrese el código de la variable"
+          [(ngModel)]="variable.codigoVariable">
+      </mat-form-field>
+
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Nombre de la variable</mat-label>
+        <input type="text" name="nombre" matInput placeholder="Ingrese un nombre de la variable"
+          [(ngModel)]="variable.nombreVariable">
+      </mat-form-field>
+
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea name="descripcion" matInput placeholder="Ingrese la descripción de la variable" rows="3"
+          [(ngModel)]="variableOrganizacion.descripcion">
+        </textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="mt20 w100">
+        <mat-label>Organización</mat-label>
+        <mat-select name="organizacion" [(ngModel)]="variableOrganizacion.organizacion.idOrganizacion">
+          <mat-option *ngFor="let c of organizacionDatos" [value]="c.idOrganizacion">
+            {{ c.nombreOrganizacion }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="container text-center mt15">
+        <button mat-raised-button color="primary" (click)="actualizarDatosGenerales()">Actualizar datos generales de la
+          variable</button>
+      </div>
+
+      <ng-template matStepContent>
+      </ng-template>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Valores permitidos</ng-template>
+      <ng-template matStepContent>
+
+        <!---------------------------------------------------------------->
+
+        <div *ngIf="idTipoVariableAux!=0 && idTipoVariableAux==1">
+          <mat-form-field class="w100" appearance="outline">
+            <mat-label>Valor mínimo</mat-label>
+            <input type="text" name="valorMinimo" matInput placeholder="Ingrese el valor minimo"
+              [(ngModel)]="valorPermitido.valorMinimo">
+          </mat-form-field>
+
+          <mat-form-field class="w100" appearance="outline">
+            <mat-label>Valor máximo</mat-label>
+            <input type="text" name="valorMaximo" matInput placeholder="Ingrese el valor maximo"
+              [(ngModel)]="valorPermitido.valorMaximo">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="mt20 w100">
+            <mat-label>Unidad de medida</mat-label>
+            <mat-select name="medida" [(ngModel)]="unidadMedida" (selectionChange)="onSelectionChange($event)">
+              <mat-option *ngFor="let c of medida" [value]="c">
+                {{ c.idUnidadMedida !== -1 ? c.unidadMedida + ' - ' + c.abreviatura : 'Nuevo' }} 
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="container text-center mt15">
+            <button mat-raised-button color="primary" (click)="agregarValorPermitido()">Agregar valor permitido</button>
+          </div>
+
+          <div *ngIf="listaValoresPermitidos.length!=0">
+            <mat-list class="box mt-3 mb-3">
+              <mat-list-item *ngFor="let oC of listaValoresPermitidos; let i = index">
+                <mat-icon mat-list-icon>streetview</mat-icon>
+                <div mat-line><mat-label
+                    style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Valor mínimo:
+                    {{oC.valorMinimo }} {{oC.variableUnidadMedida.unidadMedida.abreviatura }}</mat-label></div>
+                <div mat-line><mat-label
+                    style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">Valor máximo:
+                    {{oC.valorMaximo }} {{oC.variableUnidadMedida.unidadMedida.abreviatura }}</mat-label></div>
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+
+                  <button mat-icon-button matTooltip="Warn" color="warn"
+                    aria-label="Example icon-button with a heart icon" (click)="eliminarValorPermitido(oC.idValorPermitido)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+
+                </div>
+                <mat-divider></mat-divider>
+
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+
+
+        <div *ngIf="idTipoVariableAux!=0 && idTipoVariableAux==2">
+          <mat-form-field class="w100" appearance="outline">
+            <mat-label>Valor permitido</mat-label>
+            <input type="text" name="valorPermitido" matInput placeholder="Ingrese el valor permitido"
+              [(ngModel)]="valorPermitido.valorPermitido">
+          </mat-form-field>
+
+          <div class="container text-center mt15">
+            <button mat-raised-button color="primary" (click)="agregarValorPermitido()">Agregar valor permitido</button>
+          </div>
+
+          <div *ngIf="listaValoresPermitidos.length!=0">
+            <mat-list class="box mt-3 mb-3">
+              <mat-list-item *ngFor="let oC of listaValoresPermitidos; let i = index">
+                <mat-icon mat-list-icon>streetview</mat-icon>
+                <div mat-line><mat-label
+                    style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; padding-bottom: 0;">
+                    {{oC.valorPermitido }}</mat-label></div>
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+
+                  <button mat-icon-button matTooltip="Warn" color="warn"
+                    aria-label="Example icon-button with a heart icon" (click)="eliminarValorPermitido(oC.idValorPermitido)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+
+                </div>
+                <mat-divider></mat-divider>
+
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+
+        <br>
+
+        <!------------------------------------------------------------------->
+      </ng-template>
+    </mat-step>
+
+
+    <mat-step>
+      <ng-template matStepLabel>Familia</ng-template>
+
+      <ng-template matStepContent>
+
+        <mat-list>
+          <mat-list-item>
+            <div mat-line>
+              <mat-form-field>
+                <input type="text" class=" mb-2" placeholder="Buscar.." #txtSearch matInput
+                  (keyup)="onSearch( txtSearch.value )" />
+              </mat-form-field>
+            </div>
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+
+              <button mat-raised-button color="primary" (click)="actualizarFamilia()" >Actualizar falilia</button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+
+        <mat-card>
+          <table mat-table
+            [dataSource]="dataSource.filteredData | filtroAddFamilia: search | paginate: page_size: page_number"
+            class="mat-elevation-z8">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? toggleRow(row) : null"
+                  [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="dato1">
+              <th mat-header-cell *matHeaderCellDef> Familia </th>
+              <td mat-cell *matCellDef="let element"> {{ element.descripcionCompleta }} </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(row)">
+            </tr>
+          </table>
+
+          <mat-paginator (page)="handlePage($event)" [length]="(listaDatos | filtroUsuarios:search).length"
+            [pageSize]="page_size" [pageSizeOptions]="page_size_options" showFirstLastButtons></mat-paginator>
+
+        </mat-card>
+
+
+
+
+      </ng-template>
+    </mat-step>
+
+  </mat-stepper>
+</div>

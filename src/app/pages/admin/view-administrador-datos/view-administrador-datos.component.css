@@ -1,0 +1,19 @@
+.full-width-table {
+    width: 100%;
+    min-width: 800px;
+  }
+  
+  
+  .table-container {
+    overflow-x: auto; /* agregar scroll horizontal si la tabla excede el alto del contenedor */
+  }
+  
+  .table {
+    
+    width: 100%; /* ancho de la tabla al 100% */
+  }
+  
+  .w100{
+    width: 100%;
+  }
+  

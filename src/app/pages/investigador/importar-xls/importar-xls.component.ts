@@ -14,6 +14,7 @@ import { ChartType } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { InvestigacionService } from 'src/app/services/investigacion.service';
 import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 interface DataModel {
   cantidadDato: number;
@@ -77,7 +78,12 @@ export class ImportarXlsComponent implements OnInit {
   }
 
 
+
+  public search: string = '';
   
+    onSearch( search: string ) {
+      this.search = search;
+    }
 
   verBoton=false;
   verBotonImput=true;
@@ -229,6 +235,77 @@ export class ImportarXlsComponent implements OnInit {
     )
   }
 
+
+  descargarArchivoEditado(){
+    const formData = new FormData();
+    formData.append('proyectoInvestigacion', JSON.stringify(this.proyectoInvestigacion));
+    formData.append('variablesEncontradas', JSON.stringify(this.listaDatos));
+    formData.append('file', this.file);
+    this.datoRecolectadoService.colorizarArchivoEditado(formData).subscribe(      
+      (response: Blob) => {
+        console.log(response)
+        const blob = new Blob([response], { type: 'application/octet-stream' });
+        saveAs(blob, 'modifiedFile.xls');
+      },
+      (error) => {
+        console.log(error);
+        Swal.fire('Error !!','Error al descargar el archivo modificado','error')
+      }
+    )
+  }
+
+  uploadFile(): void {
+    
+    const formData = new FormData();
+    formData.append('proyectoInvestigacion', JSON.stringify(this.proyectoInvestigacion));
+    formData.append('variablesEncontradas', JSON.stringify(this.listaDatos));
+    formData.append('file', this.file);
+      this.datoRecolectadoService.modificarArchivo(formData).subscribe(
+        (response) => {
+          // Manejar la respuesta del servidor, por ejemplo, descargar el archivo modificado
+          const blob = new Blob([response], { type: 'application/vnd.ms-excel' });
+          const downloadLink = document.createElement('a');
+          downloadLink.href = window.URL.createObjectURL(blob);
+          downloadLink.download = 'archivo_modificado.xls';
+          downloadLink.click();
+        },
+        (error) => {
+          // Manejar errores
+          console.error('Error al cargar el archivo:', error);
+        }
+      );
+  }
+
+  cambiarColorArchivo(): void {
+    const formData = new FormData();
+    formData.append('proyectoInvestigacion', JSON.stringify(this.proyectoInvestigacion));
+    formData.append('variablesEncontradas', JSON.stringify(this.listaDatos));
+    formData.append('file', this.file);
+    this.datoRecolectadoService.cambiarColorArchivo(formData).subscribe(
+      (response) => {
+        // Manejar la respuesta, por ejemplo, descargar el archivo
+        this.descargarArchivo(response);
+      },
+      (error) => {
+        // Manejar errores en la solicitud
+        console.error('Error al cambiar el color del archivo:', error);
+      }
+    );
+  }
+
+  descargarArchivo(data: any): void {
+    // Crear un enlace de descarga para el archivo modificado
+    const blob = new Blob([data], { type: 'application/vnd.ms-excel' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'archivo_editado.xls'; // Nombre del archivo descargado
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
+
   guardarDatos(){
     const formData = new FormData();
     formData.append('proyectoInvestigacion', JSON.stringify(this.proyectoInvestigacion));
@@ -315,7 +392,7 @@ export class ImportarXlsComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartColors: Color[] = [
     {
-      backgroundColor: ['rgba(7,143,174)', 'rgba(174,7,70)', 'rgba(255,189,54)', 'rgba(55,189,54)'],
+      backgroundColor: ['rgba(7,143,174)', 'rgba(55,189,54)', 'rgba(255,189,54)', 'rgba(174,7,70)'],
     },
   ];
   
@@ -334,7 +411,7 @@ export class ImportarXlsComponent implements OnInit {
   public pieChartType: ChartType = 'pie';
   public pieChartColors: Color[] = [
     {
-      backgroundColor: ['rgba(55,189,54)','rgba(7,143,174)', 'rgba(174,7,70)', 'rgba(255,189,54)', 'rgba(74,70,70)'],
+      backgroundColor: ['rgba(55,189,54)', 'rgba(74,70,70)', 'rgba(174,7,70)', 'rgba(255,189,54)','rgba(7,143,174)'],
     },
   ];
   public dataModels: DataModel[] = [];

@@ -37,4 +37,6 @@ export class InvestigacionInvestigadoresService {
   public obtenerDirectorProyecto(id:any){
     return this.http.get(`${baserUrl}/api/listar-director-proyecto/${id}`);
   }
+
+  
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import baserUrl from './helper';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -56,6 +56,40 @@ export class DatoRecolectadoService {
 
   public perfilarXLS(modelo:any){
     return this.http.post(`${baserUrl}/dato-recolectado/perfilar-datos`,modelo);
+  }
+
+  
+  public colorizarArchivo(modelo: FormData): Observable<Blob> {
+    return this.http.post(`${baserUrl}/dato-recolectado/colorizar-archivo`, modelo, { responseType: 'blob' });
+  }
+
+  public colorizarArchivoEditado(modelo: any): Observable<Blob> {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+//    return this.http.post(`${baserUrl}/dato-recolectado/colorizar-archivo-editado`, modelo, { responseType: 'blob' });
+
+    return this.http.post(`${baserUrl}/dato-recolectado/colorizar-archivo-editado`, modelo, {
+      headers,
+      responseType: 'blob'
+    });
+  }
+
+  public modificarArchivo(modelo: any): Observable<any> {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post<any>(`${baserUrl}/dato-recolectado/modificarArchivo`, modelo, { headers: headers, responseType: 'blob' as 'json' });
+  }
+
+  cambiarColorArchivo(modelo: any): Observable<any> {
+
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+
+    return this.http.post<any>(`${baserUrl}/dato-recolectado-archivo/cambiar-color`, modelo, {
+      headers,
+      responseType: 'blob' as 'json' // Establecer el tipo de respuesta como blob
+    });
+
   }
 
   public unirDatos(modelo:any){

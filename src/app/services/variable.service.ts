@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import baserUrl from './helper';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +79,14 @@ export class VariableService {
 
   public obtenerVariablesDescargarProyecto(id:any, idOrganizacion:any, codigoDataset:any){
     return this.http.get(`${baserUrl}/variable/listar-variable-descargar-proyecto/${id}/${idOrganizacion}/${codigoDataset}`);
+  }
+
+  public descargarExcel(): Observable<Blob> {
+    return this.http.get(`${baserUrl}/variable/excel`, { responseType: 'blob' });
+  }
+
+  public descargarPDF(): Observable<Blob> {
+    return this.http.get(`${baserUrl}/variable/pdf`, { responseType: 'blob' });
   }
 
   

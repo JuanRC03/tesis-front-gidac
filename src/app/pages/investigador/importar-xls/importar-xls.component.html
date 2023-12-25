@@ -209,21 +209,45 @@
             <mat-list>  
               <mat-list-item>
                 <span class="example-spacer"></span>
-                <span class="example-spacer" *ngIf="dataModels.length!=0" ></span>
-                <span class="example-spacer" *ngIf="dataModels.length!=0" ></span>
                 <mat-card-title style="font-size: 17px;">Perfilado de datos</mat-card-title>
                 <span class="example-spacer"></span>
-                <span class="example-spacer" *ngIf="dataModels.length!=0" ></span>
+              </mat-list-item>
+            </mat-list>
+            <mat-divider></mat-divider>
+
+            
+            <mat-list *ngIf="dataModels.length!=0" >  
+              <mat-list-item style="padding-top: 15px;">
+
+                <div mat-line>
+                  <mat-form-field>
+                    <input type="text" class=" mb-2" placeholder="Buscar.." #txtSearch matInput
+                      (keyup)="onSearch( txtSearch.value )" />
+                  </mat-form-field>
+                </div>
+
+
+                <span class="example-spacer"></span>
+
+
                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                  <button *ngIf="dataModels.length!=0" class="contenedor-btn-file bordeado" (click)="guardarDatos()">
+                  <button  class="contenedor-btn-file bordeado" (click)="cambiarColorArchivo()" style="margin-right: 10px;">
+                    <i class="fas fa-file"></i>
+                     Descargar archivo
+                    <label for="btn-file">   </label>
+                  </button> 
+
+                  <button  class="contenedor-btn-file bordeado" (click)="guardarDatos()">
                     <i class="fas fa-file"></i>
                      Importar datos 
                     <label for="btn-file">   </label>
                   </button>            
                  </div>
               </mat-list-item>
+              <br>
+              <mat-divider></mat-divider>
             </mat-list>
-            <mat-divider></mat-divider>
+            
 
 
           
@@ -234,9 +258,19 @@
             <br>
             <mat-divider></mat-divider>
         </mat-list>
+
+        <div *ngIf="dataModels.length!=0">
+        <mat-list *ngIf="(dataModels| filtroVariableGrafico:search).length==0"
+            style="text-align: center;">
+            <br>
+            <p>No existen datos!!</p>
+            <br>
+            <mat-divider></mat-divider>
+        </mat-list>
+      </div>
           <div class="card-container">
             
-            <div *ngFor="let model of dataModels; let i = index">
+            <div *ngFor="let model of dataModels| filtroVariableGrafico:search ; let i = index">
               
               <mat-divider></mat-divider>
               <br>

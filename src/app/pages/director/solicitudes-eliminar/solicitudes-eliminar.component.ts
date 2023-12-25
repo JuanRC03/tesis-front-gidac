@@ -154,13 +154,13 @@ export class SolicitudesEliminarComponent implements OnInit {
   aceptarEliminar(id:any){
     console.log(id);
     Swal.fire({
-      title:'Eliminar información ',
-      text:'¿Estás seguro de eliminar el dato del proyecto?',
+      title:'Aprobar solicitud de actualizar datos',
+      text:'¿Estás seguro de aprobar la solicitud de actualizar datos?',
       icon:'warning',
       showCancelButton:true,
       confirmButtonColor:'#3085d6',
       cancelButtonColor:'#d33',
-      confirmButtonText:'Eliminar',
+      confirmButtonText:'Aprobar',
       cancelButtonText:'Cancelar'
     }).then((result) => {
       if(result.isConfirmed){
@@ -169,10 +169,10 @@ export class SolicitudesEliminarComponent implements OnInit {
             //location.reload();
             this.listarAprobador();
             this.dataSourceSolicitado = this.dataSourceSolicitado.filter((dato:any) => dato.idSolicitudActualizar != id);
-            Swal.fire('Información eliminada','El dato ha sido eliminado','success');
+            Swal.fire('Solicitud aprobada','La solicitud ha sido aprobada','success');
           },
           (error) => {
-            Swal.fire('Error en el sistema','Error al eliminar el dato','error');
+            Swal.fire('Error en el sistema','Error al aprobar la solicitud','error');
           }
         )
       }

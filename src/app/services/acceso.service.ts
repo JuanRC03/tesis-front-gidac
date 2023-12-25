@@ -26,6 +26,10 @@ export class AccesoService {
     return this.http.get(`${baserUrl}/acceso/listar-accesos-investigador`);
   }
 
+  public listarAccesoAdminDDatos(){
+    return this.http.get(`${baserUrl}/acceso/listar-accesos-admin-datos`);
+  }
+
   public listarAcceso(){
     return this.http.get(`${baserUrl}/acceso/listar-accesos`);
   }

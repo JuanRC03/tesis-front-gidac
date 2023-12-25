@@ -237,7 +237,7 @@ export class AgregarAdministrador {
     }
 
 
-    this.userService.actualizarUsuario(this.data).subscribe(
+    this.userService.aniadirUsuario(this.data).subscribe(
       (data) => {
         Swal.fire('Información agregada', 'El administrador agregado con éxito', 'success').then(
           (e) => {

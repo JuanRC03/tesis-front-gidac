@@ -74,6 +74,11 @@
             <div mat-line style="font-size: 13px;"> {{oC.proyectoInvestigacion.descripcion}}</div>
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
 
+              <button *ngIf="oC.idProyecto!=0" mat-icon-button matTooltip="var(--resaltado-color)" color="var(--resaltado-color)"
+                  aria-label="Example icon-button with a heart icon" (click)="openDialogInformacion(oC.idProyecto)">
+                  <mat-icon  style="color: var(--resaltado-color);">info</mat-icon>
+                </button>
+
               <button mat-icon-button matTooltip="Basic" color="Basic"
                 aria-label="Example icon-button with a heart icon"
                 (click)="openDialogInvestigadores(oC.proyectoInvestigacion.idProyecto,oC.proyectoInvestigacion.nombreProyecto)">
@@ -96,12 +101,19 @@
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
+            <button
+              class="padding-izquierda" mat-raised-button color="primary" style="margin-left: 7px; padding: 0;"
+              [routerLink] = "'/director-dashboard/conglomerados-director/'+oC.idProyecto">Datos</button>
+           
+              
             <button *ngIf="(oC.proyectoInvestigacion.estadoProyectoInvestigacion.idEstadoProyecto==1)"
               class="padding-izquierda" mat-raised-button color="primary" style="margin-left: 7px; padding: 0;"
               (click)="cambiarPublico(oC.proyectoInvestigacion.idProyecto)">Privado</button>
             <button *ngIf="(oC.proyectoInvestigacion.estadoProyectoInvestigacion.idEstadoProyecto==2)"
               class="padding-izquierda" mat-raised-button color="accent" style="margin-left: 7px; padding: 0;"
               (click)="cambiarPrivado(oC.proyectoInvestigacion.idProyecto)">Público</button>
+
+            
             <mat-divider></mat-divider>
 
           </mat-list-item>
@@ -136,8 +148,15 @@
               {{oC.proyectoInvestigacion.fechaFin| date:'dd/MM/yyyy'}}</div>
             <div mat-line style="font-size: 13px;"> {{oC.proyectoInvestigacion.descripcion}}</div>
 
+            
+
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
 
+              
+                <button *ngIf="oC.idProyecto!=0" mat-icon-button matTooltip="var(--resaltado-color)" color="var(--resaltado-color)"
+                  aria-label="Example icon-button with a heart icon" (click)="openDialogInformacion(oC.idProyecto)">
+                  <mat-icon  style="color: var(--resaltado-color);">info</mat-icon>
+                </button>
               <button mat-icon-button matTooltip="Basic" color="Basic"
                 aria-label="Example icon-button with a heart icon"
                 (click)="openDialogInvestigadoresProyectoEliminado(oC.proyectoInvestigacion.idProyecto,oC.proyectoInvestigacion.nombreProyecto)">
@@ -145,7 +164,11 @@
               </button>
               <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click)="restaurarProyectoInvestigacion(oC.proyectoInvestigacion.idProyecto)">
                 <mat-icon>restore_from_trash</mat-icon>
-              </button>             
+              </button>   
+              
+              <button
+              class="padding-izquierda" mat-raised-button color="primary" style="margin-left: 7px; padding: 0;"
+              [routerLink] = "'/director-dashboard/conglomerados-director/'+oC.idProyecto">Datos</button>
 
             </div>
 

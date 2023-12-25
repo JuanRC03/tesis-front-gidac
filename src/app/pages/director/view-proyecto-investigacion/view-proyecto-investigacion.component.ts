@@ -265,6 +265,13 @@ export class ViewProyectoInvestigacionComponent implements OnInit {
       this.listarProyectosVigentes();
     });
   }
+
+  //abrir el dialogo informacion
+  openDialogInformacion(idProyecto: any): void {
+    const dialogRef = this.dialog.open(ViewInformacionProyectoInvestigacionDirector, {
+      data: { idProyectoInvestigacion: idProyecto },
+    });
+  }
 }
 
 export interface DialogDataProyectoInvestigacion {
@@ -1150,3 +1157,121 @@ export interface LineaInvestigacion {
 }
 
 
+
+
+
+export interface DialogDataInformacionproyectoInvestigacion {
+  idProyectoInvestigacion: '';
+}
+
+@Component({
+  selector: 'view-informacion-proyecto-investigacion-director',
+  templateUrl: 'view-informacion-proyecto-investigacion-director.html',
+  styleUrls: ['./view-proyecto-investigacion.component.css']
+})
+
+export class ViewInformacionProyectoInvestigacionDirector {
+  constructor(
+    public dialogRef: MatDialogRef<ViewInformacionProyectoInvestigacionDirector>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogDataInformacionproyectoInvestigacion,
+    private investigacionInvestigadoresService: InvestigacionInvestigadoresService,
+    private investigacionService: InvestigacionService,
+    private sectorImpactoProyectoService: SectorImpactoProyectoService,
+    private localizacionProyectoService: LocalizacionProyectoService,
+    private lineaInvestigacionProyectoService: LineaInvestigacionProyectoService,
+    private areaInvestigacionProyectoService: AreaInvestigacionProyectoService,
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  informacionProyectoInvestigacion: any;
+  grupoInvestigacion: any = [];
+  informacionDirector: any = [];
+  informacionImpacto: any = [];
+  informacionAreaInvestigacion: any = [];
+  informacionUbicacion: any = [];
+  informacionLinea: any = [];
+
+  ngOnInit(): void {
+
+    this.investigacionService.obtenerProyectoInvestigacion(this.data.idProyectoInvestigacion).subscribe(
+      (dato: any) => {
+        this.informacionProyectoInvestigacion = this.transformarFechas(dato);
+      }
+    )
+    this.investigacionInvestigadoresService.listarInvestigadoresEnProyectosInvestigacion(this.data.idProyectoInvestigacion).subscribe(
+      (data: any) => {
+        this.grupoInvestigacion = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+    this.investigacionInvestigadoresService.obtenerDirectorProyecto(this.data.idProyectoInvestigacion).subscribe(
+      (data: any) => {
+        this.informacionDirector = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+
+    this.sectorImpactoProyectoService.listarPorProyecto(this.data.idProyectoInvestigacion).subscribe(
+      (data: any) => {
+        this.informacionImpacto = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+    this.localizacionProyectoService.listarPorProyecto(this.data.idProyectoInvestigacion).subscribe(
+      (data: any) => {
+        this.informacionUbicacion = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+
+    this.areaInvestigacionProyectoService.listarPorProyecto(this.data.idProyectoInvestigacion).subscribe(
+      (data: any) => {
+        this.informacionAreaInvestigacion = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+
+    this.lineaInvestigacionProyectoService.listarPorProyecto(this.data.idProyectoInvestigacion).subscribe(
+      (data: any) => {
+        this.informacionLinea = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  transformarFechas(data: any): any {
+    const fechaInicioCompleta = data.fechaInicio;
+    const fechaFinCompleta = data.fechaFin;
+    const fechaInicioObj = new Date(fechaInicioCompleta);
+    const fechaFinObj = new Date(fechaFinCompleta);
+    const fechaInicioFormateada = this.formatoFecha(fechaInicioObj);
+    const fechaFinFormateada = this.formatoFecha(fechaFinObj);
+
+    // Devolver un nuevo objeto con las fechas formateadas y el resto de la estructura de datos sin cambios
+    return { ...data, fechaInicio: fechaInicioFormateada, fechaFin: fechaFinFormateada };
+  }
+
+  formatoFecha(fecha: Date): string {
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const anio = fecha.getFullYear().toString();
+
+    return `${dia}/${mes}/${anio}`;
+  }
+
+}

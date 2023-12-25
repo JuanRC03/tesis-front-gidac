@@ -49,4 +49,11 @@ export class InvestigacionService {
     return this.httpClient.get(`${baserUrl}/api/investigacion/cambio-estado-proyecto-investigacion/${id}`);
   }
   
+  public obtenerProyectoVigentesTrue(){
+    return this.httpClient.get(`${baserUrl}/api/investigacion-vigentes-true`);
+  }
+
+  public obtenerProyectoVigentesFalse(){
+    return this.httpClient.get(`${baserUrl}/api/investigacion-vigentes-false`);
+  }
 }

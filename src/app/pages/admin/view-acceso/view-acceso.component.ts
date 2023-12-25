@@ -29,12 +29,14 @@ export class ViewAccesoComponent implements AfterViewInit {
     this.listarAccesoAdministrador();
     this.listarAccesoDirector();
     this.listarAccesoInvestigador();
+    this.listarAccesoAdminDatos();
 
   }
 
     listaDatosAdministrador : any = []
     listaDatosDirector : any = []
     listaDatosInvestigador : any = []
+    listaDatosAdminDatos : any = []
 
     listarAccesoAdministrador()
     {
@@ -61,6 +63,16 @@ export class ViewAccesoComponent implements AfterViewInit {
       this.accesoService.listarAccesoInvestigador().subscribe(
           (res:any)=>{
             this.listaDatosInvestigador=this.transformarFechas(res);
+          },
+          err=>console.log(err)
+        )
+    }
+
+    listarAccesoAdminDatos()
+    {
+      this.accesoService.listarAccesoAdminDDatos().subscribe(
+          (res:any)=>{
+            this.listaDatosAdminDatos=this.transformarFechas(res);
           },
           err=>console.log(err)
         )
@@ -111,6 +123,13 @@ export class ViewAccesoComponent implements AfterViewInit {
     handlePage2(e: PageEvent) {
       this.page_size = e.pageSize
       this.page_number2 = e.pageIndex + 1
+    }
+
+    page_number3: number = 1
+
+    handlePage3(e: PageEvent) {
+      this.page_size = e.pageSize
+      this.page_number3 = e.pageIndex + 1
     }
     
     public search: string = '';

@@ -193,7 +193,7 @@ export class SideDirectorComponent {
     Swal.fire({
       position: 'top-end',
       icon: 'success',
-      title: 'La sesión se a cerrado con exito',
+      title: 'La sesión se ha cerrado con exito',
       showConfirmButton: false,
       timer: 3000
     })

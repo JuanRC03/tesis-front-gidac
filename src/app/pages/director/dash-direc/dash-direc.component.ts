@@ -26,13 +26,10 @@ export class DashDirecComponent implements OnInit {
               , private adminDashService:AdminDashService
               , private dashboardService:DashboardService
               ,public login:LoginService) {
-    
   }
-
   
-
   data: any;
-  contadores:any;
+  
   usuario:any = null;
   ngOnInit() {  
     this.usuario = this.login.getUser();
@@ -46,6 +43,7 @@ export class DashDirecComponent implements OnInit {
   }
 
   
+  contadores:any;
   cargarEstadosProyecto(){
     this.dashboardService.obtenerEstadoProyecto(this.usuario.idUsuario).subscribe(
       res=>{

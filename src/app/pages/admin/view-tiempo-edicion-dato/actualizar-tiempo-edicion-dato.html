@@ -1,0 +1,28 @@
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line style="padding-right: 30px;">Actualizar tiempo de edición de datas</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button mat-dialog-close
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<form (ngSubmit)= "formSubmit()" style="max-width: 400px;">
+    <div class="box mt-3 mb-3">
+      
+      <mat-form-field class="w100" appearance="outline">
+        <mat-label>Tiempo maximo de edición de datos en dias:</mat-label>
+        <input [(ngModel)]="datosActualizar.tiempo" required type="text" name="tiempo" matInput
+          >
+      </mat-form-field>
+
+    <div class="container text-center mt15">
+      <button mat-raised-button color="primary">Actualizar</button>
+    </div>
+  </div>
+  </form>

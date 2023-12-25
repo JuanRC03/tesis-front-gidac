@@ -192,6 +192,32 @@ export class ViewVariablesAdminComponent implements AfterViewInit {
         data: { idVariable: id, nombreVariable:nombre},
       });
     }
+
+     //descarhar PDF
+  descargarPdf() {
+    this.variableService.descargarPDF().subscribe((blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'catalogo.pdf';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
+
+  //Descargar excel
+  descargarExcel() {
+    this.variableService.descargarExcel().subscribe((blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'catalogo.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
+
+
   }
 
 

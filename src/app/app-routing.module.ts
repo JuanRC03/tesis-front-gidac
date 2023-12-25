@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from './services/admin.guard';
 import { NormalGuard } from './services/normal.guard';
 import { DirectorGuard } from './services/director.guard';
+import { AdminDatosGuard } from './services/admin-datos.guard';
 
 //Usuario comun
 import { HomeComponent } from './pages/home/home.component';
@@ -35,6 +36,8 @@ import { ImportarCatalogoOrganizacionComponent } from './pages/admin/importar-ca
 import { ImportarCatalogoEspochComponent } from './pages/admin/importar-catalogo-espoch/importar-catalogo-espoch.component';
 import { ViewVariablesAdminComponent } from './pages/admin/view-variables-admin/view-variables-admin.component';
 import { ViewEmailEnvioComponent } from './pages/admin/view-email-envio/view-email-envio.component';
+import { ViewTiempoEdicionDatoComponent } from './pages/admin/view-tiempo-edicion-dato/view-tiempo-edicion-dato.component';
+import { ViewAdministradorDatosComponent } from './pages/admin/view-administrador-datos/view-administrador-datos.component';
 
 //Director
 import { SideDirectorComponent } from './pages/director/side-director/side-director.component';
@@ -48,6 +51,11 @@ import { ViewInvestigadoresDeProyectosInvestigacionComponent } from './pages/dir
 import { AddInvestigadorEnProyectoInvestigacionComponent } from './pages/director/add-investigador-en-proyecto-investigacion/add-investigador-en-proyecto-investigacion.component';
 import { SolicitudesAccesoComponent } from './pages/director/solicitudes-acceso/solicitudes-acceso.component';
 import { SolicitudesEliminarComponent } from './pages/director/solicitudes-eliminar/solicitudes-eliminar.component';
+import { ConglomeradoDirectorComponent } from './pages/director/conglomerado-director/conglomerado-director.component';
+import { ParcelaDirectorComponent } from './pages/director/parcela-director/parcela-director.component';
+import { PuntoDirectorComponent } from './pages/director/punto-director/punto-director.component';
+import { DatoDirectorComponent } from './pages/director/dato-director/dato-director.component';
+import { DescargaDatoDirectorComponent } from './pages/director/descarga-dato-director/descarga-dato-director.component';
 
 //Investigador
 import { SideUserComponent } from './pages/investigador/side-user/side-user.component';
@@ -70,6 +78,22 @@ import { ViewAreasComponent } from './pages/investigador/view-areas/view-areas.c
 import { ViewCatalogoOrganizacionInvestigadorComponent } from './pages/investigador/view-catalogo-organizacion-investigador/view-catalogo-organizacion-investigador.component';
 import { ViewSolicitudActualizarInvestigadorComponent } from './pages/investigador/view-solicitud-actualizar-investigador/view-solicitud-actualizar-investigador.component';
 import { ViewOrganizacionInvestigadorComponent } from './pages/investigador/view-organizacion-investigador/view-organizacion-investigador.component';
+
+//Administrador de datos
+import { SidebarAdminDatosComponent } from './pages/admin-datos/sidebar-admin-datos/sidebar-admin-datos.component';
+import { DashAdminDatosComponent } from './pages/admin-datos/dash-admin-datos/dash-admin-datos.component';
+import { ViewCatalogoOrganizacionAdminDatosComponent } from './pages/admin-datos/view-catalogo-organizacion-admin-datos/view-catalogo-organizacion-admin-datos.component';
+import { ViewFamiliaAdminDatosComponent } from './pages/admin-datos/view-familia-admin-datos/view-familia-admin-datos.component';
+import { ViewVariablesAdminDatosComponent } from './pages/admin-datos/view-variables-admin-datos/view-variables-admin-datos.component';
+import { ViewOrganizacionAdminDatosComponent } from './pages/admin-datos/view-organizacion-admin-datos/view-organizacion-admin-datos.component';
+import { ActualizarPerfilAdminDatosComponent } from './pages/admin-datos/actualizar-perfil-admin-datos/actualizar-perfil-admin-datos.component';
+import { ViewProyectosAdminDatosComponent } from './pages/admin-datos/view-proyectos-admin-datos/view-proyectos-admin-datos.component';
+import { ConglomeradoAdminDatosComponent } from './pages/admin-datos/conglomerado-admin-datos/conglomerado-admin-datos.component';
+import { ParcelaAdminDatosComponent } from './pages/admin-datos/parcela-admin-datos/parcela-admin-datos.component';
+import { PuntoAdminDatosComponent } from './pages/admin-datos/punto-admin-datos/punto-admin-datos.component';
+import { DatoAdminDatosComponent } from './pages/admin-datos/dato-admin-datos/dato-admin-datos.component';
+import { DescargarDatoAdminDatosComponent } from './pages/admin-datos/descargar-dato-admin-datos/descargar-dato-admin-datos.component';
+import { ViewUnidadMedidaAdminDatosComponent } from './pages/admin-datos/view-unidad-medida-admin-datos/view-unidad-medida-admin-datos.component';
 
 const routes: Routes = [
   {
@@ -191,9 +215,96 @@ const routes: Routes = [
         path:'view-envio-email',
         component:ViewEmailEnvioComponent
       },
+
+      {
+        path:'view-tiempo-edicion-dato',
+        component:ViewTiempoEdicionDatoComponent
+      },
+
+      {
+        path:'view-administrador-datos',
+        component:ViewAdministradorDatosComponent
+      },
+
       
     ]
   },
+
+  {
+    //--------------------------------------------------------------------------
+    //ADMINISTRADOR DATOS
+    path:'admin-datos',
+    component:SidebarAdminDatosComponent,
+    canActivate:[AdminDatosGuard],
+    children:[
+      {
+        path : '',
+        component : DashAdminDatosComponent
+      },
+
+      
+      {
+        path:'view-proyecto-admin-datos',
+        component:ViewProyectosAdminDatosComponent
+      },
+
+      {
+        path:'actualizar-perfil-admin-datos/:id',
+        component:ActualizarPerfilAdminDatosComponent
+      },
+
+      {
+        path:'view-organizacion-admin-datos',
+        component:ViewOrganizacionAdminDatosComponent
+      },
+
+      {
+        path:'view-catalogo-organizacion-admin-datos/:idOrganizacion/:siglas',
+        component:ViewCatalogoOrganizacionAdminDatosComponent
+      },
+
+      {
+        path:'view-familia-admin-datos',
+        component:ViewFamiliaAdminDatosComponent
+      },
+
+      {
+        path:'view-unidad-medida-admin-datos',
+        component:ViewUnidadMedidaAdminDatosComponent
+      },
+
+      {
+        path:'view-variable-admin-datos',
+        component:ViewVariablesAdminDatosComponent
+      },
+
+      {
+        path:'conglomerados-admin-datos/:idProyecto',
+        component:ConglomeradoAdminDatosComponent       
+      }, 
+
+      {
+        path:'parcelas-admin-datos/:idConglomerado/:idProyecto',
+        component:ParcelaAdminDatosComponent
+      },
+      {
+        path:'puntos-admin-datos/:idParcela/:idConglomerado/:idProyecto',
+        component:PuntoAdminDatosComponent
+      },
+      {
+        path:'datos-admin-datos/:idProfundidad/:idParcela/:idConglomerado/:idProyecto',
+        component:DatoAdminDatosComponent
+      },
+
+      {
+        path:'descargar-datos-admin-datos/:idProyecto',
+        component:DescargarDatoAdminDatosComponent
+      },
+
+      
+    ]
+  },
+
   //--------------------------------------------------------------------------
   //DIRECTOR
   {
@@ -240,7 +351,34 @@ const routes: Routes = [
       {
         path:'solicitudes-actualizar/:idAreaInvestigacion',
         component:SolicitudesEliminarComponent
-      }
+      },
+
+
+      {
+        path:'conglomerados-director/:idProyecto',
+        component:ConglomeradoDirectorComponent
+      }, 
+
+      {
+        path:'parcelas-director/:idConglomerado/:idProyecto',
+        component:ParcelaDirectorComponent
+      },
+      {
+        path:'puntos-director/:idParcela/:idConglomerado/:idProyecto',
+        component:PuntoDirectorComponent
+      },
+      {
+        path:'datos-director/:idProfundidad/:idParcela/:idConglomerado/:idProyecto',
+        component:DatoDirectorComponent
+      },
+
+      {
+        path:'descargar-datos-director/:idProyecto',
+        component:DescargaDatoDirectorComponent
+      },
+
+
+      
     ]
   },
   //--------------------------------------------------------------------------
@@ -325,6 +463,7 @@ const routes: Routes = [
     ]
   }
 ];
+import { ViewCatalogoOrganizacionAdminDataSource } from './pages/admin/view-catalogo-organizacion-admin/view-catalogo-organizacion-admin-datasource';
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

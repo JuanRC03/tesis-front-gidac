@@ -30,6 +30,13 @@
       </div>
       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
         
+          <button mat-icon-button matTooltip="Primary" color="primary" class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+            <mat-icon>download</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" xPosition="before">
+            <button mat-menu-item (click)="descargarExcel()">Excel</button>
+            <button mat-menu-item (click)="descargarPdf()">PDF</button>
+          </mat-menu>
       </div>
 
     </mat-list-item>

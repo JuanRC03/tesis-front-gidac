@@ -46,21 +46,16 @@
               class="full-width-table" matSort aria-label="Elements">
 
               <ng-container matColumnDef="dato1">
-                <th mat-header-cell *matHeaderCellDef>Altura mínima</th>
-                <td mat-cell *matCellDef="let row">{{row.alturaMinima}}</td>
+                <th mat-header-cell *matHeaderCellDef>Altura</th>
+                <td mat-cell *matCellDef="let row">{{row.altura}}</td>
               </ng-container>
 
               <ng-container matColumnDef="dato2">
-                <th mat-header-cell *matHeaderCellDef>Altura máxima</th>
-                <td mat-cell *matCellDef="let row">{{row.alturaMaxima}}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="dato3">
                 <th mat-header-cell *matHeaderCellDef>Abreviatura</th>
                 <td mat-cell *matCellDef="let row">{{row.unidadMedida.abreviatura}}</td>
               </ng-container>
 
-              <ng-container matColumnDef="dato4">
+              <ng-container matColumnDef="dato3">
                 <th mat-header-cell *matHeaderCellDef>Unidad de medida</th>
                 <td mat-cell *matCellDef="let row">{{row.unidadMedida.unidadMedida}}</td>
               </ng-container>
@@ -70,7 +65,7 @@
                 <td mat-cell *matCellDef="let row">
                   <div class="example-button-row" >
                     <div *ngIf="row.editable==true">
-                      <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click) = "editar(row.idAltura, row.alturaMinima, row.alturaMaxima, row.unidadMedida.idUnidadMedida)" >
+                      <button mat-icon-button matTooltip="Primary" color="primary" aria-label="Example icon-button with a heart icon" (click) = "editar(row.idAltura, row.altura, row.unidadMedida.idUnidadMedida)" >
                         <mat-icon>edit</mat-icon>
                       </button>
                       <button mat-icon-button matTooltip="Warn" color="warn" aria-label="Example icon-button with a heart icon" (click) = "eliminar(row.idAltura)">
@@ -111,21 +106,16 @@
               class="full-width-table" matSort aria-label="Elements">
 
               <ng-container matColumnDef="dato1">
-                <th mat-header-cell *matHeaderCellDef>Altura mínima</th>
-                <td mat-cell *matCellDef="let row">{{row.alturaMinima}}</td>
+                <th mat-header-cell *matHeaderCellDef>Altura</th>
+                <td mat-cell *matCellDef="let row">{{row.altura}}</td>
               </ng-container>
 
               <ng-container matColumnDef="dato2">
-                <th mat-header-cell *matHeaderCellDef>Altura máxima</th>
-                <td mat-cell *matCellDef="let row">{{row.alturaMaxima}}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="dato3">
                 <th mat-header-cell *matHeaderCellDef>Abreviatura</th>
                 <td mat-cell *matCellDef="let row">{{row.unidadMedida.abreviatura}}</td>
               </ng-container>
 
-              <ng-container matColumnDef="dato4">
+              <ng-container matColumnDef="dato3">
                 <th mat-header-cell *matHeaderCellDef>Unidad de medida</th>
                 <td mat-cell *matCellDef="let row">{{row.unidadMedida.unidadMedida}}</td>
               </ng-container>

@@ -1,0 +1,24 @@
+.full-width-table {
+    width: 100%;
+  }
+  
+  .w100{
+    width: 100%;
+  }
+  
+  .w100{
+    width: 100%;
+  }
+  table {
+    width: 100%;
+  }
+  
+  .plain-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
