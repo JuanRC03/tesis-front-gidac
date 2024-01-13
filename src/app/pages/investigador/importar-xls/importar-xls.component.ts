@@ -306,24 +306,57 @@ export class ImportarXlsComponent implements OnInit {
     window.URL.revokeObjectURL(url);
   }
 
-  guardarDatos(){
-    const formData = new FormData();
-    formData.append('proyectoInvestigacion', JSON.stringify(this.proyectoInvestigacion));
-    formData.append('variablesEncontradas', JSON.stringify(this.listaDatos));
-    formData.append('file', this.file);
-    this.datoRecolectadoService.guardarXLS(formData).subscribe(
-      (dato:any) => {
-        Swal.fire('Registro exitoso','Los datos se han registrado de forma correcta','success').then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigate(['/user-dashboard/view-dash-proyecto/'+this.idProyecto]);
-          }
-        });
-      },
-      (error) => {
-        console.log(error);
-        Swal.fire('Error !!','Error al perfilar los datos','error')
+  descartarDatos(){
+    Swal.fire({
+      title: 'Descartar dataset',
+      text: '¿Estás seguro de descartar el dataset?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.reload();
       }
-    )
+    })
+    
+  }
+
+  guardarDatos(){
+    Swal.fire({
+      title: 'Importar dataset',
+      text: '¿Estás seguro de importar el dataset?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const formData = new FormData();
+        formData.append('proyectoInvestigacion', JSON.stringify(this.proyectoInvestigacion));
+        formData.append('variablesEncontradas', JSON.stringify(this.listaDatos));
+        formData.append('file', this.file);
+        this.datoRecolectadoService.guardarXLS(formData).subscribe(
+          (dato:any) => {
+            Swal.fire('Registro exitoso','Los datos se han registrado de forma correcta','success').then((result) => {
+              if (result.isConfirmed) {
+                this.router.navigate(['/user-dashboard/view-dash-proyecto/'+this.idProyecto]);
+              }
+            });
+          },
+          (error) => {
+            console.log(error);
+            Swal.fire('Error !!','Error al perfilar los datos','error')
+          }
+        )
+      }
+    })
+
+    
   }
 
   recargarPantalla(){

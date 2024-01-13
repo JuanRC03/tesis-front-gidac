@@ -54,11 +54,11 @@ export class SolicitudesAccesoComponent implements OnInit {
   dataSource:any= [];
   dataSourceAceptado:any= [];
   dataSourceRechazado:any= [];
-  columnsToDisplay = ['nombre', 'apellido', 'emial', 'institucion'];
+  columnsToDisplay = ['nombre', 'apellido', 'email', 'institucion'];
   columnLabels: { [key: string]: string } = {
     nombre: 'Nombre',
     apellido: 'Apellido',
-    emial: 'Email',
+    email: 'Email',
     institucion: 'Institucion',
     // Agrega los nombres personalizados para las columnas adicionales
   };
@@ -134,7 +134,7 @@ export class SolicitudesAccesoComponent implements OnInit {
       }
     )
   }
-
+  
   listarAprobador(){
     this.respuestaSolicitudDescargaService.obtenerSolicitudesDescargaAceptadas(this.idAreaInvestigacion).subscribe(
       (data:any) => {
@@ -356,9 +356,10 @@ export class SolicitudesAccesoComponent implements OnInit {
     formData.append('solicitudDescarga', JSON.stringify(this.opcionSeleccionadaSolicitudDescarga));
     formData.append('file', blob, 'tabla_datos.xlsx');
 
-    this.solicitudAccesoService.solicitudAprobadaEnvioMensaje(formData).subscribe(
+   this.solicitudAccesoService.solicitudAprobadaEnvioMensaje(formData).subscribe(
       (data) => {
-        
+          this.listarAprobador()
+          this.sideDirectorComponent.listarContadorDeSolicitudes();
       },
       (error) => {
         Swal.fire('Error','Error al enviar los datos','error');
@@ -373,22 +374,22 @@ export class SolicitudesAccesoComponent implements OnInit {
     for (let i = 0; i < datosPaso.length; i++) {
       const subarreglo = datosPaso[i];
       const nuevoElemento: any = {
-        'Altitud minima': subarreglo[n++],
-        'Altitud maxima': subarreglo[n++],
+        'Fecha salida campo': subarreglo[n++],
+        'Coordenada x': subarreglo[n++],
+        'Coordenada y': subarreglo[n++],
+        'Altitud': subarreglo[n++],
         'Unidad de medidad altitud': subarreglo[n++],
         'Código conglomerado': subarreglo[n++],
         'Nombre conglomerado': subarreglo[n++],
         'Sector': subarreglo[n++],
         'Código parcela': subarreglo[n++],
         'Nombre parcela': subarreglo[n++],
-        'Coordenada x': subarreglo[n++],
-        'Coordenada y': subarreglo[n++],
         'Area parcela': subarreglo[n++],
         'Unidad de medida parcela': subarreglo[n++],
         'Profundidad minima': subarreglo[n++],
         'Profundidad maxima': subarreglo[n++],
         'Unidad de medidad profundidad': subarreglo[n++],
-        'Fecha salida campo': subarreglo[n++],
+        
       };
 
       for (let j = n; j < subarreglo.length; j += 3) {
@@ -415,7 +416,7 @@ export interface PeriodicElement {
   idSolicitudDescarga: number;
   nombre: string;
   apellido: string;
-  emial: string;
+  email: string;
   institucion: string;
   motivo: string;
 }

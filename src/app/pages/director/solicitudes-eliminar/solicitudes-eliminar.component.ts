@@ -80,10 +80,12 @@ export class SolicitudesEliminarComponent implements OnInit {
 
 
   listarSolicitados(){
+    
     this.solicitudAccesoService.listarSolicitadosEliminar(this.idAreaInvestigacion).subscribe(
       (data:any) => {
         this.dataSourceSolicitado=this.transformarFechasSolicitadas(data);
         console.log(data);
+        this.sideDirectorComponent.listarContadorDeSolicitudes();
       }
     )
   }
@@ -168,6 +170,7 @@ export class SolicitudesEliminarComponent implements OnInit {
           (data) => {
             //location.reload();
             this.listarAprobador();
+            this.sideDirectorComponent.listarContadorDeSolicitudes();
             this.dataSourceSolicitado = this.dataSourceSolicitado.filter((dato:any) => dato.idSolicitudActualizar != id);
             Swal.fire('Solicitud aprobada','La solicitud ha sido aprobada','success');
           },

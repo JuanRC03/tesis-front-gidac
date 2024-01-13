@@ -644,7 +644,7 @@ export class HomeComponent {
   solicitudData = {
     nombre: '',
     apellido: '',
-    emial: '',
+    email: '',
     institucion: '',
     motivo: '',
     proyectoInvestigacion: {
@@ -671,7 +671,7 @@ export class HomeComponent {
       });
       return;
     }
-    if (this.solicitudData.emial == '' || this.solicitudData.emial == null) {
+    if (this.solicitudData.email == '' || this.solicitudData.email == null) {
       this.snack.open('El email es requerido !!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
@@ -708,7 +708,7 @@ export class HomeComponent {
       (data) => {
         this.solicitudData.nombre = '';
         this.solicitudData.apellido = '';
-        this.solicitudData.emial = '';
+        this.solicitudData.email = '';
         this.solicitudData.institucion = '';
         this.solicitudData.motivo = '';
         this.solicitudData.proyectoInvestigacion.idProyecto = '';
@@ -1632,8 +1632,12 @@ export class ResetPassword {
 
     this.loginService.enviarEmail(this.datosEmail).subscribe(
       (data: any) => {
-        Swal.fire('Contraseña actualizada', 'La nueva contrase ha sido enviada al correo electrónico', 'success');
-        this.router.navigate(['/login']);
+        
+        this.snack.open('Contraseña actualizada , La nueva contrase ha sido enviada al correo electrónico !!', 'Aceptar', {
+          duration: 3000
+        })
+        this.openDialogLogin();
+        //this.router.navigate(['/login']);
       }, (error) => {
         console.log(error);
         this.snack.open('El email ingresado no es valido , vuelva a intentar !!', 'Aceptar', {
@@ -1675,7 +1679,7 @@ export class DialogSolicitudAcceso {
   solicitudData = {
     nombre: '',
     apellido: '',
-    emial: '',
+    email: '',
     institucion: '',
     motivo: '',
     proyectoInvestigacion: {
@@ -1728,7 +1732,7 @@ export class DialogSolicitudAcceso {
       });
       return;
     }
-    if (this.solicitudData.emial == '' || this.solicitudData.emial == null) {
+    if (this.solicitudData.email == '' || this.solicitudData.email == null) {
       this.snack.open('El email es requerido !!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',

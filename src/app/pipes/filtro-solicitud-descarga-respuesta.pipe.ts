@@ -10,7 +10,7 @@ export class FiltroSolicitudDescargaRespuestaPipe implements PipeTransform {
 
     const datos = array.filter( ar => ar.solicitudDescarga.nombre.toUpperCase().includes( search.toUpperCase())
                         || (ar.solicitudDescarga.apellido.toUpperCase().includes( search.toUpperCase())) 
-                        || (ar.solicitudDescarga.emial.toUpperCase().includes( search.toUpperCase()))
+                        || (ar.solicitudDescarga.email.toUpperCase().includes( search.toUpperCase()))
                         || (ar.solicitudDescarga.institucion.toUpperCase().includes( search.toUpperCase())) 
                         );
    

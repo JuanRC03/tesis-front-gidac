@@ -409,7 +409,7 @@ export class MapaEjemploComponent implements OnInit {
   solicitudData = {
     nombre: '',
     apellido: '',
-    emial: '',
+    email: '',
     institucion: '',
     motivo: '',
     proyectoInvestigacion: {
@@ -436,7 +436,7 @@ export class MapaEjemploComponent implements OnInit {
       });
       return;
     }
-    if (this.solicitudData.emial == '' || this.solicitudData.emial == null) {
+    if (this.solicitudData.email == '' || this.solicitudData.email == null) {
       this.snack.open('El email es requerido !!', 'Aceptar', {
         duration: 3000,
         verticalPosition: 'bottom',
@@ -473,7 +473,7 @@ export class MapaEjemploComponent implements OnInit {
       (data) => {
         this.solicitudData.nombre = '';
         this.solicitudData.apellido = '';
-        this.solicitudData.emial = '';
+        this.solicitudData.email = '';
         this.solicitudData.institucion = '';
         this.solicitudData.motivo = '';
         this.solicitudData.proyectoInvestigacion.idProyecto = '';
