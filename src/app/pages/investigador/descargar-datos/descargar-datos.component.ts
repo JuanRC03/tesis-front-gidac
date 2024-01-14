@@ -69,7 +69,7 @@ export class DescargarDatosComponent implements OnInit {
       this.datasetService.obtenerDatasets(this.idProyecto).subscribe(
         res => {
           this.listaDatosDataset = res;
-          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Todos' });
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaInicioDataset: 'Todos' });
           this.opcionSeleccionadaDataset.codigoDataset=0;
         },
         err => console.log(err)

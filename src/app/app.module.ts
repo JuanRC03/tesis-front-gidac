@@ -186,6 +186,9 @@ import { ViewValorPermitidoVariableNumerica } from './pages/investigador/view-ca
 import { ViewValorPermitidoVariableTextual } from './pages/investigador/view-catalogo-organizacion/view-catalogo-organizacion.component';
 import { AgregarAlturaConglomerado } from './pages/investigador/view-dash-proyecto/view-dash-proyecto.component';
 import { AgregarUnidadMedidaConglomerado } from './pages/investigador/view-dash-proyecto/view-dash-proyecto.component';
+import { ListaDatasetImportar } from './pages/investigador/importar-xls/importar-xls.component';
+import { AgregarDatasetImportar } from './pages/investigador/importar-xls/importar-xls.component';
+import { AgregarDatasetDatoRecolectado } from './pages/investigador/view-dato-recolectado/view-dato-recolectado.component';
 
 //Filtros
 import { FiltroAreaInvestigacionPipe } from './pipes/filtro-area-investigacion.pipe';
@@ -291,8 +294,11 @@ import { ViewUnidadMedidaAdminDatosComponent } from './pages/admin-datos/view-un
 @NgModule({
   declarations: [
     AgregarUnidadMedidaConglomerado,
+    ListaDatasetImportar,
     AppComponent,
+    AgregarDatasetImportar,
     PaginatePipe,
+    AgregarDatasetDatoRecolectado,
     FiltroPipe,
     FiltroUbicacionPipe,
     FiltroUsuariosPipe,

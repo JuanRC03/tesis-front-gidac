@@ -78,7 +78,7 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
       this.datasetService.obtenerDatasets(this.idProyecto).subscribe(
         res => {
           this.listaDatosDataset = res;
-          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Todos' });
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaInicioDataset: 'Todos' });
           this.opcionSeleccionada.codigoDataset=0;
         },
         err => console.log(err)
@@ -88,7 +88,8 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
     
     opcionSeleccionada: any = {
       codigoDataset: 0,
-      fechaDataset: null
+      fechaInicioDataset: null,
+      fechaFinDataset:null
     }
 
     onEstadoChange(event: any): void {
@@ -196,7 +197,7 @@ export class ViewDatoRecolectadoComponent implements AfterViewInit {
   //editar
   editar(id:any, dato1:any, dato2:any, dato3:any,codigoDataset:any,fechaSalidaCampo:any): void {
     const dialogRef = this.dialog.open(EditarDatoRecolectado, {
-      data: { idProyecto:this.idProyecto, idDatoRecolectado: id, valor:dato1,idVariableUnidadMedida:dato2,idDataset:dato3,codigoDataset:codigoDataset ,fechaSalidaCampo:fechaSalidaCampo,variableUnidadMedida:this.variableUnidadMedida},
+      data: { idProyecto:this.idProyecto,idProfundidad:this.idProfundidad,idParcela:this.idParcela, idDatoRecolectado: id, valor:dato1,idVariableUnidadMedida:dato2,idDataset:dato3,codigoDataset:codigoDataset ,fechaSalidaCampo:fechaSalidaCampo,variableUnidadMedida:this.variableUnidadMedida},
     });
     dialogRef.afterClosed().subscribe(() => {
       this.listarDatasets();
@@ -235,6 +236,7 @@ constructor(
   @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
   private datoRecolectadoService:DatoRecolectadoService,
   private snack: MatSnackBar,
+  public dialog: MatDialog,
   private variableUnidadMedidaService:VariableUnidadMedidaService,
   private datasetService:DatasetService
 
@@ -249,9 +251,12 @@ ngOnInit(): void {
   this.data.idDatoRecolectado=this.data1.idDatoRecolectado;
   this.data.valor=this.data1.valor;
   this.data.dataset.idDataset=this.data1.idDataset;
+  this.data.dataset.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
   this.data.dataset.codigoDataset=this.data1.codigoDataset;
   this.data.dataset.fechaSalidaCampo=this.data1.fechaSalidaCampo;
   this.data.variableUnidadMedida.idVariableUnidadMedida=this.data1.idVariableUnidadMedida;
+  this.data.dataset.profundidadParcela.profundidad.idProfundidad=this.data1.idProfundidad;
+  this.data.dataset.profundidadParcela.parcela.idParcela=this.data1.idParcela;
   this.listarDatasets();
 }
 
@@ -264,6 +269,17 @@ public data = {
     idDataset:0,
     codigoDataset:0,
     fechaSalidaCampo:new Date(0),
+    proyectoInvestigacion:{
+      idProyecto:0,
+    },
+    profundidadParcela:{
+      profundidad:{
+        idProfundidad:0,
+      },
+      parcela:{
+        idParcela:0,
+      }
+    },
   },
   variableUnidadMedida:{
     idVariableUnidadMedida:0
@@ -284,12 +300,24 @@ listaDatosDataset: any = [];
       this.datasetService.obtenerDatasets(this.data1.idProyecto).subscribe(
         res => {
           this.listaDatosDataset = res;
-          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Nuevo dataset' });
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaInicioDataset: 'Nuevo dataset' });
         },
         err => console.log(err)
       )
     }
 
+
+    onDatasetSelectionChange() {
+    
+      if (this.data.dataset.codigoDataset === 0) {
+        const dialogRef = this.dialog.open(AgregarDatasetDatoRecolectado, {
+          data: { idProyecto: this.data1.idProyecto },
+        });
+        dialogRef.afterClosed().subscribe(() => {
+          this.listarDatasets();
+        });
+      }
+    }
 
 variableUnidadMedida : any = []
 listarVariableUnidadMedida()
@@ -377,6 +405,7 @@ constructor(
   @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
   private variableUnidadMedidaService:VariableUnidadMedidaService,
   private snack: MatSnackBar,
+  public dialog: MatDialog,
   private datoRecolectadoService:DatoRecolectadoService,
   private datasetService:DatasetService
 ) { }
@@ -391,7 +420,7 @@ public data = {
   valor: '',
   vigencia: 1,
   dataset:{
-    codigoDataset:0,
+    codigoDataset:-1,
     fechaSalidaCampo:new Date(0),
     proyectoInvestigacion:{
       idProyecto:0,
@@ -415,17 +444,30 @@ listaDatosDataset: any = [];
       this.datasetService.obtenerDatasets(this.data1.idProyecto).subscribe(
         res => {
           this.listaDatosDataset = res;
-          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Nuevo dataset' });
-          this.data.dataset.codigoDataset=0;
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaInicioDataset: 'Nuevo dataset' });
         },
         err => console.log(err)
       )
     }
 
 
+   
+    onDatasetSelectionChange() {
+    
+      if (this.data.dataset.codigoDataset === 0) {
+        const dialogRef = this.dialog.open(AgregarDatasetDatoRecolectado, {
+          data: { idProyecto: this.data1.idProyecto },
+        });
+        dialogRef.afterClosed().subscribe(() => {
+          this.listarDatasets();
+        });
+      }
+    }
+
+
+
 ngOnInit(): void {
   this.variableUnidadMedida=this.data1.variableUnidadMedida;
-  console.log(this.variableUnidadMedida);
   this.data.dataset.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
   this.data.dataset.profundidadParcela.profundidad.idProfundidad=this.data1.idProfundidad;
   this.data.dataset.profundidadParcela.parcela.idParcela=this.data1.idParcela;
@@ -477,6 +519,13 @@ public agregar() {
     return;
   }
 
+  if (this.data.dataset.codigoDataset== 0 || this.data.dataset.codigoDataset== -1) {
+    this.snack.open('El dataset es requerido !!', 'Aceptar', {
+      duration: 3000
+    })
+    return;
+  }
+  
   if(this.idTipoVariable==1){
     if (isNaN(Number(this.data.valor))) {
       this.snack.open('No se puede guardar un dato textual en una variable numérica !!', 'Aceptar', {
@@ -568,3 +617,93 @@ formSubmit(){
 }
 }
 
+
+
+
+
+@Component({
+  selector: 'agregar-dataset-dato-recolectado',
+  templateUrl: 'agregar-dataset-dato-recolectado.html',
+  styleUrls: ['./view-dato-recolectado.component.css'],
+})
+
+export class AgregarDatasetDatoRecolectado {
+  constructor(
+    public dialogRef: MatDialogRef<AgregarDatasetDatoRecolectado>,
+    @Inject(MAT_DIALOG_DATA) public data1: dataEditar,
+    private snack: MatSnackBar,
+    private datasetService: DatasetService
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  public data = {
+    codigoDataset: 0,
+    fechaInicioDataset: new Date(0),
+    fechaFinDataset: new Date(0),
+    fechaSalidaCampo: new Date(0),
+    proyectoInvestigacion: {
+      idProyecto: 0,
+    }
+  }
+  
+  ngOnInit(): void {
+    this.data.proyectoInvestigacion.idProyecto=this.data1.idProyecto;
+  }
+
+  variableUnidadMedida: any = []
+
+  public afterClosed: EventEmitter<void> = new EventEmitter<void>();
+
+  public agregar() {
+  
+    console.log(this.data)
+    
+    if (this.data.fechaInicioDataset==null) {
+      this.snack.open('La fecha de inicio del dataset !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+
+    if (this.data.fechaFinDataset==null) {
+      this.snack.open('La fecha de fin del dataset !!', 'Aceptar', {
+        duration: 3000
+      })
+      return;
+    }
+  
+  
+    this.aumentarUnDiaInicioDataset();
+    this.aumentarUnDiaFinDataset();
+
+    this.datasetService.guardar(this.data).subscribe(
+      (data) => {
+        Swal.fire('Información guardada', 'El dataset se agrego con éxito', 'success').then(
+          (e) => {
+            this.dialogRef.close();
+          })
+      }, (error) => {
+        Swal.fire('Error en el sistema', 'No se agrego el dataset', 'error');
+        console.log(error);
+      }
+    );
+      
+    }
+
+    aumentarUnDiaInicioDataset() {
+      const fechaOriginal = new Date(this.data.fechaInicioDataset);
+      fechaOriginal.setDate(fechaOriginal.getDate() + 1);
+      this.data.fechaInicioDataset = fechaOriginal;
+    }
+
+    aumentarUnDiaFinDataset() {
+      const fechaOriginal = new Date(this.data.fechaFinDataset);
+      fechaOriginal.setDate(fechaOriginal.getDate() + 1);
+      this.data.fechaFinDataset = fechaOriginal;
+    }
+  
+
+}

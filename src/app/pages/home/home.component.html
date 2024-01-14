@@ -107,7 +107,7 @@
               [class.active-link]="oDataset.codigoDataset === datasetSeleccionadaBackcraun"
               style="padding-left: 25px; font-size: var(--tamanio-subtexto-menu); color: unset;"
               type="button">
-              {{ oDataset.codigoDataset !== 0 ? 'Dataset ' + oDataset.codigoDataset +' - ' : '' }} {{ oDataset.fechaDataset }}
+              {{ oDataset.codigoDataset !== 0 ? 'Dataset ' + oDataset.codigoDataset +' - ' : '' }} {{ oDataset.fechaInicioDataset }} {{ oDataset.codigoDataset !== 0 ? ' al ' : '' }} {{ oDataset.fechaFinDataset }}
             </a>          
         </li>
 

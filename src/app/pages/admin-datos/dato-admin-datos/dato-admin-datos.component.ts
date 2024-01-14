@@ -72,7 +72,7 @@ export class DatoAdminDatosComponent implements OnInit {
       this.datasetService.obtenerDatasets(this.idProyecto).subscribe(
         res => {
           this.listaDatosDataset = res;
-          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaDataset: 'Todos' });
+          this.listaDatosDataset.unshift({ codigoDataset: 0, fechaInicioDataset: 'Todos' });
           this.opcionSeleccionada.codigoDataset=0;
         },
         err => console.log(err)
@@ -82,7 +82,8 @@ export class DatoAdminDatosComponent implements OnInit {
     
     opcionSeleccionada: any = {
       codigoDataset: 0,
-      fechaDataset: null
+      fechaInicioDataset: null,
+      fechaFinDataset:null
     }
 
     onEstadoChange(event: any): void {

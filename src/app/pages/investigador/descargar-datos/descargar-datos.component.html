@@ -73,7 +73,7 @@
           <mat-select name="datasets" [(ngModel)]="opcionSeleccionadaDataset.codigoDataset" (selectionChange)="onDatasetChange()">
             <ng-container *ngFor="let c of listaDatosDataset">
               <mat-option [value]="c.codigoDataset">
-                {{ c.codigoDataset !== 0 ? 'Dataset ' + c.codigoDataset +' - ' : '' }} {{ c.fechaDataset }}
+                {{ c.codigoDataset !== 0 ? 'Dataset ' + c.codigoDataset +' - ' : '' }} {{ c.fechaInicioDataset }} {{ c.codigoDataset !== 0 ? ' al ' : '' }} {{ c.fechaFinDataset }}
               </mat-option>
             </ng-container>
           </mat-select>

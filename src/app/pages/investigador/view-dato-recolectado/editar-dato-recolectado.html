@@ -50,10 +50,10 @@
 
     <mat-form-field appearance="fill" class="mt20 w100">
       <mat-label>Datasets</mat-label>
-      <mat-select name="datasets" [(ngModel)]="data.dataset.codigoDataset">
+      <mat-select name="datasets" [(ngModel)]="data.dataset.codigoDataset" (selectionChange)="onDatasetSelectionChange()">
         <ng-container *ngFor="let c of listaDatosDataset">
           <mat-option [value]="c.codigoDataset">
-            {{ c.codigoDataset !== 0 ? 'Dataset ' + c.codigoDataset +' - ' : '' }} {{ c.fechaDataset }}
+            {{ c.codigoDataset !== 0 ? 'Dataset ' + c.codigoDataset +' - ' : '' }} {{ c.fechaInicioDataset }} {{ c.codigoDataset !== 0 ? ' al ' : '' }} {{ c.fechaFinDataset }}
           </mat-option>
         </ng-container>
       </mat-select>

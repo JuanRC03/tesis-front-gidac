@@ -121,7 +121,7 @@ export class HomeComponent {
         this.listaDatosDatasetProyecto = res;
         if(this.listaDatosDatasetProyecto.length!=0){
           if(this.listaDatosDatasetProyecto.length>1){
-            this.listaDatosDatasetProyecto.unshift({ codigoDataset: 0, fechaDataset: 'Todo' });
+            this.listaDatosDatasetProyecto.unshift({ codigoDataset: 0, fechaInicioDataset: 'Todo' });
             this.datasetSeleccionadaBackcraun=0;
           }else{
             const auxDataSet=this.listaDatosDatasetProyecto[0];
@@ -934,7 +934,8 @@ export class HomeComponent {
           this.investigacionDat.parroquia = response.address.village;
           this.investigacionDat.coordenadax = latLng[0];
           this.investigacionDat.coordenaday = latLng[1];
-          let message = `<div style="display: flex; justify-content: center; align-items: center;"><b>Muestra</b></div>`;
+          let message = `<div>`;
+          message = `<div style="display: flex; justify-content: center; align-items: center;"><b>Muestra</b></div>`;
           message += `<div style="margin-bottom: 7px;"><b>Coordenadas:</b><br> <b>Latitud:</b> ${latLng[0]}, <b>Longitud:</b> ${latLng[1]}</div>`;
           message += `<div style="margin-bottom: 7px;"><b>Ubicación:</b><br> <b>Pais:</b> ${locationData.country}<br><b>Provincia:</b> ${locationData.state}<br><b>Cantón:</b> ${locationData.county}<br><b>Parroquia:</b> ${locationData.parroquia}</div>`;
 
@@ -948,11 +949,12 @@ export class HomeComponent {
 
               const datos: Dato[] = info[tipoValor];
               console.log(datos);
-              message += `<div type="button" id="toggleMenuButton_${tipoValor}" onmouseover="this.style.background='#259441'; this.style.color='#FFFFFF';" onmouseout="this.style.background='#B2C29A'; this.style.color='#000000';" style="position: relative;display: flex;min-width: 20em;height: 1.5em;line-height: 1.5;background: #B2C29A;border-radius: 5px;margin-bottom: 1px;">`;
-              message += `<p style="padding-left:10px"  >${tipoValor} </p>`;
-              message += '</div>'
+              let tipoValorStyles = `position: relative;display: flex;min-width: 20em;height: auto;line-height: 1.5;background: #B2C29A;border-radius: 5px;margin-bottom: 1px;word-wrap: break-word; align-items: center;`;
+              message += `<div type="button" id="toggleMenuButton_${tipoValor}" onmouseover="this.style.background='#259441'; this.style.color='#FFFFFF';" onmouseout="this.style.background='#B2C29A'; this.style.color='#000000';" style="${tipoValorStyles}">`;
+              message += `<p style="padding-left:10px; margin: 0;">${tipoValor} </p>`;
+              message += '</div>';
               message += `<div id="menuContent_${tipoValor}" style="display:none;">`;
-              message += "<ul>"
+              message += "<ul>";
               investigacionGrafico.tipoValor = tipoValor;
               for (let i = 0; i < datos.length; i++) {
                 const valores: any = {
@@ -977,17 +979,21 @@ export class HomeComponent {
               this.modeloNominal.investigacionDatos.push(investigacionGrafico);
             }
             this.isNumber = true;
-
           }
-          message += '</li>'
-          console.log("modelo nominal")
+
+          message += "</div>"
+          
           console.log(this.modeloNominal);
-          console.log("modelo nominal")
           this.openPopup = square.bindPopup(message);
           this.openPopup.openPopup();
           this.generateCharts();
           isProcessingClick = false;
-
+          
+          const popupContainer = document.querySelector('.leaflet-popup-content-wrapper') as HTMLElement | null;
+          if (popupContainer) {
+            popupContainer.style.maxHeight = '300px';
+            popupContainer.style.overflowY = 'auto';
+          }
 
           for (const tipoValor in info) {
             const toggleMenuButton = document.getElementById(`toggleMenuButton_${tipoValor}`);

@@ -1,0 +1,34 @@
+
+<mat-list class="estilo-mat-list" style="padding: 0; margin-bottom: 15px; ">
+  <mat-list-item class="estilo-mat-item" style="color: black;">
+    
+    <div mat-line style="padding-right: 20px;">Dataset</div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button  mat-icon-button (click)="onNoClick()"
+        matTooltip="White" color="White" aria-label="Example icon-button with a heart icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-divider></mat-divider>
+
+<form (ngSubmit)= "agregar()" style="max-width: 400px; min-width: 400px;">
+    <div class="box mt-3 mb-3">
+      
+      <mat-form-field appearance="fill" class="mt20 w100">
+        <mat-label>Dataset</mat-label>
+        <mat-select name="datasets" [(ngModel)]="data.codigoDataset"  (selectionChange)="onDatasetSelectionChange()">
+          <ng-container *ngFor="let c of listaDatosDataset">
+            <mat-option [value]="c.codigoDataset">
+              {{ c.codigoDataset !== 0 ? 'Dataset ' + c.codigoDataset +' - ' : '' }} {{ c.fechaInicioDataset }} {{ c.codigoDataset !== 0 ? ' al ' : '' }} {{ c.fechaFinDataset }}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+        
+      <div class="center" style="text-align: center;">
+        <button mat-raised-button color="primary">Importar</button>
+      </div>
+    </div>
+</form>
