@@ -231,19 +231,17 @@
 
 
                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                  <button mat-icon-button matTooltip="Primary" color="primary"  aria-label="Example icon-button with a heart icon" (click)="descartarDatos()" style="margin-right: 10px;">
+                    <mat-icon>cached</mat-icon>
+                  </button>
+
                   <button  class="contenedor-btn-file bordeado" (click)="cambiarColorArchivo()" style="margin-right: 10px;">
                     <i class="fas fa-file"></i>
                      Descargar archivo
                     <label for="btn-file">   </label>
                   </button> 
 
-                  <button  class="contenedor-btn-file bordeado" (click)="descartarDatos()" style="margin-right: 10px;">
-                    <i class="fas fa-file"></i>
-                     Descartar dataset
-                    <label for="btn-file">   </label>
-                  </button>  
-                  
-                  <button  class="contenedor-btn-file bordeado" (click)="listaDataset()">
+                  <button  class="contenedor-btn-file bordeado" (click)="perfilarDatosEstructura()">
                     <i class="fas fa-file"></i>
                      Importar dataset 
                     <label for="btn-file">   </label>

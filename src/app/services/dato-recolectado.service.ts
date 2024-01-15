@@ -58,7 +58,10 @@ export class DatoRecolectadoService {
     return this.http.post(`${baserUrl}/dato-recolectado/perfilar-datos`,modelo);
   }
 
-  
+  public perfilarEstructuraPrincipal(modelo:any){
+    return this.http.post(`${baserUrl}/dato-recolectado/perfilar-datos-comprobar`,modelo);
+  }
+
   public colorizarArchivo(modelo: FormData): Observable<Blob> {
     return this.http.post(`${baserUrl}/dato-recolectado/colorizar-archivo`, modelo, { responseType: 'blob' });
   }

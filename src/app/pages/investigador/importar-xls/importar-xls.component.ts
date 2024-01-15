@@ -237,6 +237,39 @@ export class ImportarXlsComponent implements OnInit {
       (error) => {
         console.log(error);
         Swal.fire('Error !!', 'Error al perfilar los datos', 'error')
+        this.snack.open("Error, intente de nuevo!!", '', {
+          duration: 3000
+        })
+        return;
+      }
+    )
+  }
+
+  perfilarDatosEstructura() {
+    if (this.listaDatos.length == 0) {
+      this.snack.open("Error, intente de nuevo!!", '', {
+        duration: 3000
+      })
+      return;
+    }
+    const formData = new FormData();
+
+    formData.append('proyectoInvestigacion', JSON.stringify(this.proyectoInvestigacion));
+    formData.append('variablesEncontradas', JSON.stringify(this.listaDatos));
+    formData.append('file', this.file);
+    this.datoRecolectadoService.perfilarEstructuraPrincipal(formData).subscribe(
+      (dato: any) => {
+        console.log(dato);
+        if (dato==true) {
+          this.listaDataset()
+        } else {
+          Swal.fire('Error !!', 'El archivo presenta errores en la estructura principal, descargue el archivo y corregir los errores ', 'error');
+        }
+        
+      },
+      (error) => {
+        console.log(error);
+        Swal.fire('Error !!', 'Error al insertar los datos', 'error')
       }
     )
   }

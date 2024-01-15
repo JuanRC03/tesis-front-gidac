@@ -4,11 +4,12 @@
 
 .sidenav-container {
   height: 100%;
-  
+ 
 }
 
 .sidenav {
   width: 91px;
+  
 }
 
 .sidenav .mat-toolbar {
