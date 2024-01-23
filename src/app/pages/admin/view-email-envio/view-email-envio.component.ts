@@ -71,7 +71,7 @@ export class ViewEmailEnvioComponent implements OnInit {
     eliminar(id:any){
       Swal.fire({
         title:'Eliminar información',
-        text:'¿Estás seguro de eliminar el email de envio de correos?',
+        text:'¿Estás seguro de eliminar el email de envió de correos?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
@@ -83,11 +83,11 @@ export class ViewEmailEnvioComponent implements OnInit {
           this.emailEnvioService.delete(id).subscribe(
             (data) => {
               this.listaDatosVigentes = this.listaDatosVigentes.filter((datos:any) => datos.idTipoProyecto!= id);
-              Swal.fire('Información eliminada','El email de envio de correos ha sido eliminado','success');
+              Swal.fire('Información eliminada','El email de envió de correos ha sido eliminado','success');
               this.listarEliminados();
             },
             (error) => {
-              Swal.fire('Error','Error al eliminar el email de envio de correos','error');
+              Swal.fire('Error','Error al eliminar el email de envió de correos','error');
             }
           )
         }
@@ -97,7 +97,7 @@ export class ViewEmailEnvioComponent implements OnInit {
     restablecer(id:any){
       Swal.fire({
         title:'Restaurar información',
-        text:'¿Estás seguro de restaurar el email de envio de correos?',
+        text:'¿Estás seguro de restaurar el email de envió de correos?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
@@ -108,12 +108,12 @@ export class ViewEmailEnvioComponent implements OnInit {
         if(result.isConfirmed){
           this.emailEnvioService.restore(id).subscribe(
             (data) => {
-              Swal.fire('Información restaurada','El email de envio de correos ha sido restaurada','success');
+              Swal.fire('Información restaurada','El email de envió de correos ha sido restaurada','success');
               this.listarVigentes();
               this.listarEliminados();
             },
             (error) => {
-              Swal.fire('Error','Error al restaurar el email de envio de correos','error');
+              Swal.fire('Error','Error al restaurar el email de envió de correos','error');
             }
           )
         }
@@ -241,12 +241,12 @@ export class DialogAddEmailEnvio {
 
     this.service.guardar(this.datos).subscribe(
       (data) => {
-        Swal.fire('Información guardada ', 'El email de envio de correos se ha guardado con exito', 'success');
+        Swal.fire('Información guardada ', 'El email de envió de correos se ha guardado con exito', 'success');
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error en el sistema', 'El email de envio de correos no se ha guardado', 'error');
+        Swal.fire('Error en el sistema', 'El email de envió de correos no se ha guardado', 'error');
       }
     )
   }
@@ -376,13 +376,13 @@ export class DialogActualizarEmailEnvio {
 
     this.service.actualizar(this.datosActualizar).subscribe(
       (data) => {
-        Swal.fire('Información actualizada', 'El email de envio de correos se ha actualizado con exito', 'success');
+        Swal.fire('Información actualizada', 'El email de envió de correos se ha actualizado con exito', 'success');
         
         this.dialogRef.close();
 
       }, (error) => {
         console.log(error);
-        Swal.fire('Error en el sistema', 'El email de envio de correos no se ha actualizado', 'error');
+        Swal.fire('Error en el sistema', 'El email de envió de correos no se ha actualizado', 'error');
       }
     )
   }

@@ -8,57 +8,38 @@
 {
 
     /*--color-menu-dashboar:rgb(239,239,239);*/
-    --color-menu-dashboar:rgb(43, 43, 41);
-    --color-menu-dashboar:rgb(178, 194, 154);
-    
-    --color-menu-dashboar-grupo:rgba(14, 13, 13, 0.15);
+    /*--color-menu-dashboar:rgb(43, 43, 41);
     --color-linea-divisora:rgb(52,53,55);
-    
     --color-menu-dashboar-resaltado:#2bc451;
-    --color-menu-dashboar-text-resaltado:rgb(239,239,239);
     --color-menu-dashboar-texto:rgb(255,255,255);
-    
-    --color-menu-dashboar-texto-hover:rgb(255,255,255);
-
-    --tamanio-nombre-usuario:15px;
-    --tamanio-texto-menu:14px;
-
-    --tamanio-foto-usuario:75px;
-
-    --tamanio-menu:245px;
-    
-    /*Color al pasar sobre elemento*/
-    --primary-color:#3FC060;
-    /*Color Backgraud de footer y texto*/
-    --secondary-color:#162328;
-
-    /*Color del menu*/
-    /*Color Backgraud*/
     --third-color:rgb(32, 32, 29);
     --third-color:rgb(190, 195, 199);
     --third-color:rgb(178, 194, 154);
-    
+    --third-color:rgb(178, 194, 154);
     --color-texto-fondo:rgb(32, 32, 29);
     --color-texto-fondo:rgb(190, 195, 199);
     --color-texto-fondo:rgb(219, 226, 208);
-    --third-color:rgb(178, 194, 154);
-    /*--third-color:rgb(49, 54, 59);*/
-    /*Color texto del menu del dashboard*/
-    --fourth-color: rgb(245,245,245);
+    --submenu-color: rgb(51,51,51);*/
 
-    --color-texto-menu-home: rgb(245,245,245);
+    --color-menu-dashboar:rgb(178, 194, 154);
+    --color-menu-dashboar-grupo:rgba(14, 13, 13, 0.15);
+    --color-menu-dashboar-text-resaltado:rgb(239,239,239);
+    --color-menu-dashboar-texto-hover:rgb(255,255,255);
+    --tamanio-nombre-usuario:15px;
+    --tamanio-texto-menu:14px;
+    --tamanio-foto-usuario:75px;
+    --tamanio-menu:245px;
+    --primary-color:#3FC060;
+    --secondary-color:#162328;
+    --third-color:rgb(178, 194, 154);
+    --color-texto-fondo:rgb(219, 226, 208);
+    --fourth-color: rgb(245,245,245);
     --color-texto-menu-home: rgb(0, 0, 0);
-    /*Color del submenu*/
-    --submenu-color: rgb(51,51,51);
     --submenu-color: rgb(236, 240, 241);
-    /*color del resaltado del texto*/
     --resaltado-color:#2bc451;
     --resaltado-color-menu-principal:rgba(133, 143, 116, 0.507);
     --migajas-color:rgb(94, 93, 93);
-    /*color de lineas separatorias*/
-    /*--lineas-color:rgb(215,215,215);*/
     --lineas-color:rgb(255, 255, 255);
-
     --tamanio-icono:25px;
     --ancho-bloque-divisor:58px;
     --paddin-superior-divisor:8px;
@@ -68,79 +49,48 @@
     --icono-migajas-top:1px;
     --icono-migajas-left:3px;
     --icono-migajas-rigth:0px;
-
-    
     --tamanio-subtexto-menu:12px;
-    
     --tamanio-menu-principal:90px;
     --tamanio-submenu:400px;
     --tamanio-submenu-explorar:450px;
     --pading-left-subtitulo:50px;
     --tamanio-icono-menu:21px;
     --tamanio-titulo-app:16px;
-    
     --tamanio-ancho-despelgable:150px;
     --tamanio-botones-menu:45px;
     --tamanio-botones-grupo-menu:55;
     --tamanio-rol-usuario:13px;
     --padint-textos-menu:8px;
     --pading-top-usuario:0px;
-    
     --tamanio-borde-foto-usuario:4px;
     --tamanio-iconos-menu-principal-responsive:30px;
-
-    
-    
-    --dash-sidebar-bakcolor:rgb(245,245,245);
-    --dash-sidebar-color:rgb(245,245,245);
     --dash-sidebar-bakcolor:rgb(250, 250, 250);
     --dash-sidebar-color:rgb(40, 41, 41);
-    
     --dash-sidebar-tamaño:60px;
     --dash-sidebar-tamaño-icono:35px;
-    
-
-
     --matMenu-color:rgb(255,255,255);
-    
     --color-textomat-menu: black;
     --color-textomat-menu-hover: rgb(255,255,255);
     --tamanio-icono-matMenu:21px;
     --tamanio-texto-matMenu:15px;
     --pading-matMenu:10px;
-
-
-
-    /*Nuevo colores*/
-    /*Color del navbar*/
-    /*Color del sidevar*/
     --fifth-color:#162328;
-    /*--fifth-color:rgb(245, 245, 245);*/
-    /*Color del texto cel sidevar*/
     --sixth-color:rgb(241,243,246);
-    /*--third-color:rgb(18,47,59);;*/
     --color-texto-menu-submebu:rgb(0,0,0);
-    --back-graund-logo:rgb(56, 56, 50);
     --back-graund-logo:rgb(133, 143, 116);
     --color-texto-logo:rgb(255,255,255);
     --resaltado-color-texto:rgb(111, 139, 62);
-    --color-texto-fondo:rgb(219, 226, 208);
-    --third-color:rgb(178, 194, 154);
     --color-linea-divisora:rgb(186, 206, 151);
     --color-menu-dashboar-texto: rgb(0,0,0);
     --resaltado-color-dash:rgb(133, 143, 116);
-    --backgraud-valor:rgb(58,149,228);
     --backgraud-valor:#21be48;
     --color-menu-dashboar-resaltado:#259441;
     --color-migajas-de-pan:#3FC060;
     --color-boton-importar:rgb(0,105,92);
-    
-
     --tamanio-texto-indicador:17px;
     --tamanio-texto-camino:15px;
     --tamanio-cuadro-idicador:60px;
     --tamanio-icono-indocador:30px;
-
     --color-datos-no-editables:#ee0e0e;
 }
 

@@ -610,7 +610,7 @@ formSubmit(){
       this.dialogRef.close('Solicitado');
       
     },(error) => {
-      Swal.fire('Error en el sistema', 'No se envio la solicitud', 'error');
+      Swal.fire('Error en el sistema', 'No se envió la solicitud', 'error');
     }
   )
   

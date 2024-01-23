@@ -89,7 +89,7 @@ export class ViewTiempoEdicionDatoComponent implements OnInit {
     restablecer(id:any){
       Swal.fire({
         title:'Restaurar información',
-        text:'¿Estás seguro de restaurar el email de envio de correos?',
+        text:'¿Estás seguro de restaurar el email de envió de correos?',
         icon:'warning',
         showCancelButton:true,
         confirmButtonColor:'#3085d6',
